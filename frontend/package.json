@@ -6,7 +6,7 @@
     "lint": "eslint --ignore-path .eslintignore .",
     "test": "jest",
     "validate": "yarn lint && yarn test",
-    "build": "webpack -p --progress --config webpack.dev.config.js",
+    "build": "webpack -p --progress --config webpack.prod.config.js",
     "watch": "webpack --progress -d --config webpack.dev.config.js --watch",
     "start": "webpack-dev-server --config ./webpack.dev.config.js --mode development --port 3000",
     "production": "webpack -p --progress --config webpack.prod.config.js"
