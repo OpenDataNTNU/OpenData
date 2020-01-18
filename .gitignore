@@ -3,3 +3,5 @@ backend/bin
 container/*/sql
 
 .DS_Store
+
+frontend/public/bundle.js
