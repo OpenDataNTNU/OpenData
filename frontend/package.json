@@ -14,7 +14,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint",
-      "pre-push": "npm validate"
+      "pre-push": "yarn validate"
     }
   },
   "dependencies": {
