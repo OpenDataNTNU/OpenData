@@ -1,0 +1,5 @@
+node_modules
+jest.config.js
+/src/serviceWorker.js
+/webpack.dev.config.js
+/webpack.prod.config.js

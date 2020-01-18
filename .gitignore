@@ -1,3 +1,5 @@
 backend/obj
 backend/bin
 container/*/sql
+
+.DS_Store
