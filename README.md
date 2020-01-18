@@ -12,6 +12,11 @@ The react server serves at `localhost:3000`, and the backend serves at `localhos
 
 A simple SQL administration tool called Adminer is reachable at `localhost:3739`. For username/password, see `/container/development/docker-compose.yml`
 
+`ctrl-C` to stop the containers.
+
+#### Security warning
+
+This setup is meant for local development. The provided `docker-compose.yml` file exposes adminer and both http servers. Other machines on the local network can access them.
 
 ### Manually
 
