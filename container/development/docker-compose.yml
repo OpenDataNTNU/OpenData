@@ -1,0 +1,49 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306
+    volumes:
+#     - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+     - ./sql:/var/lib/mysql
+    environment:
+      MYSQL_USER: app
+      MYSQL_DATABASE: opendata
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: sjallabajs
+  adminer: # For sql administration
+    links:
+      - mysql
+    image: adminer
+    ports:
+      - 3739:8080
+  server:
+    image: microsoft/dotnet:2.2-sdk
+    entrypoint: # This allows us to not need a custom dockerfile for this setup
+     - dotnet
+     - run
+#      - dotnet
+#      - "OpenDataBackend.dll"
+    environment:
+      ASPNETCORE_URLS: "http://*:9000"
+    working_dir: /srv/opendata-backend
+    links:
+      - mysql
+    ports:
+      - 9000:9000 # Only exposed for testing
+    volumes:
+      - ../../backend:/srv/opendata-backend
+  webui:
+    image: node
+    entrypoint: 
+      - bash
+      - "-c"
+      - "npm install && npm start"
+    working_dir: /srv/opendata-frontend
+    links:
+      - server
+    ports:
+      - 3000:3000
+    volumes:
+      - ../../frontend:/srv/opendata-frontend
