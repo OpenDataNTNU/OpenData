@@ -6,7 +6,7 @@
 
 It is reccomended to use docker, as it makes getting everything up super simple.
 
-Run `docker-compose up` from insode `/container/development`, and the rest should happen automatically.
+Run `docker-compose up` from inside `/container/development`, and the rest should happen automatically.
 
 The react server serves at `localhost:3000`, and the backend serves at `localhost:9000`, for ease in testing with postman and similar tools. The react server should be set up to proxy to the backend server, please don't write the frontend so it makes requests to `localhost:9000`.
 
