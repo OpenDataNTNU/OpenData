@@ -43,8 +43,6 @@ test('renders learn react link', () => {
   expect(container.firstChild.children.length).toBe(1);
 });
 
-
-
 test('renders alert action when dispatched', () => {
   const { container } = render(
     <Provider store={mock.alertStore}>

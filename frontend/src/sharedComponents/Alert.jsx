@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 
@@ -147,6 +148,14 @@ const Alert = ({alert, removeToast}) => {
             <ProgressBar max="15000" min="0" value={progress} color={color}></ProgressBar>
         </Wrapper>
     )
+}
+
+Alert.proptypes = {
+    alert: PropTypes.PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        message: PropTypes.number.isRequired
+    }).isRequired,
+    removeToast: PropTypes.func.isRequired
 }
 
 export {
