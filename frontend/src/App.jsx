@@ -35,7 +35,7 @@ function App() {
     <React.Fragment>
       <Wrapper>
         {
-          alert.type 
+          alert && alert.type 
           ? 
             <Alert alert={alert} removeToast={removeAlert} /> 
           : 
