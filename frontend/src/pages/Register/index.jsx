@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-//import { userActions } from '../../state/actions/user';
+// import { userActions } from '../../state/actions/user';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   background-color: #f5f5f5;
   height: 100%;
   width: 100%;
-`
+`;
 
 const Form = styled.form`
   max-width: 30em;
@@ -26,7 +26,7 @@ const Form = styled.form`
   -webkit-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   -moz-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
-`
+`;
 
 const Input = styled.input`
   padding: 0.3em;
@@ -37,7 +37,7 @@ const Input = styled.input`
   width: 100%;
   box-sizing: border-box;
   margin: 0.3em 0 0.3em 0;
-`
+`;
 
 const Button = styled.button`
   padding: 0.3em;
@@ -51,44 +51,42 @@ const Button = styled.button`
   box-sizing: border-box;
   margin: 1em 0 0.8em 0;
   cursor: pointer
-`
+`;
 
-const A = styled.a`
-  color: #434faf;
-  text-decoration: underline;
-`
-
-const Register = (props) => {
+const Register = () => {
   // State
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [verifyPassword, setVerifyPassword] = useState("")
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [verifyPassword, setVerifyPassword] = useState('');
 
   // Redux
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const onChange = (e) => {
-    switch(e.target.name) {
-      case "email": {
-        setEmail(e.target.value)
+    switch (e.target.name) {
+      case 'email': {
+        setEmail(e.target.value);
         break;
       }
-      case "password": {
-        setPassword(e.target.value)
+      case 'password': {
+        setPassword(e.target.value);
         break;
       }
-      case "verifyPassword": {
-        setVerifyPassword(e.target.value)
+      case 'verifyPassword': {
+        setVerifyPassword(e.target.value);
+        break;
+      }
+      default: {
         break;
       }
     }
-  }
+  };
 
   const register = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    //dispatch(userActions.register(email, password))
-  }
+    // dispatch(userActions.register(email, password))
+  };
 
   return (
     <Wrapper>
@@ -101,7 +99,7 @@ const Register = (props) => {
       </Form>
     </Wrapper>
   );
-}
+};
 
 export {
   Register,
