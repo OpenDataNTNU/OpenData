@@ -78,7 +78,7 @@ const Register = (props) => {
         break;
       }
       case "verifyPassword": {
-        setPassword(e.target.value)
+        setVerifyPassword(e.target.value)
         break;
       }
     }
