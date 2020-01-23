@@ -9,20 +9,20 @@ import { Splash } from './pages/Splash';
 const history = createBrowserHistory();
 
 const RouterComponent = (props) => {
-    return(
-        <Router history={history}>
+	return(
+		<Router history={history}>
 				<Route
-		          render={({ location }) => (
-		            <React.Fragment>
-		            	<Switch>
-					        <Route exact path="/">
-                                <Splash />
-                            </Route>
-					    </Switch>
-		            </React.Fragment>
-		          )} />
+				render={({ location }) => (
+					<React.Fragment>
+						<Switch>
+							<Route exact path="/">
+								<Splash />
+							</Route>
+						</Switch>
+					</React.Fragment>
+				)} />
 		</Router>
-    )
+	)
 }
 
 export {
