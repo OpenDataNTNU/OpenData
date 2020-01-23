@@ -1,37 +1,67 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
-using OpenDataBackend.Attributes;
-using OpenDataBackend.Repositories;
-using OpenDataBackend.Middleware;
- 
-namespace OpenDataBackend
+using Microsoft.Extensions.Hosting;
+//using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
+using OpenData.Persistence.Contexts;
+using OpenData.Domain.Repositories;
+using OpenData.Domain.Services;
+using OpenData.Persistence.Repositories;
+using OpenData.Services;
+
+namespace OpenData
 {
     public class Startup
     {
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            var configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true);
- 
-            Configuration = configurationBuilder.Build();
+            Configuration = configuration;
         }
- 
+
         public IConfiguration Configuration { get; }
- 
+
+        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.Configure<AppConfig>(Configuration);
-            services.AddScoped<AuthenticationFilterAttribute>();
-            services.AddSingleton<IPersonRepository, PersonRepository>();
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+                //.ServerVersion(new ServerVersion(new Version(), ServerType.MySql));
+            });
+
+            services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
+            services.AddScoped<IMunicipalityService, MunicipalityService>();
+            services.AddAuthorization();
+            services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
         }
- 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware<HttpExceptionMiddleware>();
-            app.UseMvc();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

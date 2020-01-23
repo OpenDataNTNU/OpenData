@@ -5,12 +5,12 @@ services:
     ports:
       - 3306
     volumes:
-#     - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+#     - ../common/setup.sql:/docker-entrypoint-initdb.d/setup.sql
      - ./sql:/var/lib/mysql
     environment:
-      MYSQL_USER: app
-      MYSQL_DATABASE: opendata
-      MYSQL_PASSWORD: password
+      MYSQL_USER: OpenData
+      MYSQL_DATABASE: OpenData
+      MYSQL_PASSWORD: OpenData
       MYSQL_ROOT_PASSWORD: sjallabajs
   adminer: # For sql administration
     links:
@@ -19,10 +19,11 @@ services:
     ports:
       - 3739:8080
   server:
-    image: microsoft/dotnet:2.2-sdk
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
     entrypoint: # This allows us to not need a custom dockerfile for this setup
-     - dotnet
-     - run
+     - bash
+     - "-c"
+     - "dotnet restore && dotnet run"
 #      - dotnet
 #      - "OpenDataBackend.dll"
     environment:
