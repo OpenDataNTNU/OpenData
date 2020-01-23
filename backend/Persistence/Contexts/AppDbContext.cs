@@ -9,6 +9,7 @@ namespace OpenData.Persistence.Contexts
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        //This is where we create new tables
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -21,7 +22,9 @@ namespace OpenData.Persistence.Contexts
 
             builder.Entity<Municipality>().HasData
             (
-                new Municipality { Name = "Bærum", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F }, // Id set manually due to in-memory provider
+                new Municipality { Name = "Bærum", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
+                new Municipality { Name = "Oslo", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
+                new Municipality { Name = "Trondheim", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
                 new Municipality { Name = "Asker", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F }
             );
         }
