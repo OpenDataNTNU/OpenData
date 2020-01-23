@@ -1,5 +1,5 @@
 describe('Alert action creator', () => {
   it('', () => {
-    return true
+    expect(true).toEqual(true);
   });
 });
