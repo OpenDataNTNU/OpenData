@@ -10,8 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenData.Persistence.Contexts;
+using OpenData.Domain.Repositories;
+using OpenData.Domain.Services;
+using OpenData.Persistence.Repositories;
+using OpenData.Services;
 
-namespace backend
+namespace OpenData
 {
     public class Startup
     {
@@ -26,6 +31,13 @@ namespace backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
+            services.AddDbContext<AppDbContext>(options => {
+                options.UseInMemoryDatabase("opendata-in-memory");
+            });
+
+            services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
+            services.AddScoped<IMunicipalityService, MunicipalityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
