@@ -11,19 +11,19 @@ import { Splash } from '../pages/Splash';
 // The app's history object
 const history = createBrowserHistory();
 
-const RouterComponent = (props) => {
-	return(
-		<Router history={history}>
-			<Switch>
-				<Route exact path="/" component={Splash} />
-				<PrivateRoute path="/private" component={()=><h1>Logged in</h1>} />
-				<PrivateRoute path="/loggedOut" loggedOut component={()=><h1>Logged out</h1>} />
-			</Switch>
-		</Router>
-	)
-}
+const RouterComponent = () => { // eslint-disable-line arrow-body-style
+  return (
+    <Router history={history}>
+      <Switch>
+        <Route exact path="/" component={Splash} />
+        <PrivateRoute path="/private" component={() => <h1>Logged in</h1>} />
+        <PrivateRoute path="/loggedOut" loggedOut component={() => <h1>Logged out</h1>} />
+      </Switch>
+    </Router>
+  );
+};
 
 export {
-	RouterComponent as Router,
-	history
-}
+  RouterComponent as Router,
+  history,
+};

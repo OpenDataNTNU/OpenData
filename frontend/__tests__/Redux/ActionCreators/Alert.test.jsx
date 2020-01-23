@@ -6,7 +6,7 @@ describe('Alert action creator', () => {
     const message = 'This is an info text';
     const expectedAction = {
       type: alertConstants.INFO,
-      message
+      message,
     };
     expect(alertActions.info(message)).toEqual(expectedAction);
   });
@@ -15,7 +15,7 @@ describe('Alert action creator', () => {
     const message = 'This is an info text';
     const expectedAction = {
       type: alertConstants.SUCCESS,
-      message
+      message,
     };
     expect(alertActions.success(message)).toEqual(expectedAction);
   });
@@ -24,15 +24,15 @@ describe('Alert action creator', () => {
     const message = 'This is an info text';
     const expectedAction = {
       type: alertConstants.ERROR,
-      message
+      message,
     };
     expect(alertActions.error(message)).toEqual(expectedAction);
   });
 
   it('should create an action to clear all alerts', () => {
     const expectedAction = {
-      type: alertConstants.CLEAR
+      type: alertConstants.CLEAR,
     };
     expect(alertActions.clear()).toEqual(expectedAction);
   });
-})
+});
