@@ -19,10 +19,11 @@ services:
     ports:
       - 3739:8080
   server:
-    image: microsoft/dotnet:2.2-sdk
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
     entrypoint: # This allows us to not need a custom dockerfile for this setup
-     - dotnet
-     - run
+     - bash
+     - "-c"
+     - "dotnet restore && dotnet run"
 #      - dotnet
 #      - "OpenDataBackend.dll"
     environment:

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
+
 using OpenData.Persistence.Contexts;
 using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
@@ -30,18 +26,21 @@ namespace OpenData
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
-            services.AddDbContext<AppDbContext>(options => {
-                options.UseInMemoryDatabase("opendata-in-memory");
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseInMemoryDatabase(Configuration.GetConnectionString("memory"));
             });
 
             services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
             services.AddScoped<IMunicipalityService, MunicipalityService>();
+            services.AddAuthorization();
+            services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -53,8 +52,14 @@ namespace OpenData
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
