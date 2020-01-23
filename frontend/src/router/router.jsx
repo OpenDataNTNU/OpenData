@@ -17,6 +17,7 @@ const RouterComponent = (props) => {
 			<Switch>
 				<Route exact path="/" component={Splash} />
 				<PrivateRoute path="/private" component={()=><h1>Logged in</h1>} />
+				<PrivateRoute path="/loggedOut" loggedOut component={()=><h1>Logged out</h1>} />
 			</Switch>
 		</Router>
 	)
