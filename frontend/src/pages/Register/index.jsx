@@ -78,11 +78,7 @@ const Register = (props) => {
         break;
       }
       case "verifyPassword": {
-<<<<<<< HEAD
         setVerifyPassword(e.target.value)
-=======
-        setPassword(e.target.value)
->>>>>>> Added login and register components
         break;
       }
     }
