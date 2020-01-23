@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-//import { userActions } from '../../state/actions/user';
+// import { userActions } from '../../state/actions/user';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   background-color: #f5f5f5;
   height: 100%;
   width: 100%;
-`
+`;
 
 const Form = styled.form`
   max-width: 30em;
@@ -26,7 +26,7 @@ const Form = styled.form`
   -webkit-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   -moz-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
-`
+`;
 
 const Input = styled.input`
   padding: 0.3em;
@@ -37,7 +37,7 @@ const Input = styled.input`
   width: 100%;
   box-sizing: border-box;
   margin: 0.3em 0 0.3em 0;
-`
+`;
 
 const Button = styled.button`
   padding: 0.3em;
@@ -51,52 +51,58 @@ const Button = styled.button`
   box-sizing: border-box;
   margin: 1em 0 0.8em 0;
   cursor: pointer
-`
+`;
 
 const A = styled.a`
   color: #434faf;
   text-decoration: underline;
-`
+`;
 
-const Login = (props) => {
+const Login = () => {
   // State
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   // Redux
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch();
 
   const onChange = (e) => {
-    switch(e.target.name) {
-      case "email": {
-        setEmail(e.target.value)
+    switch (e.target.name) {
+      case 'email': {
+        setEmail(e.target.value);
         break;
       }
-      case "password": {
-        setPassword(e.target.value)
+      case 'password': {
+        setPassword(e.target.value);
+        break;
+      }
+      default: {
         break;
       }
     }
-  }
+  };
 
   const login = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    //dispatch(userActions.login(email, password))
-  }
+    // dispatch(userActions.login(email, password))
+  };
 
   return (
     <Wrapper>
-        <Form onSubmit={login}>
-          <h1>Login</h1>
-          <Input type="text" placeholder="Email" name="email" value={email} onChange={onChange} />
-          <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange}  />
-          <Button type="submit">Sign in</Button>
-          <p>Not a user yet? <A href="Signup.html">Sign up here</A></p>
-        </Form>
+      <Form onSubmit={login}>
+        <h1>Login</h1>
+        <Input type="text" placeholder="Email" name="email" value={email} onChange={onChange} />
+        <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
+        <Button type="submit">Sign in</Button>
+        <p>
+          Not a user yet?
+          <A href="Signup.html">Sign up here</A>
+        </p>
+      </Form>
     </Wrapper>
   );
-}
+};
 
 export {
   Login,
