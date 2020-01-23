@@ -26,5 +26,6 @@ const RouterComponent = (props) => {
 }
 
 export {
-    RouterComponent as Router
+	RouterComponent as Router,
+	history
 }
