@@ -5,12 +5,12 @@ services:
     ports:
       - 3306
     volumes:
-#     - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+#     - ../common/setup.sql:/docker-entrypoint-initdb.d/setup.sql
      - ./sql:/var/lib/mysql
     environment:
-      MYSQL_USER: app
-      MYSQL_DATABASE: opendata
-      MYSQL_PASSWORD: password
+      MYSQL_USER: OpenData
+      MYSQL_DATABASE: OpenData
+      MYSQL_PASSWORD: OpenData
       MYSQL_ROOT_PASSWORD: sjallabajs
   adminer: # For sql administration
     links:

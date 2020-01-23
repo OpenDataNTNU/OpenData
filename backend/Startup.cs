@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+//using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 using OpenData.Persistence.Contexts;
 using OpenData.Domain.Repositories;
@@ -28,7 +29,8 @@ namespace OpenData
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase(Configuration.GetConnectionString("memory"));
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+                //.ServerVersion(new ServerVersion(new Version(), ServerType.MySql));
             });
 
             services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
