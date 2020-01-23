@@ -64,13 +64,42 @@ section#sidebar > div.filter {
     font-size: 1.1em;
     font-weight:300;
 }
+section#sidebar > input[type='text'] {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 1em 0 0.3em 0;
+}
+section#sidebar > button {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    color: #7e6dad;
+    background-color: #dcd8ff;
+    border: solid 0.1em #9a85d3;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 1em 0;
+    cursor: pointer
+}
+section#sidebar > button:hover {
+    background-color: #e5e8ff;
+}
+
+
+
+
 div.filter > div.filter {
     padding-top: 0.3em;
     margin-left: 0.5em;
     padding-left: 0.5em;
-    border-left: solid 0.2em lightgrey;
+    border-left: solid 0.1em #e2e2e2;
 }
-
 
 section#content {
     flex: 1;
