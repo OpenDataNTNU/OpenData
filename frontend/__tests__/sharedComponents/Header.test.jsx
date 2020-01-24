@@ -9,11 +9,12 @@ import { createMemoryHistory } from 'history';
 import { Header } from '../../src/sharedComponents/Header';
 
 describe('Template component', () => {
+  // mock store and history
   let store;
   let history;
 
   beforeEach(() => {
-    // Set up mock state stpre
+    // Set up mock state store
     const mockStore = configureStore();
     // Initialize mockstore with empty state
     const initialEmptyState = {};
@@ -32,9 +33,12 @@ describe('Template component', () => {
       </Provider>,
     );
 
+    // The dropdown component should not be rendered when the width
+    // is bigger than 600px
     let dropdownElement = queryByText(/Navigation/i);
     expect(dropdownElement).not.toBeInTheDocument();
 
+    // Change the page width
     await wait(() => {
       // Change the viewport to 500px.
       global.innerWidth = 500;
@@ -42,6 +46,8 @@ describe('Template component', () => {
       global.dispatchEvent(new Event('resize'));
     });
 
+    // The dropdown component should be rendered now that
+    // the width is less than 600px
     dropdownElement = queryByText(/Navigation/i);
     expect(dropdownElement).toBeInTheDocument();
   });

@@ -14,6 +14,7 @@ describe('Dropdown component', () => {
       />,
     );
 
+    // The dropdown component should be rendered
     const linkElement = queryByText(/Navigation/i);
     expect(linkElement).toBeInTheDocument();
   });
@@ -27,6 +28,7 @@ describe('Dropdown component', () => {
       />,
     );
 
+    // Click the dropdown component
     await wait(() => {
       fireEvent(
         getByText('Navigation'),
@@ -37,9 +39,11 @@ describe('Dropdown component', () => {
       );
     });
 
+    // The elements in the dropdown list should be rendered after the click
     let listElement = queryByText('Test list element');
     expect(listElement).toBeInTheDocument();
 
+    // Click the dropdown component
     await wait(() => {
       fireEvent(
         getByText('Navigation'),
@@ -50,6 +54,8 @@ describe('Dropdown component', () => {
       );
     });
 
+    // The elements in the dropdown list should not be rendered
+    // anymore after clicking it for a second time
     listElement = queryByText('Test list element');
     expect(listElement).not.toBeInTheDocument();
   });

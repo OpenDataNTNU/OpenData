@@ -9,6 +9,7 @@ import { createMemoryHistory } from 'history';
 import { Template } from '../../src/sharedComponents/Template';
 
 describe('Template component', () => {
+  // Mock store and history
   let store;
   let history;
 
@@ -34,6 +35,8 @@ describe('Template component', () => {
       </Provider>,
     );
 
+    // We expect the header, h1, and footer elements to be rendered,
+    // thus the length of the children should be 3
     expect(container.firstChild.children.length).toBe(3);
   });
 
@@ -48,6 +51,7 @@ describe('Template component', () => {
       </Provider>,
     );
 
+    // The h1 should be rendered on the page
     const headerElement = getByText(/Test/i);
     expect(headerElement).toBeInTheDocument();
   });
