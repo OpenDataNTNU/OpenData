@@ -42,7 +42,7 @@ test('renders learn react link', () => {
   expect(linkElement).toBeInTheDocument();
 
   // No alert is rendered
-  expect(container.firstChild.children.length).toBe(1);
+  expect(container.children.length).toBe(1);
 });
 
 test('renders alert action when dispatched', () => {
@@ -53,5 +53,5 @@ test('renders alert action when dispatched', () => {
   );
 
   // Alert should be rendered with an alert in the state store
-  expect(container.firstChild.children.length).toBe(2);
+  expect(container.children.length).toBe(2);
 });
