@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
+import { Template } from '../../sharedComponents/Template';
 import logo from '../../assets/logo.svg';
 
 const AppLogoSpin = keyframes`
@@ -21,15 +22,16 @@ const AppLogo = styled.img`
   }
 `;
 
-const AppHeader = styled.header`
+const SplashWrapper = styled.div`
   background-color: #282c34;
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  text-align: center;
 `;
 
 const AppLink = styled.a`
@@ -38,21 +40,23 @@ const AppLink = styled.a`
 
 const Splash = () => { // eslint-disable-line arrow-body-style
   return (
-    <AppHeader>
-      <AppLogo src={logo} alt="logo" />
-      <p>
-        Edit
-        <code>src/App.js</code>
-        and save to reload.
-      </p>
-      <AppLink
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </AppLink>
-    </AppHeader>
+    <Template>
+      <SplashWrapper>
+        <AppLogo src={logo} alt="logo" />
+        <p>
+          Edit
+          <code>src/App.js</code>
+          and save to reload.
+        </p>
+        <AppLink
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </AppLink>
+      </SplashWrapper>
+    </Template>
   );
 };
 
