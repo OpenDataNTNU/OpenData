@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 
 function PrivateRoute(props) {
@@ -19,5 +20,15 @@ function PrivateRoute(props) {
   // otherwise, render regularly if logged in and redirect otherwise
   return isLoggedIn ? regularRender : redirect;
 }
+
+PrivateRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  loggedOut: PropTypes.bool,
+  path: PropTypes.string.isRequired,
+};
+
+PrivateRoute.defaultProps = {
+  loggedOut: false,
+};
 
 export default PrivateRoute;
