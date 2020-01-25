@@ -24,12 +24,13 @@ async function login(email, password) {
 }
 
 // Register a user with email and password
-async function register(email, password) {
+async function register(email, password, type) {
   const url = '/register';
 
   const data = {
     email,
     password,
+    type,
   };
 
   const response = await fetch(url, {
