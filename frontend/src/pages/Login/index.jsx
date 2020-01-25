@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link as ReactLink } from 'react-router-dom';
 // import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { Template } from '../../sharedComponents/Template';
 // import { userActions } from '../../state/actions/user';
 
 const Wrapper = styled.div`
@@ -53,7 +55,7 @@ const Button = styled.button`
   cursor: pointer
 `;
 
-const A = styled.a`
+const Link = styled(ReactLink)`
   color: #434faf;
   text-decoration: underline;
 `;
@@ -89,18 +91,20 @@ const Login = () => {
   };
 
   return (
-    <Wrapper>
-      <Form onSubmit={login}>
-        <h1>Login</h1>
-        <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
-        <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
-        <Button type="submit">Sign in</Button>
-        <p>
-          Not a user yet?
-          <A href="Signup.html">Sign up here</A>
-        </p>
-      </Form>
-    </Wrapper>
+    <Template>
+      <Wrapper>
+        <Form onSubmit={login}>
+          <h1>Login</h1>
+          <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
+          <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
+          <Button type="submit">Sign in</Button>
+          <p>
+            Not a user yet? &nbsp;
+            <Link to="/register">Sign up here</Link>
+          </p>
+        </Form>
+      </Wrapper>
+    </Template>
   );
 };
 

@@ -7,6 +7,8 @@ import PrivateRoute from './PrivateRoute';
 
 // Pages
 import { Splash } from '../pages/Splash';
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
 
 // The app's history object
 const history = createBrowserHistory();
@@ -16,8 +18,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
-        <PrivateRoute path="/private" component={() => <h1>Logged in</h1>} />
-        <PrivateRoute path="/loggedOut" loggedOut component={() => <h1>Logged out</h1>} />
+        <PrivateRoute path="/login" loggedOut component={Login} />
+        <PrivateRoute path="/register" loggedOut component={Register} />
       </Switch>
     </Router>
   );
