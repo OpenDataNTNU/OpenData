@@ -152,7 +152,7 @@ const Alert = ({ alert, removeToast }) => {
 Alert.propTypes = {
   alert: PropTypes.PropTypes.shape({
     type: PropTypes.string.isRequired,
-    message: PropTypes.number.isRequired,
+    message: PropTypes.string.isRequired,
   }).isRequired,
   removeToast: PropTypes.func.isRequired,
 };

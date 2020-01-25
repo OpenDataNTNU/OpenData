@@ -2,17 +2,24 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   body {
+    min-height: 100vh;
+    height: 100vh;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  p {
+    margin: 0.3em 0;
   }
 
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
+  #root {
+    height: inherit;
+    min-height: inherit;
   }
 `;
 

@@ -1,0 +1,172 @@
+import React, { useEffect, useState } from 'react';
+import { Link as ReactLink, useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { Dropdown } from './Dropdown';
+
+const HeaderHTML = styled.header`
+  padding: 0 1em 0 2em;
+  color: white;
+  background-color: black;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 600px) {
+    padding: 0 1em;
+    justify-content: space-between;
+  }
+`;
+
+const Nav = styled.nav`
+  margin-left: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+`;
+
+const HeaderLink = styled(ReactLink)`
+  padding: 0 0.5em;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+`;
+
+const NavInternalLink = styled(ReactLink)`
+  padding: 1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  &:last-child {
+    margin-left: auto;
+  }
+`;
+
+const NavExternalLink = styled.a`
+  padding: 1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  &:last-child {
+    margin-left: auto;
+  }
+`;
+
+const Header = () => {
+  // Redux state
+  const user = useSelector((state) => state.user);
+
+  // React-router-dom
+  const history = useHistory();
+
+  // State
+  const [width, setWidth] = useState(window.innerWidth);
+
+  // Update width state
+  const updateWindowDimensions = () => {
+    setWidth(window.innerWidth);
+  };
+
+  // Constructor and destructor
+  useEffect(() => {
+    // Update window dimensions
+    updateWindowDimensions();
+    // Add resize eventlinstener to window
+    window.addEventListener('resize', updateWindowDimensions);
+
+    // Remove eventlistener at unmount
+    return () => {
+      window.removeEventListener('resize', updateWindowDimensions);
+    };
+  }, []);
+
+  // Dropdown component callback
+  const onDropdownClick = (title) => {
+    // Switch the argument title
+    // As described in the dropdown component, the title will be the title
+    // supplied with the the list item object
+    switch (title) {
+      case 'Source Code': {
+        window.location = 'https://github.com/OpenDataNTNU/OpenData';
+        break;
+      }
+      case 'Docs': {
+        history.push('/docs');
+        break;
+      }
+      case 'About': {
+        history.push('/about');
+        break;
+      }
+      case 'Sign in': {
+        history.push('/login');
+        break;
+      }
+      case 'Account': {
+        history.push('/account');
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  };
+
+  return (
+    <HeaderHTML>
+      <HeaderLink to="/">
+        <h1>OpenData</h1>
+      </HeaderLink>
+      {
+        // Show normal nav on widht over 600
+        // Else show responsive dropdown
+        width > 600
+          ? (
+            <Nav>
+              <NavExternalLink href="https://github.com/OpenDataNTNU/OpenData">
+                <p>Source Code</p>
+              </NavExternalLink>
+              <NavInternalLink to="/docs">
+                <p>Docs</p>
+              </NavInternalLink>
+              <NavInternalLink to="/about">
+                <p>About</p>
+              </NavInternalLink>
+              <NavInternalLink to={user && user.email ? '/account' : '/login'}>
+                <p>{user && user.email ? 'Account' : 'Sign in'}</p>
+              </NavInternalLink>
+            </Nav>
+          )
+          : (
+            <Dropdown
+              title="Navigation"
+              onItemClick={onDropdownClick}
+              list={[
+                { id: 'Source Code', title: 'Source Code' },
+                { id: 'Docs', title: 'Docs' },
+                { id: 'About', title: 'About' },
+                { id: user && user.email ? 'Account' : 'Sign in', title: user && user.email ? 'Account' : 'Sign in' },
+              ]}
+            />
+          )
+      }
+    </HeaderHTML>
+  );
+};
+
+export {
+  Header,
+};
