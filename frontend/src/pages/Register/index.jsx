@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { Template } from '../../sharedComponents/Template';
 // import { userActions } from '../../state/actions/user';
 import { alertActions } from '../../state/actions/alert';
 import { domener } from '../../sharedComponents/utilities/Kommuner';
@@ -157,28 +158,30 @@ const Register = () => {
   };
 
   return (
-    <Wrapper>
-      <Form onSubmit={register}>
-        <h1>Sign up</h1>
-        <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
-        <RadioWrapper>
-          <Label htmlFor="type">Account Type:</Label>
-          <CheckboxTypeWrapper>
-            <ChecboxLabelWrapper>
-              <input type="radio" name="type" value="Kommune" checked={typeIsKommune} onChange={onChange} />
-              <RadioText>Kommune</RadioText>
-            </ChecboxLabelWrapper>
-            <ChecboxLabelWrapper>
-              <input type="radio" name="type" value="Other" checked={!typeIsKommune} onChange={onChange} />
-              <RadioText>Other</RadioText>
-            </ChecboxLabelWrapper>
-          </CheckboxTypeWrapper>
-        </RadioWrapper>
-        <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
-        <Input type="password" placeholder="Verify password" name="verifyPassword" value={verifyPassword} onChange={onChange} />
-        <Button type="submit">Create account</Button>
-      </Form>
-    </Wrapper>
+    <Template>
+      <Wrapper>
+        <Form onSubmit={register}>
+          <h1>Sign up</h1>
+          <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
+          <RadioWrapper>
+            <Label htmlFor="type">Account Type:</Label>
+            <CheckboxTypeWrapper>
+              <ChecboxLabelWrapper>
+                <input type="radio" name="type" value="Kommune" checked={typeIsKommune} onChange={onChange} />
+                <RadioText>Kommune</RadioText>
+              </ChecboxLabelWrapper>
+              <ChecboxLabelWrapper>
+                <input type="radio" name="type" value="Other" checked={!typeIsKommune} onChange={onChange} />
+                <RadioText>Other</RadioText>
+              </ChecboxLabelWrapper>
+            </CheckboxTypeWrapper>
+          </RadioWrapper>
+          <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
+          <Input type="password" placeholder="Verify password" name="verifyPassword" value={verifyPassword} onChange={onChange} />
+          <Button type="submit">Create account</Button>
+        </Form>
+      </Wrapper>
+    </Template>
   );
 };
 
