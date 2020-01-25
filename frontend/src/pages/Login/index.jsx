@@ -92,7 +92,7 @@ const Login = () => {
     <Wrapper>
       <Form onSubmit={login}>
         <h1>Login</h1>
-        <Input type="text" placeholder="Email" name="email" value={email} onChange={onChange} />
+        <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
         <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
         <Button type="submit">Sign in</Button>
         <p>
