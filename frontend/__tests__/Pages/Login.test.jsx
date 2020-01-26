@@ -32,7 +32,7 @@ describe('Template component', () => {
 
     await wait(() => {
       fireEvent(
-        getByText("Sign in"),
+        getByText('Sign in'),
         new MouseEvent('click', {
           bubbles: true,
           cancelable: true,
@@ -42,17 +42,17 @@ describe('Template component', () => {
 
     await wait(() => {
       fireEvent.change(
-        getByPlaceholderText("Email"), 
-        { target: { value: 'andreas@baerum.kommune.no' } 
-      })
-    })
+        getByPlaceholderText('Email'),
+        { target: { value: 'andreas@baerum.kommune.no' } },
+      );
+    });
 
     await wait(() => {
       fireEvent.change(
-        getByPlaceholderText("Password"), 
-        { target: { value: 'Test' } 
-      })
-    })
+        getByPlaceholderText('Password'),
+        { target: { value: 'Test' } },
+      );
+    });
 
     await wait(() => {
       fireEvent(
@@ -64,7 +64,7 @@ describe('Template component', () => {
       );
     });
 
-    console.log(store.getState())
-    console.log(store.getActions())
+    console.log(store.getState());
+    console.log(store.getActions());
   });
 });
