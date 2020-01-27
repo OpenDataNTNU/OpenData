@@ -216,6 +216,7 @@ section#content > #results {
     display: flex;
     flex-direction:row;
     position: relative;
+    
 }
 .dataSet > .dataSetContent {
     flex: 1;
