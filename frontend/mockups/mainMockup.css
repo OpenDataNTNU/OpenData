@@ -14,6 +14,7 @@ p {
 }
 
 .formWrapper {
+    padding: 1em 0.5em;
     flex: 1;
     display: flex;
     align-items: center;
@@ -22,15 +23,56 @@ p {
     justify-items: center;
     background-color: #f5f5f5;
 }
-form.login {
-    max-width: 30em;
+form {
+    max-width:50em;
     display: flex;
     flex-direction: column;
     padding: 1em;
     background-color: white;
     border-radius: 0.3em;
 }
-form.login a {
+form .flexWrapper {
+    display: flex;
+}
+form .flexWrapper label {
+    text-align: center;
+    display: block;
+}
+form .flexWrapper > div {
+    flex: 1;
+}
+form.login {
+    max-width: 30em;
+}
+form select {
+    padding: 0.3em;
+    font-size:1.0em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.3em 0 0.3em 0;
+}
+form label {
+    font-size: 0.9em;
+    margin-top: 1.2em;
+    color: dimgray;
+}
+form textarea {
+    font-family: inherit;
+    padding: 0.3em;
+    font-size:1.0em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    min-width: 100%;
+    max-width: 50em;
+    min-height: 4em;
+    box-sizing: border-box;
+    margin: 0.3em 0 0.3em 0;
+}
+form a {
     color: #434faf;
     text-decoration: underline;
 }
@@ -91,6 +133,7 @@ section#main {
     flex: 1;
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 section#main #results {
     padding: 0.5em;
@@ -107,6 +150,9 @@ section#main #sorting {
 section#sidebar {
     border-right: solid 1px lightgrey;
     padding: 0.5em;
+    min-width: 15em;
+    max-width: 30em;
+    overflow-y: scroll;
 }
 
 section#sidebar > div.filter {
@@ -142,8 +188,6 @@ section#sidebar > button:hover {
 }
 
 
-
-
 div.filter > div.filter {
     padding-top: 0.3em;
     margin-left: 0.5em;
@@ -152,7 +196,7 @@ div.filter > div.filter {
 }
 
 section#content {
-    flex: 1;
+    min-width: 30em;
 }
 section#content > #results {
 
