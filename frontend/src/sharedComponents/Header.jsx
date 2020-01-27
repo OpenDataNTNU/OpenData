@@ -18,6 +18,7 @@ const HeaderHTML = styled.header`
 `;
 
 const Nav = styled.nav`
+  height: 100%;
   margin-left: 1em;
   display: flex;
   flex-direction: row;
