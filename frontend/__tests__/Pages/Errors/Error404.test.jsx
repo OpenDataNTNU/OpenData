@@ -25,10 +25,12 @@ describe('Template component', () => {
   });
 
   beforeEach(() => {
+    // Clear the actions from the store before each test
     store.clearActions();
   });
 
   it('should render the dropdown component on width < 600px', async () => {
+    // Render the component
     const { getByText } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -42,16 +44,20 @@ describe('Template component', () => {
       </Provider>,
     );
 
+    // We expect the app to be at path '/'
     expect(history.location.pathname).toBe('/');
 
+    // We change the url to '/fljsdlfjsldkjfsdf' and thus the rendere component
     await wait(() => {
       history.push('/fljsdlfjsldkjfsdf');
     });
 
+    // We expect the path to be '/fljsdlfjsldkjfsdf' and that the 404 error page is rendered
     expect(history.location.pathname).toBe('/fljsdlfjsldkjfsdf');
     const H2 = getByText('OOPS!');
     expect(H2).toBeInTheDocument();
 
+    // We click the go back button
     await wait(() => {
       fireEvent(
         getByText('Go Back'),
@@ -62,6 +68,7 @@ describe('Template component', () => {
       );
     });
 
+    // We expect to be back at our last page which should be '/'
     expect(history.location.pathname).toBe('/');
   });
 });

@@ -43,8 +43,10 @@ const Button = styled.button`
 `;
 
 const Error404 = () => {
+  // History object from react router dom
   const history = useHistory();
 
+  // Function to go back to the last page that didnt give a 404 error
   const goBack = () => {
     history.goBack();
   };
