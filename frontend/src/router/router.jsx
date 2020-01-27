@@ -7,6 +7,7 @@ import PrivateRoute from './PrivateRoute';
 
 // Pages
 import { Splash } from '../pages/Splash';
+import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
 
 // The app's history object
 const history = createBrowserHistory();
@@ -16,6 +17,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
+        <Route path="/sendData" component={SendMetadata} />
         <PrivateRoute path="/private" component={() => <h1>Logged in</h1>} />
         <PrivateRoute path="/loggedOut" loggedOut component={() => <h1>Logged out</h1>} />
       </Switch>
