@@ -5,6 +5,7 @@ body {
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
 }
+
 a {
     text-decoration: none;
     color: inherit;
@@ -323,6 +324,55 @@ a.dataSource > .fileType {
     border-color: #ffc5ca;
 }
 
+.dataViewWrapper {
+    background-color: #f5f5f5;
+    flex: 1;
+}
+.dataViewWrapper > .dataView {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    max-width: 70em;
+    height: 100%;
+}
+.dataSetInspection {
+    background-color: white;
+    max-width: 50em;
+    border: solid 0.2em #e4e4e4;
+    border-radius: 0.2em;
+    padding: 0;
+    margin: 0.5em;
+    position: relative;
+}
+.dataComments {
+    padding-left: 0.5em;
+    border-left: 0.1em solid #e4e4e4;
+    max-width: 30em;
+    min-width: 15em;
+}
+.dataComments .comment {
+    font-size: 0.9em;
+    background-color: white;
+    padding: 0.8em;
+    border-radius: 0.8em;
+    margin-bottom: 0.8em;
+}
+.dataComments .commentHeader {
+    display: flex;
+    flex-direction: row;
+}
+.dataComments .commentUser {
+    font-weight: 500;
+    color: #3e3e3e;
+}
+.dataComments .commentContent {
+    font-size: 0.9em;
+}
+.dataComments .commentDate {
+    margin-left:0.5em;
+    color: dimgray;
+}
+
 footer {
     background-color: #efefef;
     color: dimgray;
@@ -335,3 +385,9 @@ footer > div {
 footer a {
     text-decoration: underline;
 }
+
+
+/*
+a:hover, button:hover, input:hover, select:hover {
+    cursor: url('res/WoW Cursor.png'), auto;
+}*/
