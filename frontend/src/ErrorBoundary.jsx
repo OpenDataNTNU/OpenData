@@ -11,45 +11,42 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  height: 100%;
   align-items: center;
-  flex: 1;
-`;
-
-const ResetApp = styled.div`
-  display: flex;
-  flex-direction: column;
+  align-content: center;
   justify-content: center;
-  align-items: center;
-`;
-
-const ResetText = styled.span`
-  color: #000000;
-  opacity: 60%;
+  justify-items: center;
 `;
 
 const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  max-width:40em;
+  padding: 1em;
+  margin: 1em 0;
+  background-color: white;
+  border: solid 1px #f0f0f0;
+  border-radius: 0.2em;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0.0625em 0.125em;
 `;
 
-const Title = styled.h1`
-  margin: 0px;
-`;
+const ResetButton = styled.button`
+  background-color: #ffc5ca;
+  color: #a42126;
+  border: solid 0.1em #a42126;
+  padding: 0.3em;
+  font-size:1.1em;
+  border-radius: 0.3em;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 1em 0;
+  cursor: pointer;
+  transition: 0.2s ease;
 
-const Button = styled.button`
-  min-width: 88px;
-  height: 35px;
-  background-color: #ff6961;
-  border-color: #bf4f49;
-  color: #ffffff;
-  border-radius: 3px;
-  margin-top: 10px;
+  &:hover {
+    color: white;
+    background-color: #a42126;
+  }
 `;
 
 class ErrorBoundary extends React.Component {
@@ -80,20 +77,13 @@ class ErrorBoundary extends React.Component {
           <Wrapper>
             <Content>
               <Info>
-                <Title>Something went wrong.</Title>
-                <p>If this is the first time you see this page, please try to reload.</p>
-                <div />
+                <h1>An error has occurred.</h1>
+                <p>
+                  If this is the first time you see this page, please refresh.&nbsp;
+                  Otherwise, reset the App by clicking the button bellow.
+                </p>
+                <ResetButton onClick={resetState}>Hard reset</ResetButton>
               </Info>
-              <ResetApp>
-                <ResetText>
-                  If the problem is persistent, click here
-                  {' '}
-                  to restart the application (you might have to log in again).
-                </ResetText>
-                <Button onClick={resetState}>
-                  Reset Application
-                </Button>
-              </ResetApp>
             </Content>
           </Wrapper>
         )
