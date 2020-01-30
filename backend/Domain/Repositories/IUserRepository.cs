@@ -4,7 +4,7 @@ using OpenData.Domain.Models;
 
 namespace OpenData.Domain.Repositories
 {
-    public interface IUsersRepository
+    public interface IUserRepository
     {
         Task<User> Authenticate(string mail, string password);
         Task<IEnumerable<User>> GetAll();

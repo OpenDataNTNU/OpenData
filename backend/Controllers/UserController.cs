@@ -15,17 +15,17 @@ namespace OpenData.Controllers
     [Authorize]
     [ApiController]
 	[Route("/api/[controller]")]
-	public class UsersController : Controller
+	public class UserController : Controller
 	{
-		private readonly IUsersService usersService;
+		private readonly IUserService usersService;
 
-		public UsersController(IUsersService userService) 
+		public UserController(IUserService userService) 
 		{
 			this.usersService = userService;
 		}
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthModel authModel)
         {
             User user = await usersService.AuthenticateAsync(authModel.Mail, authModel.Password);
@@ -41,7 +41,7 @@ namespace OpenData.Controllers
         
 
         [AllowAnonymous]
-        [HttpPost("createuser")]
+        [HttpPut]
         public async Task<IActionResult> CreateUser([FromBody] NewUserModel newUser)
         {
             if (Validator.IsValidMail(newUser.Mail) == false)
@@ -64,7 +64,7 @@ namespace OpenData.Controllers
         }
 
 
-        [HttpGet("getusers")]
+        [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await usersService.GetAllUsersAsync();

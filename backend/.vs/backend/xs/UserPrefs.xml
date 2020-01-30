@@ -1,25 +1,7 @@
 ﻿<Properties StartupConfiguration="{FA31E371-D27D-4A32-A81F-64BDCA653835}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Persistence/Repositories/UsersRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Startup.cs">
     <Files>
-      <File FileName="Controllers/UsersController.cs" Line="54" Column="1" />
-      <File FileName="Helpers/Validator.cs" Line="22" Column="43" />
-      <File FileName="Persistence/Repositories/UsersRepository.cs" Line="9" Column="1" />
-      <File FileName="appsettings.json" />
-      <File FileName="Startup.cs" />
-      <File FileName="Domain/Services/IUsersService.cs" Line="13" Column="2" />
-      <File FileName="Persistence/Repositories/BaseRepository.cs" />
-      <File FileName="Domain/Repositories/IUsersRepository.cs" Line="13" Column="2" />
-      <File FileName="Domain/Models/NewUserModel.cs" Line="6" Column="30" />
-      <File FileName="Services/UserService.cs" />
-      <File FileName="Domain/Models/User.cs" />
-      <File FileName="Domain/Models/Municipality.cs" Line="1" Column="1" />
-      <File FileName="Controllers/MunicipalityController.cs" Line="1" Column="1" />
-      <File FileName="Persistence/Contexts/AppDbContext.cs" Line="36" Column="79" />
-      <File FileName="Helpers/Hasher.cs" Line="13" Column="23" />
-      <File FileName="Controllers/ValuesController.cs" Line="1" Column="1" />
-      <File FileName="Helpers/SafeTransportMethods.cs" Line="27" Column="58" />
-      <File FileName="Domain/Services/IMunicipalityService.cs" Line="1" Column="1" />
-      <File FileName="Domain/Repositories/IMunicipalityRepository.cs" Line="1" Column="1" />
+      <File FileName="Startup.cs" Line="66" Column="54" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,7 +9,6 @@
           <Node name="backend" expanded="True">
             <Node name="backend" expanded="True">
               <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
                 <Node name="PackageDependencies" expanded="True" />
               </Node>
               <Node name="Controllers" expanded="True" />
@@ -40,13 +21,12 @@
               <Node name="Mapping" expanded="True" />
               <Node name="Persistence" expanded="True">
                 <Node name="Contexts" expanded="True" />
-                <Node name="Repositories" expanded="True">
-                  <Node name="UsersRepository.cs" selected="True" />
-                </Node>
+                <Node name="Repositories" expanded="True" />
               </Node>
               <Node name="Properties" expanded="True" />
               <Node name="Resources" expanded="True" />
               <Node name="Services" expanded="True" />
+              <Node name="Startup.cs" selected="True" />
             </Node>
           </Node>
         </State>

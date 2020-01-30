@@ -4,7 +4,7 @@ using OpenData.Domain.Models;
 
 namespace OpenData.Domain.Services
 {
-    public interface IUsersService
+    public interface IUserService
     {
         Task<User> AuthenticateAsync(string mail, string password);
         Task<IEnumerable<User>> GetAllUsersAsync();

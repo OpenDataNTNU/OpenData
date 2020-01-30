@@ -8,11 +8,11 @@ using OpenData.Domain.Repositories;
 
 namespace OpenData.Services
 {
-    public class UserService : IUsersService
+    public class UserService : IUserService
     {
-        private readonly IUsersRepository usersRepository;
+        private readonly IUserRepository usersRepository;
 
-        public UserService(IUsersRepository usersRepository)
+        public UserService(IUserRepository usersRepository)
         {
             this.usersRepository = usersRepository;
         }

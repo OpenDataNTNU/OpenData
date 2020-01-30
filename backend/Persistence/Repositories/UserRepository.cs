@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
@@ -15,11 +14,11 @@ using Microsoft.Extensions.Options;
 
 namespace OpenData.Persistence.Repositories
 {
-    public class UsersRepository : BaseRepository, IUsersRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
         AppSettings appSettings;
 
-        public UsersRepository(AppDbContext context, IOptions<AppSettings> options) : base(context)
+        public UserRepository(AppDbContext context, IOptions<AppSettings> options) : base(context)
         {
             appSettings = options.Value;
         }

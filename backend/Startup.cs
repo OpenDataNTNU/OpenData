@@ -63,8 +63,8 @@ namespace OpenData
 
             services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
             services.AddScoped<IMunicipalityService, MunicipalityService>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
-            services.AddScoped<IUsersService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllers();
 
             services.AddAutoMapper(typeof(Startup));
