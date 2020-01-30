@@ -40,14 +40,14 @@ export const MetadataForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(state);
-    const res = await fetch('/data/submit', {
-      method: 'POST',
-      body: JSON.stringify(state),
-      headers: {
-        format: 'application/json',
-      },
-    });
     try {
+      const res = await fetch('/data/submit', {
+        method: 'POST',
+        body: JSON.stringify(state),
+        headers: {
+          format: 'application/json',
+        },
+      });
       await res.json();
       // assuming that any successful response is a JSON object
       setStatus('ok');
