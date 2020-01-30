@@ -5,3 +5,17 @@ container/*/sql
 .DS_Store
 
 frontend/public/bundle.js
+
+backend/.vs/backend/config/applicationhost.config
+
+backend/.vs/backend/DesignTimeBuild/.dtbcache
+
+backend/.vs/backend/v16/.suo
+
+backend/.vs/backend/v16/Server/sqlite3/db.lock
+
+backend/.vs/backend/v16/Server/sqlite3/storage.ide
+
+backend/.vs/backend/v16/Server/sqlite3/storage.ide-shm
+
+backend/.vs/backend/v16/Server/sqlite3/storage.ide-wal
