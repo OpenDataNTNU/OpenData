@@ -1,10 +1,9 @@
 ﻿using System;
-namespace backend.Domain.Models
+
+namespace OpenData.Domain.Models
 {
     public class AppSettings
     {
-        public AppSettings()
-        {
-        }
+        public string Secret { get; set; }
     }
 }

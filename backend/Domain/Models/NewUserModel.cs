@@ -1,10 +1,14 @@
 ﻿using System;
-namespace backend.Domain.Models
+using System.ComponentModel.DataAnnotations;
+
+namespace OpenData.Domain.Models
 {
     public class NewUserModel
     {
-        public NewUserModel()
-        {
-        }
+        [Required]
+        public string Mail { get; set; }
+
+        [Required]
+        public string Password { get; set; }
     }
 }

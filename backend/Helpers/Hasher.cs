@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace OpenData.Helpers
@@ -19,8 +20,10 @@ namespace OpenData.Helpers
 
         public static string HashPassword(string password, string salt)
         {
-            var hasher = new SHA256Managed();
-            hasher.ComputeHash(Convert.FromBase64String(password + salt));
+            SHA256Managed hasher = new SHA256Managed();
+            byte[] passWithSaltBytes = Encoding.ASCII.GetBytes(password + salt);
+            byte[] hashedBytes = hasher.ComputeHash(passWithSaltBytes);
+            return Convert.ToBase64String(hashedBytes);
         }
     }
 }

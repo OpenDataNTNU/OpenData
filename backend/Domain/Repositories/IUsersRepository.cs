@@ -4,8 +4,10 @@ using OpenData.Domain.Models;
 
 namespace OpenData.Domain.Repositories
 {
-    public interface IMunicipalityRepository
+    public interface IUsersRepository
     {
-         Task<IEnumerable<Municipality>> ListAsync();
+        Task<User> Authenticate(string mail, string password);
+        Task<IEnumerable<User>> GetAll();
+        Task<User> AddNewUserAsync(User user);
     }
 }

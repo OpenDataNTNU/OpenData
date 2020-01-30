@@ -6,6 +6,6 @@ namespace OpenData.Domain.Services
 {
     public interface IMunicipalityService
     {
-         Task<IEnumerable<Municipality>> ListAsync();
+        Task<IEnumerable<Municipality>> ListAsync();
     }
 }

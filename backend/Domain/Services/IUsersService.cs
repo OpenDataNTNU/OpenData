@@ -1,10 +1,13 @@
-﻿using System;
-namespace backend.Domain.Services
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using OpenData.Domain.Models;
+
+namespace OpenData.Domain.Services
 {
-    public class IUsersService
+    public interface IUsersService
     {
-        public IUsersService()
-        {
-        }
+        Task<User> AuthenticateAsync(string mail, string password);
+        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<User> AddNewUserAsync(User user);
     }
 }
