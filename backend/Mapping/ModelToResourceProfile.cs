@@ -1,6 +1,8 @@
 using AutoMapper;
 using OpenData.Domain.Models;
 using OpenData.Resources;
+using System;
+using System.Collections.Generic;
 
 namespace OpenData.Mapping
 {
@@ -8,7 +10,14 @@ namespace OpenData.Mapping
     {
         public ModelToResourceProfile()
         {
+            CreateMap<MetadataType, MetadataTypeResource>();
+
+            CreateMap<Metadata, MetadataResource>();
+            CreateMap<SaveMetadataResource, Metadata>();
+
             CreateMap<Municipality, MunicipalityResource>();
+
+            CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
         }
     }
 }
