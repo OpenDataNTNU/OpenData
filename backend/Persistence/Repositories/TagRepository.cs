@@ -20,10 +20,13 @@ namespace OpenData.Persistence.Repositories
         {
             return await _context.Tags.ToListAsync();
         }
+
+        public async Task<Tag> GetByNameAsync(string name) {
+            return await _context.Tags.FirstAsync(x => x.Name == name);
+        }
         
         public async Task AddAsync(Tag tag) {
             await _context.Tags.AddAsync(tag);
-            await _context.SaveChangesAsync(); //This can also be done with UnitOfWork, but it seemed like too much of a hassle - see the tutorial
         }
     }
 }

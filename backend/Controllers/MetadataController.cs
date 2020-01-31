@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using OpenData.Domain.Models;
 using OpenData.Domain.Services;
+using OpenData.Domain.Repositories;
 using OpenData.Resources;
 using OpenData.Services;
 using OpenData.Extensions;
@@ -19,11 +20,13 @@ namespace OpenData.Controllers
 	{
 		private readonly IMetadataService _metadataService;
 		private readonly IMapper _mapper;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public MetadataController(IMetadataService metadataService, IMapper mapper) 
+		public MetadataController(IMetadataService metadataService, IMapper mapper, IUnitOfWork unitOfWork) 
 		{
 			_metadataService = metadataService;
 			_mapper = mapper;
+			_unitOfWork = unitOfWork;
 		}
 
 		[HttpGet]
@@ -58,6 +61,8 @@ namespace OpenData.Controllers
 				return BadRequest(result.Message);
 
 			var res = _mapper.Map<Metadata, MetadataResource>(metadata);
+
+			await _unitOfWork.CompleteAsync();
 
 			return Ok(res);
 		}

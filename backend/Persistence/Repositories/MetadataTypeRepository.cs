@@ -26,7 +26,6 @@ namespace OpenData.Persistence.Repositories
 
         public async Task AddAsync(MetadataType metadata) {
             await _context.MetadataTypes.AddAsync(metadata);
-            await _context.SaveChangesAsync(); //This can also be done with UnitOfWork, but it seemed like too much of a hassle - see the tutorial
         }
     }
 }

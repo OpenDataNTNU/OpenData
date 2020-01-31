@@ -22,6 +22,10 @@ namespace OpenData.Services
         {
         	return await _tagRepository.ListAsync();
         }
+
+        public async Task<Tag> GetByNameAsync(string name) {
+            return await _tagRepository.GetByNameAsync(name);
+        }
         
         public async Task<SaveTagResponse> SaveAsync(Tag tag) {
             try

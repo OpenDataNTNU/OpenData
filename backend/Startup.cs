@@ -47,6 +47,8 @@ namespace OpenData
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddAuthorization();
             services.AddControllers();
 
