@@ -15,6 +15,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<Municipality> Municipalities { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

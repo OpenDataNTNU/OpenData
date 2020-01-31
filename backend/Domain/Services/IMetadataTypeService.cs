@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenData.Domain.Models;
+using OpenData.Domain.Services.Communication;
 
 namespace OpenData.Domain.Services
 {
@@ -8,5 +9,6 @@ namespace OpenData.Domain.Services
     {
          Task<IEnumerable<MetadataType>> ListAsync();
          Task<MetadataType> GetByNameAsync(string name);
+         Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata);
     }
 }

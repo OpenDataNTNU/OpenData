@@ -23,5 +23,10 @@ namespace OpenData.Persistence.Repositories
         public async Task<MetadataType> GetByNameAsync(string name) {
             return await _context.MetadataTypes.Include(p => p.Tags).Include(p => p.MetadataList).ThenInclude(p => p.Format).FirstAsync(x => x.Name == name);
         }
+
+        public async Task AddAsync(MetadataType metadata) {
+            await _context.MetadataTypes.AddAsync(metadata);
+            await _context.SaveChangesAsync(); //This can also be done with UnitOfWork, but it seemed like too much of a hassle - see the tutorial
+        }
     }
 }

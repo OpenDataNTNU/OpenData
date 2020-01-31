@@ -14,6 +14,7 @@ namespace OpenData.Mapping
 
             CreateMap<Metadata, MetadataResource>();
             CreateMap<SaveMetadataResource, Metadata>();
+            CreateMap<SaveMetadataTypeResource, MetadataType>();
 
             CreateMap<Municipality, MunicipalityResource>();
 
