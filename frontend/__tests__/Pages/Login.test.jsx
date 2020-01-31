@@ -22,7 +22,7 @@ describe('Template component', () => {
   });
 
   it('should render the dropdown component on width < 600px', async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Provider store={store}>
         <App />
       </Provider>,
