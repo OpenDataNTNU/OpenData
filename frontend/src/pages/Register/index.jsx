@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { Template } from '../../sharedComponents/Template';
+import { LoadingButton } from '../../sharedComponents/LoadingButton';
 // import { userActions } from '../../state/actions/user';
 import { alertActions } from '../../state/actions/alert';
 import { domener } from '../../sharedComponents/utilities/Kommuner';
@@ -69,29 +70,28 @@ const RadioText = styled.span`
   margin-left: 4px;
 `;
 
-const Button = styled.button`
-  padding: 0.3em;
-  font-size:1.1em;
-  border-radius: 0.3em;
-  color: #7e6dad;
-  background-color: #dcd8ff;
-  border: solid 0.1em #9a85d3;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 1em 0 0.8em 0;
-  cursor: pointer
-`;
-
 const Register = () => {
+  // Redux state
+  const user = useSelector((state) => state.user);
+
   // State
   const [email, setEmail] = useState('');
   const [typeIsKommune, setTypeIsKommune] = useState(true);
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Redux
   const dispatch = useDispatch();
+
+  // check if the logging in is initalized or loggedIn is initilized
+  // if they arent then the button is set back to loading
+  // Essentially this means the loading will stop on logging error
+  useEffect(() => {
+    if (user && !user.registering && !user.registrated) {
+      setLoading(false);
+    }
+  }, [user]);
 
   const onChange = (e) => {
     switch (e.target.name) {
@@ -138,6 +138,7 @@ const Register = () => {
 
   const register = (e) => {
     e.preventDefault();
+
     if (typeIsKommune && !validKommuneEmail(email)) {
       dispatch(alertActions.error('Not a valid kommune email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
       return;
@@ -154,6 +155,7 @@ const Register = () => {
       dispatch(alertActions.error('Your verify password does not match your password.'));
       // return; // fuck linting
     }
+    setLoading(true);
     // dispatch(userActions.register(email, password))
   };
 
@@ -178,7 +180,7 @@ const Register = () => {
           </RadioWrapper>
           <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
           <Input type="password" placeholder="Verify password" name="verifyPassword" value={verifyPassword} onChange={onChange} />
-          <Button type="submit">Create account</Button>
+          <LoadingButton text="Create account" onClick={register} loading={loading} />
         </Form>
       </Wrapper>
     </Template>
