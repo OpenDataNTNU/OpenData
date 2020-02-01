@@ -3,10 +3,10 @@ using System.ComponentModel;
 
 namespace OpenData.Domain.Models
 {
-    public enum UserType
+    public enum UserType: byte
     {
-        [Description("none")]
-        None,
+        [Description("standard")]
+        Standard,
         [Description("admin")]
         Admin
     }
@@ -16,7 +16,7 @@ namespace OpenData.Domain.Models
 		public string Mail { get; set; }
 		public string Password { get; set; }
 		public string PasswordSalt { get; set; }
-		public UserType UserType { get; set; }
+        public UserType UserType { get; set; } = UserType.Standard;
         public string Token { get; set; }
 	}
 }

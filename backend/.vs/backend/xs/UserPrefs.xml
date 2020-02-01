@@ -1,7 +1,10 @@
 ﻿<Properties StartupConfiguration="{FA31E371-D27D-4A32-A81F-64BDCA653835}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Startup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Domain/Models/User.cs">
     <Files>
-      <File FileName="Startup.cs" Line="66" Column="54" />
+      <File FileName="Startup.cs" Line="66" Column="53" />
+      <File FileName="Services/MunicipalityService.cs" Line="1" Column="1" />
+      <File FileName="Domain/Models/NewUserModel.cs" Line="15" Column="45" />
+      <File FileName="Domain/Models/User.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,7 +16,9 @@
               </Node>
               <Node name="Controllers" expanded="True" />
               <Node name="Domain" expanded="True">
-                <Node name="Models" expanded="True" />
+                <Node name="Models" expanded="True">
+                  <Node name="User.cs" selected="True" />
+                </Node>
                 <Node name="Repositories" expanded="True" />
                 <Node name="Services" expanded="True" />
               </Node>
@@ -26,7 +31,6 @@
               <Node name="Properties" expanded="True" />
               <Node name="Resources" expanded="True" />
               <Node name="Services" expanded="True" />
-              <Node name="Startup.cs" selected="True" />
             </Node>
           </Node>
         </State>
