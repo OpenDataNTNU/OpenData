@@ -24,15 +24,18 @@ describe('Form handles rejection', () => {
 
 
   it('displays an error message when fetch request is rejected', async () => {
-    fetch.mockAbort();
+    fetch.mockResponseOnce(JSON.stringify({ municipalities: [{ name: 'Trondheim' }, { name: 'Oslo' }] }));
     const { getByText, queryByText } = render(
       <MetadataForm />,
     );
     // initially should have no error message
     expect(queryByText('Noe gikk galt')).toBeNull();
+    fetch.mockAbort();
     await wait(() => click(getByText('Submit')));
     // should give you an error
     getByText('Noe gikk galt');
+    // should have fetched exactly twice, once for fetching municipalities and once for submitting.
+    expect(fetch.mock.calls.length).toEqual(2);
   });
 
   it('Succeeds when the fetch request goes well', async () => {
@@ -46,5 +49,7 @@ describe('Form handles rejection', () => {
     await wait(() => click(getByText('Submit')));
     expect(queryByText('Noe gikk galt')).toBeNull();
     getByText('Metadata ble sendt!');
+    // should have fetched exactly twice, once for fetching municipalities and once for submitting.
+    expect(fetch.mock.calls.length).toEqual(2);
   });
 });

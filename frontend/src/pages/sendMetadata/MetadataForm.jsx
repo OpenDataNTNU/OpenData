@@ -17,18 +17,39 @@ const StyledForm = styled.form`
 `;
 
 const Input = styled.input`
-  flex: 0;
+  flex: 0 0 2em;
   margin: 0.5em 1em;
+`;
+
+const Select = styled.select`
+  flex: 0 0 2em;
+  margin: 0.5em 1em;
+`;
+
+const RadioLabel = styled.label`
+  border-radius: 0.2em;
+  padding: 0.2em;
+  ${(props) => (props.background ? `background-color: ${props.background};` : '')}
+  ${(props) => (props.border ? `border: 1px solid ${props.border};` : '')}
+`;
+
+const HorizontalWrapper = styled.div`
+  flex: 0;
+  display: flex;
+  flex-direction: row;
 `;
 
 export const MetadataForm = () => {
   const [state, setState] = useState({
-    name: '',
+    light: '',
     description: '',
     tags: '',
     format: '',
+    municipality: '',
   });
   const [status, setStatus] = useState('');
+  // municipalities should be objects with a "name" key
+  const [municipalities, setMunicipalities] = useState([]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -37,11 +58,21 @@ export const MetadataForm = () => {
     setState(nextState);
   };
 
+  useState(() => {
+    const internal = async () => {
+      const res = await fetch('/api/municipalities');
+      const { municipalities: receivedMuniciplalities } = await res.json();
+      if (receivedMuniciplalities) {
+        setMunicipalities(receivedMuniciplalities);
+      }
+    };
+    internal();
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(state);
     try {
-      const res = await fetch('/data/submit', {
+      const res = await fetch('/api/datasets/submit', {
         method: 'POST',
         body: JSON.stringify(state),
         headers: {
@@ -52,22 +83,44 @@ export const MetadataForm = () => {
       // assuming that any successful response is a JSON object
       setStatus('ok');
     } catch (err) {
-      console.log(err);
+      // could console.log(err); when debugging, but it clutters up outputs from the tests
       setStatus('error');
     }
   };
 
   const {
-    name, description, tags, format,
+    light, description, tags, format, municipality,
   } = state;
 
   return (
     <Wrapper>
       <StyledForm>
-        <Input type="text" placeholder="name" name="name" value={name} onChange={handleChange} />
+        <HorizontalWrapper>
+          <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
+            <Input type="radio" name="light" value="green" id="greenlight" checked={light === 'green'} onChange={handleChange} />
+            {' '}
+Green
+          </RadioLabel>
+          <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
+            <Input type="radio" name="light" value="yellow" id="yellowlight" checked={light === 'yellow'} onChange={handleChange} />
+            {' '}
+Yellow
+          </RadioLabel>
+          <RadioLabel htmlFor="redlight" background="#ffcccc" border="red">
+            <Input type="radio" name="light" value="red" id="redlight" checked={light === 'red'} onChange={handleChange} />
+            {' '}
+Red
+          </RadioLabel>
+        </HorizontalWrapper>
         <Input type="text" placeholder="description" name="description" value={description} onChange={handleChange} />
         <Input type="text" placeholder="tags (separated by comma)" name="tags" value={tags} onChange={handleChange} />
         <Input type="text" placeholder="format" name="format" value={format} onChange={handleChange} />
+        <Select name="municipality" value={municipality} onChange={handleChange}>
+          <option value="">Municipality</option>
+          {
+            municipalities.map(({ name }) => (<option value={name}>{name}</option>))
+          }
+        </Select>
         <Input type="submit" value="Submit" onClick={handleSubmit} />
       </StyledForm>
       {
