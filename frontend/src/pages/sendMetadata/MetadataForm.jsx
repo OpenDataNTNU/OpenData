@@ -118,7 +118,7 @@ Red
         <Select name="municipality" value={municipality} onChange={handleChange}>
           <option value="">Municipality</option>
           {
-            municipalities.map(({ name }) => (<option value={name}>{name}</option>))
+            municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
         <Input type="submit" value="Submit" onClick={handleSubmit} />
