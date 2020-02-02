@@ -36,11 +36,11 @@ services:
     volumes:
       - ../../backend:/srv/opendata-backend
   webui:
-    image: node
+    image: node:12
     entrypoint: 
       - bash
       - "-c"
-      - "npm install && npm start"
+      - "yarn cache clean && yarn install --network-timeout 1000000 && yarn start"
     working_dir: /srv/opendata-frontend
     links:
       - server

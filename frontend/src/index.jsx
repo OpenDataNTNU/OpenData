@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
+import { ErrorBoundary } from './ErrorBoundary';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { store } from './state/store';
@@ -13,7 +14,9 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </Provider>,
   document.getElementById('root'),
 );
