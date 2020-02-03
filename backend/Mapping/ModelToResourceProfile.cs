@@ -19,6 +19,9 @@ namespace OpenData.Mapping
             CreateMap<Municipality, MunicipalityResource>();
 
             CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
+
+            CreateMap<NewUserResource, User>();
+            CreateMap<User, SafeUserResource>();
         }
     }
 }

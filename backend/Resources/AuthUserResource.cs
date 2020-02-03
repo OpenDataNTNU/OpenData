@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace OpenData.Domain.Models
+namespace OpenData.Resources
 {
     /// <summary>
     /// Used for loggin user in.
     /// </summary>
-    public class AuthModel
+    public class AuthUserResource
     {
         [Required]
         public string Mail { get; set; }

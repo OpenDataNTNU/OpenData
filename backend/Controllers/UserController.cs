@@ -9,6 +9,7 @@ using OpenData.Domain.Services;
 using OpenData.Resources;
 using OpenData.Services;
 using OpenData.Helpers;
+using OpenData.Extensions;
 
 namespace OpenData.Controllers
 {
@@ -26,9 +27,9 @@ namespace OpenData.Controllers
 
         [AllowAnonymous]
         [HttpPost("auth")]
-        public async Task<IActionResult> Authenticate([FromBody] AuthModel authModel)
+        public async Task<IActionResult> Authenticate([FromBody] AuthUserResource authUserResource)
         {
-            User user = await usersService.AuthenticateAsync(authModel.Mail, authModel.Password);
+            User user = await usersService.AuthenticateAsync(authUserResource.Mail, authUserResource.Password);
 
             if (user == null)
             {
@@ -42,11 +43,11 @@ namespace OpenData.Controllers
 
         [AllowAnonymous]
         [HttpPut]
-        public async Task<IActionResult> CreateUser([FromBody] NewUserModel newUser)
+        public async Task<IActionResult> CreateUser([FromBody] NewUserResource newUser)
         {
-            if (Validator.IsValidMail(newUser.Mail) == false)
+            if (newUser.IsValidMail() == false)
                 return BadRequest(new { message = "Mail did not pass Regex" });
-            if(Validator.IsValidPassword(newUser.Password) == false)
+            if(newUser.IsValidPassword() == false)
                 return BadRequest(new { message = "Password did not pass Regex" });
 
             string salt = Hasher.GenerateSalt();
