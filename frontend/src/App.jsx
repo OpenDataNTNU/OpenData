@@ -1,20 +1,43 @@
-import React from 'react';
-import styled from 'styled-components';
-import { GlobalStyle } from './global-styles';
-import { Router } from './router';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Wrapper = styled.div`
-  text-align: center;
-`
+import { GlobalStyle } from './global-styles';
+import { Router, history } from './router/router';
+import { alertActions } from './state/actions/alert';
+import { Alert } from './sharedComponents/Alert';
 
 function App() {
+  // Redux dispatch
+  const dispatch = useDispatch();
+
+  // Global state
+  const alert = useSelector((state) => state.alert);
+
+  // callback to remove alert
+  const removeAlert = () => {
+    dispatch(alertActions.clear());
+  };
+
+  // Constructor
+  useEffect(() => {
+    // clear alert on location change
+    history.listen(() => {
+      removeAlert();
+    });
+  }, []);
+
   return (
-    <React.Fragment>
-      <Wrapper>
+    <>
+      <>
+        {
+          alert && alert.type
+            ? <Alert alert={alert} removeToast={removeAlert} />
+            : null
+        }
         <Router />
-      </Wrapper>
+      </>
       <GlobalStyle />
-    </React.Fragment>
+    </>
   );
 }
 

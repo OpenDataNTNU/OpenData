@@ -8,5 +8,6 @@ namespace OpenData.Domain.Models
 		public string ShieldFileName { get; set; }
 		public float Latitude { get; set; }
 		public float Longitude { get; set; }
+		public IList<Metadata> MetadataList { get; set; }
 	}
 }
