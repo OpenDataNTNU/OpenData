@@ -1,5 +1,6 @@
 backend/obj
 backend/bin
+backend/.vscode/
 container/*/sql
 
 .DS_Store

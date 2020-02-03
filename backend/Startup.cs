@@ -13,6 +13,8 @@ using OpenData.Domain.Services;
 using OpenData.Persistence.Repositories;
 using OpenData.Services;
 
+using Microsoft.OpenApi.Models;
+
 namespace OpenData
 {
     public class Startup
@@ -35,10 +37,27 @@ namespace OpenData
 
             services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
             services.AddScoped<IMunicipalityService, MunicipalityService>();
+
+            services.AddScoped<IMetadataTypeRepository, MetadataTypeRepository>();
+            services.AddScoped<IMetadataTypeService, MetadataTypeService>();
+
+            services.AddScoped<IMetadataRepository, MetadataRepository>();
+            services.AddScoped<IMetadataService, MetadataService>();
+
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddAuthorization();
             services.AddControllers();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +72,14 @@ namespace OpenData
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSwagger(); 
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OpenData V1");
+            }); 
 
             app.UseRouting();
 
