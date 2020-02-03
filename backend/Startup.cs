@@ -79,6 +79,8 @@ namespace OpenData
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<ISecurityService, SecurityService>();
+
             services.AddAuthorization();
             services.AddControllers();
 

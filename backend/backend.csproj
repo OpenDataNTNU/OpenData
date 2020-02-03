@@ -22,4 +22,7 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Helpers\Hasher.cs" />
+  </ItemGroup>
 </Project>

@@ -19,11 +19,13 @@ namespace OpenData.Controllers
 	public class UserController : Controller
 	{
 		private readonly IUserService usersService;
+        private readonly ISecurityService securityService;
 
-		public UserController(IUserService userService) 
+        public UserController(IUserService userService, ISecurityService securityService) 
 		{
 			this.usersService = userService;
-		}
+            this.securityService = securityService;
+        }
 
         [AllowAnonymous]
         [HttpPost("auth")]
@@ -50,8 +52,8 @@ namespace OpenData.Controllers
             if(newUser.IsValidPassword() == false)
                 return BadRequest(new { message = "Password did not pass Regex" });
 
-            string salt = Hasher.GenerateSalt();
-            string hashedPassword = Hasher.HashPassword(newUser.Password, salt);
+            string salt = securityService.GenerateSalt();
+            string hashedPassword = securityService.HashPassword(newUser.Password, salt);
 
             User user = new User { Mail = newUser.Mail, Password = hashedPassword, PasswordSalt = salt };
             user = await usersService.AddNewUserAsync(user);

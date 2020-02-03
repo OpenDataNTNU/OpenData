@@ -10,6 +10,7 @@ using OpenData.Domain.Models;
 using OpenData.Domain.Repositories;
 using OpenData.Persistence.Contexts;
 using OpenData.Helpers;
+using OpenData.Domain.Services;
 using Microsoft.Extensions.Options;
 
 namespace OpenData.Persistence.Repositories
@@ -17,10 +18,12 @@ namespace OpenData.Persistence.Repositories
     public class UserRepository : BaseRepository, IUserRepository
     {
         AppSettings appSettings;
+        ISecurityService securityService;
 
-        public UserRepository(AppDbContext context, IOptions<AppSettings> options) : base(context)
+        public UserRepository(AppDbContext context, IOptions<AppSettings> options, ISecurityService securityService) : base(context)
         {
             appSettings = options.Value;
+            this.securityService = securityService;
         }
 
         public async Task<User> Authenticate(string mail, string password)
@@ -32,7 +35,7 @@ namespace OpenData.Persistence.Repositories
                 return null;
 
             var userSalt = user.PasswordSalt;
-            var passwordHash = Hasher.HashPassword(password, userSalt);
+            var passwordHash = securityService.HashPassword(password, userSalt);
 
             // Incorrect password
             if(user.Password != passwordHash)
