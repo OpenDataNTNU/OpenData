@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 // Pages
 import { Splash } from '../pages/Splash';
 import { SearchData } from '../pages/search';
-import { ViewMetadata } from '../pages/viewMetadata';
+import { ViewMetadata } from '../pages/Inspection';
 import { Error404 } from '../pages/Errors';
 
 // The app's history object
