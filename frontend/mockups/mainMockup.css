@@ -261,11 +261,11 @@ section#content > #results {
 div.tag {
     background-color: #eeeeee;
     color: #595959;
-    font-size: 0.9em;
-    padding: 0.1em 0.7em;
+    font-size: 0.8em;
+    padding: 0.1em 0.6em;
     display: inline-block;
     border-radius:1em;
-    margin: 0.3em;
+    margin: 0.2em 0.1em;
 }
 div.tag::before {
     content: '# ';
