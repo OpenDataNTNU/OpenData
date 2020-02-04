@@ -13,6 +13,7 @@ namespace OpenData.Persistence.Contexts
     public class AppDbContext : DbContext
     {
         public DbSet<Municipality> Municipalities { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -33,12 +34,19 @@ namespace OpenData.Persistence.Contexts
 
             builder.Entity<Municipality>().HasData
             (
+                new Municipality { Name = "Bodø", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
                 new Municipality { Name = "Bærum", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
                 new Municipality { Name = "Oslo", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
                 new Municipality { Name = "Trondheim", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
                 new Municipality { Name = "Asker", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F }
             );
 
+
+            builder.Entity<User>().ToTable("Users");
+            builder.Entity<User>().HasKey(p => p.Mail);
+            builder.Entity<User>().Property(p => p.Password).IsRequired();
+            builder.Entity<User>().Property(p => p.PasswordSalt).IsRequired();
+            
             builder.Entity<Backend>().ToTable("Backends");
             builder.Entity<Backend>().HasKey(p => p.Name);
             builder.Entity<Backend>().Property(p => p.Description).IsRequired();

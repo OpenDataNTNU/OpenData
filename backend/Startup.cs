@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 using OpenData.Persistence.Contexts;
@@ -12,6 +13,10 @@ using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
 using OpenData.Persistence.Repositories;
 using OpenData.Services;
+using OpenData.Domain.Models;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 using Microsoft.OpenApi.Models;
 
@@ -35,8 +40,33 @@ namespace OpenData
                 //.ServerVersion(new ServerVersion(new Version(), ServerType.MySql));
             });
 
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(x => {
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x => {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuerSigningKey = false
+                };
+            });
+
             services.AddScoped<IMunicipalityRepository, MunicipalityRepository>();
             services.AddScoped<IMunicipalityService, MunicipalityService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IMetadataTypeRepository, MetadataTypeRepository>();
             services.AddScoped<IMetadataTypeService, MetadataTypeService>();
@@ -48,6 +78,8 @@ namespace OpenData
             services.AddScoped<ITagService, TagService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ISecurityService, SecurityService>();
 
             services.AddAuthorization();
             services.AddControllers();
@@ -83,12 +115,14 @@ namespace OpenData
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
