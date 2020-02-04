@@ -9,9 +9,9 @@ using System.Security.Claims;
 using OpenData.Domain.Models;
 using OpenData.Domain.Repositories;
 using OpenData.Persistence.Contexts;
-using OpenData.Helpers;
 using OpenData.Domain.Services;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace OpenData.Persistence.Repositories
 {
@@ -32,14 +32,20 @@ namespace OpenData.Persistence.Repositories
 
             // User does not exist
             if (user == null)
+            {
+                Debug.WriteLine("Mail invalid");
                 return null;
+            }
 
             var userSalt = user.PasswordSalt;
             var passwordHash = securityService.HashPassword(password, userSalt);
 
             // Incorrect password
             if(user.Password != passwordHash)
+            {
+                Debug.WriteLine("Password invalid");
                 return null;
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -55,7 +61,7 @@ namespace OpenData.Persistence.Repositories
             user.Token = tokenHandler.WriteToken(token);
             await _context.SaveChangesAsync();
 
-            return user.PrepForTransport();
+            return user;
         }
 
         public async Task<User> AddNewUserAsync(User user)
@@ -68,7 +74,7 @@ namespace OpenData.Persistence.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return (await _context.Users.ToListAsync()).PrepForTransport();
+            return (await _context.Users.ToListAsync());
         }
     }
 }

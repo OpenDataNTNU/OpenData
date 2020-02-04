@@ -8,8 +8,9 @@ using OpenData.Domain.Models;
 using OpenData.Domain.Services;
 using OpenData.Resources;
 using OpenData.Services;
-using OpenData.Helpers;
 using OpenData.Extensions;
+
+using AutoMapper;
 
 namespace OpenData.Controllers
 {
@@ -20,11 +21,13 @@ namespace OpenData.Controllers
 	{
 		private readonly IUserService usersService;
         private readonly ISecurityService securityService;
+        private readonly IMapper mapper;
 
-        public UserController(IUserService userService, ISecurityService securityService) 
+        public UserController(IUserService userService, ISecurityService securityService, IMapper mapper) 
 		{
 			this.usersService = userService;
             this.securityService = securityService;
+            this.mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -38,7 +41,8 @@ namespace OpenData.Controllers
                 return BadRequest(new { message = "Incorrect mail or password" });
             }
 
-            return Ok(user);
+            PrivateSafeUserResource privateSafeUser = mapper.Map <User, PrivateSafeUserResource>(user);
+            return Ok(privateSafeUser);
         }
 
         
@@ -56,14 +60,17 @@ namespace OpenData.Controllers
             string hashedPassword = securityService.HashPassword(newUser.Password, salt);
 
             User user = new User { Mail = newUser.Mail, Password = hashedPassword, PasswordSalt = salt };
+            user.PasswordSalt = salt;
             user = await usersService.AddNewUserAsync(user);
+
+            PrivateSafeUserResource safeUser = mapper.Map<User, PrivateSafeUserResource>(user);
 
             if (user == null)
             {
                 return BadRequest(new { message = "Could not create user" });
             }
 
-            return Ok(user);
+            return Ok(safeUser);
         }
 
 
@@ -71,7 +78,8 @@ namespace OpenData.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await usersService.GetAllUsersAsync();
-            return Ok(users);
+            var safeUsers = mapper.Map<IEnumerable<User>, IEnumerable<SafeUserResource>>(users);
+            return Ok(safeUsers);
         }
     }
 }

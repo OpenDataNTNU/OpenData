@@ -21,6 +21,7 @@ namespace OpenData.Mapping
             CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
 
             CreateMap<NewUserResource, User>();
+            CreateMap<User, PrivateSafeUserResource>();
             CreateMap<User, SafeUserResource>();
         }
     }
