@@ -10,6 +10,7 @@ using OpenData.Domain.Services.Communication;
 using OpenData.Resources;
 using OpenData.Services;
 using OpenData.Extensions;
+using OpenData.Exceptions;
 
 using System;
 using System.Net;
@@ -46,9 +47,13 @@ namespace OpenData.Controllers
 		[HttpGet("{name}")]
 		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(string name)
 		{
-			var type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
-			var res = _mapper.Map<MetadataType, MetadataTypeResource>(type);
-			return res;
+			try {
+				var type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
+				var res = _mapper.Map<MetadataType, MetadataTypeResource>(type);
+				return res;
+			} catch (Exception ex) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
 		}
 
 		/// <summary>
@@ -81,8 +86,21 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
 
-			var type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
-			var tag = await _tagService.GetByNameAsync(newTag.Name);
+			//Try to fetch the metadata type, and return 404 if it doesnt exist
+			MetadataType type = null;
+			try {
+				type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
+			} catch (Exception ex) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+			// Same but with tags
+			Tag tag = null;
+			try {
+				tag = await _tagService.GetByNameAsync(newTag.Name);
+			} catch (Exception ex) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
 
 			type.Tags.Add(new MetadataTypeTagMapping { Tag = tag, Type = type});
 
