@@ -44,10 +44,13 @@ describe('User action creator', () => {
       });
   });
 
-  it('should return registrated and a user object on registration success', () => {
-    fetch.mockResponse(JSON.stringify({ email: 'test@baerum.kommune.no', type: 'kommune' }));
+  it('should return registrated on registration success', () => {
+    fetch.mockResponse([
+      JSON.stringify({ token: 'lfkmasfDFDFSAsldf21p4jl2fsdf' }),
+      { status: 201 },
+    ]);
 
-    return store.dispatch(userActions.register('test@baerum.kommune.no', 'TEST', 'kommune'))
+    return store.dispatch(userActions.register('test@baerum.kommune.no', 'TEST'))
       .then(() => {
         const expectedActions = store.getActions();
         expect(expectedActions.length).toBe(2);

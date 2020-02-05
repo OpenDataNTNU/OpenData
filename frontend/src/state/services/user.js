@@ -35,13 +35,12 @@ async function login(email, password) {
 }
 
 // Register a user with email and password
-async function register(email, password, type) {
+async function register(email, password) {
   const url = '/api/User';
 
   const data = {
     mail: email,
     password,
-    type,
   };
 
   const response = await fetch(url, {

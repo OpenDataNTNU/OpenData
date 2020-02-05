@@ -38,7 +38,7 @@ function login(email, password) {
 }
 
 // Register a user with email and password
-function register(email, password, type) {
+function register(email, password) {
   function request() {
     return {
       type: userConstants.SET_USER_REGISTRATION_REQUEST,
@@ -62,7 +62,7 @@ function register(email, password, type) {
     dispatch(request());
 
     try {
-      await userService.register(email, password, type);
+      await userService.register(email, password);
       dispatch(success());
     } catch (error) {
       dispatch(failure(error));
