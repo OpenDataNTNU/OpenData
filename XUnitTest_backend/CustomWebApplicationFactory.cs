@@ -73,28 +73,4 @@ namespace OpenData
         }
     }
 
-    public class IndexPageTests :
-    IClassFixture<CustomWebApplicationFactory<Startup>>
-    {
-        private readonly HttpClient _client;
-        private readonly CustomWebApplicationFactory<Startup>
-            _factory;
-
-        public IndexPageTests(
-            CustomWebApplicationFactory<Startup> factory)
-        {
-            _factory = factory;
-            _client = factory.CreateClient(new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false
-            });
-        }
-
-        [Fact]
-        public async Task Test1()
-        {
-            var response = await _client.GetAsync("/api/someendpoint");
-        }
-    }
-
 }

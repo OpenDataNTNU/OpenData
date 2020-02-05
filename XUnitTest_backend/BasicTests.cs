@@ -8,7 +8,7 @@ using Xunit;
 namespace OpenData
 {
     public class BasicTests
-    : IClassFixture<WebApplicationFactory<Startup>>
+    : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> _factory;
 
@@ -32,20 +32,6 @@ namespace OpenData
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("text/html; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
-        }
-
-        [Theory]
-        [InlineData(69)]
-        public void isTestPassed(int num)
-        {
-            Assert.Equal(69, num);
-        }
-
-        [Theory]
-        [InlineData(420)]
-        public void isTestNotPassed(int num)
-        {
-            Assert.Equal(69, num);
         }
 
     }
