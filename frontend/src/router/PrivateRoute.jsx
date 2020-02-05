@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 
 function PrivateRoute(props) {
   const userSelector = useSelector((state) => state.user);
+  const user = userSelector ? userSelector.user : null;
   const { component: Component, loggedOut, path } = props;
-  const isLoggedIn = userSelector && userSelector.email;
+  const isLoggedIn = user && user.mail;
 
   const regularRender = <Route path={path} render={() => <Component />} />;
   // we may want to change the redirect between

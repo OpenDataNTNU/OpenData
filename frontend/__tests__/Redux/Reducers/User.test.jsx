@@ -42,7 +42,9 @@ describe('user reducer', () => {
       userReducer(undefined, {
         type: userConstants.SET_USER_LOGIN_FAILURE,
       }),
-    ).toEqual({});
+    ).toEqual({
+      loggedIn: false,
+    });
   });
 
   it('should handle registration request', () => {
@@ -74,6 +76,8 @@ describe('user reducer', () => {
       userReducer(undefined, {
         type: userConstants.SET_USER_REGISTRATION_FAILURE,
       }),
-    ).toEqual({});
+    ).toEqual({
+      registrated: false,
+    });
   });
 });

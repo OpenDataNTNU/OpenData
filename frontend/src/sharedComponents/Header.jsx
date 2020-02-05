@@ -68,7 +68,8 @@ const NavExternalLink = styled.a`
 
 const Header = () => {
   // Redux state
-  const user = useSelector((state) => state.user);
+  const userSelector = useSelector((state) => state.user);
+  const user = userSelector ? userSelector.user : null;
 
   // React-router-dom
   const history = useHistory();
@@ -146,8 +147,8 @@ const Header = () => {
               <NavInternalLink to="/about">
                 <p>About</p>
               </NavInternalLink>
-              <NavInternalLink to={user && user.email ? '/account' : '/login'}>
-                <p>{user && user.email ? 'Account' : 'Sign in'}</p>
+              <NavInternalLink to={user && user.mail ? '/account' : '/login'}>
+                <p>{user && user.mail ? 'Account' : 'Sign in'}</p>
               </NavInternalLink>
             </Nav>
           )
@@ -159,7 +160,7 @@ const Header = () => {
                 { id: 'Source Code', title: 'Source Code' },
                 { id: 'Docs', title: 'Docs' },
                 { id: 'About', title: 'About' },
-                { id: user && user.email ? 'Account' : 'Sign in', title: user && user.email ? 'Account' : 'Sign in' },
+                { id: user && user.mail ? 'Account' : 'Sign in', title: user && user.mail ? 'Account' : 'Sign in' },
               ]}
             />
           )

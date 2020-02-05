@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
+import { history } from '../../router/history';
 import { Template } from '../../sharedComponents/Template';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
-// import { userActions } from '../../state/actions/user';
+import { userActions } from '../../state/actions/user';
 import { alertActions } from '../../state/actions/alert';
 import { domener } from '../../sharedComponents/utilities/Kommuner';
 
@@ -72,7 +73,7 @@ const RadioText = styled.span`
 
 const Register = () => {
   // Redux state
-  const user = useSelector((state) => state.user);
+  const userSelector = useSelector((state) => state.user);
 
   // State
   const [email, setEmail] = useState('');
@@ -88,10 +89,20 @@ const Register = () => {
   // if they arent then the button is set back to loading
   // Essentially this means the loading will stop on logging error
   useEffect(() => {
-    if (user && !user.registering && !user.registrated) {
+    if (userSelector && !userSelector.registering) {
       setLoading(false);
     }
-  }, [user]);
+    if (userSelector && userSelector.registrated) {
+      // Clear the user object to remove "registrated" as the user wont be able to register a new
+      // profile as they'll just be redirected back to "/login" until "registrated" is removed.
+      dispatch(userActions.clearUserObject());
+      // Display feedback to the user that the registration was successful
+      dispatch(alertActions.success('Registration successful, redirecting in 3 seconds.'));
+      // Redirect user to login after 3 seconds
+      setTimeout(() => history.push('/login'),
+        3000);
+    }
+  }, [userSelector]);
 
   const onChange = (e) => {
     switch (e.target.name) {
@@ -153,10 +164,10 @@ const Register = () => {
     }
     if (password !== verifyPassword) {
       dispatch(alertActions.error('Your verify password does not match your password.'));
-      // return; // fuck linting
+      return;
     }
     setLoading(true);
-    // dispatch(userActions.register(email, password))
+    dispatch(userActions.register(email, password));
   };
 
   return (

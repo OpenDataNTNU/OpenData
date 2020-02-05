@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link as ReactLink } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Template } from '../../sharedComponents/Template';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
-// import { userActions } from '../../state/actions/user';
+import { userActions } from '../../state/actions/user';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -50,7 +49,7 @@ const Link = styled(ReactLink)`
 
 const Login = () => {
   // Redux state
-  const user = useSelector((state) => state.user);
+  const userSelector = useSelector((state) => state.user);
 
   // State
   const [email, setEmail] = useState('');
@@ -58,16 +57,16 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   // Redux
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // check if the logging in is initalized or loggedIn is initilized
   // if they arent then the button is set back to loading
   // Essentially this means the loading will stop on logging error
   useEffect(() => {
-    if (user && !user.loggingIn && !user.loggedIn) {
+    if (userSelector && !userSelector.loggingIn) {
       setLoading(false);
     }
-  }, [user]);
+  }, [userSelector]);
 
   const onChange = (e) => {
     switch (e.target.name) {
@@ -89,7 +88,8 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    // dispatch(userActions.login(email, password))
+    // Login user with redux service
+    dispatch(userActions.login(email, password));
   };
 
   return (

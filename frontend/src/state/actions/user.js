@@ -71,9 +71,15 @@ function register(email, password) {
   };
 }
 
+// Resets the user object to an empty object
+function clearUserObject() {
+  return { type: userConstants.SET_USER_CLEAR };
+}
+
 const userActions = {
   login,
   register,
+  clearUserObject,
 };
 
 export {

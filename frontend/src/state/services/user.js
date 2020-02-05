@@ -63,6 +63,8 @@ async function register(email, password) {
 
   if (response.status === 500) {
     throw new Error('Internal Server Error');
+  } else if (response.status === 409) {
+    throw new Error('Email address is already in use.');
   } else if (response.status === 400) {
     const errorMessage = response.json();
     throw new Error(errorMessage.messsage);

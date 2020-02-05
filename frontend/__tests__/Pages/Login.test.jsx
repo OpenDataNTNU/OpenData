@@ -63,8 +63,5 @@ describe('Template component', () => {
         }),
       );
     });
-
-    console.log(store.getState());
-    console.log(store.getActions());
   });
 });
