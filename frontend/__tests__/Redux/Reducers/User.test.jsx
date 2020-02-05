@@ -66,7 +66,7 @@ describe('user reducer', () => {
       }),
     ).toEqual(
       {
-        registrated: true,
+        registered: true,
       },
     );
   });
@@ -77,7 +77,7 @@ describe('user reducer', () => {
         type: userConstants.SET_USER_REGISTRATION_FAILURE,
       }),
     ).toEqual({
-      registrated: false,
+      registered: false,
     });
   });
 });
