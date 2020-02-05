@@ -57,21 +57,19 @@ describe('user reducer', () => {
     );
   });
 
-  it('should handle login success', () => {
+  it('should handle registration success', () => {
     expect(
       userReducer(undefined, {
         type: userConstants.SET_USER_REGISTRATION_SUCCESS,
-        user,
       }),
     ).toEqual(
       {
         registrated: true,
-        user,
       },
     );
   });
 
-  it('should handle login failure', () => {
+  it('should handle registration failure', () => {
     expect(
       userReducer(undefined, {
         type: userConstants.SET_USER_REGISTRATION_FAILURE,

@@ -54,18 +54,13 @@ describe('User action creator', () => {
         expect(expectedActions[0]).toEqual({ type: 'USER_SET_USER_REGISTRATION_REQUEST' });
         expect(expectedActions[1]).toEqual({
           type: 'USER_SET_USER_REGISTRATION_SUCCESS',
-          user: {
-            email: 'test@baerum.kommune.no',
-            type: 'kommune',
-          },
         });
       });
   });
 
   it('should return an empty state on registration failure', () => {
     fetch.mockReject(JSON.stringify({
-      type: 'credentials_email_not_matching_type',
-      description: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
+      message: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
     }));
 
     return store.dispatch(userActions.register('test@test.com', 'TEST'))
@@ -76,8 +71,7 @@ describe('User action creator', () => {
         expect(expectedActions[1]).toEqual({
           type: 'USER_SET_USER_REGISTRATION_FAILURE',
           error: JSON.stringify({
-            type: 'credentials_email_not_matching_type',
-            description: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
+            message: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
           }),
         });
       });
