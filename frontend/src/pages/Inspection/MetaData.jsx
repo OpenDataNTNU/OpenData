@@ -6,10 +6,6 @@ const Wrapper = styled.div`
   max-width: 50em;
 `;
 
-const Heading = styled.h1`
-
-`;
-
 const DateLine = styled.p`
   font-size: 0.8em;
   color: dimgray;
@@ -21,15 +17,26 @@ const Description = styled.p`
 `;
 
 const Tag = styled.div`
-  background-color:
-  #eeeeee;
-  color:
-  #595959;
+  background-color: #eeeeee;
+  color: #595959;
   font-size: 0.9em;
   padding: 0.1em 0.7em;
   display: inline-block;
   border-radius: 1em;
   margin: 0.3em;
+`;
+
+const Source = styled.a`
+  margin: 0.5em;
+  display: flex;
+  flex-direction: row;
+`;
+
+const FileFormat = styled.div`
+  background-color: #d8e3ff;
+  margin-left: 0.4em;
+  padding: 0 1em;
+  color: #434faf;
 `;
 
 export const MetaData = (props) => {
@@ -40,10 +47,10 @@ export const MetaData = (props) => {
   } = data;
   return (
     <Wrapper>
-      <Heading>
+      <h2>
         Showing metadata about dataset
         {` ${id}`}
-      </Heading>
+      </h2>
       <DateLine>
         Published
         {` ${date}`}
@@ -51,15 +58,19 @@ export const MetaData = (props) => {
       <Description>
         This data was posted by
         {` ${municipality}`}
-        , and is available in
-        {' '}
-        {format}
-        -format on
-        {' '}
-        <a href={url}>{url}</a>
       </Description>
       <div>
         {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+      </div>
+      <div>
+        <Source href={url} >
+          {`[${url}]`}
+          <FileFormat>
+            <p>
+              {format}
+            </p>
+          </FileFormat>
+        </Source>
       </div>
     </Wrapper>
   );
