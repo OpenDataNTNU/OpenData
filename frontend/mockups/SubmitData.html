@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sintef OpenData</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="mainMockup.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<header>
+  <a href="MainView.html">
+    <h1>OpenData</h1>
+  </a>
+  <nav>
+    <a href="">
+      <p>Source Code</p>
+    </a>
+    <a href="">
+      <p>Docs</p>
+    </a>
+    <a href="">
+      <p>About</p>
+    </a>
+    <a href="Login.html" class="account">
+      <p>Sign in</p>
+    </a>
+  </nav>
+</header>
+<div class="formWrapper">
+  <form action="" class="submitDataForm">
+    <h1>Submit a new data set</h1>
+    <label for="inpName">Name of data set</label>
+    <input type="text" id="inpName" name="inpName" placeholder="Name of data set" required>
+
+    <p>What is the current status of the data set?</p>
+    <div class="flexWrapper">
+      <div>
+        <label for="inpStatusPublic" style="color: #1f7d1b;">Public</label>
+        <input type="radio" id="inpStatusPublic" name="inpStatus" value="Public" checked>
+      </div>
+      <div>
+        <label for="inpStatusRequest" style="color: #ba8436;">Requested</label>
+        <input type="radio" id="inpStatusRequest" name="inpStatus" value="Requested">
+      </div>
+      <div>
+        <label for="inpStatusUnavailable" style="color: #a42126;">Unavailable</label>
+        <input type="radio" id="inpStatusUnavailable" name="inpStatus" value="Unavailable">
+      </div>
+    </div>
+
+    <label for="inpUrl">URL to data set (may be left blank)</label>
+    <textarea id="inpUrl"  name="inpUrl" placeholder="URL to data set"></textarea>
+
+    <label for="inpDescription">Description</label>
+    <textarea name="description" id="inpDescription" required cols="30" rows="10" placeholder="Description for data set"></textarea>
+
+    <label for="inpMunicipality">Municipality of origin</label>
+    <select name="inpMunicipality" id="inpMunicipality" required>
+      <option value="Bærum">Bærum</option>
+      <option value="Trondheim">Trondheim</option>
+      <option value="...">...</option>
+    </select>
+    <label for="inpDatePublished">Date of publication</label>
+    <input type="date" id="inpDatePublished" name="inpDatePublished" required>
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<footer>
+  <div>
+    <p>OpenData is an open source data catalogue developed at the Norwegian University of Technology and Science in Trondheim, Norway.</p>
+    <p><a href="https://github.com/OpenDataNTNU/OpenData">Source code on GitHub</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
