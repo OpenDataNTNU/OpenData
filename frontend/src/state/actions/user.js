@@ -32,7 +32,7 @@ function login(email, password) {
       dispatch(success(user));
     } catch (error) {
       dispatch(failure(error));
-      dispatch(alertActions.error(error));
+      dispatch(alertActions.error(error.message));
     }
   };
 }
@@ -45,10 +45,9 @@ function register(email, password, type) {
     };
   }
 
-  function success(user) {
+  function success() {
     return {
       type: userConstants.SET_USER_REGISTRATION_SUCCESS,
-      user,
     };
   }
 
@@ -63,8 +62,8 @@ function register(email, password, type) {
     dispatch(request());
 
     try {
-      const user = await userService.register(email, password, type);
-      dispatch(success(user));
+      await userService.register(email, password, type);
+      dispatch(success());
     } catch (error) {
       dispatch(failure(error));
       dispatch(alertActions.error(error));
