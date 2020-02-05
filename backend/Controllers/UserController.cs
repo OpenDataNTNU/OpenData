@@ -38,7 +38,7 @@ namespace OpenData.Controllers
 
             if (user == null)
             {
-                return BadRequest(new { message = "Incorrect mail or password" });
+                return Unauthorized(new { message = "Incorrect mail or password" });
             }
 
             PrivateSafeUserResource privateSafeUser = mapper.Map <User, PrivateSafeUserResource>(user);
