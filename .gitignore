@@ -19,3 +19,9 @@ backend/.vs/backend/v16/Server/sqlite3/storage.ide
 backend/.vs/backend/v16/Server/sqlite3/storage.ide-shm
 
 backend/.vs/backend/v16/Server/sqlite3/storage.ide-wal
+
+.vs/
+
+XUnitTest_backend/bin/
+
+XUnitTest_backend/obj/
