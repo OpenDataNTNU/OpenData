@@ -11,6 +11,7 @@ using OpenData.Services;
 using OpenData.Extensions;
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace OpenData.Controllers
 {
@@ -61,7 +62,16 @@ namespace OpenData.Controllers
 
             User user = new User { Mail = newUser.Mail, Password = hashedPassword, PasswordSalt = salt };
             user.PasswordSalt = salt;
-            user = await usersService.AddNewUserAsync(user);
+
+
+            try
+            {
+                user = await usersService.AddNewUserAsync(user);
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict("User with the given mail already exists");
+            }
 
             PrivateSafeUserResource safeUser = mapper.Map<User, PrivateSafeUserResource>(user);
 
