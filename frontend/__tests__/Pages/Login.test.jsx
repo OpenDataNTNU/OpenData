@@ -3,6 +3,7 @@ import { render, wait, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import fetch from 'jest-fetch-mock';
 
 import App from '../../src/App';
@@ -15,7 +16,7 @@ describe('Template component', () => {
 
   beforeEach(() => {
     // Set up mock state store
-    const mockStore = configureStore();
+    const mockStore = configureStore([thunk]);
     // Initialize mockstore with empty state
     const initialEmptyState = {};
     store = mockStore(initialEmptyState);
