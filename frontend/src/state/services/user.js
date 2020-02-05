@@ -1,9 +1,9 @@
 // Login a user with email and password
 async function login(email, password) {
-  const url = '/login';
+  const url = '/api/User/auth';
 
   const data = {
-    email,
+    mail: email,
     password,
   };
 
@@ -20,21 +20,32 @@ async function login(email, password) {
     body: JSON.stringify(data),
   });
 
-  return response.json();
+  if (response.ok && response.status === 200) {
+    const user = await response.json();
+    return user;
+  }
+
+  if (response.status === 500) {
+    throw new Error('Internal Server Error');
+  } else if (response.status === 401) {
+    throw new Error('Incorrect mail or password');
+  } else {
+    throw new Error('Unexpected error');
+  }
 }
 
 // Register a user with email and password
 async function register(email, password, type) {
-  const url = '/register';
+  const url = '/api/User';
 
   const data = {
-    email,
+    mail: email,
     password,
     type,
   };
 
   const response = await fetch(url, {
-    method: 'POST',
+    method: 'PUT',
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
@@ -46,7 +57,19 @@ async function register(email, password, type) {
     body: JSON.stringify(data),
   });
 
-  return response.json();
+  if (response.ok && response.status === 200) {
+    const responseData = await response.json();
+    return responseData;
+  }
+
+  if (response.status === 500) {
+    throw new Error('Internal Server Error');
+  } else if (response.status === 400) {
+    const errorMessage = response.json();
+    throw new Error(errorMessage.messsage);
+  } else {
+    throw new Error('Unexpected error');
+  }
 }
 
 const userService = {

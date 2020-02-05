@@ -43,3 +43,5 @@ services:
       - 3000:3000
     volumes:
       - ../../frontend:/srv/opendata-frontend
+    environment:
+      - CHOKIDAR_USEPOLLING=true

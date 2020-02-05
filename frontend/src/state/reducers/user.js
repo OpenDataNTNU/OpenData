@@ -20,7 +20,6 @@ function user(state = {}, action) {
     case userConstants.SET_USER_REGISTRATION_SUCCESS:
       return {
         registrated: true,
-        user: action.user,
       };
     case userConstants.SET_USER_REGISTRATION_FAILURE:
       return {};
