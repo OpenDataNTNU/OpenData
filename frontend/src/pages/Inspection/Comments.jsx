@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   padding-left: 0.5em;
   border-left: 0.1em solid #e4e4e4;
   max-width: 30em;
-min-width: 15em;
+  min-width: 15em;
 `;
 
 export const Comments = (props) => {
