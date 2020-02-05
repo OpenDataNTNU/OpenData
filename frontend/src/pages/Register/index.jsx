@@ -7,7 +7,6 @@ import { Template } from '../../sharedComponents/Template';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
 import { userActions } from '../../state/actions/user';
 import { alertActions } from '../../state/actions/alert';
-import { domener } from '../../sharedComponents/utilities/Kommuner';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -44,40 +43,12 @@ const Input = styled.input`
   margin: 0.3em 0 0.3em 0;
 `;
 
-const RadioWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Label = styled.label`
-  margin-right: auto;
-  margin-bottom: 5px;
-`;
-
-const CheckboxTypeWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ChecboxLabelWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-const RadioText = styled.span`
-  margin-left: 4px;
-`;
-
 const Register = () => {
   // Redux state
   const userSelector = useSelector((state) => state.user);
 
   // State
   const [email, setEmail] = useState('');
-  const [typeIsKommune, setTypeIsKommune] = useState(true);
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -110,10 +81,6 @@ const Register = () => {
         setEmail(e.target.value);
         break;
       }
-      case 'type': {
-        setTypeIsKommune(e.target.value === 'Kommune');
-        break;
-      }
       case 'password': {
         setPassword(e.target.value);
         break;
@@ -126,15 +93,6 @@ const Register = () => {
         break;
       }
     }
-  };
-
-  const validKommuneEmail = (_email) => {
-    for (const domene of domener) { // eslint-disable-line no-restricted-syntax
-      if (_email.endsWith(domene)) {
-        return true;
-      }
-    }
-    return false;
   };
 
   const validEmailFormat = (_email) => {
@@ -150,10 +108,6 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
 
-    if (typeIsKommune && !validKommuneEmail(email)) {
-      dispatch(alertActions.error('Not a valid kommune email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
-      return;
-    }
     if (!validEmailFormat(email)) {
       dispatch(alertActions.error('The email format is incorrect, please try again.'));
       return;
@@ -176,19 +130,6 @@ const Register = () => {
         <Form onSubmit={register}>
           <h1>Sign up</h1>
           <Input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
-          <RadioWrapper>
-            <Label htmlFor="type">Account Type:</Label>
-            <CheckboxTypeWrapper>
-              <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="Kommune" checked={typeIsKommune} onChange={onChange} />
-                <RadioText>Kommune</RadioText>
-              </ChecboxLabelWrapper>
-              <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="Other" checked={!typeIsKommune} onChange={onChange} />
-                <RadioText>Other</RadioText>
-              </ChecboxLabelWrapper>
-            </CheckboxTypeWrapper>
-          </RadioWrapper>
           <Input type="password" placeholder="Password" name="password" value={password} onChange={onChange} />
           <Input type="password" placeholder="Verify password" name="verifyPassword" value={verifyPassword} onChange={onChange} />
           <LoadingButton text="Create account" onClick={register} loading={loading} />
