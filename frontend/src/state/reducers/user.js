@@ -21,11 +21,11 @@ function user(state = {}, action) {
       };
     case userConstants.SET_USER_REGISTRATION_SUCCESS:
       return {
-        registrated: true,
+        registered: true,
       };
     case userConstants.SET_USER_REGISTRATION_FAILURE:
       return {
-        registrated: false,
+        registered: false,
       };
     case userConstants.SET_USER_CLEAR:
       return {};

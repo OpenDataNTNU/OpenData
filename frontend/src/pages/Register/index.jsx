@@ -63,9 +63,9 @@ const Register = () => {
     if (userSelector && !userSelector.registering) {
       setLoading(false);
     }
-    if (userSelector && userSelector.registrated) {
-      // Clear the user object to remove "registrated" as the user wont be able to register a new
-      // profile as they'll just be redirected back to "/login" until "registrated" is removed.
+    if (userSelector && userSelector.registered) {
+      // Clear the user object to remove "registered" as the user wont be able to register a new
+      // profile as they'll just be redirected back to "/login" until "registered" is removed.
       dispatch(userActions.clearUserObject());
       // Display feedback to the user that the registration was successful
       dispatch(alertActions.success('Registration successful, redirecting in 3 seconds.'));
