@@ -31,7 +31,7 @@ function login(email, password) {
       const user = await userService.login(email, password);
       dispatch(success(user));
     } catch (error) {
-      dispatch(failure(error));
+      dispatch(failure(error.message));
       dispatch(alertActions.error(error.message));
     }
   };
@@ -65,8 +65,8 @@ function register(email, password) {
       await userService.register(email, password);
       dispatch(success());
     } catch (error) {
-      dispatch(failure(error));
-      dispatch(alertActions.error(error));
+      dispatch(failure(error.message));
+      dispatch(alertActions.error(error.message));
     }
   };
 }
