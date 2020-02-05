@@ -19,16 +19,11 @@ services:
     ports:
       - 3739:8080
   server:
-    image: mcr.microsoft.com/dotnet/core/sdk:3.1
-    entrypoint: # This allows us to not need a custom dockerfile for this setup
-     - bash
-     - "-c"
-     - "dotnet restore && dotnet run"
-#      - dotnet
-#      - "OpenDataBackend.dll"
+    build:
+      context: ./
+      dockerfile: Dockerfile.dotnet
     environment:
       ASPNETCORE_URLS: "http://*:9000"
-    working_dir: /srv/opendata-backend
     links:
       - mysql
     ports:
@@ -44,7 +39,18 @@ services:
     working_dir: /srv/opendata-frontend
     links:
       - server
-    ports:
-      - 3000:3000
     volumes:
       - ../../frontend:/srv/opendata-frontend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  proxy:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 3000:3000
+    links:
+      - webui
+      - server
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf

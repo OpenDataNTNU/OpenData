@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+
+# Allow remote debugging
+RUN apt update && \
+    apt install unzip && \
+    curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
+
+RUN mkdir /srv/opendata-bootstrap
+COPY ./dotnet-entrypoint.sh /srv/opendata-bootstrap/
+RUN chmod +x /srv/opendata-bootstrap/dotnet-entrypoint.sh
+
+WORKDIR /srv/opendata-bootstrap
+
+ENTRYPOINT ["bash", "-c"]
+
+CMD ["./dotnet-entrypoint.sh"]

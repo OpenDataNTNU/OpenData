@@ -11,6 +11,7 @@ namespace OpenData.Persistence.Repositories
     {
         public MunicipalityRepository(AppDbContext context) : base(context)
         {
+
         }
 
         public async Task<IEnumerable<Municipality>> ListAsync()
