@@ -57,7 +57,7 @@ async function register(email, password, type) {
     body: JSON.stringify(data),
   });
 
-  if (response.ok && response.status === 200) {
+  if (response.ok && response.status === 201) {
     const responseData = await response.json();
     return responseData;
   }
