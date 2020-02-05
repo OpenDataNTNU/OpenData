@@ -63,7 +63,7 @@ export const MetaData = (props) => {
         {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
       </div>
       <div>
-        <Source href={url} >
+        <Source href={url}>
           {`[${url}]`}
           <FileFormat>
             <p>
