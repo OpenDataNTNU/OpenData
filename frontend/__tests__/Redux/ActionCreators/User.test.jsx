@@ -45,10 +45,10 @@ describe('User action creator', () => {
   });
 
   it('should return registrated on registration success', () => {
-    fetch.mockResponse([
+    fetch.mockResponseOnce(
       JSON.stringify({ token: 'lfkmasfDFDFSAsldf21p4jl2fsdf' }),
-      { status: 201 },
-    ]);
+      { status: 201, headers: { 'content-type': 'application/json' } },
+    );
 
     return store.dispatch(userActions.register('test@baerum.kommune.no', 'TEST'))
       .then(() => {
