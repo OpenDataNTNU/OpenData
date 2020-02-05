@@ -70,7 +70,7 @@ namespace OpenData.Controllers
                 return BadRequest(new { message = "Could not create user" });
             }
 
-            return Ok(safeUser);
+            return Created("Created new user successfully!", safeUser);
         }
 
 
