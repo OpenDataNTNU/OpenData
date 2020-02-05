@@ -9,6 +9,7 @@ using OpenData.Domain.Repositories;
 using OpenData.Resources;
 using OpenData.Services;
 using OpenData.Extensions;
+using OpenData.Exceptions;
 
 using System;
 using System.Net;
@@ -43,9 +44,13 @@ namespace OpenData.Controllers
 		[HttpGet("{uuid}")]
 		public async Task<MetadataResource> GetMetadata(string uuid)
 		{
-			var type = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
-			var res = _mapper.Map<Metadata, MetadataResource>(type);
-			return res;
+			try {
+				var type = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+				var res = _mapper.Map<Metadata, MetadataResource>(type);
+				return res;
+			} catch (Exception ex) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
 		}
 
 		[HttpPut]

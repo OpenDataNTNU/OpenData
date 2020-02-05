@@ -12,3 +12,7 @@ Based on this pretty decent tutorial: https://www.freecodecamp.org/news/an-aweso
  * Register dependency injection of the repository and service in `Startup.cs`
 
 The tutorial linked above demonstrates how it works. 
+
+## Documentation
+
+See `http://localhost:3000/swagger/index.html` for documentation on the rest api.

@@ -14,6 +14,8 @@ using OpenData.Domain.Services;
 using OpenData.Persistence.Repositories;
 using OpenData.Services;
 using OpenData.Domain.Models;
+using OpenData.Middleware;
+
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -117,6 +119,8 @@ namespace OpenData
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<HttpExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
