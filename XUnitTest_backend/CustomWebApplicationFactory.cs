@@ -3,25 +3,14 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using OpenData;
 using OpenData.Persistence.Contexts;
-using OpenData.Domain.Repositories;
-using OpenData.Persistence.Repositories;
-using OpenData.Domain.Services;
-using OpenData.Services;
 using Microsoft.Extensions.DependencyInjection;
-using AngleSharp;
-using AutoMapper;
-using System.Net.Http;
 
 namespace OpenData
 {
     public class CustomWebApplicationFactory<TStartup>
-        : WebApplicationFactory<TStartup> where TStartup : class
+    : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -72,5 +61,4 @@ namespace OpenData
             });
         }
     }
-
 }

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Xunit;
 
 namespace OpenData
@@ -10,9 +6,10 @@ namespace OpenData
     public class BasicTests
     : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
 
-        public BasicTests(WebApplicationFactory<Startup> factory)
+        private readonly CustomWebApplicationFactory<Startup> _factory;
+
+        public BasicTests(CustomWebApplicationFactory<Startup> factory)
         {
             _factory = factory;
         }
@@ -21,7 +18,6 @@ namespace OpenData
         [InlineData("/api/municipality")]
         public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
         {
-            Console.WriteLine("blablabla");
             // Arrange
             var client = _factory.CreateClient();
 
@@ -30,7 +26,7 @@ namespace OpenData
 
             // Assert
             response.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("text/html; charset=utf-8",
+            Assert.Equal("application/json; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
         }
 
