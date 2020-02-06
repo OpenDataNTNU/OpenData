@@ -1,6 +1,8 @@
 import React from 'react';
 import { Switch, Route, Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+
+// History
+import { history } from './history';
 
 // Private routes
 import PrivateRoute from './PrivateRoute';
@@ -9,9 +11,8 @@ import PrivateRoute from './PrivateRoute';
 import { Splash } from '../pages/Splash';
 import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
 import { Error404 } from '../pages/Errors';
-
-// The app's history object
-const history = createBrowserHistory();
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -19,8 +20,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
       <Switch>
         <Route exact path="/" component={Splash} />
         <Route path="/sendData" component={SendMetadata} />
-        <PrivateRoute path="/private" component={() => <h1>Logged in</h1>} />
-        <PrivateRoute path="/loggedOut" loggedOut component={() => <h1>Logged out</h1>} />
+        <PrivateRoute path="/login" loggedOut component={Login} />
+        <PrivateRoute path="/register" loggedOut component={Register} />
         <Route component={Error404} />
       </Switch>
     </Router>
@@ -29,5 +30,4 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
 
 export {
   RouterComponent as Router,
-  history,
 };

@@ -30,17 +30,23 @@ describe('User action creator', () => {
   });
 
   it('should return an empty state on login failure', () => {
-    fetch.mockReject(JSON.stringify({
+    const error = JSON.stringify({
       type: 'credentials_incorrect',
-      description: 'Provided credentials were incorrect.',
-    }));
+      message: 'Provided credentials were incorrect.',
+    });
+
+    fetch.mockReject(error);
 
     return store.dispatch(userActions.login('test@baerum.kommune.no', 'TEST'))
       .then(() => {
         const expectedActions = store.getActions();
         expect(expectedActions.length).toBe(3);
-        expect(expectedActions[0]).toEqual({ type: 'USER_SET_USER_LOGIN_REQUEST' });
-        expect(expectedActions[1]).toEqual({ type: 'USER_SET_USER_LOGIN_FAILURE', error: JSON.stringify({ type: 'credentials_incorrect', description: 'Provided credentials were incorrect.' }) });
+        expect(expectedActions[0]).toEqual({
+          type: 'USER_SET_USER_LOGIN_REQUEST',
+        });
+        expect(expectedActions[1]).toEqual({
+          type: 'USER_SET_USER_LOGIN_FAILURE',
+        });
       });
   });
 
@@ -62,9 +68,11 @@ describe('User action creator', () => {
   });
 
   it('should return an empty state on registration failure', () => {
-    fetch.mockReject(JSON.stringify({
+    const error = JSON.stringify({
       message: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
-    }));
+    });
+
+    fetch.mockReject(error);
 
     return store.dispatch(userActions.register('test@test.com', 'TEST'))
       .then(() => {
@@ -73,9 +81,6 @@ describe('User action creator', () => {
         expect(expectedActions[0]).toEqual({ type: 'USER_SET_USER_REGISTRATION_REQUEST' });
         expect(expectedActions[1]).toEqual({
           type: 'USER_SET_USER_REGISTRATION_FAILURE',
-          error: JSON.stringify({
-            message: 'The provided email is not a certified kommune email and thus you can not register a kommune account.',
-          }),
         });
       });
   });

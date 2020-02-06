@@ -12,16 +12,22 @@ function user(state = {}, action) {
         user: action.user,
       };
     case userConstants.SET_USER_LOGIN_FAILURE:
-      return {};
+      return {
+        loggedIn: false,
+      };
     case userConstants.SET_USER_REGISTRATION_REQUEST:
       return {
         registering: true,
       };
     case userConstants.SET_USER_REGISTRATION_SUCCESS:
       return {
-        registrated: true,
+        registered: true,
       };
     case userConstants.SET_USER_REGISTRATION_FAILURE:
+      return {
+        registered: false,
+      };
+    case userConstants.SET_USER_CLEAR:
       return {};
     default:
       return state;

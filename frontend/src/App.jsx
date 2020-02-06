@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { GlobalStyle } from './global-styles';
-import { Router, history } from './router/router';
+import { history } from './router/history';
+import { Router } from './router/router';
 import { alertActions } from './state/actions/alert';
 import { Alert } from './sharedComponents/Alert';
 
