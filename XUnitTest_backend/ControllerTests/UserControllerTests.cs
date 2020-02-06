@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 
 namespace OpenData
 {
-    public class MunicipalityControllerTests
+    public class UserControllerTests
     {
-        // Municipality tests here
+        // User tests here
         //[Fact]
         //public void Test1()
         //{
-        // Arrange
+            // Arrange
 
-        // Act
+            // Act
 
-        // Assert
+            // Assert
         //}
     }
 }
