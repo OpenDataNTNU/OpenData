@@ -22,14 +22,17 @@ describe('Template component', () => {
     store = mockStore(initialEmptyState);
   });
 
-  it('should render the dropdown component on width < 600px', async () => {
+  it('should give successful registration state in store', async () => {
     const { getByText, getByPlaceholderText } = render(
       <Provider store={store}>
         <App />
       </Provider>,
     );
 
-    fetch.mockResponse(JSON.stringify({ email: 'test@baerum.kommune.no', type: 'kommune' }));
+    fetch.mockResponseOnce(
+      JSON.stringify({ token: 'lfkmasfDFDFSAsldf21p4jl2fsdf' }),
+      { status: 201, headers: { 'content-type': 'application/json' } },
+    );
 
     await wait(() => {
       fireEvent(
@@ -80,6 +83,13 @@ describe('Template component', () => {
           cancelable: true,
         }),
       );
+    });
+
+    const expectedActions = store.getActions();
+    expect(expectedActions.length).toBe(4);
+    expect(expectedActions[2]).toEqual({ type: 'USER_SET_USER_REGISTRATION_REQUEST' });
+    expect(expectedActions[3]).toEqual({
+      type: 'USER_SET_USER_REGISTRATION_SUCCESS',
     });
   });
 });

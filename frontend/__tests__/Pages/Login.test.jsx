@@ -22,7 +22,7 @@ describe('Template component', () => {
     store = mockStore(initialEmptyState);
   });
 
-  it('should render the dropdown component on width < 600px', async () => {
+  it('should give successful login state in store', async () => {
     const { getByText, getByPlaceholderText } = render(
       <Provider store={store}>
         <App />
@@ -63,6 +63,14 @@ describe('Template component', () => {
           cancelable: true,
         }),
       );
+    });
+
+    const expectedActions = store.getActions();
+    expect(expectedActions.length).toBe(3);
+    expect(expectedActions[1]).toEqual({ type: 'USER_SET_USER_LOGIN_REQUEST' });
+    expect(expectedActions[2]).toEqual({
+      type: 'USER_SET_USER_LOGIN_SUCCESS',
+      user: { email: 'test@baerum.kommune.no', type: 'kommune' },
     });
   });
 });
