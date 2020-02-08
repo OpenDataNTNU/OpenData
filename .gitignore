@@ -1,7 +1,11 @@
 backend/obj
 backend/bin
+backend/.vs
+backend/.vscode/
+
 container/*/sql
 
 .DS_Store
+.vscode
 
 frontend/public/bundle.js

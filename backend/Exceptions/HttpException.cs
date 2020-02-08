@@ -1,7 +1,7 @@
 using System;
 using System.Net;
  
-namespace OpenDataBackend.Exceptions
+namespace OpenData.Exceptions
 {
     public class HttpException : Exception
     {
