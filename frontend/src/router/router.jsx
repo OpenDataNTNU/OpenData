@@ -7,7 +7,8 @@ import PrivateRoute from './PrivateRoute';
 
 // Pages
 import { Splash } from '../pages/Splash';
-import { SearchData } from '../pages/search';
+import { AllData } from '../pages/allData';
+import { MetadataByType } from '../pages/MetadataByType';
 import { ViewMetadata } from '../pages/Inspection';
 import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
 import { Error404 } from '../pages/Errors';
@@ -20,8 +21,9 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
-        <Route exact path="/viewData" component={SearchData} />
-        <Route path="/viewData/:id" component={ViewMetadata} />
+        <Route exact path="/viewData" component={AllData} />
+        <Route path="/viewData/dataType/:name" component={MetadataByType} />
+        <Route path="/viewData/dataset/:id" component={ViewMetadata} />
         <Route path="/sendData" component={SendMetadata} />
         <PrivateRoute path="/private" component={() => <h1>Logged in</h1>} />
         <PrivateRoute path="/loggedOut" loggedOut component={() => <h1>Logged out</h1>} />

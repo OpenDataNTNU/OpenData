@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Template } from '../../sharedComponents/Template';
-import { SearchDataBody } from './SearchDataBody';
+import { AllDataBody } from './AllDataBody';
 
 
-export const SearchData = () => (
+export const AllData = () => (
   <Template>
-    <SearchDataBody />
+    <AllDataBody />
   </Template>
 );
