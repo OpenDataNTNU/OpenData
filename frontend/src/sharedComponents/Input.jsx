@@ -14,7 +14,7 @@ const StyledInput = styled.input`
 `;
 
 const Input = ({
-  title, value, onChange, rest,
+  title, value, onChange, ...rest
 }) => <StyledInput name={title} value={value} onChange={onChange} {...rest} />;
 
 Input.defaultProps = {

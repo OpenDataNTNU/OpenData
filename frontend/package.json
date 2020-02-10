@@ -60,6 +60,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.0",
     "jest-fetch-mock": "^3.0.1",
+    "mutation-observer": "^1.0.3",
     "react-hot-loader": "^4.8.8",
     "redux-mock-store": "^1.5.4",
     "url-loader": "^3.0.0",

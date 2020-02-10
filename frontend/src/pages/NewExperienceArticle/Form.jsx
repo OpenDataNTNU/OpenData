@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import styled from 'styled-components';
 
+import { history } from '../../router/history';
 import { Input } from '../../sharedComponents/Input';
 import { alertActions } from '../../state/actions/alert';
 
@@ -103,31 +104,37 @@ const Form = () => {
     // Fetch url
     const url = '/api/Tag';
     // Fetch request => returns response
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
 
-    // Check that the response was ok with status code 200
-    if (response.ok && response.status === 200) {
-      // Get json data
-      let Tags = await response.json();
-      // Map over data and return the tag name
-      Tags = Tags.map((tag) => tag.name);
-      // return tags
-      return Tags;
+      // Check that the response was ok with status code 200
+      if (response.ok && response.status === 200) {
+        // Get json data
+        let Tags = await response.json();
+        // Map over data and return the tag name
+        Tags = Tags.map((tag) => tag.name);
+        // return tags
+        return Tags;
+      }
+
+      // Dispatch error if we failed to get tags
+      dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
+      return [];
+    } catch (_) {
+      // Dispatch error if we failed to get tags
+      dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
+      return [];
     }
-
-    // Dispatch error if we failed to get tags
-    dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
-    return [];
   };
 
   // Constructor
@@ -168,22 +175,37 @@ const Form = () => {
       body,
     };
 
-    // Fetch request => returns response
-    const response = await fetch(url, {
-      method: 'PUT',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data),
-    });
+    try {
+      // Fetch request => returns response
+      const response = await fetch(url, {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data),
+      });
 
-    // Check that the submission was ok and status code 200 or dispatch error
-    if (!response.ok && response.status !== 200) {
+      // Submit feedback that the article was successfully submitted
+      if (response.ok && response.status === 200) {
+        dispatch(alertActions.success('Article successfully submitted. Redirecting in 3 seconds.'));
+
+        // Get article ID
+        const responseData = await response.json();
+
+        const redirectUrl = `/articles/${responseData.id}`;
+
+        // Redirect to article
+        setTimeout(() => history.push(redirectUrl),
+          3000);
+      } else {
+        dispatch(alertActions.error('Failed to submit article.'));
+      }
+    } catch (_) {
       dispatch(alertActions.error('Failed to submit article.'));
     }
   };
@@ -191,20 +213,27 @@ const Form = () => {
   return (
     <StyledForm onSubmit={onSubmit}>
       <InputWrapper>
-        <label htmlFor="title">Title:</label>
-        <Input name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <label htmlFor="title">
+          Title:
+          <Input name="title" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </label>
       </InputWrapper>
       <InputWrapper>
-        <label>Tags:</label>
-        <StyledMultiSelect
-          data={tagsData}
-          value={tags}
-          onChange={(value) => setTags(value)}
-        />
+        <label htmlFor="Tags">
+          Tags:
+          <StyledMultiSelect
+            id="Tags"
+            data={tagsData}
+            value={tags}
+            onChange={(value) => setTags(value)}
+          />
+        </label>
       </InputWrapper>
       <InputWrapper>
-        <label>Article:</label>
-        <Quill modules={modules} value={body} onChange={(text) => setBody(text)} />
+        <label htmlFor="Article">
+          Article:
+          <Quill id="Article" modules={modules} value={body} onChange={(text) => setBody(text)} />
+        </label>
       </InputWrapper>
       <Button disabled={title === '' || !title}>
         Submit Article
