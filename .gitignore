@@ -10,12 +10,6 @@ container/*/sql
 
 frontend/public
 
-backend/.vs/backend/config/applicationhost.config
-
-backend/.vs/backend/DesignTimeBuild/.dtbcache
-
-backend/.vs/backend/v16
-
 .vs/
 
 XUnitTest_backend/bin
