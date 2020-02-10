@@ -127,7 +127,7 @@ const Form = () => {
 
     // Dispatch error if we failed to get tags
     dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
-    return null;
+    return [];
   };
 
   // Constructor
