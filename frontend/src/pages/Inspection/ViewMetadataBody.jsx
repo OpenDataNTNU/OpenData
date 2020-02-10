@@ -14,61 +14,45 @@ const Wrapper = styled.div`
 
 export const ViewMetadataBody = (props) => {
   const { id } = props;
-  // update this to match the relevant fields
   const [data, setData] = useState({
-    municipality: 'Trondheim',
-    format: '.json',
-    url: 'https://trondheim.kommune.no',
-    tags: ['Ipsum', 'Ad, asperiores!'],
+    uuid: id,
+    url: '',
+    description: '',
+    formatName: '',
+    releaseState: 0,
+    metadataTypeName: '',
+    municipalityName: '',
   });
-  /* example data, if backend isn't up:
-  data: {
-    municipality: 'Trondheim',
-    format: '.json',
-    url: 'https://trondheim.kommune.no',
-    tags: ['Ipsum', 'Ad, asperiores!'],
-  }
-  comments: [{
-    id: 1,
-    comment: 'Beautiful comment',
-    author: 'Michael Bay',
-    date: '19-02-2019',
-  },
-  {
-    id: 2,
-    comment: 'Harsh comment',
-    author: 'Sharknado',
-    date: '23-07-2019',
-  }];
-  */
-  const [comments, setComments] = useState([{
-    id: 1,
-    comment: 'Beautiful comment',
-    author: 'Michael Bay',
-    date: '19-02-2019',
-  },
-  {
-    id: 2,
-    comment: 'Harsh comment',
-    author: 'Sharknado',
-    date: '23-07-2019',
-  }]);
+  const [comments, setComments] = useState([]);
+  const [tags, setTags] = useState([]);
+
   useEffect(() => {
     const internal = async () => {
-      const res = await fetch(`/api/data/${id}`);
-      const {
-        municipality, format, url, comments: receivedComments,
-      } = await res.json();
-      setData({ municipality, format, url });
-      setComments(receivedComments);
+      const res = await fetch(`/api/metadata/${id}`);
+      const municipality = await res.json();
+      // get received comments
+      setData(municipality);
+      setComments([{
+        id: 1,
+        comment: 'Beautiful comment',
+        author: 'Michael Bay',
+        date: '19-02-2019',
+      },
+      {
+        id: 2,
+        comment: 'Harsh comment',
+        author: 'Sharknado',
+        date: '23-07-2019',
+      }]);
+      setTags(['Ipsum', 'Ad, asperiores!']);
     };
     internal();
-  });
+  }, [id]);
 
 
   return (
     <Wrapper>
-      <MetaData id={id} data={data} />
+      <MetaData id={id} data={data} tags={tags} />
       <Comments comments={comments} />
     </Wrapper>
   );

@@ -5,7 +5,6 @@ import { Template } from '../../sharedComponents/Template';
 import { ViewMetadataBody } from './ViewMetadataBody';
 
 export const ViewMetadata = (props) => {
-  console.log(props);
   const { match: { params: { id } } } = props;
   return (
     <Template>
