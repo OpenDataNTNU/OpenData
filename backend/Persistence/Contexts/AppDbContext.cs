@@ -13,6 +13,7 @@ namespace OpenData.Persistence.Contexts
     public class AppDbContext : DbContext
     {
         public DbSet<Municipality> Municipalities { get; set; }
+        public DbSet<ExperiencePost> ExperiencePosts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
@@ -81,6 +82,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
             builder.Entity<Metadata>().Property( p => p.Url).IsRequired();
             builder.Entity<Metadata>().HasOne(p => p.Format);
+            builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
 
             builder.Entity<Tag>().ToTable("Tags");
@@ -102,6 +104,13 @@ namespace OpenData.Persistence.Contexts
                 new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Car History"},
                 new MetadataTypeTagMapping { TagName = "Traffic", MetadataTypeName = "Car History"}
             );
+
+            builder.Entity<ExperiencePost>().ToTable("ExperiencePost");
+            builder.Entity<ExperiencePost>().HasKey(p => p.Uuid);
+            builder.Entity<ExperiencePost>().Property(p => p.Contents).IsRequired();
+            builder.Entity<ExperiencePost>().HasOne(p => p.LastEditedBy);
+            builder.Entity<ExperiencePost>().Property(p => p.Created).IsRequired();
+            builder.Entity<ExperiencePost>().Property(p => p.Modified).IsRequired();
         }
     }
 }
