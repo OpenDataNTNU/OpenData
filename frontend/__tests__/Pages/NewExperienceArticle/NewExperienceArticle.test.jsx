@@ -55,7 +55,11 @@ describe('New Experience Article component', () => {
 
     const submitButton = getByText('Submit Article');
 
+    // Check that button exists
     expect(submitButton).toBeInTheDocument();
+
+    // Check that the button is disabled
+    expect(submitButton.disabled).toBe(true);
   });
 
   it('should dispatch an error if we fail to fetch tags from the backend', async () => {
