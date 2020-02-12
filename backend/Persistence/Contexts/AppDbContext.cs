@@ -33,6 +33,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Municipality>().HasData
             (
                 new Municipality { Name = "Bodø", MailDomain = "bodo.kommune.no", ShieldFileName = "404.png" },
+                new Municipality { Name = "Test", MailDomain = "test.kommune.no", ShieldFileName = "404.png" },
                 new Municipality { Name = "Bærum", MailDomain = "baerum.kommune.no", ShieldFileName = "404.png" },
                 new Municipality { Name = "Oslo", MailDomain = "oslo.kommune.no", ShieldFileName = "404.png"},
                 new Municipality { Name = "Trondheim", MailDomain = "trondheim.kommune.no", ShieldFileName = "404.png"},
