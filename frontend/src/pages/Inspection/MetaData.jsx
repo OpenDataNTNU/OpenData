@@ -40,24 +40,23 @@ const FileFormat = styled.div`
 `;
 
 export const MetaData = (props) => {
-  const { data, tags, id } = props;
+  const { data, tags, description } = props;
   const date = '20-09-2019';
   const {
-    municipalityName, formatName, url,
+    municipalityName, formatName, url, metadataTypeName,
   } = data;
   return (
     <Wrapper>
       <h2>
         Showing metadata about dataset
-        {` ${id}`}
+        {` ${metadataTypeName} from ${municipalityName}`}
       </h2>
       <DateLine>
         Published
         {` ${date}`}
       </DateLine>
       <Description>
-        This data was posted by
-        {` ${municipalityName}`}
+        {description}
       </Description>
       <div>
         {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
@@ -77,11 +76,12 @@ export const MetaData = (props) => {
 };
 
 MetaData.propTypes = {
-  id: PropTypes.string.isRequired,
   data: PropTypes.shape({
     municipalityName: PropTypes.string.isRequired,
     formatName: PropTypes.string.isRequired,
+    metadataTypeName: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
+  description: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

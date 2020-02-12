@@ -17,7 +17,6 @@ export const ViewMetadataBody = (props) => {
   const [data, setData] = useState({
     uuid: id,
     url: '',
-    description: '',
     formatName: '',
     releaseState: 0,
     metadataTypeName: '',
@@ -25,13 +24,14 @@ export const ViewMetadataBody = (props) => {
   });
   const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
     const internal = async () => {
       const res = await fetch(`/api/metadata/${id}`);
       const municipality = await res.json();
-      // get received comments
       setData(municipality);
+      // get received comments when this is implemented backend
       setComments([{
         id: 1,
         comment: 'Beautiful comment',
@@ -44,15 +44,27 @@ export const ViewMetadataBody = (props) => {
         author: 'Sharknado',
         date: '23-07-2019',
       }]);
-      setTags(['Ipsum', 'Ad, asperiores!']);
     };
     internal();
   }, [id]);
 
+  useEffect(() => {
+    const { metadataTypeName: name } = data;
+    if (name) {
+      const internal = async () => {
+        const res = await fetch(`/api/MetadataType/${name}`);
+        const { tags: receivedTags, description: receivedDescription } = await res.json();
+        const tagNames = receivedTags.map(({ tagName }) => tagName);
+        setTags(tagNames);
+        setDescription(receivedDescription);
+      };
+      internal();
+    }
+  }, [data]);
 
   return (
     <Wrapper>
-      <MetaData id={id} data={data} tags={tags} />
+      <MetaData data={data} description={description} tags={tags} />
       <Comments comments={comments} />
     </Wrapper>
   );
