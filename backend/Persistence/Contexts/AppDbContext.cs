@@ -24,7 +24,7 @@ namespace OpenData.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
             builder.Entity<Municipality>().ToTable("Municipalities");
             builder.Entity<Municipality>().HasKey(p => p.Name);
             builder.Entity<Municipality>().Property(p => p.ShieldFileName).IsRequired().ValueGeneratedOnAdd();
