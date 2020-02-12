@@ -13,6 +13,20 @@ const Types = styled.div`
   flex-direction: column;
 `;
 
+const Type = styled.div`
+  border: 1px solid #ccc;
+`;
+
+const Tag = styled.div`
+  background-color: #eeeeee;
+  color: #595959;
+  font-size: 0.9em;
+  padding: 0.1em 0.7em;
+  display: inline-block;
+  border-radius: 1em;
+  margin: 0.3em;
+`;
+
 
 export const AllDataBody = () => {
   const [metadataTypes, setMetadataTypes] = useState([]);
@@ -32,15 +46,20 @@ export const AllDataBody = () => {
     <OuterWrapper>
       <h1>All datasets</h1>
       <Types>
-        <ul>
-          {metadataTypes.map(({ name }) => (
-            <li key={name}>
+        <div>
+          {metadataTypes.map(({ name, tags }) => (
+            <Type key={name}>
               <a href={`/viewData/dataType/${name}`}>
-                {name}
+                <h3>
+                  {name}
+                </h3>
               </a>
-            </li>
+              {tags.map(({ tagName }) => (
+                <Tag key={tagName}>{tagName}</Tag>
+              ))}
+            </Type>
           ))}
-        </ul>
+        </div>
       </Types>
     </OuterWrapper>
   );
