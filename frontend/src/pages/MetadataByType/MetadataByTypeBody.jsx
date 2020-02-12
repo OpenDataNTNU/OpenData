@@ -19,13 +19,16 @@ export const MetadataByTypeBody = (props) => {
         Metadata type:
         {` ${name}`}
       </h1>
-      {metadatas.map(({ uuid, municipalityName }) => (
-        <a key={uuid} href={`/viewData/dataset/${uuid}`}>
-          <p>
-            {municipalityName}
-          </p>
-        </a>
-      ))}
+      <h3>This data set is offered by:</h3>
+      <ul>
+        {metadatas.map(({ uuid, municipalityName }) => (
+          <a key={uuid} href={`/viewData/dataset/${uuid}`}>
+            <p>
+              {municipalityName}
+            </p>
+          </a>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { SearchResults } from './SearchResults';
-
 const OuterWrapper = styled.div`
   flex: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 const Types = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 
@@ -30,12 +30,18 @@ export const AllDataBody = () => {
   // get all metadata:
   return (
     <OuterWrapper>
+      <h1>All datasets</h1>
       <Types>
         <ul>
-          {metadataTypes.map(({ name }) => <li key={name}>{name}</li>)}
+          {metadataTypes.map(({ name }) => (
+            <li key={name}>
+              <a href={`/viewData/dataType/${name}`}>
+                {name}
+              </a>
+            </li>
+          ))}
         </ul>
       </Types>
-      <SearchResults />
     </OuterWrapper>
   );
 };
