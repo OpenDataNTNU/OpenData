@@ -10,6 +10,7 @@ import PrivateRoute from './PrivateRoute';
 // Pages
 import { Splash } from '../pages/Splash';
 import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
+import { Article } from '../pages/Article';
 import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
@@ -21,6 +22,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
       <Switch>
         <Route exact path="/" component={Splash} />
         <Route path="/sendData" component={SendMetadata} />
+        <PrivateRoute path="/articles/:id" component={Article} />
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
