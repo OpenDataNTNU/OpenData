@@ -13,6 +13,7 @@ import { AllData } from '../pages/allData';
 import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
 import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
+import { Article } from '../pages/Article';
 import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
