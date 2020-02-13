@@ -14,10 +14,7 @@ import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Logout } from '../pages/Logout';
-<<<<<<< HEAD
-=======
 import { NewExperienceArticle } from '../pages/NewExperienceArticle';
->>>>>>> Added Experience Article Form Submission Page (#59)
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
