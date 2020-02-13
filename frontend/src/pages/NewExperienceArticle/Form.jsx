@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import ReactQuill from 'react-quill';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { history } from '../../router/history';
 import { Input } from '../../sharedComponents/Input';
 import { alertActions } from '../../state/actions/alert';
+import { useGetTags } from '../../sharedComponents/hooks';
 
 const StyledForm = styled.form`
   flex: 1;
@@ -95,59 +96,10 @@ const Form = () => {
 
   // State
   const [title, setTitle] = useState('');
-  const [tagsData, setTagsData] = useState([]);
+  let tagsData = useGetTags();
+  tagsData = tagsData || [];
   const [tags, setTags] = useState([]);
   const [body, setBody] = useState('');
-
-  // Function to get tags from server
-  const getTags = async () => {
-    // Fetch url
-    const url = '/api/Tag';
-    // Fetch request => returns response
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-      });
-
-      // Check that the response was ok with status code 200
-      if (response.ok && response.status === 200) {
-        // Get json data
-        let Tags = await response.json();
-        // Map over data and return the tag name
-        Tags = Tags.map((tag) => tag.name);
-        // return tags
-        return Tags;
-      }
-
-      // Dispatch error if we failed to get tags
-      dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
-      return [];
-    } catch (_) {
-      // Dispatch error if we failed to get tags
-      dispatch(alertActions.error('Failed to retrieve tags. Please try again later.'));
-      return [];
-    }
-  };
-
-  // Constructor
-  useEffect(() => {
-    // Inner async unfciton
-    const init = async () => {
-      // Get tags from server
-      const serverTags = await getTags();
-      // Set tags
-      setTagsData(serverTags);
-    };
-    init();
-  }, []);
 
   // Quilljs toolbar config
   const modules = {
