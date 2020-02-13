@@ -11,11 +11,16 @@ const Wrapper = styled.div`
   height: inherit;
   min-height: inherit;
 `;
+const ContentDiv = styled.div`
+  flex: 1;
+`;
 
 const Template = ({ children }) => (
   <Wrapper>
     <Header />
-    {children}
+    <ContentDiv>
+      {children}
+    </ContentDiv>
     <Footer />
   </Wrapper>
 );
