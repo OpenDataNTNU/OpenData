@@ -14,7 +14,18 @@ const Types = styled.div`
 `;
 
 const Type = styled.div`
-  border: 1px solid #ccc;
+  max-width: 60em;
+  border: solid 0.2em #f0f0f0;
+  border-radius: 0.2em;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  flex-flow: row wrap;
 `;
 
 const Tag = styled.div`
@@ -47,16 +58,21 @@ export const AllDataBody = () => {
       <h1>All datasets</h1>
       <Types>
         <div>
-          {metadataTypes.map(({ name, tags }) => (
+          {metadataTypes.map(({ name, tags, description }) => (
             <Type key={name}>
               <a href={`/viewData/dataType/${name}`}>
                 <h3>
                   {name}
                 </h3>
               </a>
-              {tags.map(({ tagName }) => (
-                <Tag key={tagName}>{tagName}</Tag>
-              ))}
+              <p>
+                {description}
+              </p>
+              <Tags>
+                {tags.map(({ tagName }) => (
+                  <Tag key={tagName}>{tagName}</Tag>
+                ))}
+              </Tags>
             </Type>
           ))}
         </div>

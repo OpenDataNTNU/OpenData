@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+const Wrapper = styled.div`
+  padding: 0.5em;
+`;
+
 const Tag = styled.div`
   background-color: #eeeeee;
   color: #595959;
@@ -33,9 +37,8 @@ export const MetadataByTypeBody = (props) => {
     internal();
   }, [name]);
 
-
   return (
-    <div>
+    <Wrapper>
       <h1>
         Metadata type:
         {` ${name}`}
@@ -60,7 +63,7 @@ export const MetadataByTypeBody = (props) => {
           </a>
         ))}
       </ul>
-    </div>
+    </Wrapper>
   );
 };
 

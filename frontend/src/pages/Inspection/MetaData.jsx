@@ -4,6 +4,12 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   max-width: 50em;
+  background-color: white;
+  max-width: 50em;
+  border: solid 0.2em #e4e4e4;
+  border-radius: 0.2em;
+  padding: 0;
+  margin: 0.5em;
 `;
 
 const DateLine = styled.p`
