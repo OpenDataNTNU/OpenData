@@ -27,6 +27,8 @@ function user(state = {}, action) {
       return {
         registered: false,
       };
+    case userConstants.SET_USER_LOGOUT:
+      return {};
     case userConstants.SET_USER_CLEAR:
       return {};
     default:
