@@ -117,8 +117,8 @@ const Header = () => {
         history.push('/login');
         break;
       }
-      case 'Account': {
-        history.push('/account');
+      case 'Logout': {
+        history.push('/logout');
         break;
       }
       default: {
@@ -147,8 +147,8 @@ const Header = () => {
               <NavInternalLink to="/about">
                 <p>About</p>
               </NavInternalLink>
-              <NavInternalLink to={user && user.mail ? '/account' : '/login'}>
-                <p>{user && user.mail ? 'Account' : 'Sign in'}</p>
+              <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>
+                <p>{user && user.mail ? 'Logout' : 'Sign in'}</p>
               </NavInternalLink>
             </Nav>
           )
@@ -160,7 +160,7 @@ const Header = () => {
                 { id: 'Source Code', title: 'Source Code' },
                 { id: 'Docs', title: 'Docs' },
                 { id: 'About', title: 'About' },
-                { id: user && user.mail ? 'Account' : 'Sign in', title: user && user.mail ? 'Account' : 'Sign in' },
+                { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}
             />
           )

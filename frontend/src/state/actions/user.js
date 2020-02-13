@@ -76,9 +76,15 @@ function clearUserObject() {
   return { type: userConstants.SET_USER_CLEAR };
 }
 
+// Logs out the user by clearing the user object
+function logout() {
+  return { type: userConstants.SET_USER_LOGOUT };
+}
+
 const userActions = {
   login,
   register,
+  logout,
   clearUserObject,
 };
 
