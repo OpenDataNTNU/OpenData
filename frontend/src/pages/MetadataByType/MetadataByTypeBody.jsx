@@ -16,11 +16,32 @@ const Tag = styled.div`
   margin: 0.3em;
 `;
 
+const State = styled.div`
+  padding: 0 0.4em;
+  background-color: ${({ color }) => color};
+`;
+
+const releaseStates = [
+  <State color="#9999dd">
+    Released
+  </State>,
+  <State color="#00ff00">
+    Ready to release
+  </State>,
+  <State color="#ffff33">
+    Needs work
+  </State>,
+  <State color="#cc4444">
+    Not releasable
+  </State>,
+];
+
 export const MetadataByTypeBody = (props) => {
   const { name } = props;
   const [metadatas, setMetadatas] = useState([]);
   const [tags, setTags] = useState([]);
   const [description, setDescription] = useState('');
+  const [search, setSearch] = useState('');
 
   // get list of municipalities offering the metadata
   useEffect(() => {
@@ -54,15 +75,33 @@ export const MetadataByTypeBody = (props) => {
         ))}
       </div>
       <h3>This data set is offered by:</h3>
-      <ul>
-        {metadatas.map(({ uuid, municipalityName }) => (
-          <a key={uuid} href={`/viewData/dataset/${uuid}`}>
-            <p>
-              {municipalityName}
-            </p>
-          </a>
-        ))}
-      </ul>
+      <input type="text" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Release state</th>
+          </tr>
+        </thead>
+        <tbody>
+          {metadatas
+            .filter(({ municipalityName }) => (
+              municipalityName.toLowerCase().includes(search.toLowerCase())
+            ))
+            .map(({ uuid, municipalityName, releaseState }) => (
+              <tr key={uuid}>
+                <td>
+                  <a href={`/viewData/dataset/${uuid}`}>
+                    {municipalityName}
+                  </a>
+                </td>
+                <td>
+                  {releaseStates[releaseState - 1]}
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </Wrapper>
   );
 };
