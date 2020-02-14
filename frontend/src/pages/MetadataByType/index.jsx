@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
 import { Template } from '../../sharedComponents/Template';
@@ -12,12 +11,4 @@ export const MetadataByType = () => {
       <MetadataByTypeBody name={name} />
     </Template>
   );
-};
-
-MetadataByType.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
 };

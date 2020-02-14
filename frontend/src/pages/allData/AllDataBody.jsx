@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
 
@@ -73,11 +74,11 @@ export const AllDataBody = () => {
         <div>
           {metadataTypes.map(({ name, tags, description }) => (
             <Type key={name}>
-              <a href={`/viewData/dataType/${name}`}>
+              <Link to={`/viewData/dataType/${name}`}>
                 <h3>
                   {name}
                 </h3>
-              </a>
+              </Link>
               <p>
                 {description}
               </p>

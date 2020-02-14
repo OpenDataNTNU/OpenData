@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 
 import { alertActions } from '../../state/actions/alert';
@@ -113,9 +114,9 @@ export const MetadataByTypeBody = ({ name }) => {
             .map(({ uuid, municipalityName, releaseState }) => (
               <tr key={uuid}>
                 <td>
-                  <a href={`/viewData/dataset/${uuid}`}>
+                  <Link to={`/viewData/dataset/${uuid}`}>
                     {municipalityName}
-                  </a>
+                  </Link>
                 </td>
                 <td>
                   {releaseStates[releaseState - 1]}
