@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Template } from '../../sharedComponents/Template';
 import { useParams } from 'react-router-dom';
+import { MunicipalityCategories } from './MunicipalityCategories';
+import { Template } from '../../sharedComponents/Template';
+import { NoResult } from './NoResult';
 
 const MunicipalitiesViewContainer = styled.div`
   display: flex;
@@ -11,17 +13,20 @@ const MunicipalitiesViewContainer = styled.div`
   margin: auto;
   background-color: white;
 `;
+
 const LeftPaneForm = styled.form`
   max-width: 15em;
   display: flex;
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
+  border-left: 0.1em solid lightgray;
   height: 100%;
   
   & > h2 {
     padding: 0.2em 0.5em;
   }
 `;
+
 const RadioDiv = styled.label`
   padding: 0;
   border-bottom: 0.1em solid lightgray;
@@ -44,30 +49,18 @@ const RadioDiv = styled.label`
   
   & > input[type="radio"]:checked+label {
     font-weight: bold;
+    border-left: solid 0.4em lightgray;
   }
 `;
-const NoMunicipality = styled.div`
-  padding: 2em;
-  display: flex;
+
+const ResultView = styled.div`
   flex: 1;
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-  
-  & > p {
-    color: lightgray;
-    font-size: 10em;
-    max-width: 40em;
-    font-weight: bold;
-  }
 `;
 
 const MunicipalitiesView = () => {
   // let { urlMunicipality, urlCategory } = useParams();
-
   const [municipalities, setMunicipalities] = useState([]);
-  const [selectedMunicipality, setSelectedMunicipality] = useState([]);
+  const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   useState(() => {
     const internal = async () => {
       const res = await fetch('/api/Municipality');
@@ -101,15 +94,13 @@ const MunicipalitiesView = () => {
             </RadioDiv>
           )) }
         </LeftPaneForm>
-        <div>
-          { selectedMunicipality ? <MunicipalityCategories municipality={selectedMunicipality} />
+        <ResultView>
+          { selectedMunicipality !== null
+            ? <MunicipalityCategories municipalityName={selectedMunicipality} />
             : (
-              <NoMunicipality>
-                <p>Select a municipality from the left side</p>
-              </NoMunicipality>
-            )
-          }
-        </div>
+              <NoResult text="Select a municipality to examine." />
+            )}
+        </ResultView>
       </MunicipalitiesViewContainer>
     </Template>
   );
