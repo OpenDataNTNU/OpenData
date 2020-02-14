@@ -4,6 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 import fetch from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import { AllDataBody } from '../../../src/pages/allData/AllDataBody';
 
@@ -38,10 +40,14 @@ describe('Displays all top-level datasets', () => {
   // redux store
   let store;
 
+  // router history
+  let history;
+
   beforeEach(() => {
     fetch.resetMocks();
     const mockStore = configureStore();
     store = mockStore({});
+    history = createMemoryHistory();
   });
 
 
@@ -51,7 +57,9 @@ describe('Displays all top-level datasets', () => {
       findByText, getByText, queryAllByText,
     } = render(
       <Provider store={store}>
-        <AllDataBody />
+        <Router history={history}>
+          <AllDataBody />
+        </Router>
       </Provider>,
     );
 
