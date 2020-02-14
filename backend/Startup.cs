@@ -16,9 +16,11 @@ using OpenData.Services;
 using OpenData.Domain.Models;
 using OpenData.Middleware;
 
+using System;
+using System.IO;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 using Microsoft.OpenApi.Models;
 
@@ -90,7 +92,8 @@ namespace OpenData
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Description = "", Version = "v1" });
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "backend.xml"));
             }); 
         }
 
