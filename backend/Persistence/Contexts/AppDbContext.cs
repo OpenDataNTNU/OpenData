@@ -45,7 +45,8 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<User>().HasKey(p => p.Mail);
             builder.Entity<User>().Property(p => p.Password).IsRequired();
             builder.Entity<User>().Property(p => p.PasswordSalt).IsRequired();
-            
+            builder.Entity<User>().HasOne(p => p.Municipality);
+
             builder.Entity<Backend>().ToTable("Backends");
             builder.Entity<Backend>().HasKey(p => p.Name);
             builder.Entity<Backend>().Property(p => p.Description).IsRequired();

@@ -23,12 +23,14 @@ namespace OpenData.Controllers
 		private readonly IUserService usersService;
         private readonly ISecurityService securityService;
         private readonly IMapper mapper;
+        private readonly IMunicipalityService municipalityService;
 
-        public UserController(IUserService userService, ISecurityService securityService, IMapper mapper) 
+        public UserController(IUserService userService, ISecurityService securityService, IMapper mapper, IMunicipalityService municipalityService) 
 		{
 			this.usersService = userService;
             this.securityService = securityService;
             this.mapper = mapper;
+            this.municipalityService = municipalityService;
         }
 
         [AllowAnonymous]
@@ -47,7 +49,12 @@ namespace OpenData.Controllers
         }
 
         
-
+        /// <summary>
+        /// Creates a user with hashed+salted password.
+        /// Also tries to tie the user to a municipality iff the user´s mail domain matches a municipality.
+        /// </summary>
+        /// <param name="newUser">A new user object which contains username and password</param>
+        /// <returns>A PrivateSafeUserResource which does not include sensitive info.</returns>
         [AllowAnonymous]
         [HttpPut]
         public async Task<IActionResult> CreateUser([FromBody] NewUserResource newUser)
@@ -63,6 +70,13 @@ namespace OpenData.Controllers
             User user = new User { Mail = newUser.Mail, Password = hashedPassword, PasswordSalt = salt };
             user.PasswordSalt = salt;
 
+            string mailDomain = newUser.Mail.Substring(newUser.Mail.IndexOf('@') + 1);
+            Municipality municipality = await municipalityService.GetMunicipalityByDomainAsync(mailDomain);
+
+            if (municipality != null)
+            {
+                user.MunicipalityName = municipality.Name;
+            }
 
             try
             {
