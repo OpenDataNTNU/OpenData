@@ -2,6 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import fetch from 'jest-fetch-mock';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
 
 import { AllDataBody } from '../../../src/pages/allData/AllDataBody';
 
@@ -32,9 +34,14 @@ const dataTypesResponse = `[
   }
 ]`;
 
-describe('Displays all bottom-level datasets with a given name', () => {
+describe('Displays all top-level datasets', () => {
+  // redux store
+  let store;
+
   beforeEach(() => {
     fetch.resetMocks();
+    const mockStore = configureStore();
+    store = mockStore({});
   });
 
 
@@ -43,7 +50,9 @@ describe('Displays all bottom-level datasets with a given name', () => {
     const {
       findByText, getByText, queryAllByText,
     } = render(
-      <AllDataBody />,
+      <Provider store={store}>
+        <AllDataBody />
+      </Provider>,
     );
 
     // wait for the data to load

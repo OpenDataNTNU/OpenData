@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+
+import { alertActions } from '../../state/actions/alert';
+
 const Wrapper = styled.div`
+  flex: 1;
   padding: 0.5em;
 `;
 
@@ -36,24 +41,41 @@ const releaseStates = [
   </State>,
 ];
 
-export const MetadataByTypeBody = (props) => {
-  const { name } = props;
+export const MetadataByTypeBody = ({ name }) => {
   const [metadatas, setMetadatas] = useState([]);
   const [tags, setTags] = useState([]);
   const [description, setDescription] = useState('');
   const [search, setSearch] = useState('');
 
+  // redux, for error messages
+  const dispatch = useDispatch();
+
   // get list of municipalities offering the metadata
   useEffect(() => {
     const internal = async () => {
-      const res = await fetch(`/api/metadataType/${name}`);
-      const {
-        metadataList, tags: receivedTags, description: receivedDescription,
-      } = await res.json();
-      const tagNames = receivedTags.map(({ tagName }) => tagName);
-      setMetadatas(metadataList);
-      setTags(tagNames);
-      setDescription(receivedDescription);
+      try {
+        const res = await fetch(`/api/metadataType/${name}`);
+        const { status, ok } = res;
+        if (!ok) {
+          const err = new Error();
+          err.status = status;
+          throw err;
+        }
+        const {
+          metadataList, tags: receivedTags, description: receivedDescription,
+        } = await res.json();
+        const tagNames = receivedTags.map(({ tagName }) => tagName);
+        setMetadatas(metadataList);
+        setTags(tagNames);
+        setDescription(receivedDescription);
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not find the dataset you requested.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch a list of municipalities offering this dataset. Please try again later.'));
+        }
+      }
     };
     internal();
   }, [name]);

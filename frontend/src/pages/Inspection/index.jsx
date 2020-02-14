@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
 import { Template } from '../../sharedComponents/Template';
-import { ViewMetadataBody } from './ViewMetadataBody';
+import { InspectionBody } from './InspectionBody';
 
-export const ViewMetadata = (props) => {
-  const { match: { params: { id } } } = props;
+export const Inspection = () => {
+  const { id } = useParams();
   return (
     <Template>
-      <ViewMetadataBody id={id} />
+      <InspectionBody id={id} />
     </Template>
   );
 };
 
-ViewMetadata.propTypes = {
+Inspection.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,

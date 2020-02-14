@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+import { alertActions } from '../../state/actions/alert';
 
 const OuterWrapper = styled.div`
   flex: 1;
@@ -42,12 +45,22 @@ const Tag = styled.div`
 export const AllDataBody = () => {
   const [metadataTypes, setMetadataTypes] = useState([]);
 
+  const dispatch = useDispatch();
+
   // get metadata types
   useEffect(() => {
     const internal = async () => {
-      const res = await fetch('/api/metadataType');
-      const j = await res.json();
-      setMetadataTypes(j);
+      try {
+        const res = await fetch('/api/metadataType');
+        const { ok } = res;
+        if (!ok) {
+          throw new Error();
+        }
+        const j = await res.json();
+        setMetadataTypes(j);
+      } catch (err) {
+        dispatch(alertActions.error('Failed to fetch metadata categories'));
+      }
     };
     internal();
   }, []);
