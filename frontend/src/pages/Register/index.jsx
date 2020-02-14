@@ -79,7 +79,7 @@ const Register = () => {
   const municipalities = useGetValidMunicipalities();
   const domains = municipalities ? municipalities.map((mun) => mun.mailDomain) : [];
   const [email, setEmail] = useState('');
-  const [typeIsKommune, setTypeIsKommune] = useState(true);
+  const [type, setType] = useState(0);
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -87,7 +87,7 @@ const Register = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const validKommuneEmail = (_email) => {
+  const validMunicipalityEmail = (_email) => {
     for (const domain of domains) { // eslint-disable-line no-restricted-syntax
       if (_email.endsWith(domain)) {
         return true;
@@ -140,11 +140,15 @@ const Register = () => {
         break;
       }
       case 'kommune': {
-        setTypeIsKommune(true);
+        setType(0);
+        break;
+      }
+      case 'business': {
+        setType(1);
         break;
       }
       case 'other': {
-        setTypeIsKommune(false);
+        setType(2);
         break;
       }
       default: {
@@ -156,8 +160,8 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
 
-    if (typeIsKommune && !validKommuneEmail(email)) {
-      dispatch(alertActions.error('Not a valid kommune email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
+    if (type === 0 && !validMunicipalityEmail(email)) {
+      dispatch(alertActions.error('Not a valid municipality email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
       return;
     }
     if (!validEmailFormat(email)) {
@@ -174,7 +178,7 @@ const Register = () => {
     }
 
     setLoading(true);
-    dispatch(userActions.register(email, password));
+    dispatch(userActions.register(email, password, type));
   };
 
   return (
@@ -187,11 +191,15 @@ const Register = () => {
             <Label htmlFor="type">Account Type:</Label>
             <CheckboxTypeWrapper>
               <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="kommune" checked={typeIsKommune} onChange={onChange} />
-                <RadioText>Kommune</RadioText>
+                <input type="radio" name="type" value="municipality" checked={type === 0} onChange={onChange} />
+                <RadioText>Municipality</RadioText>
               </ChecboxLabelWrapper>
               <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="other" checked={!typeIsKommune} onChange={onChange} />
+                <input type="radio" name="type" value="business" checked={type === 1} onChange={onChange} />
+                <RadioText>Business</RadioText>
+              </ChecboxLabelWrapper>
+              <ChecboxLabelWrapper>
+                <input type="radio" name="type" value="other" checked={type === 2} onChange={onChange} />
                 <RadioText>Other</RadioText>
               </ChecboxLabelWrapper>
             </CheckboxTypeWrapper>
