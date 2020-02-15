@@ -23,6 +23,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace OpenData
 {
@@ -84,6 +85,8 @@ namespace OpenData
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ISecurityService, SecurityService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization();
             services.AddControllers();

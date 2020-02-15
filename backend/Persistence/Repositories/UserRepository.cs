@@ -52,7 +52,8 @@ namespace OpenData.Persistence.Repositories
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Email, user.Mail)
+                    new Claim(ClaimTypes.Email, user.Mail),
+                    new Claim(ClaimTypes.Name, user.Mail)
                 }),
                 Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

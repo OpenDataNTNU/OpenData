@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,6 +13,8 @@ using OpenData.Extensions;
 
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace OpenData.Controllers
 {
@@ -20,15 +23,17 @@ namespace OpenData.Controllers
 	[Route("/api/[controller]")]
 	public class UserController : Controller
 	{
-		private readonly IUserService usersService;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUserService usersService;
         private readonly ISecurityService securityService;
         private readonly IMapper mapper;
 
-        public UserController(IUserService userService, ISecurityService securityService, IMapper mapper) 
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ISecurityService securityService, IMapper mapper) 
 		{
 			this.usersService = userService;
             this.securityService = securityService;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [AllowAnonymous]
@@ -81,6 +86,15 @@ namespace OpenData.Controllers
             }
 
             return Created("Created new user successfully!", safeUser);
+        }
+
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetUser()
+        {
+            var users = await usersService.GetAllUsersAsync();
+            IEnumerable<SafeUserResource> safeUsers = mapper.Map<IEnumerable<User>, IEnumerable<SafeUserResource>>(users);
+            var targetUsername = httpContextAccessor.HttpContext.User.Identity.Name;
+            return Ok(safeUsers.Single<SafeUserResource>((SafeUserResource ur) => ur.Mail == targetUsername));
         }
 
 
