@@ -79,7 +79,7 @@ const Register = () => {
   const municipalities = useGetValidMunicipalities();
   const domains = municipalities ? municipalities.map((mun) => mun.mailDomain) : [];
   const [email, setEmail] = useState('');
-  const [type, setType] = useState(0);
+  const [type, setType] = useState('municipality');
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -139,16 +139,12 @@ const Register = () => {
         setVerifyPassword(e.target.value);
         break;
       }
-      case 'kommune': {
-        setType(0);
+      case 'municipality': {
+        setType('municipality');
         break;
       }
-      case 'business': {
-        setType(1);
-        break;
-      }
-      case 'other': {
-        setType(2);
+      case 'standard': {
+        setType('standard');
         break;
       }
       default: {
@@ -160,7 +156,7 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
 
-    if (type === 0 && !validMunicipalityEmail(email)) {
+    if (type === 'municipality' && !validMunicipalityEmail(email)) {
       dispatch(alertActions.error('Not a valid municipality email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
       return;
     }
@@ -195,12 +191,8 @@ const Register = () => {
                 <RadioText>Municipality</RadioText>
               </ChecboxLabelWrapper>
               <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="business" checked={type === 1} onChange={onChange} />
-                <RadioText>Business</RadioText>
-              </ChecboxLabelWrapper>
-              <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="other" checked={type === 2} onChange={onChange} />
-                <RadioText>Other</RadioText>
+                <input type="radio" name="type" value="standard" checked={type === 2} onChange={onChange} />
+                <RadioText>Standard</RadioText>
               </ChecboxLabelWrapper>
             </CheckboxTypeWrapper>
           </RadioWrapper>
