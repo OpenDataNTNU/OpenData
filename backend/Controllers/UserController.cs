@@ -51,9 +51,10 @@ namespace OpenData.Controllers
         
         /// <summary>
         /// Creates a user with hashed+salted password.
-        /// Also tries to tie the user to a municipality iff the user´s mail domain matches a municipality.
+        /// Iff the user type is set to municipality and the user has a municipality given mail domain,
+        /// the user will be tied to a municipality.
         /// </summary>
-        /// <param name="newUser">A new user object which contains username and password</param>
+        /// <param name="newUser">A new user object which contains username, password and usertype</param>
         /// <returns>A PrivateSafeUserResource which does not include sensitive info.</returns>
         [AllowAnonymous]
         [HttpPut]
@@ -67,15 +68,26 @@ namespace OpenData.Controllers
             string salt = securityService.GenerateSalt();
             string hashedPassword = securityService.HashPassword(newUser.Password, salt);
 
-            User user = new User { Mail = newUser.Mail, Password = hashedPassword, PasswordSalt = salt };
-            user.PasswordSalt = salt;
-
-            string mailDomain = newUser.Mail.Substring(newUser.Mail.IndexOf('@') + 1);
-            Municipality municipality = await municipalityService.GetMunicipalityByDomainAsync(mailDomain);
-
-            if (municipality != null)
+            User user = new User
             {
+                Mail = newUser.Mail,
+                Password = hashedPassword,
+                PasswordSalt = salt,
+                UserType = newUser.UserType
+            };
+
+            if (user.UserType == UserType.Municipality)
+            {
+                string mailDomain = newUser.Mail.Substring(newUser.Mail.IndexOf('@') + 1);
+                Municipality municipality = await municipalityService.GetMunicipalityByDomainAsync(mailDomain);
+                if (municipality == null)
+                {
+                    return BadRequest("Invalid municipality domain given for municipality account!");
+                }
                 user.MunicipalityName = municipality.Name;
+            } else if(user.UserType == UserType.Admin)
+            {
+                return BadRequest("You do not have permissions to create an admin account!");
             }
 
             try

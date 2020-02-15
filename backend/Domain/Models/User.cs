@@ -8,6 +8,8 @@ namespace OpenData.Domain.Models
     {
         [Description("standard")]
         Standard,
+        [Description("municipality")]
+        Municipality,
         [Description("admin")]
         Admin
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using OpenData.Domain.Models;
 
 namespace OpenData.Resources
 {
@@ -14,5 +15,8 @@ namespace OpenData.Resources
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public UserType UserType { get; set; }
     }
 }
