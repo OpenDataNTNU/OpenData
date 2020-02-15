@@ -67,18 +67,21 @@ namespace OpenData.Controllers
 			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
-				var experience = _mapper.Map<SaveExperiencePostResource, ExperiencePost>(experienceResource);
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+			
+			var experience = _mapper.Map<SaveExperiencePostResource, ExperiencePost>(experienceResource);
 
-				experience.Modified = DateTime.UtcNow;
-				experience.Created = DateTime.UtcNow;
+			experience.Modified = DateTime.UtcNow;
+			experience.Created = DateTime.UtcNow;
 
-				var result = await _experiencePostService.SaveAsync(experience);
+			var result = await _experiencePostService.SaveAsync(experience);
 
-				metadata.ExperiencePost = experience;
-				//commit change to metadata
-				await _unitOfWork.CompleteAsync();
+			metadata.ExperiencePost = experience;
+			//commit change to metadata
+			await _unitOfWork.CompleteAsync();
 
-				return Ok(result);
+			return Ok(result);
 		}
 
 		[HttpPut]
