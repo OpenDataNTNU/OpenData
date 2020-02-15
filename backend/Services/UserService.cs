@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using OpenData.Domain.Models;
 using OpenData.Domain.Services;
 using OpenData.Domain.Repositories;
-
+using OpenData.Resources;
 
 namespace OpenData.Services
 {
@@ -30,6 +30,11 @@ namespace OpenData.Services
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await usersRepository.GetAll();
+        }
+
+        public async Task<User> GetUserByMailAsync(string mail)
+        {
+            return await usersRepository.GetUserByMailAsync(mail);
         }
     }
 }

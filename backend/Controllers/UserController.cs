@@ -91,10 +91,10 @@ namespace OpenData.Controllers
         [HttpGet("profile")]
         public async Task<IActionResult> GetUser()
         {
-            var users = await usersService.GetAllUsersAsync();
-            IEnumerable<SafeUserResource> safeUsers = mapper.Map<IEnumerable<User>, IEnumerable<SafeUserResource>>(users);
             var targetUsername = httpContextAccessor.HttpContext.User.Identity.Name;
-            return Ok(safeUsers.Single<SafeUserResource>((SafeUserResource ur) => ur.Mail == targetUsername));
+            User user = await usersService.GetUserByMailAsync(targetUsername);
+            SafeUserResource privateSafeUser = mapper.Map<User, SafeUserResource>(user);
+            return Ok(privateSafeUser);
         }
 
 
