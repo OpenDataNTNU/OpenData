@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { MunicipalityCategories } from './MunicipalityCategories';
+import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
 import { Template } from '../../sharedComponents/Template';
 import { NoResult } from './NoResult';
 
@@ -33,7 +33,7 @@ const RadioDiv = styled.label`
   cursor: pointer;
   
   &:hover {
-    background-color: #efefef;
+    background-color: #f2f2f2;
   }
   
   & > input[type="radio"] {
@@ -55,19 +55,23 @@ const RadioDiv = styled.label`
 
 const ResultView = styled.div`
   flex: 1;
+  display: flex;
 `;
 
 const MunicipalitiesView = () => {
   // let { urlMunicipality, urlCategory } = useParams();
   const [municipalities, setMunicipalities] = useState([]);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
+  const [loading, setLoading] = useState(true);
   useState(() => {
     const internal = async () => {
+      setLoading(true);
       const res = await fetch('/api/Municipality');
       const receivedMunicipalities = await res.json();
       if (receivedMunicipalities) {
         setMunicipalities(receivedMunicipalities);
       }
+      setLoading(false);
     };
     internal();
   }, []);
@@ -77,26 +81,30 @@ const MunicipalitiesView = () => {
     setSelectedMunicipality(value);
   };
 
-  useEffect(() => {
-    // Add some things?
-
-  }, [selectedMunicipality]);
-
+  if (loading) {
+    return (
+      <Template>
+        <NoResult text="Loading municipalities..." />
+      </Template>
+    );
+  }
   return (
     <Template>
       <MunicipalitiesViewContainer>
         <LeftPaneForm onChange={handleMunicipalitySelection}>
           <h2>Municipality</h2>
-          { municipalities.map((m) => (
-            <RadioDiv>
-              <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
-              <label htmlFor={`radio-${m.name}`}>{m.name}</label>
-            </RadioDiv>
-          )) }
+          { municipalities.length === 0 ? <p>No municipalities found!</p>
+            : municipalities.map((m) => (
+              <RadioDiv key={m.name}>
+                <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
+                <label htmlFor={`radio-${m.name}`}>{m.name}</label>
+              </RadioDiv>
+            )) }
         </LeftPaneForm>
+
         <ResultView>
           { selectedMunicipality !== null
-            ? <MunicipalityCategories municipalityName={selectedMunicipality} />
+            ? <MunicipalityMetadataResults municipalityName={selectedMunicipality} />
             : (
               <NoResult text="Select a municipality to examine." />
             )}

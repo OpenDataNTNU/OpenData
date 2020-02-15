@@ -6,46 +6,60 @@ import { SingleMetaDataResult } from './SingleMetaDataResult';
 
 const MunicipalityCategoriesContainer = styled.div`
   height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+const ResultsContainer = styled.div`
+  flex: 1;
+  
 `;
 
-const MunicipalityCategories = (props) => {
+const MunicipalityMetadataResults = (props) => {
   const { municipalityName } = props;
   const [metaDataSet, setMetadataSet] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  useState(() => {
+  useEffect(() => {
     const internal = async () => {
-      const res = await fetch('/api/Metadata'); // TODO: Filter this result within API, not frontend!
-      console.log(res);
+      setLoading(true);
+      const res = await fetch('/api/Metadata');
+      // TODO: Filter this result within API, not frontend!
       const receivedMetadataSet = await res.json();
-      console.log(receivedMetadataSet);
       const filteredResult = receivedMetadataSet.filter((m) => (
         m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
       ));
       if (receivedMetadataSet) {
         setMetadataSet(filteredResult);
       }
+      setLoading(false);
     };
     internal();
-  }, []);
+  }, [municipalityName]);
 
+
+  if (loading) return <NoResult text="Loading..." />;
   return (
     <MunicipalityCategoriesContainer>
-      { metaDataSet.length === 0 ? (
-        <NoResult text="No result was found." />
-      )
-        : metaDataSet.map((m) => (
-          <SingleMetaDataResult metadata={m} />
-        ))}
+      <h1>{municipalityName}</h1>
+      <ResultsContainer>
+        { metaDataSet.length === 0 ? (
+          <NoResult text={`No results were found for ${municipalityName}.`} />
+        )
+          : metaDataSet.map((m) => (
+            <SingleMetaDataResult key={m.uuid} metadata={m} />
+          ))}
+      </ResultsContainer>
     </MunicipalityCategoriesContainer>
   );
 };
 
-MunicipalityCategories.propTypes = {
+MunicipalityMetadataResults.propTypes = {
   municipalityName: PropTypes.string.isRequired,
 
 };
 
 export {
-  MunicipalityCategories,
+  MunicipalityMetadataResults,
 
 };

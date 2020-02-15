@@ -4,12 +4,13 @@ import styled from 'styled-components';
 const NoResultContainer = styled.div`
   padding: 2em;
   display: flex;
-  height: 100%;
+  
   flex: 1;
   align-content: center;
   align-items: center;
   justify-content: center;
   justify-items: center;
+  box-sizing: content-box;
   
   & > p {
     display: inline-block;
