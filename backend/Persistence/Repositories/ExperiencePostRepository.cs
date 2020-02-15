@@ -18,7 +18,7 @@ namespace OpenData.Persistence.Repositories
 
         public async Task<IEnumerable<ExperiencePost>> GetListAsync()
         {
-            return await _context.ExperiencePosts.ToListAsync();
+            return await _context.ExperiencePosts.Include(p => p.Tags).ToListAsync();
         }
 
         public async Task<ExperiencePost> GetByUuidAsync(Guid uuid) {
