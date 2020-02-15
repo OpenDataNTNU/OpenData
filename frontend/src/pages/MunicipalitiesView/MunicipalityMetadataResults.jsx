@@ -12,7 +12,6 @@ const MunicipalityCategoriesContainer = styled.div`
 `;
 const ResultsContainer = styled.div`
   flex: 1;
-  
 `;
 
 const MunicipalityMetadataResults = (props) => {
@@ -38,7 +37,14 @@ const MunicipalityMetadataResults = (props) => {
   }, [municipalityName]);
 
 
-  if (loading) return <NoResult text="Loading..." />;
+  if (loading) {
+    return (
+      <MunicipalityCategoriesContainer>
+        <h1>{municipalityName}</h1>
+        <NoResult text="Loading..." />
+      </MunicipalityCategoriesContainer>
+    );
+  }
   return (
     <MunicipalityCategoriesContainer>
       <h1>{municipalityName}</h1>
