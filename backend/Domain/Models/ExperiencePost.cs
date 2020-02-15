@@ -10,9 +10,13 @@ namespace OpenData.Domain.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Uuid { get; set; }
 
+		public string Title { get; set; }
+
 		public string Contents { get; set; }
 
 		public User LastEditedBy { get; set;}
+
+		public IList<ExperiencePostTagMapping> Tags { get; set; }
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		public DateTime Created { get; set; }

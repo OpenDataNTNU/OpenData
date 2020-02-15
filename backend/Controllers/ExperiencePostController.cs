@@ -22,12 +22,14 @@ namespace OpenData.Controllers
 		private readonly IExperiencePostService _experiencePostService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly ITagService _tagService;
 
-		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork) 
+		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork, ITagService tagService) 
 		{
 			_experiencePostService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
+			_tagService = tagService;
 		}
 
 		//TODO this needs authentication
@@ -49,9 +51,42 @@ namespace OpenData.Controllers
 				var type = await _experiencePostService.GetByUuidAsync(Guid.Parse(uuid));
 				var res = _mapper.Map<ExperiencePost, ExperiencePostResource>(type);
 				return res;
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
+		}
+
+		/// <summary>
+		/// Adds a new tag to an existing experience post.
+		/// </summary>
+		[HttpPut("{uuid}/tag")]
+		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, string uuid)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+
+			//Try to fetch the metadata type, and return 404 if it doesnt exist
+			ExperiencePost post = null;
+			try {
+				post = await _experiencePostService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+			// Same but with tags
+			Tag tag = null;
+			try {
+				tag = await _tagService.GetByNameAsync(newTag.Name);
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+			post.Tags.Add(new ExperiencePostTagMapping { Tag = tag, Post = post});
+
+			var res = _mapper.Map<ExperiencePost, ExperiencePostResource>(post);
+
+			await _unitOfWork.CompleteAsync();
+			return Ok(res);
 		}
 	}
 }

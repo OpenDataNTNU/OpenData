@@ -7,6 +7,10 @@ namespace OpenData.Domain.Models
 	{
 		public Guid Uuid { get; set; }
 
+		public string Title { get; set; }
+
+		public IList<ExperiencePostTagMappingResource> Tags { get; set; }
+
 		public string Contents { get; set; }
 
 		public User LastEditedBy { get; set;}

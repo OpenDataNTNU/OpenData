@@ -111,6 +111,11 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<ExperiencePost>().HasOne(p => p.LastEditedBy);
             builder.Entity<ExperiencePost>().Property(p => p.Created).IsRequired();
             builder.Entity<ExperiencePost>().Property(p => p.Modified).IsRequired();
+
+            builder.Entity<ExperiencePostTagMapping>().ToTable("ExperiencePostTagMapping");
+            builder.Entity<ExperiencePostTagMapping>().HasKey(p => new {p.TagName, p.ExperiencePostGuid});
+            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Post).WithMany(p => p.Tags).HasForeignKey(p => p.ExperiencePostGuid);
+            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
         }
     }
 }
