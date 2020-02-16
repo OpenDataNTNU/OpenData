@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
 
@@ -29,11 +30,16 @@ const Select = styled.select`
   margin: 0.5em 1em;
 `;
 
+const TextArea = styled.textarea`
+  flex: 0 0 10em;
+  margin: 0.5em 1em;
+`;
+
 const RadioLabel = styled.label`
   border-radius: 0.2em;
   padding: 0.2em;
-  ${(props) => (props.background ? `background-color: ${props.background};` : '')}
-  ${(props) => (props.border ? `border: 1px solid ${props.border};` : '')}
+  ${({ background }) => (background ? `background-color: ${background};` : '')}
+  ${({ border }) => (border ? `border: 1px solid ${border};` : '')}
 `;
 
 const HorizontalWrapper = styled.div`
@@ -55,6 +61,9 @@ export const MetadataForm = () => {
   // municipalities should be objects with a "name" key
   const [municipalities, setMunicipalities] = useState([]);
   const [metadataTypes, setMetadataTypes] = useState([]);
+  const dataFormats = ['JSON', 'CSV'];
+
+  const [submissionStatus, setSubmissionStatus] = useState('');
 
   const dispatch = useDispatch();
 
@@ -121,15 +130,25 @@ export const MetadataForm = () => {
         method: 'PUT',
         body: JSON.stringify(state),
         headers: {
-          format: 'application/json',
+          'Content-Type': 'application/json',
         },
       });
       // assuming that any successful response is a JSON object
-      await res.json();
+      const { status, ok } = res;
+      if (!ok) {
+        const err = new Error();
+        err.status = status;
+        throw err;
+      }
+      setSubmissionStatus('success');
     } catch (err) {
       dispatch(alertActions.error('Failed to post dataset'));
     }
   };
+
+  if (submissionStatus === 'success') {
+    return <Redirect to="/viewData" />;
+  }
 
   const {
     metadataTypeName, releaseState, description, formatName, municipalityName, url,
@@ -139,11 +158,14 @@ export const MetadataForm = () => {
     <Wrapper>
       <StyledForm>
         <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange}>
-          <option value="">
-            Metadata type
-          </option>
+          <option value="">Metadata type</option>
           {metadataTypes.map(({ name }) => <option key={name} value={name}>{name}</option>)}
         </Select>
+        <p>
+          Are none of these types appropriate?
+          {' '}
+          <Link to="/newMetadataType">Create a new one</Link>
+        </p>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
             <Input type="radio" name="releaseState" value={1} id="bluelight" checked={releaseState === 1} onChange={handleRadioChange} />
@@ -162,8 +184,11 @@ export const MetadataForm = () => {
             {' Red'}
           </RadioLabel>
         </HorizontalWrapper>
-        <Input type="text" placeholder="description" name="description" value={description} onChange={handleChange} />
-        <Input type="text" placeholder="format" name="formatName" value={formatName} onChange={handleChange} />
+        <TextArea placeholder="description" name="description" value={description} onChange={handleChange} />
+        <Select name="formatName" value={formatName} onChange={handleChange}>
+          <option value="">Data format</option>
+          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
+        </Select>
         <Select name="municipalityName" value={municipalityName} onChange={handleChange}>
           <option value="">Municipality</option>
           {
