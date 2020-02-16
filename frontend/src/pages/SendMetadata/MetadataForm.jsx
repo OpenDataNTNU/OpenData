@@ -44,13 +44,14 @@ const HorizontalWrapper = styled.div`
 
 export const MetadataForm = () => {
   const [state, setState] = useState({
-    metadataType: '',
+    metadataTypeName: '',
     releaseState: 1,
     description: '',
-    tags: '',
-    format: '',
-    municipality: '',
+    formatName: '',
+    municipalityName: '',
+    url: '',
   });
+
   // municipalities should be objects with a "name" key
   const [municipalities, setMunicipalities] = useState([]);
   const [metadataTypes, setMetadataTypes] = useState([]);
@@ -116,7 +117,7 @@ export const MetadataForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await fetch('/api/metadata', {
+      const res = await fetch('/api/Metadata', {
         method: 'PUT',
         body: JSON.stringify(state),
         headers: {
@@ -126,19 +127,18 @@ export const MetadataForm = () => {
       // assuming that any successful response is a JSON object
       await res.json();
     } catch (err) {
-      dispatch(alertActions.error('Failed to post this dataset'));
+      dispatch(alertActions.error('Failed to post dataset'));
     }
   };
 
   const {
-    metadataType, releaseState, description, tags, format, municipality,
+    metadataTypeName, releaseState, description, formatName, municipalityName, url,
   } = state;
-
 
   return (
     <Wrapper>
       <StyledForm>
-        <Select name="metadataType" value={metadataType} onChange={handleChange}>
+        <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange}>
           <option value="">
             Metadata type
           </option>
@@ -163,14 +163,14 @@ export const MetadataForm = () => {
           </RadioLabel>
         </HorizontalWrapper>
         <Input type="text" placeholder="description" name="description" value={description} onChange={handleChange} />
-        <Input type="text" placeholder="tags (separated by comma)" name="tags" value={tags} onChange={handleChange} />
-        <Input type="text" placeholder="format" name="format" value={format} onChange={handleChange} />
-        <Select name="municipality" value={municipality} onChange={handleChange}>
+        <Input type="text" placeholder="format" name="formatName" value={formatName} onChange={handleChange} />
+        <Select name="municipalityName" value={municipalityName} onChange={handleChange}>
           <option value="">Municipality</option>
           {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
+        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} />
         <Input type="submit" value="Submit" onClick={handleSubmit} />
       </StyledForm>
     </Wrapper>
