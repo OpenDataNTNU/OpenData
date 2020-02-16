@@ -41,7 +41,7 @@ async function register(email, password, type) {
   const data = {
     mail: email,
     password,
-    type,
+    userType: type,
   };
 
   const response = await fetch(url, {
@@ -67,8 +67,7 @@ async function register(email, password, type) {
   } else if (response.status === 409) {
     throw new Error('Email address is already in use.');
   } else if (response.status === 400) {
-    const error = response.json();
-    throw new Error(error);
+    throw new Error('Provided credentials did not comply with registration rules.');
   } else {
     throw new Error('Unexpected error');
   }

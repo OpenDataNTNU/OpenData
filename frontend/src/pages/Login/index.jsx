@@ -21,6 +21,7 @@ const Wrapper = styled.div`
 
 const Form = styled.form`
   max-width: 30em;
+  min-width: 15em;
   display: flex;
   flex-direction: column;
   padding: 1em;

@@ -23,6 +23,7 @@ const Wrapper = styled.div`
 
 const Form = styled.form`
   max-width: 30em;
+  min-width: 15em;
   display: flex;
   flex-direction: column;
   padding: 1em;
@@ -79,7 +80,7 @@ const Register = () => {
   const municipalities = useGetValidMunicipalities();
   const domains = municipalities ? municipalities.map((mun) => mun.mailDomain) : [];
   const [email, setEmail] = useState('');
-  const [type, setType] = useState('municipality');
+  const [type, setType] = useState(1);
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -139,12 +140,8 @@ const Register = () => {
         setVerifyPassword(e.target.value);
         break;
       }
-      case 'municipality': {
-        setType('municipality');
-        break;
-      }
-      case 'standard': {
-        setType('standard');
+      case 'type': {
+        setType(e.target.value === 'municipality' ? 1 : 0);
         break;
       }
       default: {
@@ -156,7 +153,7 @@ const Register = () => {
   const register = (e) => {
     e.preventDefault();
 
-    if (type === 'municipality' && !validMunicipalityEmail(email)) {
+    if (type === 1 && !validMunicipalityEmail(email)) {
       dispatch(alertActions.error('Not a valid municipality email. The email must end with <your-kommune>.kommune.no (or mgk.no).'));
       return;
     }
@@ -187,11 +184,11 @@ const Register = () => {
             <Label htmlFor="type">Account Type:</Label>
             <CheckboxTypeWrapper>
               <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="municipality" checked={type === 0} onChange={onChange} />
+                <input type="radio" name="type" value="municipality" checked={type === 1} onChange={onChange} />
                 <RadioText>Municipality</RadioText>
               </ChecboxLabelWrapper>
               <ChecboxLabelWrapper>
-                <input type="radio" name="type" value="standard" checked={type === 2} onChange={onChange} />
+                <input type="radio" name="type" value="standard" checked={type === 0} onChange={onChange} />
                 <RadioText>Standard</RadioText>
               </ChecboxLabelWrapper>
             </CheckboxTypeWrapper>
