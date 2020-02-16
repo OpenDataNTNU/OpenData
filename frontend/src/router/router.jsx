@@ -12,7 +12,7 @@ import { Splash } from '../pages/Splash';
 import { AllData } from '../pages/allData';
 import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
-import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
+import { SendMetadata } from '../pages/SendMetadata';
 import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
