@@ -90,7 +90,7 @@ const Register = () => {
 
   const validMunicipalityEmail = (_email) => {
     for (const domain of domains) { // eslint-disable-line no-restricted-syntax
-      if (_email.endsWith(domain)) {
+      if (_email.endsWith(`@${domain}`)) {
         return true;
       }
     }
