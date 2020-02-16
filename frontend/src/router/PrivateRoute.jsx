@@ -17,15 +17,19 @@ function PrivateRoute(props) {
   // we may want to change the redirect between
   const redirect = <Route path={path} render={() => <Redirect to="/" />} />;
 
+  // Check if user has access
   const hasAccess = () => {
-    let access = true;
-    if (admin && role === 2) { return true; }
-    if (admin) { access = false; }
-    if (municipality && role === 1) { return true; }
-    if (municipality) { access = false; }
-    if (standard && role === 0) { return true; }
-    if (standard) { access = false; }
-    return access;
+    // Check if role based authentication is sat and if the user has that role(s)
+    if ((admin && role === 2) || (municipality && role === 1) || (standard && role === 0)) {
+      return true;
+    }
+    // If a role based authentication is sat and the user dont have that role(s) then
+    // he is not allowed to access
+    if (admin || municipality || standard) {
+      return false;
+    }
+    // If no role based authentication is sat then he is allowed to access
+    return true;
   };
 
   // if route is exclusive to logged out users:
