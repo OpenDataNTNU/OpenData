@@ -32,15 +32,15 @@ const useGetValidMunicipalities = () => {
         if (response.ok && response.status === 200) {
           // Get json data
           const Municipalities = await response.json();
-          // return tags
+          // return municipalities
           return setMunicipalities(Municipalities);
         }
 
-        // Dispatch error if we failed to get tags
+        // Dispatch error if we failed to get municipalities
         dispatch(alertActions.error('Failed to retrieve municipalities. Please try again later.'));
         return setMunicipalities(null);
       } catch (_) {
-        // Dispatch error if we failed to get tags
+        // Dispatch error if we failed to get municipalities
         dispatch(alertActions.error('Failed to retrieve municipalities. Please try again later.'));
         return setMunicipalities(null);
       }
