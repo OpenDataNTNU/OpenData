@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,6 +13,8 @@ using OpenData.Extensions;
 
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace OpenData.Controllers
 {
@@ -20,17 +23,19 @@ namespace OpenData.Controllers
 	[Route("/api/[controller]")]
 	public class UserController : Controller
 	{
-		private readonly IUserService usersService;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUserService usersService;
         private readonly ISecurityService securityService;
         private readonly IMapper mapper;
         private readonly IMunicipalityService municipalityService;
 
-        public UserController(IUserService userService, ISecurityService securityService, IMapper mapper, IMunicipalityService municipalityService) 
-		{
-			this.usersService = userService;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ISecurityService securityService, IMapper mapper, IMunicipalityService municipalityService) 
+		    {
+			      this.usersService = userService;
             this.securityService = securityService;
             this.mapper = mapper;
             this.municipalityService = municipalityService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [AllowAnonymous]
@@ -107,6 +112,15 @@ namespace OpenData.Controllers
             }
 
             return Created("Created new user successfully!", safeUser);
+        }
+
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetUser()
+        {
+            var targetUsername = httpContextAccessor.HttpContext.User.Identity.Name;
+            User user = await usersService.GetUserByMailAsync(targetUsername);
+            SafeUserResource privateSafeUser = mapper.Map<User, SafeUserResource>(user);
+            return Ok(privateSafeUser);
         }
 
 
