@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import chatIcon from '../../assets/ui/chat.svg';
-import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
 import { Link } from 'react-router-dom';
+import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
+
+// TODO: for feedback/comments
+// import chatIcon from '../../assets/ui/chat.svg';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5em;
@@ -41,6 +43,7 @@ const MetaDataLink = styled(Link)`
   color: rebeccapurple;
   font-size: 0.9em;
 `;
+/* TODO: Uncomment this for feedback/comments
 const MetaDataRating = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,17 +56,17 @@ const CommentsIcon = styled.a`
   flex-direction: column;
   align-items: center;
   align-content: center;
-  
+
   & > p {
     font-size: 0.8em;
     max-width: 6em;
     text-align: center;
   }
-  
   & > img {
     max-width: 1.4em;
   }
 `;
+*/
 const URLWrapper = styled.a`
   display: flex;
   background-color: #d8e3ff;
@@ -107,8 +110,6 @@ const SingleMetaDataResult = (props) => {
           <DataFormat>{formatName}</DataFormat>
         </URLWrapper>
       </MetaDataContent>
-      {/* eslint-disable-next-line no-irregular-whitespace */}
-      {/* TODO: Correct route to single metadata page */}
       {/* TODO: Uncomment for comments
       <MetaDataRating>
         <CommentsIcon href={`URL-TO-METADATA-PAGE-${uuid}`}>

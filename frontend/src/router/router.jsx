@@ -17,7 +17,7 @@ import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Logout } from '../pages/Logout';
-import { MunicipalitiesView } from '../pages/MunicipalitiesView';
+import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -31,10 +31,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
-        {/* TODO: Use URL params for municipalities and categories */}
-        <PrivateRoute path="/municipalities/:municipality/:category" loggedOut component={MunicipalitiesView} />
-        <PrivateRoute path="/municipalities/:municipality" loggedOut component={MunicipalitiesView} />
-        <PrivateRoute path="/municipalities" loggedOut component={MunicipalitiesView} />
+        <PrivateRoute path="/municipalities" loggedOut component={MetadataByMunicipality} />
         <Route component={Error404} />
       </Switch>
     </Router>

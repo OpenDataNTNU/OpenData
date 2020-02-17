@@ -61,7 +61,7 @@ const ResultView = styled.div`
   display: flex;
 `;
 
-const MunicipalitiesView = () => {
+const MetadataByMunicipality = () => {
   // let { urlMunicipality, urlCategory } = useParams();
   const [municipalities, setMunicipalities] = useState([]);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
@@ -103,9 +103,7 @@ const MunicipalitiesView = () => {
                 <label htmlFor={`radio-${m.name}`}>{m.name}</label>
               </RadioDiv>
             )) }
-
         </LeftPaneForm>
-
         <ResultView>
           { selectedMunicipality !== null
             ? <MunicipalityMetadataResults municipalityName={selectedMunicipality} />
@@ -119,6 +117,6 @@ const MunicipalitiesView = () => {
 };
 
 export {
-  MunicipalitiesView,
+  MetadataByMunicipality,
 
 };
