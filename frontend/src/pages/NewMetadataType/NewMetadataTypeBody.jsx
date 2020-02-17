@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Multiselect from 'react-widgets/lib/Multiselect';
+import 'react-widgets/dist/css/react-widgets.css';
 
 import { useGetTags } from '../../sharedComponents/hooks/GetTags';
 
@@ -23,8 +24,13 @@ const TextArea = styled.textarea`
 `;
 
 const Select = styled(Multiselect)`
-  flex: 0 0 2em;
-  margin: 0.5em 1em;
+  & > .rw-widget-picker > div {
+    display: flex;
+    align-items: center;
+    & > ul > li {
+      margin-top 0px;
+    }
+  }
 `;
 
 export const NewMetadataTypeBody = () => {

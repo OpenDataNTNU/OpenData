@@ -52,14 +52,45 @@ const config = {
         },
       },
       {
-        test: /\.(png|jp(e*)g|svg|gif|ttf)$/,
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+      { 
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{
+            loader: "url-loader",
+            options: {
+              limit: 8000,
+              mimetype: 'application/font-woff',
+            }
+        }],
+      },
+      { 
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+        use: [{
+          loader: "file-loader",
+        }],
+      },
+      {
+        test: /\.(png|jp(e*)g|gif)$/,
         use: [{
           loader: 'url-loader',
           options: {
             limit: 8000, // Convert images < 8kb to base64 strings
-            name: '/images/[hash]-[name].[ext]',
+            name: '/assets/[hash]-[name].[ext]',
           },
         }],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '/assets/[name].[ext]',
+            },
+          },
+        ],
       },
     ],
   },
