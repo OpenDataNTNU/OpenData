@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import chatIcon from '../../assets/ui/chat.svg';
 import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
+import { Link } from 'react-router-dom';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5em;
@@ -12,7 +13,6 @@ const SingleMetaDataResultContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: #f3f3f3;
-  
 `;
 const MetaDataContent = styled.div`
   flex: 1;
@@ -22,22 +22,24 @@ const MetaDataContent = styled.div`
   background-color: white;
   overflow: hidden;
 `;
+const MetaDataTypeLink = styled(Link)`
+  & > h2 {
+    margin: 0.2em 0;
+  }
+`;
 const MetaDataDescription = styled.div`
   flex: 1;
   padding: 0.5em;
   color: #313131;
-  & > h2 {
-    margin: 0.2em 0;
-  }
-  & > a {
-    padding: 0.4em;
-    display: inline-block;
-    background-color: #efd8ff;
-    border-radius: 0.2em;
-    margin: 0.2em 0;
-    color: rebeccapurple;
-    font-size: 0.9em;
-  }
+`;
+const MetaDataLink = styled(Link)`
+  padding: 0.4em;
+  display: inline-block;
+  background-color: #efd8ff;
+  border-radius: 0.2em;
+  margin: 0.2em 0;
+  color: rebeccapurple;
+  font-size: 0.9em;
 `;
 const MetaDataRating = styled.div`
   display: flex;
@@ -76,8 +78,8 @@ const URL = styled.p`
   padding: 0.5em 0.7em;
 `;
 const DataFormat = styled.p`
-  padding: 0.5em 0.7em;
-  background-color: white;
+  padding: 0.3em 0.7em;
+  border: solid 0.1em #434faf;
   border-radius: 0.4em;
   margin: 0.3em;
 `;
@@ -94,9 +96,11 @@ const SingleMetaDataResult = (props) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <h2>{metadataTypeName}</h2>
+          <MetaDataTypeLink to={`/viewData/dataType/${metadataTypeName}`}>
+            <h2>{metadataTypeName}</h2>
+          </MetaDataTypeLink>
           <p>{description}</p>
-          <a href={`viewData/dataset/${uuid}`}>Other municipalities who offer this data</a>
+          <MetaDataLink to={`viewData/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
         </MetaDataDescription>
         <URLWrapper href={url}>
           <URL>{url}</URL>
