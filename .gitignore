@@ -12,8 +12,8 @@ frontend/public
 
 .vs/
 
-XUnitTest_backend/bin
+backend/backendTests/bin
 
-XUnitTest_backend/obj
+backend/backendTests/obj
 
-XUnitTest_backend/XUnitTest_backend.csproj.user
+backend/backendTests/backendTests.csproj.user
