@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import { history } from '../../router/history';
 import { Input } from '../../sharedComponents/Input';
-import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { LoadingButton } from '../../sharedComponents/LoadingButton';
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags, useGetMetadata, useGetMetadatas } from '../../sharedComponents/hooks';
 
@@ -233,7 +233,7 @@ const Form = () => {
           <Quill id="Article" modules={modules} value={content} onChange={(text) => setContent(text)} />
         </label>
       </InputWrapper>
-      <LoadingButton text="Submit Article" loading={loading} disabled={title === '' || !title} />
+      <LoadingButton text="Submit Article" loading={loading} onClick={() => true} disabled={title === '' || !title} />
     </StyledForm>
   );
 };

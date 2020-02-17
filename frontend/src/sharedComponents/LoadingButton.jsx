@@ -66,7 +66,9 @@ const Button = styled.button`
   }
 `;
 
-const LoadingButton = ({ text, loading, onClick, ...rest }) => {
+const LoadingButton = ({
+  text, loading, onClick, ...rest
+}) => {
   // sets loading to true and calls callback onclick
   const callback = (e) => {
     onClick(e);
