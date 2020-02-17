@@ -18,7 +18,13 @@ const exist = keyframes`
 
 const Button = styled.button`
   padding: 0.3em;
-  font-size:1.1em;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-size: .875rem;
+  line-height: 2.25rem;
+  font-weight: 500;
+  letter-spacing: .0892857143em;
+  text-decoration: none;
   border-radius: 0.3em;
   color: #7e6dad;
   background-color: #dcd8ff;
@@ -41,26 +47,47 @@ const Button = styled.button`
     border: ${(props) => (props.loading ? '2px solid #000000;' : null)}
     border-right: ${(props) => (props.loading ? '2px solid #bc13fe;' : null)}
     animation: ${(props) => (props.loading ? css`${rotate360} .5s infinite linear, ${exist} .1s forwards ease;` : null)}
-  }  
+  }
+
+  &:hover {
+    ${(props) => (props.disabled ? null : 'background-color: #A19AE6')};
+    ${(props) => (props.disabled ? null : 'color: #ffffff')};
+  }
+
+  &:active {
+    background-color: #A19AE6;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #544D99;
+    color: #ffffff;
+    opacity: 60%;
+  }
 `;
 
-const LoadingButton = ({ text, loading, onClick }) => {
+const LoadingButton = ({ text, loading, onClick, ...rest }) => {
   // sets loading to true and calls callback onclick
   const callback = (e) => {
     onClick(e);
   };
 
   return (
-    <Button type="submit" onClick={callback} loading={loading}>
+    <Button type="submit" onClick={callback} loading={loading} {...rest}>
       { text }
     </Button>
   );
+};
+
+LoadingButton.defaultProps = {
+  rest: null,
 };
 
 LoadingButton.propTypes = {
   text: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
+  rest: PropTypes.any, // eslint-disable-line react/forbid-prop-types
 };
 
 export {

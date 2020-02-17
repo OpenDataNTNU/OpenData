@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import { history } from '../../router/history';
 import { Input } from '../../sharedComponents/Input';
+import { LoadingButton } from '../../sharedComponents/LoadingButton';
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags, useGetMetadata, useGetMetadatas } from '../../sharedComponents/hooks';
 
@@ -48,9 +49,9 @@ const StyledMultiSelect = styled(Multiselect)`
 `;
 
 const Quill = styled(ReactQuill)`
-  min-height: 300px;
+  min-height: 200px;
   height: 100%;
-  max-height: 400px;
+  max-height: 300px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -59,37 +60,6 @@ const Quill = styled(ReactQuill)`
     height: auto;
     flex: 1;
     overflow: auto;
-  }
-`;
-
-const Button = styled.button`
-  width: 100%;
-  height: 40px;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-size: .875rem;
-  line-height: 2.25rem;
-  font-weight: 500;
-  letter-spacing: .0892857143em;
-  text-decoration: none;
-  text-transform: uppercase;
-  padding: 0 8px 0 8px;
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-  background-color: #66bb6a;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 0.0625em 0.125em;
-
-  &:hover {
-    ${(props) => (props.disabled ? null : 'background-color: #98ee99')};
-  }
-
-  &:active {
-    background-color: #338a3e;
   }
 `;
 
@@ -116,6 +86,7 @@ const Form = () => {
   const [metadataId, setMetadataId] = useState('');
   const [tags, setTags] = useState([]);
   const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Quilljs toolbar config
   const modules = {
@@ -132,6 +103,7 @@ const Form = () => {
   const onSubmit = async (e) => {
     // Prevent default behavior for forms
     e.preventDefault();
+    setLoading(true);
 
     // Fetch url
     const articleUrl = `/api/Metadata/${id || metadataId}/experience`;
@@ -261,9 +233,7 @@ const Form = () => {
           <Quill id="Article" modules={modules} value={content} onChange={(text) => setContent(text)} />
         </label>
       </InputWrapper>
-      <Button disabled={title === '' || !title}>
-        Submit Article
-      </Button>
+      <LoadingButton text="Submit Article" loading={loading} disabled={title === '' || !title} />
     </StyledForm>
   );
 };
