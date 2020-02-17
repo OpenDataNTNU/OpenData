@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { SubHeader } from './SubHeader';
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,16 +12,12 @@ const Wrapper = styled.div`
   height: inherit;
   min-height: inherit;
 `;
-const ContentDiv = styled.div`
-  flex: 1;
-`;
 
 const Template = ({ children }) => (
   <Wrapper>
     <Header />
-    <ContentDiv>
-      {children}
-    </ContentDiv>
+    <SubHeader/>
+    {children}
     <Footer />
   </Wrapper>
 );
