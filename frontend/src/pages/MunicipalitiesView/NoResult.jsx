@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from "prop-types";
 
 const NoResultContainer = styled.div`
   padding: 2em;
   display: flex;
-  
   flex: 1;
   align-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ const NoResultContainer = styled.div`
   & > p {
     display: inline-block;
     color: lightgray;
-    font-size: 5em;
+    font-size: 8em;
     max-width: 40em;
     font-weight: bold;
     text-align: center;
@@ -29,6 +29,11 @@ const NoResult = (props) => {
       <p>{text}</p>
     </NoResultContainer>
   );
+};
+
+
+NoResult.propTypes = {
+  text: PropTypes.string.isRequired,
 };
 
 export {

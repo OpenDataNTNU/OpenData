@@ -9,9 +9,11 @@ const MunicipalitiesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;
+  width: 100%;
   max-width: 60em;
   margin: auto;
   background-color: white;
+  flex: 1;
 `;
 
 const LeftPaneForm = styled.form`
@@ -20,10 +22,11 @@ const LeftPaneForm = styled.form`
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
   border-left: 0.1em solid lightgray;
-  height: 100%;
-  
+  overflow-y: scroll;
   & > h2 {
     padding: 0.2em 0.5em;
+    font-weight: 300;
+    color: dimgray;
   }
 `;
 
@@ -100,6 +103,7 @@ const MunicipalitiesView = () => {
                 <label htmlFor={`radio-${m.name}`}>{m.name}</label>
               </RadioDiv>
             )) }
+
         </LeftPaneForm>
 
         <ResultView>

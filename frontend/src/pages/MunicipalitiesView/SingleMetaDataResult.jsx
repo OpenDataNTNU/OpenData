@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import chatIcon from '../../assets/ui/chat.svg';
+import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5em;
@@ -11,6 +12,7 @@ const SingleMetaDataResultContainer = styled.div`
   display: flex;
   flex-direction: row;
   background-color: #f3f3f3;
+  
 `;
 const MetaDataContent = styled.div`
   flex: 1;
@@ -23,6 +25,19 @@ const MetaDataContent = styled.div`
 const MetaDataDescription = styled.div`
   flex: 1;
   padding: 0.5em;
+  color: #313131;
+  & > h2 {
+    margin: 0.2em 0;
+  }
+  & > a {
+    padding: 0.4em;
+    display: inline-block;
+    background-color: #efd8ff;
+    border-radius: 0.2em;
+    margin: 0.2em 0;
+    color: rebeccapurple;
+    font-size: 0.9em;
+  }
 `;
 const MetaDataRating = styled.div`
   display: flex;
@@ -70,7 +85,7 @@ const DataFormat = styled.p`
 const SingleMetaDataResult = (props) => {
   const {
     metadata: {
-      uuid, formatName, url, description, releaseState, metaDataTypeName
+      uuid, formatName, url, description, releaseState, metadataTypeName
     },
   } = props;
 
@@ -78,22 +93,26 @@ const SingleMetaDataResult = (props) => {
     <SingleMetaDataResultContainer>
       <MetaDataContent>
         <MetaDataDescription>
+          <ReleaseStateLabel releaseState={releaseState} />
+          <h2>{metadataTypeName}</h2>
           <p>{description}</p>
+          <a href={`viewData/dataset/${uuid}`}>Other municipalities who offer this data</a>
         </MetaDataDescription>
         <URLWrapper href={url}>
           <URL>{url}</URL>
           <DataFormat>{formatName}</DataFormat>
         </URLWrapper>
       </MetaDataContent>
+      {/* eslint-disable-next-line no-irregular-whitespace */}
+      {/* TODO: Correct route to single metadata page */}
+      {/* TODO: Uncomment for comments
       <MetaDataRating>
-        {/* eslint-disable-next-line no-irregular-whitespace */}
-        {/* TODO: Correct route to single metadata page */}
         <CommentsIcon href={`URL-TO-METADATA-PAGE-${uuid}`}>
           <img src={chatIcon} alt="Feedback" />
           <p>[number] Comments</p>
         </CommentsIcon>
       </MetaDataRating>
-
+      */}
     </SingleMetaDataResultContainer>
   );
 };
@@ -105,6 +124,7 @@ SingleMetaDataResult.propTypes = {
     url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
+    metadataTypeName: PropTypes.string.isRequired,
   }).isRequired,
 };
 

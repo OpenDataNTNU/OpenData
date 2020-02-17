@@ -47,7 +47,6 @@ const MunicipalityMetadataResults = (props) => {
   }
   return (
     <MunicipalityCategoriesContainer>
-      <h1>{municipalityName}</h1>
       <ResultsContainer>
         { metaDataSet.length === 0 ? (
           <NoResult text={`No results were found for ${municipalityName}.`} />
