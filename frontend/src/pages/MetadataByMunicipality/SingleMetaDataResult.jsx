@@ -90,7 +90,7 @@ const DataFormat = styled.p`
 const SingleMetaDataResult = (props) => {
   const {
     metadata: {
-      uuid, formatName, url, description, releaseState, metadataTypeName
+      uuid, formatName, url, description, releaseState, metadataTypeName,
     },
   } = props;
 

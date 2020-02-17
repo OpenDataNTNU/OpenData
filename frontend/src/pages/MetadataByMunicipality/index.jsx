@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
 import { Template } from '../../sharedComponents/Template';
 import { NoResult } from './NoResult';
+import { alertActions } from '../../state/actions/alert';
 
 const MunicipalitiesViewContainer = styled.div`
   display: flex;
@@ -66,13 +67,23 @@ const MetadataByMunicipality = () => {
   const [municipalities, setMunicipalities] = useState([]);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   useState(() => {
     const internal = async () => {
       setLoading(true);
-      const res = await fetch('/api/Municipality');
-      const receivedMunicipalities = await res.json();
-      if (receivedMunicipalities) {
-        setMunicipalities(receivedMunicipalities);
+      try {
+        const res = await fetch('/api/Municipality');
+        const receivedMunicipalities = await res.json();
+        if (receivedMunicipalities) {
+          setMunicipalities(receivedMunicipalities);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not find the municipalities.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch municipalities. Please try again later.'));
+        }
       }
       setLoading(false);
     };

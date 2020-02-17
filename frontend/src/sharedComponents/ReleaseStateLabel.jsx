@@ -15,40 +15,37 @@ const Text = styled.p`
   font-size: 0.9em;
   margin: 0;
 `;
+const releaseStates = {
+  1: {
+    text: 'Released',
+    textColor: '#6f6fa1',
+    backgroundColor: '#dddfff',
+  },
+  2: {
+    text: 'Ready to release',
+    textColor: '#43a73c',
+    backgroundColor: '#dbffdd',
+  },
+  3: {
+    text: 'Needs work',
+    textColor: '#9e8a37',
+    backgroundColor: '#ffeeb8',
+  },
+  4: {
+    text: 'Not releasable',
+    textColor: '#cc4444',
+    backgroundColor: '#ffdedf',
+  },
+  fallback: {
+    text: 'Unknown release state!',
+    textColor: '#6b1348',
+    backgroundColor: '#ffd2f5',
+  },
+};
 
 const ReleaseStateLabel = (props) => {
   const { releaseState } = props;
-
-  const selected = ((stateNumber) => {
-    switch (stateNumber) {
-      case 1: return {
-        text: 'Released',
-        textColor: '#6f6fa1',
-        backgroundColor: '#dddfff',
-      };
-      case 2: return {
-        text: 'Ready to release',
-        textColor: '#43a73c',
-        backgroundColor: '#dbffdd',
-      };
-      case 3: return {
-        text: 'Needs work',
-        textColor: '#9e8a37',
-        backgroundColor: '#ffeeb8',
-      };
-      case 4: return {
-        text: 'Not releasable',
-        textColor: '#cc4444',
-        backgroundColor: '#ffdedf',
-      };
-      default: return {
-        text: 'Unknown release state!',
-        textColor: '#6b1348',
-        backgroundColor: '#ffd2f5',
-      };
-    }
-  })(releaseState);
-
+  const selected = releaseStates[releaseState] || releaseState.fallback;
   return (
     <ReleaseStateLabelContainer backgroundColor={selected.backgroundColor}>
       <Text color={selected.textColor}>{selected.text}</Text>
@@ -58,7 +55,6 @@ const ReleaseStateLabel = (props) => {
 
 ReleaseStateLabel.propTypes = {
   releaseState: PropTypes.number.isRequired,
-
 };
 
 export {

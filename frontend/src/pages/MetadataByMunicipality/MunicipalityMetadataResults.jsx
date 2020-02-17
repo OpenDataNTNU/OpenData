@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { NoResult } from './NoResult';
 import { SingleMetaDataResult } from './SingleMetaDataResult';
+import { alertActions } from '../../state/actions/alert';
 
 const MunicipalityCategoriesContainer = styled.div`
   height: 100%;
@@ -18,24 +20,33 @@ const MunicipalityMetadataResults = (props) => {
   const { municipalityName } = props;
   const [metaDataSet, setMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const internal = async () => {
       setLoading(true);
-      const res = await fetch('/api/Metadata');
-      // TODO: Filter this result within API, not frontend!
-      const receivedMetadataSet = await res.json();
-      const filteredResult = receivedMetadataSet.filter((m) => (
-        m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
-      ));
-      if (receivedMetadataSet) {
-        setMetadataSet(filteredResult);
+      try {
+        // TODO: Filter this result within API, not frontend!
+        const res = await fetch('/api/Metadata');
+        const receivedMetadataSet = await res.json();
+        const filteredResult = receivedMetadataSet.filter((m) => (
+          m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
+        ));
+        if (receivedMetadataSet) {
+          setMetadataSet(filteredResult);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error(`Could not find the metadata for municipality ${municipalityName}`));
+        } else {
+          dispatch(alertActions.error('Failed to fetch metadata. Please try again later.'));
+        }
       }
       setLoading(false);
     };
     internal();
   }, [municipalityName]);
-
 
   if (loading) {
     return (
@@ -47,13 +58,13 @@ const MunicipalityMetadataResults = (props) => {
   }
   return (
     <MunicipalityCategoriesContainer>
+      <h1>{municipalityName}</h1>
       <ResultsContainer>
         { metaDataSet.length === 0 ? (
           <NoResult text={`No results were found for ${municipalityName}.`} />
-        )
-          : metaDataSet.map((m) => (
-            <SingleMetaDataResult key={m.uuid} metadata={m} />
-          ))}
+        ) : metaDataSet.map((m) => (
+          <SingleMetaDataResult key={m.uuid} metadata={m} />
+        ))}
       </ResultsContainer>
     </MunicipalityCategoriesContainer>
   );
