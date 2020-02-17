@@ -20,6 +20,11 @@ namespace OpenData.Persistence.Repositories
             return await _context.Municipalities.ToListAsync();
         }
 
+        public async Task<Municipality> FetchByName(string name)
+        {
+            return await _context.Municipalities.SingleOrDefaultAsync<Municipality>((mun) => mun.Name == name);
+        }
+
         public async Task<Municipality> GetMunicipalityByDomainAsync(string domain)
         {
             return await _context.Municipalities.SingleOrDefaultAsync<Municipality>((mun) => mun.MailDomain == domain);

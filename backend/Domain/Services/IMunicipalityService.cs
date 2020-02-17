@@ -7,6 +7,7 @@ namespace OpenData.Domain.Services
     public interface IMunicipalityService
     {
         Task<IEnumerable<Municipality>> ListAsync();
+        Task<Municipality> FetchByName(string name);
         Task<Municipality> GetMunicipalityByDomainAsync(string domain);
     }
 }
