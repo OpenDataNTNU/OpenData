@@ -87,12 +87,10 @@ const DataFormat = styled.p`
   margin: 0.3em;
 `;
 
-const SingleMetaDataResult = (props) => {
+const SingleMetaDataResult = ({ metadata }) => {
   const {
-    metadata: {
-      uuid, formatName, url, description, releaseState, metadataTypeName,
-    },
-  } = props;
+    uuid, formatName, url, description, releaseState, metadataTypeName,
+  } = metadata;
 
   return (
     <SingleMetaDataResultContainer>

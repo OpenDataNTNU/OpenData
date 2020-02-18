@@ -16,8 +16,7 @@ const ResultsContainer = styled.div`
   flex: 1;
 `;
 
-const MunicipalityMetadataResults = (props) => {
-  const { municipalityName } = props;
+const MunicipalityMetadataResults = ({ municipalityName }) => {
   const [metaDataSet, setMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
