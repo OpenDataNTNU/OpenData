@@ -129,5 +129,4 @@ const MetadataByMunicipality = () => {
 
 export {
   MetadataByMunicipality,
-
 };

@@ -133,5 +133,4 @@ SingleMetaDataResult.propTypes = {
 
 export {
   SingleMetaDataResult,
-
 };

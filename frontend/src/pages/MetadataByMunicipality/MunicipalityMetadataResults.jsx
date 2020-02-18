@@ -76,5 +76,4 @@ MunicipalityMetadataResults.propTypes = {
 
 export {
   MunicipalityMetadataResults,
-
 };

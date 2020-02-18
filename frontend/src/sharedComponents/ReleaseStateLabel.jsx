@@ -58,5 +58,4 @@ ReleaseStateLabel.propTypes = {
 
 export {
   ReleaseStateLabel,
-
 };

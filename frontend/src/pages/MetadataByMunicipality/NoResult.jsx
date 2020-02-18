@@ -34,5 +34,4 @@ NoResult.propTypes = {
 
 export {
   NoResult,
-
 };
