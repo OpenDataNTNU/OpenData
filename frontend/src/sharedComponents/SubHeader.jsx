@@ -18,15 +18,13 @@ const LinkStyled = styled(Link)`
   }
 `;
 
-const SubHeader = () => {
-  return (
-    <SubHeaderContainer>
-      <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
-      <LinkStyled to="/viewData">Search by category</LinkStyled>
-      <LinkStyled to="/submitData">Submit data</LinkStyled>
-    </SubHeaderContainer>
-  );
-};
+const SubHeader = () => (
+  <SubHeaderContainer>
+    <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
+    <LinkStyled to="/viewData">Search by category</LinkStyled>
+    <LinkStyled to="/submitData">Submit data</LinkStyled>
+  </SubHeaderContainer>
+);
 
 export {
   SubHeader,

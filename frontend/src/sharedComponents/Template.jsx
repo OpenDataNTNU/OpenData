@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 const Template = ({ children }) => (
   <Wrapper>
     <Header />
-    <SubHeader/>
+    <SubHeader />
     {children}
     <Footer />
   </Wrapper>

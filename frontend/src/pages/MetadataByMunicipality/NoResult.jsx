@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 const NoResultContainer = styled.div`
   padding: 2em;

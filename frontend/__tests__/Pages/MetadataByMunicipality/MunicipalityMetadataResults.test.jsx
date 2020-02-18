@@ -20,7 +20,8 @@ const trondheimResponse = `[
     "releaseState": 1,
     "metadataTypeName": "Car history",
     "municipalityName": "Trondheim"
-  },{
+  },
+  {
     "uuid": "08d7b3a1-8f69-4a39-8e3b-fd606db36b32",
     "url": "netflix.com",
     "description": "Something something",
@@ -28,7 +29,7 @@ const trondheimResponse = `[
     "releaseState": 12,
     "metadataTypeName": "Car history",
     "municipalityName": "Trondheim"
-  }
+  },
   {
     "uuid": "08d7b3a1-8c41-49e8-80e0-882d6d44b16f",
     "url": "opendata.com",
@@ -83,7 +84,7 @@ describe('Displays all bottom-level datasets with a given name', () => {
 
 
   it('Shows the data sets with entries from Trondheim', async () => {
-    fetch.mockResponseOnce(trondheimResponse);
+    fetch.mockResponse(trondheimResponse);
     const {
       findByText, getByText, queryByText, queryAllByText,
     } = render(

@@ -45,7 +45,7 @@ const releaseStates = {
 
 const ReleaseStateLabel = (props) => {
   const { releaseState } = props;
-  const selected = releaseStates[releaseState] || releaseState.fallback;
+  const selected = releaseStates[releaseState] || releaseStates.fallback;
   return (
     <ReleaseStateLabelContainer backgroundColor={selected.backgroundColor}>
       <Text color={selected.textColor}>{selected.text}</Text>
