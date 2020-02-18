@@ -22,15 +22,11 @@ const NoResultContainer = styled.div`
   }
 `;
 
-const NoResult = (props) => {
-  const { text } = props;
-  return (
-    <NoResultContainer>
-      <p>{text}</p>
-    </NoResultContainer>
-  );
-};
-
+const NoResult = ({ text }) => (
+  <NoResultContainer>
+    <p>{text}</p>
+  </NoResultContainer>
+);
 
 NoResult.propTypes = {
   text: PropTypes.string.isRequired,
