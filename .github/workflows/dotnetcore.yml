@@ -15,5 +15,9 @@ jobs:
         dotnet-version: 3.1.101
     - name: Build with dotnet
       run: cd backend && dotnet build --configuration Release
+
+   test:
+
+    steps:
     - name: Test with dotnet
-      run: cd backend/backendTests && dotnet test --configuration Release
+      run: cd backend && dotnet test --configuration Release
