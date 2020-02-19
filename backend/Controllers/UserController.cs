@@ -18,26 +18,40 @@ using System.Linq;
 
 namespace OpenData.Controllers
 {
+    /// <summary>
+    /// UserController is the main controller for all user related handling.
+    /// In essence creation, login, fetching of userdata.
+    /// </summary>
     [Authorize]
     [ApiController]
-	[Route("/api/[controller]")]
-	public class UserController : Controller
-	{
+    [Route("/api/[controller]")]
+    public class UserController : Controller
+    {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IUserService usersService;
         private readonly ISecurityService securityService;
         private readonly IMapper mapper;
         private readonly IMunicipalityService municipalityService;
 
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ISecurityService securityService, IMapper mapper, IMunicipalityService municipalityService) 
-		    {
-			      this.usersService = userService;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, ISecurityService securityService, IMapper mapper, IMunicipalityService municipalityService)
+        {
+            this.usersService = userService;
             this.securityService = securityService;
             this.mapper = mapper;
             this.municipalityService = municipalityService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        /// <summary>
+        /// /auth is used for authentication/logging in.
+        /// By calling it with username and password in JSON format in it´s body you will get a result.
+        /// The result is an error or proof of authentication.
+        /// </summary>
+        /// <param name="authUserResource"></param>
+        /// <returns>
+        /// The result will either be some sort of error message, or an user object with a token field.
+        /// The JWT Token is proof of authentication.
+        /// </returns>
         [AllowAnonymous]
         [HttpPost("auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthUserResource authUserResource)
@@ -49,11 +63,11 @@ namespace OpenData.Controllers
                 return Unauthorized(new { message = "Incorrect mail or password" });
             }
 
-            PrivateSafeUserResource privateSafeUser = mapper.Map <User, PrivateSafeUserResource>(user);
+            PrivateSafeUserResource privateSafeUser = mapper.Map<User, PrivateSafeUserResource>(user);
             return Ok(privateSafeUser);
         }
 
-        
+
         /// <summary>
         /// Creates a user with hashed+salted password.
         /// Iff the user type is set to municipality and the user has a municipality given mail domain,
@@ -67,7 +81,7 @@ namespace OpenData.Controllers
         {
             if (newUser.IsValidMail() == false)
                 return BadRequest(new { message = "Mail did not pass Regex" });
-            if(newUser.IsValidPassword() == false)
+            if (newUser.IsValidPassword() == false)
                 return BadRequest(new { message = "Password did not pass Regex" });
 
             string salt = securityService.GenerateSalt();
@@ -90,7 +104,8 @@ namespace OpenData.Controllers
                     return BadRequest("Invalid municipality domain given for municipality account!");
                 }
                 user.MunicipalityName = municipality.Name;
-            } else if(user.UserType == UserType.Admin)
+            }
+            else if (user.UserType == UserType.Admin)
             {
                 return BadRequest("You do not have permissions to create an admin account!");
             }
@@ -114,6 +129,13 @@ namespace OpenData.Controllers
             return Created("Created new user successfully!", safeUser);
         }
 
+        /// <summary>
+        /// Get user is a development function that may be removed.
+        /// It´s functionality is to get a user object, similar to the one you get after login.
+        /// </summary>
+        /// <returns>
+        /// User object is returned.
+        /// </returns>
         [HttpGet("profile")]
         public async Task<IActionResult> GetUser()
         {
@@ -123,7 +145,12 @@ namespace OpenData.Controllers
             return Ok(privateSafeUser);
         }
 
-
+        /// <summary>
+        /// Get alls users gets all user, with sensitive information removed (like tokens).
+        /// </summary>
+        /// <returns>
+        /// The users fetched.
+        /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
