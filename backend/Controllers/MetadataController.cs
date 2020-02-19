@@ -35,7 +35,7 @@ namespace OpenData.Controllers
             IExperiencePostService experiencePostService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-			      IHttpContextAccessor httpContextRetriever,
+			IHttpContextAccessor httpContextRetriever,
             IUserService userService
             )
 		{
@@ -78,6 +78,9 @@ namespace OpenData.Controllers
 		[HttpPut("{uuid}/experience")]
 		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
 		{
+			var targetUsername = httpContextAccessor.HttpContext.User.Identity.Name;
+            User user = await usersService.GetUserByMailAsync(targetUsername);
+
 			Metadata metadata = null; 
 			try {
 				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
@@ -91,6 +94,7 @@ namespace OpenData.Controllers
 
 			experience.Modified = DateTime.UtcNow;
 			experience.Created = DateTime.UtcNow;
+			experience.LastEditedBy = user;
 
 			var result = await _experiencePostService.SaveAsync(experience);
 
