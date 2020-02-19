@@ -13,6 +13,7 @@ import { AllData } from '../pages/allData';
 import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
 import { SendMetadata } from '../pages/sendMetadata/SendMetadata';
+import { Article } from '../pages/Article';
 import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
@@ -31,6 +32,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route path="/sendData" component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" component={NewExperienceArticle} />
+        <PrivateRoute path="/articles/:id" component={Article} />
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />

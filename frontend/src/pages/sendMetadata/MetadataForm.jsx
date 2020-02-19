@@ -99,17 +99,17 @@ export const MetadataForm = () => {
           <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
             <Input type="radio" name="light" value="green" id="greenlight" checked={light === 'green'} onChange={handleChange} />
             {' '}
-Green
+            Green
           </RadioLabel>
           <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
             <Input type="radio" name="light" value="yellow" id="yellowlight" checked={light === 'yellow'} onChange={handleChange} />
             {' '}
-Yellow
+            Yellow
           </RadioLabel>
           <RadioLabel htmlFor="redlight" background="#ffcccc" border="red">
             <Input type="radio" name="light" value="red" id="redlight" checked={light === 'red'} onChange={handleChange} />
             {' '}
-Red
+            Red
           </RadioLabel>
         </HorizontalWrapper>
         <Input type="text" placeholder="description" name="description" value={description} onChange={handleChange} />
