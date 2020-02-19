@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
@@ -17,8 +17,8 @@ const MunicipalitiesViewContainer = styled.div`
   flex: 1;
 `;
 
-const LeftPaneForm = styled.form`
-  max-width: 15em;
+const LeftPane = styled.div`
+  width: 15em;
   display: flex;
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
@@ -31,7 +31,23 @@ const LeftPaneForm = styled.form`
   }
 `;
 
-const RadioDiv = styled.label`
+const MunicipalityFilter = styled.input`
+  padding: 0.3em;
+  border-radius: 0.3em;
+  border: solid 0.1em lightgrey;
+  display: block;
+  box-sizing: border-box;
+  margin: 0.3em;
+  font-size: 1.0em;
+`;
+
+const Picker = styled.form`
+  flex: 1;
+  display: flex;
+  flex-direction: column;  
+`;
+
+const RadioDiv = styled.div`
   padding: 0;
   border-bottom: 0.1em solid lightgray;
   cursor: pointer;
@@ -65,9 +81,28 @@ const ResultView = styled.div`
 const MetadataByMunicipality = () => {
   // let { urlMunicipality, urlCategory } = useParams();
   const [municipalities, setMunicipalities] = useState([]);
+  const [fetchedMunicipalities, setFetchedMunicipalities] = useState([]);
+  const [municipalityFilter, setMunicipalityFilter] = useState('');
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+
+  const handleMunicipalitySelection = ({ target: { value } }) => {
+    setSelectedMunicipality(value);
+  };
+
+  const handleMunicipalityFilterSelection = ({ target: { value } }) => {
+    setMunicipalityFilter(value);
+  };
+
+  const updateFilteredMunicipalities = () => {
+    setMunicipalities(
+      fetchedMunicipalities.filter(
+        (m) => m.name.toLowerCase().includes(municipalityFilter.toLowerCase()),
+      ),
+    );
+  };
+
   useState(() => {
     const internal = async () => {
       setLoading(true);
@@ -75,6 +110,7 @@ const MetadataByMunicipality = () => {
         const res = await fetch('/api/Municipality');
         const receivedMunicipalities = await res.json();
         if (receivedMunicipalities) {
+          setFetchedMunicipalities(receivedMunicipalities);
           setMunicipalities(receivedMunicipalities);
         }
       } catch (err) {
@@ -90,10 +126,9 @@ const MetadataByMunicipality = () => {
     internal();
   }, []);
 
-  const handleMunicipalitySelection = (event) => {
-    const { target: { value } } = event;
-    setSelectedMunicipality(value);
-  };
+  useEffect(() => {
+    updateFilteredMunicipalities();
+  }, [municipalityFilter]);
 
   if (loading) {
     return (
@@ -105,16 +140,18 @@ const MetadataByMunicipality = () => {
   return (
     <Template>
       <MunicipalitiesViewContainer>
-        <LeftPaneForm onChange={handleMunicipalitySelection}>
-          <h2>Municipality</h2>
-          { municipalities.length === 0 ? <p>No municipalities found!</p>
-            : municipalities.map((m) => (
-              <RadioDiv key={m.name}>
-                <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
-                <label htmlFor={`radio-${m.name}`}>{m.name}</label>
-              </RadioDiv>
-            )) }
-        </LeftPaneForm>
+        <LeftPane>
+          <MunicipalityFilter type="text" placeholder="Search municipalites" onChange={handleMunicipalityFilterSelection} />
+          <Picker onChange={handleMunicipalitySelection}>
+            { municipalities.length === 0 ? <p>No municipalities found!</p>
+              : municipalities.map((m) => (
+                <RadioDiv key={m.name}>
+                  <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
+                  <label htmlFor={`radio-${m.name}`}>{m.name}</label>
+                </RadioDiv>
+              )) }
+          </Picker>
+        </LeftPane>
         <ResultView>
           { selectedMunicipality !== null
             ? <MunicipalityMetadataResults municipalityName={selectedMunicipality} />
