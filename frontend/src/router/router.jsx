@@ -17,6 +17,7 @@ import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Logout } from '../pages/Logout';
+import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -30,6 +31,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
+        <Route path="/municipalities" component={MetadataByMunicipality} />
         <Route component={Error404} />
       </Switch>
     </Router>
