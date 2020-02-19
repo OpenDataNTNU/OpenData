@@ -26,6 +26,13 @@ const click = (x) => {
   );
 };
 
+const inputValue = (targetNode, newValue) => {
+  fireEvent.change(
+    targetNode,
+    { target: { value: newValue } },
+  );
+};
+
 const tagsResponse = `
   [
     {
@@ -65,7 +72,7 @@ describe('Provides a form to create metadata types', () => {
     );
   });
 
-  it('Shows the correct options for tags', async () => {
+  it('Can be used to post a new metadata type', async () => {
     fetch.mockResponse(async ({ url }) => {
       switch (url) {
         case '/api/Tag':
@@ -74,6 +81,7 @@ describe('Provides a form to create metadata types', () => {
           return '';
       }
     });
+    history.push('/newMetadataType');
     const {
       getByPlaceholderText, findByText, getByText, queryAllByText,
     } = render(
@@ -85,13 +93,30 @@ describe('Provides a form to create metadata types', () => {
     );
     const tagSelector = getByPlaceholderText(new RegExp('Tags'));
     // options should not be there before the multiselector is clicked
-    expect(queryAllByText(new RegExp('Public activity')).length).toBe(0);
-    expect(queryAllByText(new RegExp('Public property')).length).toBe(0);
-    expect(queryAllByText(new RegExp('Public activity')).length).toBe(0);
+    expect(queryAllByText(new RegExp('Public activity')).length).toEqual(0);
+    expect(queryAllByText(new RegExp('Public property')).length).toEqual(0);
+    expect(queryAllByText(new RegExp('Public activity')).length).toEqual(0);
     // should be there after the click
     await wait(() => click(tagSelector));
     await findByText(new RegExp('Public activity'));
-    getByText(new RegExp('Public property'));
+    const property = getByText(new RegExp('Public property'));
     getByText(new RegExp('Traffic'));
+    await wait(() => click(property));
+    const nameInput = getByPlaceholderText(new RegExp('Name'));
+    const descriptionInput = getByPlaceholderText(new RegExp('Description'));
+    await wait(() => inputValue(nameInput, 'This is a test name'));
+    await wait(() => inputValue(descriptionInput, 'This is a TeSt desCRIPTION. L0rem ipsum.'));
+    // before submission, only the tags should be fetched
+    expect(fetch.mock.calls.length).toEqual(1);
+    const submitButton = getByText(new RegExp('Submit'));
+    await wait(() => click(submitButton));
+    // should put once for the metadatatype and once for the tag
+    expect(fetch.mock.calls.length).toEqual(3);
+    const metadataBody = fetch.mock.calls[1][1].body;
+    expect(metadataBody).toEqual(JSON.stringify({
+      name: 'This is a test name',
+      description: 'This is a TeSt desCRIPTION. L0rem ipsum.',
+    }));
+    expect(history.location.pathname).toEqual('/sendData');
   });
 });

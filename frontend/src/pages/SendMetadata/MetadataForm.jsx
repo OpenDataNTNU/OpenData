@@ -164,7 +164,9 @@ export const MetadataForm = () => {
         <p>
           Are none of these types appropriate?
           {' '}
-          <Link to="/newMetadataType">Create a new one</Link>
+          <Link to="/newMetadataType">
+            <b>Create a new one</b>
+          </Link>
         </p>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
@@ -173,15 +175,15 @@ export const MetadataForm = () => {
           </RadioLabel>
           <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
             <Input type="radio" name="releaseState" value={2} id="greenlight" checked={releaseState === 2} onChange={handleRadioChange} />
-            {' Green'}
+            {' Ready for release'}
           </RadioLabel>
           <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
             <Input type="radio" name="releaseState" value={3} id="yellowlight" checked={releaseState === 3} onChange={handleRadioChange} />
-            {' Yellow'}
+            {' Needs work'}
           </RadioLabel>
           <RadioLabel htmlFor="redlight" background="#ffcccc" border="#ff5555">
             <Input type="radio" name="releaseState" value={4} id="redlight" checked={releaseState === 4} onChange={handleRadioChange} />
-            {' Red'}
+            {' Unreleasable'}
           </RadioLabel>
         </HorizontalWrapper>
         <TextArea placeholder="description" name="description" value={description} onChange={handleChange} />
