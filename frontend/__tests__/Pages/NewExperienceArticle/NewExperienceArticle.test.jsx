@@ -29,7 +29,15 @@ describe('New Experience Article component', () => {
     // Set up mock state store
     const mockStore = configureStore([thunk]);
     // Initialize mockstore with empty state
-    const initialEmptyState = {};
+    const initialEmptyState = {
+      user: {
+        user: {
+          mail: 'andreasjj@gmail.com',
+          userType: 0,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZHJlYXNqakBnbWFpbC5jb20iLCJuYmYiOjE1ODE5MzUwMTcsImV4cCI6MTU4MjE5NDIxNywiaWF0IjoxNTgxOTM1MDE3fQ.I4UhSMCFprnwQuwRQ_QZRRePcfoXva--viYto8_uH9U',
+        },
+      },
+    };
     store = mockStore(initialEmptyState);
     history = createMemoryHistory();
   });
