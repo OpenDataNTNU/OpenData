@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
@@ -85,7 +85,6 @@ const MetadataByMunicipality = () => {
   // let { urlMunicipality, urlCategory } = useParams();
   const [municipalities, setMunicipalities] = useState([]);
   const [fetchedMunicipalities, setFetchedMunicipalities] = useState([]);
-  const [municipalityFilter, setMunicipalityFilter] = useState('');
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
@@ -95,13 +94,9 @@ const MetadataByMunicipality = () => {
   };
 
   const handleMunicipalityFilterSelection = ({ target: { value } }) => {
-    setMunicipalityFilter(value);
-  };
-
-  const updateFilteredMunicipalities = () => {
     setMunicipalities(
       fetchedMunicipalities.filter(
-        (m) => m.name.toLowerCase().includes(municipalityFilter.toLowerCase()),
+        (m) => m.name.toLowerCase().includes(value.toLowerCase()),
       ),
     );
   };
@@ -129,9 +124,9 @@ const MetadataByMunicipality = () => {
     internal();
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     updateFilteredMunicipalities();
-  }, [municipalityFilter]);
+  }, [municipalityFilter]); */
 
   if (loading) {
     return (
