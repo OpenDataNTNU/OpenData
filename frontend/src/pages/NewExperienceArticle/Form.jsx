@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import ReactQuill from 'react-quill';
@@ -87,6 +87,8 @@ const Form = () => {
   const [tags, setTags] = useState([]);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const userSelector = useSelector((state) => state.user);
+  const { token } = userSelector.user;
 
   // Quilljs toolbar config
   const modules = {
@@ -124,6 +126,7 @@ const Form = () => {
         credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
@@ -145,6 +148,7 @@ const Form = () => {
             credentials: 'same-origin',
             headers: {
               'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
