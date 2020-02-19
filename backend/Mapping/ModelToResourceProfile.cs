@@ -16,7 +16,12 @@ namespace OpenData.Mapping
             CreateMap<SaveMetadataResource, Metadata>();
             CreateMap<SaveMetadataTypeResource, MetadataType>();
 
+            CreateMap<ExperiencePost, ExperiencePostResource>();
+            CreateMap<ExperiencePostTagMapping, ExperiencePostTagMappingResource>();
+
             CreateMap<Municipality, MunicipalityResource>();
+
+            CreateMap<SaveExperiencePostResource, ExperiencePost>();
 
             CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
 

@@ -79,6 +79,9 @@ namespace OpenData
             services.AddScoped<IMetadataRepository, MetadataRepository>();
             services.AddScoped<IMetadataService, MetadataService>();
 
+            services.AddScoped<IExperiencePostRepository, ExperiencePostRepository>();
+            services.AddScoped<IExperiencePostService, ExperiencePostService>();
+
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
 

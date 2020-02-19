@@ -24,6 +24,7 @@ namespace OpenData.Controllers
 	public class MetadataController : Controller
 	{
 		private readonly IMetadataService _metadataService;
+		private readonly IExperiencePostService _experiencePostService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IHttpContextAccessor httpContextRetriever;
@@ -31,15 +32,17 @@ namespace OpenData.Controllers
 
 		public MetadataController(
             IMetadataService metadataService,
+            IExperiencePostService experiencePostService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-			IHttpContextAccessor httpContextRetriever,
+			      IHttpContextAccessor httpContextRetriever,
             IUserService userService
-            ) 
+            )
 		{
 			_metadataService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
+			_experiencePostService = experiencePostService;
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -67,6 +70,35 @@ namespace OpenData.Controllers
 			} catch (Exception ex) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
+		}
+
+		/// <summary>
+		/// Returns a single metadata type, and all its associated metadata entries.
+		/// </summary> 
+		[HttpPut("{uuid}/experience")]
+		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
+		{
+			Metadata metadata = null; 
+			try {
+				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+			
+			var experience = _mapper.Map<SaveExperiencePostResource, ExperiencePost>(experienceResource);
+
+			experience.Modified = DateTime.UtcNow;
+			experience.Created = DateTime.UtcNow;
+
+			var result = await _experiencePostService.SaveAsync(experience);
+
+			metadata.ExperiencePost = experience;
+			//commit change to metadata
+			await _unitOfWork.CompleteAsync();
+
+			return Ok(result);
 		}
 
 		[HttpPut]
