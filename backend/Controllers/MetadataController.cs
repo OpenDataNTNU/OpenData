@@ -78,8 +78,8 @@ namespace OpenData.Controllers
 		[HttpPut("{uuid}/experience")]
 		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
 		{
-			var targetUsername = httpContextAccessor.HttpContext.User.Identity.Name;
-            User user = await usersService.GetUserByMailAsync(targetUsername);
+			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
+            User user = await userService.GetUserByMailAsync(targetUsername);
 
 			Metadata metadata = null; 
 			try {
