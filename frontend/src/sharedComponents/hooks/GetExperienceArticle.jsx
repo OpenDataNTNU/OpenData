@@ -10,7 +10,7 @@ const useGetExperienceArticle = (id) => {
   const dispatch = useDispatch();
 
   // Fetch url
-  const url = `/api/ExperienceArticle/${id}`;
+  const url = `/api/ExperiencePost/${id}`;
 
   useEffect(() => {
     const init = async () => {
@@ -37,11 +37,11 @@ const useGetExperienceArticle = (id) => {
         }
 
         // Dispatch error if we failed to get tags
-        dispatch(alertActions.error('Failed to Article. Please try again later.'));
+        dispatch(alertActions.error('Failed to get Article. Please try again later.'));
         return setArticle(null);
       } catch (_) {
         // Dispatch error if we failed to get tags
-        dispatch(alertActions.error('Failed to Article. Please try again later.'));
+        dispatch(alertActions.error('Failed to get Article. Please try again later.'));
         return setArticle(null);
       }
     };

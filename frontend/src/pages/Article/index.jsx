@@ -27,7 +27,7 @@ const Title = styled.h2`
 const Tags = styled.p`
   display: flex;
   opacity: 60%;
-  margin-bottom: 10px;
+  margin: 5px 0px 10px 0px;
 `;
 
 const Body = styled.div`
@@ -36,6 +36,8 @@ const Body = styled.div`
   min-height: 400px;
   flex: 1;
   margin-bottom: 10px;
+  padding: 15px 0px;
+  border-top: 1px solid black;
 
   & img {
     width: 100%;
@@ -47,26 +49,26 @@ const Body = styled.div`
 const Article = () => {
   // React router dom get id from history
   const { id } = useParams();
-  const article = useGetExperienceArticle(id);
+  const article = useGetExperienceArticle(id) || {};
 
   return (
     <Template>
       <Wrapper>
-        <Title>{article.title}</Title>
+        <Title>{article.title || ''}</Title>
         <Tags>
           {
-        article.tags && article.tags.map((tag, index) => {
-          if (index + 1 === article.tags.length) {
-            return `${tag.tagName}`;
+            article.tags && article.tags.map((tag, index) => {
+              if (index + 1 === article.tags.length) {
+                return `${tag.tagName}`;
+              }
+              return `${tag.tagName}, `;
+            })
           }
-          return `${tag.tagName}, `;
-        })
-        }
         </Tags>
         <Body>
           {
-          parse(article.body)
-        }
+            parse(article.contents || '')
+          }
         </Body>
       </Wrapper>
     </Template>
