@@ -32,6 +32,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route path="/sendData" component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" component={NewExperienceArticle} />
+        <PrivateRoute path="/articles/:id" component={Article} />
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />

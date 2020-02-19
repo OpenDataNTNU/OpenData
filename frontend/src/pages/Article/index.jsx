@@ -22,13 +22,13 @@ const Wrapper = styled.div`
 
 const Title = styled.h2`
   margin-bottom: 5px;
-`
+`;
 
 const Tags = styled.p`
   display: flex;
   opacity: 60%;
   margin-bottom: 10px;
-`
+`;
 
 const Body = styled.div`
   display: flex;
@@ -49,27 +49,28 @@ const Article = () => {
   const { id } = useParams();
   const article = useGetExperienceArticle(id);
 
-  return(
-  <Template>
-    <Wrapper>
-      <Title>{article.title}</Title>
-      <Tags>
-        {
+  return (
+    <Template>
+      <Wrapper>
+        <Title>{article.title}</Title>
+        <Tags>
+          {
         article.tags && article.tags.map((tag, index) => {
-          if(index+1 === article.tags.length) {
-            return `${tag.tagName}`
+          if (index + 1 === article.tags.length) {
+            return `${tag.tagName}`;
           }
-          return `${tag.tagName}, `
+          return `${tag.tagName}, `;
         })
         }
-      </Tags>
-      <Body>
-        {
+        </Tags>
+        <Body>
+          {
           parse(article.body)
         }
-      </Body>
-    </Wrapper>
-  </Template>);
+        </Body>
+      </Wrapper>
+    </Template>
+  );
 };
 
 export {

@@ -31,7 +31,7 @@ const useGetExperienceArticle = (id) => {
         // Check that the response was ok with status code 200
         if (response.ok && response.status === 200) {
           // Get json data
-          let Article = await response.json();
+          const Article = await response.json();
           // return tags
           return setArticle(Article);
         }
