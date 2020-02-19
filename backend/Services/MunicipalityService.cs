@@ -24,5 +24,10 @@ namespace OpenData.Services
         {
         	return await _municipalityRepository.ListAsync();
         }
+
+        public async Task<Municipality> FetchByName(string name)
+        {
+            return await _municipalityRepository.FetchByName(name);
+        }
     }
 }
