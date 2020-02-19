@@ -29,9 +29,18 @@ describe('Template component', () => {
       </Provider>,
     );
 
-    fetch.mockResponseOnce(
-      JSON.stringify({ token: 'lfkmasfDFDFSAsldf21p4jl2fsdf' }),
-      { status: 201, headers: { 'content-type': 'application/json' } },
+    fetch.mockResponses(
+      [
+        JSON.stringify([
+          { mailDomain: 'asker.kommune.no' },
+          { mailDomain: 'baerum.kommune.no' },
+        ]),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      ],
+      [
+        JSON.stringify(['lfkmasfDFDFSAsldf21p4jl2fsdf']),
+        { status: 201, headers: { 'content-type': 'application/json' } },
+      ],
     );
 
     await wait(() => {

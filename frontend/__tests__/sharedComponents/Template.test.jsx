@@ -37,7 +37,7 @@ describe('Template component', () => {
 
     // We expect the header, h1, and footer elements to be rendered,
     // thus the length of the children should be 3
-    expect(container.firstChild.children.length).toBe(3);
+    expect(container.firstChild.children.length).toBe(4);
   });
 
   it('should render the h1 as a child', () => {

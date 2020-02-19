@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 using AutoMapper;
@@ -13,9 +14,12 @@ using OpenData.Exceptions;
 
 using System;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace OpenData.Controllers
 {
+    [Authorize]
 	[Route("/api/[controller]")]
 	public class MetadataController : Controller
 	{
@@ -23,15 +27,27 @@ namespace OpenData.Controllers
 		private readonly IExperiencePostService _experiencePostService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IHttpContextAccessor httpContextRetriever;
+		private readonly IUserService userService;
 
-		public MetadataController(IMetadataService metadataService, IExperiencePostService experiencePostService, IMapper mapper, IUnitOfWork unitOfWork) 
+		public MetadataController(
+            IMetadataService metadataService,
+            IExperiencePostService experiencePostService,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+			      IHttpContextAccessor httpContextRetriever,
+            IUserService userService
+            )
 		{
 			_metadataService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_experiencePostService = experiencePostService;
+			this.httpContextRetriever = httpContextRetriever;
+			this.userService = userService;
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataResource>> GetAllAsync()
 		{
@@ -42,7 +58,8 @@ namespace OpenData.Controllers
 
 		/// <summary>
 		/// Returns a single metadata type, and all its associated metadata entries.
-		/// </summary> 
+		/// </summary>
+        [AllowAnonymous]
 		[HttpGet("{uuid}")]
 		public async Task<MetadataResource> GetMetadata(string uuid)
 		{
@@ -90,17 +107,24 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
 
-			var metadata = _mapper.Map<SaveMetadataResource, Metadata>(resource);
-			var result = await _metadataService.SaveAsync(metadata);
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+			if (user.UserType == UserType.Municipality && user.MunicipalityName == resource.MunicipalityName)
+            {
+				var metadata = _mapper.Map<SaveMetadataResource, Metadata>(resource);
+				var result = await _metadataService.SaveAsync(metadata);
 
-			if(!result.Success)
-				return BadRequest(result.Message);
+				if (!result.Success)
+					return BadRequest(result.Message);
 
-			var res = _mapper.Map<Metadata, MetadataResource>(metadata);
+				var res = _mapper.Map<Metadata, MetadataResource>(metadata);
 
-			await _unitOfWork.CompleteAsync();
+				await _unitOfWork.CompleteAsync();
 
-			return Ok(res);
+				return Ok(res);
+			}
+
+            return Unauthorized("Invalid permissions!");
 		}
 	}
 }

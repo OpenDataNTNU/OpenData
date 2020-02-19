@@ -8,4 +8,12 @@ container/*/sql
 .DS_Store
 .vscode
 
-frontend/public/bundle.js
+frontend/public
+
+.vs/
+
+XUnitTest_backend/bin
+
+XUnitTest_backend/obj
+
+XUnitTest_backend/XUnitTest_backend.csproj.user
