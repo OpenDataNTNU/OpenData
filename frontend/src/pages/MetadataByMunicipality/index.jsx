@@ -18,7 +18,7 @@ const MunicipalitiesViewContainer = styled.div`
 `;
 
 const LeftPane = styled.div`
-  width: 15em;
+  width: 200px;
   display: flex;
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
@@ -58,18 +58,21 @@ const RadioDiv = styled.div`
   
   & > input[type="radio"] {
     display: none;
+    width: 0;
+    height: 0;
+    position: fixed;
   }
   
   & > label {
     font-size: 1.1em;
-    padding: 0.5em 1.0em;
+    padding: 0.5em 1.0em 0.5em 0.8em;
     display: block;
     color: #2d2d2d;
   }
   
   & > input[type="radio"]:checked+label {
-    font-weight: bold;
-    border-left: solid 0.4em lightgray;
+    border-left: solid 0.3em lightgray;
+    padding: 0.5em 1.0em 0.5em 0.5em;
   }
 `;
 
