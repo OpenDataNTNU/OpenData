@@ -54,22 +54,30 @@ describe('Page displays bottom-level datasets from municipalities', () => {
   let store;
 
   beforeEach(() => {
+    // reset mock-fetch data and set up fetch to mock API calls
     fetch.resetMocks();
+    // reset and set up redux store
     const mockStore = configureStore();
     store = mockStore({});
   });
 
 
   it('Shows the title and description of a single dataset', async () => {
-    // first fetches metadata about the specific set
-    fetch.mockResponseOnce(carHistoryTrondheimResponse);
-    // then, when name is specified, fetches more general data about the type
-    fetch.mockResponseOnce(carHistoryResponse);
+    fetch.mockResponse(async ({ url }) => {
+      switch (url) {
+        case '/api/MetadataType/Car%20history':
+          return carHistoryResponse;
+        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return carHistoryTrondheimResponse;
+        default:
+          return '';
+      }
+    });
     const {
       getByText, findByText, queryByText,
     } = render(
       <Provider store={store}>
-        <InspectionBody id="" />
+        <InspectionBody id="3fa85f64-5717-4562-b3fc-2c963f66afa6" />
       </Provider>,
     );
 

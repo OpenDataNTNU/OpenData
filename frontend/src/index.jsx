@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import { store } from './state/store';
 import { saveState } from './state/helpers/localstorage';
 
+
 store.subscribe(() => {
   saveState(store.getState());
 });
