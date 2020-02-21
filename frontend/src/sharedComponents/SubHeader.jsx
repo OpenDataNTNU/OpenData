@@ -30,10 +30,10 @@ const SubHeader = () => {
       <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
       <LinkStyled to="/viewData">Search by category</LinkStyled>
       {
-      role
-        ? <LinkStyled to="/submitData">Submit data</LinkStyled>
-        : null
-    }
+        role === 1
+          ? <LinkStyled to="/submitData">Submit data</LinkStyled>
+          : null
+      }
     </SubHeaderContainer>
   );
 };
