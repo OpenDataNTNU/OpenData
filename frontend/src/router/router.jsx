@@ -29,9 +29,9 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route exact path="/viewData" component={AllData} />
         <Route path="/viewData/dataType/:name" component={MetadataByType} />
         <Route path="/viewData/dataset/:id" component={Inspection} />
-        <Route path="/sendData" component={SendMetadata} />
-        <PrivateRoute path="/articles/new/:id" component={NewExperienceArticle} />
-        <PrivateRoute path="/articles/new" component={NewExperienceArticle} />
+        <Route path="/sendData" municipality component={SendMetadata} />
+        <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
+        <PrivateRoute path="/articles/new" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/:id" component={Article} />
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />

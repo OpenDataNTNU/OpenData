@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SubHeaderContainer = styled.div`
   background-color: #f0f0f0;
@@ -18,13 +19,24 @@ const LinkStyled = styled(Link)`
   }
 `;
 
-const SubHeader = () => (
-  <SubHeaderContainer>
-    <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
-    <LinkStyled to="/viewData">Search by category</LinkStyled>
-    <LinkStyled to="/submitData">Submit data</LinkStyled>
-  </SubHeaderContainer>
-);
+const SubHeader = () => {
+  // Redux state
+  const userSelector = useSelector((state) => state.user);
+  const user = userSelector ? userSelector.user : null;
+  const role = user ? user.userType : null;
+
+  return (
+    <SubHeaderContainer>
+      <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
+      <LinkStyled to="/viewData">Search by category</LinkStyled>
+      {
+      role
+        ? <LinkStyled to="/submitData">Submit data</LinkStyled>
+        : null
+    }
+    </SubHeaderContainer>
+  );
+};
 
 export {
   SubHeader,
