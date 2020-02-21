@@ -71,7 +71,6 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
 
 MunicipalityMetadataResults.propTypes = {
   municipalityName: PropTypes.string.isRequired,
-
 };
 
 export {
