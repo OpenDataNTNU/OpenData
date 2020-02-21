@@ -26,17 +26,15 @@ const SubHeader = () => {
   const role = user ? user.userType : null;
 
   return (
-  <SubHeaderContainer>
-    <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
-    <LinkStyled to="/viewData">Search by category</LinkStyled>
-    {
+    <SubHeaderContainer>
+      <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
+      <LinkStyled to="/viewData">Search by category</LinkStyled>
+      {
       role
-      ?
-        <LinkStyled to="/submitData">Submit data</LinkStyled>
-      :
-        null
+        ? <LinkStyled to="/submitData">Submit data</LinkStyled>
+        : null
     }
-  </SubHeaderContainer>
+    </SubHeaderContainer>
   );
 };
 
