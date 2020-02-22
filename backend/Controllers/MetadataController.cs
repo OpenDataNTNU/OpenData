@@ -102,7 +102,7 @@ namespace OpenData.Controllers
 			//commit change to metadata
 			await _unitOfWork.CompleteAsync();
 
-			return Ok(result);
+			return Ok();
 		}
 
 		[HttpPut]
