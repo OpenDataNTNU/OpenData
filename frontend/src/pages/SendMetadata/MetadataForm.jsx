@@ -51,14 +51,13 @@ const HorizontalWrapper = styled.div`
 export const MetadataForm = () => {
   const [state, setState] = useState({
     metadataTypeName: '',
-    releaseState: 1,
+    releaseState: 0,
     description: '',
     formatName: '',
     municipalityName: '',
     url: '',
   });
 
-  const [municipalities, setMunicipalities] = useState([]);
   const [metadataTypes, setMetadataTypes] = useState([]);
   const dataFormats = ['JSON', 'CSV'];
 
@@ -66,6 +65,9 @@ export const MetadataForm = () => {
 
   const dispatch = useDispatch();
   const userSelector = useSelector((s) => s.user);
+
+  const { municipalityName: userMunicipality } = userSelector.user;
+  const municipalities = [{ name: userMunicipality }];
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -80,28 +82,6 @@ export const MetadataForm = () => {
     nextState[name] = parseInt(value, 10);
     setState(nextState);
   };
-
-  // fetch municipalities
-  useEffect(() => {
-    const internal = async () => {
-      try {
-        const res = await fetch('/api/Municipality');
-        const { status, ok } = res;
-        if (!ok) {
-          const err = new Error();
-          err.status = status;
-          throw err;
-        }
-        const receivedMuniciplalities = await res.json();
-        if (receivedMuniciplalities) {
-          setMunicipalities(receivedMuniciplalities);
-        }
-      } catch (err) {
-        dispatch(alertActions.error('Failed to fetch municipalities'));
-      }
-    };
-    internal();
-  }, []);
 
   // fetch metadata types
   useEffect(() => {
@@ -158,9 +138,9 @@ export const MetadataForm = () => {
 
   return (
     <Wrapper>
-      <StyledForm>
-        <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange}>
-          <option value="">Metadata type</option>
+      <StyledForm onSubmit={handleSubmit}>
+        <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange} required>
+          <option value="" disabled>Metadata type</option>
           {metadataTypes.map(({ name }) => <option key={name} value={name}>{name}</option>)}
         </Select>
         <p>
@@ -172,35 +152,35 @@ export const MetadataForm = () => {
         </p>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
-            <Input type="radio" name="releaseState" value={1} id="bluelight" checked={releaseState === 1} onChange={handleRadioChange} />
+            <Input type="radio" name="releaseState" value={1} id="bluelight" checked={releaseState === 1} onChange={handleRadioChange} required />
             {' Released'}
           </RadioLabel>
           <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
-            <Input type="radio" name="releaseState" value={2} id="greenlight" checked={releaseState === 2} onChange={handleRadioChange} />
+            <Input type="radio" name="releaseState" value={2} id="greenlight" checked={releaseState === 2} onChange={handleRadioChange} required />
             {' Ready for release'}
           </RadioLabel>
           <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
-            <Input type="radio" name="releaseState" value={3} id="yellowlight" checked={releaseState === 3} onChange={handleRadioChange} />
+            <Input type="radio" name="releaseState" value={3} id="yellowlight" checked={releaseState === 3} onChange={handleRadioChange} required />
             {' Needs work'}
           </RadioLabel>
           <RadioLabel htmlFor="redlight" background="#ffcccc" border="#ff5555">
-            <Input type="radio" name="releaseState" value={4} id="redlight" checked={releaseState === 4} onChange={handleRadioChange} />
+            <Input type="radio" name="releaseState" value={4} id="redlight" checked={releaseState === 4} onChange={handleRadioChange} required />
             {' Unreleasable'}
           </RadioLabel>
         </HorizontalWrapper>
-        <TextArea placeholder="description" name="description" value={description} onChange={handleChange} />
-        <Select name="formatName" value={formatName} onChange={handleChange}>
-          <option value="">Data format</option>
+        <TextArea placeholder="description" name="description" value={description} onChange={handleChange} required />
+        <Select name="formatName" value={formatName} onChange={handleChange} required>
+          <option value="" disabled>Data format</option>
           {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
         </Select>
-        <Select name="municipalityName" value={municipalityName} onChange={handleChange}>
-          <option value="">Municipality</option>
+        <Select name="municipalityName" value={municipalityName} onChange={handleChange} required>
+          <option value="" disabled>Municipality</option>
           {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
-        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} />
-        <Input type="submit" value="Submit" onClick={handleSubmit} />
+        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} required />
+        <Input type="submit" value="Submit" />
       </StyledForm>
     </Wrapper>
   );

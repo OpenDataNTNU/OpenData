@@ -62,6 +62,7 @@ describe('Provides a form to create metadata types', () => {
       user: {
         user: {
           token: 'abcdef',
+          municipalityName: 'Trondheim',
         },
       },
     });

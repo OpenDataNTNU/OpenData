@@ -33,6 +33,7 @@ describe('Metadata form component works as expected', () => {
       user: {
         user: {
           token: 'abcdef',
+          municipalityName: 'Trondheim',
         },
       },
     });
@@ -56,8 +57,8 @@ describe('Metadata form component works as expected', () => {
     await wait(() => click(getByText('Submit')));
     // should give you an error - check this from redux store
     // should have fetched exactly three times
-    // twice for fetching on load and once for submitting.
-    expect(fetch.mock.calls.length).toEqual(3);
+    // once for fetching on load and once for submitting.
+    expect(fetch.mock.calls.length).toEqual(2);
   });
 
   it('Succeeds when the fetch request goes well', async () => {
@@ -77,7 +78,7 @@ describe('Metadata form component works as expected', () => {
     await wait(() => click(getByText('Submit')));
     // TODO: expect the history to change
     // also expect there to be no error
-    // should have fetched exactly twice, once for fetching municipalities and once for submitting.
-    expect(fetch.mock.calls.length).toEqual(3);
+    // should have fetched exactly twice, once for fetching metadata types and once for submitting.
+    expect(fetch.mock.calls.length).toEqual(2);
   });
 });

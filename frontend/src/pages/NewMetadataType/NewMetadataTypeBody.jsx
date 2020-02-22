@@ -107,11 +107,11 @@ export const NewMetadataTypeBody = () => {
   }
 
   return (
-    <Wrapper>
-      <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-      <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
+    <Wrapper onSubmit={submit}>
+      <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
+      <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
       <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
-      <Input type="submit" value="Submit" onClick={submit} />
+      <Input type="submit" value="Submit" />
     </Wrapper>
   );
 };
