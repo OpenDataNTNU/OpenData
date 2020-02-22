@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
@@ -58,7 +58,6 @@ export const MetadataForm = () => {
     url: '',
   });
 
-  // municipalities should be objects with a "name" key
   const [municipalities, setMunicipalities] = useState([]);
   const [metadataTypes, setMetadataTypes] = useState([]);
   const dataFormats = ['JSON', 'CSV'];
@@ -66,6 +65,7 @@ export const MetadataForm = () => {
   const [submissionStatus, setSubmissionStatus] = useState('');
 
   const dispatch = useDispatch();
+  const userSelector = useSelector((s) => s.user);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -125,12 +125,14 @@ export const MetadataForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const { token } = userSelector.user;
     try {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
         body: JSON.stringify(state),
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
         },
       });
       // assuming that any successful response is a JSON object

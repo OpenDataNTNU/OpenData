@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import 'react-widgets/dist/css/react-widgets.css';
 import { Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags } from '../../sharedComponents/hooks/GetTags';
@@ -44,10 +44,12 @@ export const NewMetadataTypeBody = () => {
   const [submissionStatus, setSubmissionStatus] = useState('');
 
   const dispatch = useDispatch();
+  const userSelector = useSelector((state) => state.user);
 
   const submit = async (e) => {
     e.preventDefault();
     try {
+      const { token } = userSelector.user;
       const res = await fetch('/api/MetadataType', {
         method: 'PUT',
         body: JSON.stringify({
@@ -56,6 +58,7 @@ export const NewMetadataTypeBody = () => {
         }),
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
         },
       });
       const { ok, status } = res;
@@ -73,6 +76,7 @@ export const NewMetadataTypeBody = () => {
           }),
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
           },
         })
       )));
