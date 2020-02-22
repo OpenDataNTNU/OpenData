@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using OpenData.Resources;
 
 namespace OpenData.Domain.Models
 {
@@ -13,7 +14,7 @@ namespace OpenData.Domain.Models
 
 		public string Contents { get; set; }
 
-		public User LastEditedBy { get; set;}
+		public SafeUserResource LastEditedBy { get; set;}
 
 		public DateTime Created { get; set; }
 		public DateTime Modified { get; set; }
