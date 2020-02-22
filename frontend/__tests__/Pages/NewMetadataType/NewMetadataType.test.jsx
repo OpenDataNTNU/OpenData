@@ -57,7 +57,14 @@ describe('Provides a form to create metadata types', () => {
   beforeEach(() => {
     fetch.resetMocks();
     const mockStore = configureStore();
-    store = mockStore({});
+    // user should be logged inte tests when seeing this page
+    store = mockStore({
+      user: {
+        user: {
+          token: 'abcdef',
+        },
+      },
+    });
     history = createMemoryHistory();
   });
 

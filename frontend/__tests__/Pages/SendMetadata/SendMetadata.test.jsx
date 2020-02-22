@@ -21,14 +21,21 @@ const click = (x) => {
   );
 };
 
-describe('Form handles rejection', () => {
+describe('Metadata form component works as expected', () => {
   let store;
   let history;
 
   beforeEach(() => {
     fetch.resetMocks();
     const mockStore = configureStore();
-    store = mockStore({});
+    // user should be logged in when seeing this page
+    store = mockStore({
+      user: {
+        user: {
+          token: 'abcdef',
+        },
+      },
+    });
     history = createMemoryHistory();
   });
 
