@@ -1,5 +1,6 @@
 using AutoMapper;
 using OpenData.Domain.Models;
+using OpenData.Domain.Services.Communication;
 using OpenData.Resources;
 using System;
 using System.Collections.Generic;
