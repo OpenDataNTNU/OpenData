@@ -16,3 +16,8 @@ The tutorial linked above demonstrates how it works.
 ## Documentation
 
 See `http://localhost:3000/swagger/index.html` for documentation on the rest api.
+
+## Xunit Testing
+
+Navigate: "OpenData\backend\backendTests"
+Console: "dotnet test"

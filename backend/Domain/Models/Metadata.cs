@@ -23,5 +23,9 @@ namespace OpenData.Domain.Models
 		
 		public string MetadataTypeName { get; set; }
 		public MetadataType Type { get; set; }
+
+		[ForeignKey("ExperiencePost")]
+		public Guid? ExperiencePostGuid { get; set; }
+		public ExperiencePost? ExperiencePost { get; set; }
 	}
 }

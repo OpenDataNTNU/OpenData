@@ -38,7 +38,7 @@ function login(email, password) {
 }
 
 // Register a user with email and password
-function register(email, password) {
+function register(email, password, type) {
   function request() {
     return {
       type: userConstants.SET_USER_REGISTRATION_REQUEST,
@@ -62,7 +62,7 @@ function register(email, password) {
     dispatch(request());
 
     try {
-      await userService.register(email, password);
+      await userService.register(email, password, type);
       dispatch(success());
     } catch (error) {
       dispatch(failure(error.message));
@@ -76,9 +76,15 @@ function clearUserObject() {
   return { type: userConstants.SET_USER_CLEAR };
 }
 
+// Logs out the user by clearing the user object
+function logout() {
+  return { type: userConstants.SET_USER_LOGOUT };
+}
+
 const userActions = {
   login,
   register,
+  logout,
   clearUserObject,
 };
 

@@ -16,5 +16,7 @@ namespace OpenData.Domain.Models
 		public string MetadataTypeName { get; set; }
 
 		public string MunicipalityName { get; set; }
+
+		public string ExperiencePostGuid { get; set; }
 	}
 }

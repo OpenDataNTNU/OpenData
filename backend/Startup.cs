@@ -16,11 +16,14 @@ using OpenData.Services;
 using OpenData.Domain.Models;
 using OpenData.Middleware;
 
+using System;
+using System.IO;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace OpenData
 {
@@ -76,12 +79,17 @@ namespace OpenData
             services.AddScoped<IMetadataRepository, MetadataRepository>();
             services.AddScoped<IMetadataService, MetadataService>();
 
+            services.AddScoped<IExperiencePostRepository, ExperiencePostRepository>();
+            services.AddScoped<IExperiencePostService, ExperiencePostService>();
+
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ISecurityService, SecurityService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization();
             services.AddControllers();
@@ -90,7 +98,8 @@ namespace OpenData
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Description = "", Version = "v1" });
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "backend.xml"));
             }); 
         }
 

@@ -13,6 +13,7 @@ namespace OpenData.Persistence.Contexts
     public class AppDbContext : DbContext
     {
         public DbSet<Municipality> Municipalities { get; set; }
+        public DbSet<ExperiencePost> ExperiencePosts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
@@ -24,21 +25,20 @@ namespace OpenData.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
             builder.Entity<Municipality>().ToTable("Municipalities");
             builder.Entity<Municipality>().HasKey(p => p.Name);
             builder.Entity<Municipality>().Property(p => p.ShieldFileName).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<Municipality>().Property(p => p.Latitude).IsRequired();
-            builder.Entity<Municipality>().Property(p => p.Longitude).IsRequired();
             builder.Entity<Municipality>().HasMany(p => p.MetadataList).WithOne(p => p.Owner).HasForeignKey(p => p.MunicipalityName).IsRequired();
 
             builder.Entity<Municipality>().HasData
             (
-                new Municipality { Name = "Bodø", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
-                new Municipality { Name = "Bærum", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
-                new Municipality { Name = "Oslo", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
-                new Municipality { Name = "Trondheim", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F },
-                new Municipality { Name = "Asker", ShieldFileName="404.png", Latitude=1.0F, Longitude=1.0F }
+                new Municipality { Name = "Bodø", MailDomain = "bodo.kommune.no", ShieldFileName = "404.png" },
+                new Municipality { Name = "Test", MailDomain = "test.kommune.no", ShieldFileName = "404.png" },
+                new Municipality { Name = "Bærum", MailDomain = "baerum.kommune.no", ShieldFileName = "404.png" },
+                new Municipality { Name = "Oslo", MailDomain = "oslo.kommune.no", ShieldFileName = "404.png"},
+                new Municipality { Name = "Trondheim", MailDomain = "trondheim.kommune.no", ShieldFileName = "404.png"},
+                new Municipality { Name = "Asker", MailDomain = "asker.kommune.no", ShieldFileName = "404.png"}
             );
 
 
@@ -46,7 +46,8 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<User>().HasKey(p => p.Mail);
             builder.Entity<User>().Property(p => p.Password).IsRequired();
             builder.Entity<User>().Property(p => p.PasswordSalt).IsRequired();
-            
+            builder.Entity<User>().HasOne(p => p.Municipality);
+
             builder.Entity<Backend>().ToTable("Backends");
             builder.Entity<Backend>().HasKey(p => p.Name);
             builder.Entity<Backend>().Property(p => p.Description).IsRequired();
@@ -82,6 +83,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
             builder.Entity<Metadata>().Property( p => p.Url).IsRequired();
             builder.Entity<Metadata>().HasOne(p => p.Format);
+            builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
 
             builder.Entity<Tag>().ToTable("Tags");
@@ -103,6 +105,18 @@ namespace OpenData.Persistence.Contexts
                 new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Car History"},
                 new MetadataTypeTagMapping { TagName = "Traffic", MetadataTypeName = "Car History"}
             );
+
+            builder.Entity<ExperiencePost>().ToTable("ExperiencePost");
+            builder.Entity<ExperiencePost>().HasKey(p => p.Uuid);
+            builder.Entity<ExperiencePost>().Property(p => p.Contents).IsRequired();
+            builder.Entity<ExperiencePost>().HasOne(p => p.LastEditedBy);
+            builder.Entity<ExperiencePost>().Property(p => p.Created).IsRequired();
+            builder.Entity<ExperiencePost>().Property(p => p.Modified).IsRequired();
+
+            builder.Entity<ExperiencePostTagMapping>().ToTable("ExperiencePostTagMapping");
+            builder.Entity<ExperiencePostTagMapping>().HasKey(p => new {p.TagName, p.ExperiencePostGuid});
+            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Post).WithMany(p => p.Tags).HasForeignKey(p => p.ExperiencePostGuid);
+            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
         }
     }
 }

@@ -7,5 +7,7 @@ namespace OpenData.Domain.Repositories
     public interface IMunicipalityRepository
     {
          Task<IEnumerable<Municipality>> ListAsync();
+        Task<Municipality> FetchByName(string name);
+        Task<Municipality> GetMunicipalityByDomainAsync(string domain);
     }
 }

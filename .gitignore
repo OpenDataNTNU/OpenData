@@ -9,3 +9,11 @@ container/*/sql
 .vscode
 
 frontend/public/bundle.js
+
+.vs/
+
+backend/backendTests/bin
+
+backend/backendTests/obj
+
+backend/backendTests/backendTests.csproj.user

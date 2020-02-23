@@ -15,9 +15,19 @@ namespace OpenData.Services
     		_municipalityRepository = municipalityRepository;
     	}
 
+        public async Task<Municipality> GetMunicipalityByDomainAsync(string domain)
+        {
+            return await _municipalityRepository.GetMunicipalityByDomainAsync(domain);
+        }
+
         public async Task<IEnumerable<Municipality>> ListAsync()
         {
         	return await _municipalityRepository.ListAsync();
+        }
+
+        public async Task<Municipality> FetchByName(string name)
+        {
+            return await _municipalityRepository.FetchByName(name);
         }
     }
 }

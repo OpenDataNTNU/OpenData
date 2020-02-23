@@ -105,8 +105,8 @@ const Header = () => {
         window.location = 'https://github.com/OpenDataNTNU/OpenData';
         break;
       }
-      case 'Docs': {
-        history.push('/docs');
+      case 'API': {
+        window.location = '/swagger';
         break;
       }
       case 'About': {
@@ -117,8 +117,8 @@ const Header = () => {
         history.push('/login');
         break;
       }
-      case 'Account': {
-        history.push('/account');
+      case 'Logout': {
+        history.push('/logout');
         break;
       }
       default: {
@@ -141,14 +141,14 @@ const Header = () => {
               <NavExternalLink href="https://github.com/OpenDataNTNU/OpenData">
                 <p>Source Code</p>
               </NavExternalLink>
-              <NavInternalLink to="/docs">
-                <p>Docs</p>
-              </NavInternalLink>
+              <NavExternalLink href="/swagger">
+                <p>API</p>
+              </NavExternalLink>
               <NavInternalLink to="/about">
                 <p>About</p>
               </NavInternalLink>
-              <NavInternalLink to={user && user.mail ? '/account' : '/login'}>
-                <p>{user && user.mail ? 'Account' : 'Sign in'}</p>
+              <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>
+                <p>{user && user.mail ? 'Logout' : 'Sign in'}</p>
               </NavInternalLink>
             </Nav>
           )
@@ -158,9 +158,9 @@ const Header = () => {
               onItemClick={onDropdownClick}
               list={[
                 { id: 'Source Code', title: 'Source Code' },
-                { id: 'Docs', title: 'Docs' },
+                { id: 'API', title: 'API' },
                 { id: 'About', title: 'About' },
-                { id: user && user.mail ? 'Account' : 'Sign in', title: user && user.mail ? 'Account' : 'Sign in' },
+                { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}
             />
           )

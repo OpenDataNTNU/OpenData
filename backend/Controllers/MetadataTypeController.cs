@@ -14,9 +14,12 @@ using OpenData.Exceptions;
 
 using System;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace OpenData.Controllers
 {
+	[Authorize]
 	[Route("/api/[controller]")]
 	public class MetadataTypeController : Controller
 	{
@@ -24,15 +27,27 @@ namespace OpenData.Controllers
 		private readonly ITagService _tagService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IHttpContextAccessor httpContextRetriever;
+		private readonly IUserService userService;
 
-		public MetadataTypeController(IMetadataTypeService metadataTypeService, ITagService tagService, IMapper mapper, IUnitOfWork unitOfWork) 
+		public MetadataTypeController(
+            IMetadataTypeService metadataTypeService,
+            ITagService tagService,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+			IHttpContextAccessor httpContextRetriever,
+			IUserService userService
+			) 
 		{
 			_metadataTypeService = metadataTypeService;
 			_tagService = tagService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
+			this.httpContextRetriever = httpContextRetriever;
+			this.userService = userService;
 		}
 
+        [AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataTypeResource>> GetAllAsync()
 		{
@@ -44,6 +59,7 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns a single metadata type, and all its associated metadata entries.
 		/// </summary> 
+		[AllowAnonymous]
 		[HttpGet("{name}")]
 		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(string name)
 		{
@@ -65,6 +81,14 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
 
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+
+            if(user.UserType < UserType.Municipality)
+            {
+				return Unauthorized("Invalid permission for creation of a new MetadataType");
+            }
+
 			var metadataType = _mapper.Map<SaveMetadataTypeResource, MetadataType>(resource);
 			var result = await _metadataTypeService.SaveAsync(metadataType);
 
@@ -85,6 +109,14 @@ namespace OpenData.Controllers
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
+
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+
+			if (user.UserType < UserType.Municipality)
+			{
+				return Unauthorized("Invalid permission for addition of a new tag to a MetadataType");
+			}
 
 			//Try to fetch the metadata type, and return 404 if it doesnt exist
 			MetadataType type = null;

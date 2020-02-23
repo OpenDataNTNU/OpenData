@@ -12,6 +12,7 @@ using OpenData.Persistence.Contexts;
 using OpenData.Domain.Services;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using OpenData.Resources;
 
 namespace OpenData.Persistence.Repositories
 {
@@ -52,7 +53,8 @@ namespace OpenData.Persistence.Repositories
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Email, user.Mail)
+                    new Claim(ClaimTypes.Email, user.Mail),
+                    new Claim(ClaimTypes.Name, user.Mail)
                 }),
                 Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -75,6 +77,11 @@ namespace OpenData.Persistence.Repositories
         public async Task<IEnumerable<User>> GetAll()
         {
             return (await _context.Users.ToListAsync());
+        }
+
+        public async Task<User> GetUserByMailAsync(string mail)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Mail == mail);
         }
     }
 }
