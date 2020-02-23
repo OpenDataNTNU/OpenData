@@ -31,7 +31,7 @@ const SubHeader = () => {
       <LinkStyled to="/viewData">Search by category</LinkStyled>
       {
         role === 1
-          ? <LinkStyled to="/submitData">Submit data</LinkStyled>
+          ? <LinkStyled to="/sendData">Submit data</LinkStyled>
           : null
       }
     </SubHeaderContainer>
