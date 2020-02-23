@@ -8,7 +8,7 @@ container/*/sql
 .DS_Store
 .vscode
 
-frontend/public
+frontend/public/bundle.js
 
 .vs/
 
