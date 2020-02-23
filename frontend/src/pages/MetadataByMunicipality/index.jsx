@@ -9,7 +9,6 @@ import { alertActions } from '../../state/actions/alert';
 const MunicipalitiesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100%;
   width: 100%;
   max-width: 60em;
   margin: auto;
