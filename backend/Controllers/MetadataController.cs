@@ -133,5 +133,22 @@ namespace OpenData.Controllers
 
             return Unauthorized("Invalid permissions!");
 		}
+
+        [HttpPut("{uuid}/comments")]
+        public async Task<IActionResult> PostCommentAsync(string uuid, Comment comment)
+        {
+			comment.MetadataUuid = uuid;
+
+			await _metadataService.AddCommentAsync(comment);
+			return Ok(comment);
+        }
+
+		[HttpGet("{uuid}/comments")]
+		public async Task<IActionResult> GetCommentsAsync(string uuid)
+		{
+            
+			return Ok();
+		}
+
 	}
 }

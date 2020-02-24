@@ -9,8 +9,10 @@ namespace OpenData.Domain.Services
 {
     public interface IMetadataService
     {
-         Task<IEnumerable<Metadata>> ListAsync();
-         Task<Metadata> GetByUuidAsync(Guid uuid);
-         Task<SaveMetadataResponse> SaveAsync(Metadata metadata);
+        Task<IEnumerable<Metadata>> ListAsync();
+        Task<Metadata> GetByUuidAsync(Guid uuid);
+        Task<SaveMetadataResponse> SaveAsync(Metadata metadata);
+        Task AddCommentAsync(Comment comment);
+        Task<IEnumerable<Comment>> FetchCommentsAsync(string uuid);
     }
 }

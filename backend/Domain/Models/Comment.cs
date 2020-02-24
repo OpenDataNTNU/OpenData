@@ -13,6 +13,10 @@ namespace OpenData.Domain.Models
         public string UserMail { get; set; }
         public User User { get; set; }
 
+        [ForeignKey("Metadata")]
+        public string MetadataUuid { get; set; }
+        public Metadata Metadata { get; set; }
+
         public string Content { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

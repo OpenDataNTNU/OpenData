@@ -18,6 +18,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Comment> Comment { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -117,6 +118,12 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<ExperiencePostTagMapping>().HasKey(p => new {p.TagName, p.ExperiencePostGuid});
             builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Post).WithMany(p => p.Tags).HasForeignKey(p => p.ExperiencePostGuid);
             builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
+
+            builder.Entity<Comment>().ToTable("Comment");
+            builder.Entity<Comment>().HasKey(p => p.Uuid);
+            builder.Entity<Comment>().Property(p => p.Content).IsRequired();
+            builder.Entity<Comment>().Property(p => p.UserMail).IsRequired();
+            builder.Entity<Comment>().Property(p => p.MetadataUuid).IsRequired();
         }
     }
 }
