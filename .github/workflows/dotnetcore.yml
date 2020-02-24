@@ -16,4 +16,4 @@ jobs:
     - name: Build with dotnet
       run: cd backend && dotnet build --configuration Release
     - name: Test with dotnet
-      run: dotnet test --configuration Release
+      run: cd backend && dotnet test --verbosity normal
