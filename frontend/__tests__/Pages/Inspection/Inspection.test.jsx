@@ -25,7 +25,7 @@ const carHistoryResponse = `{
   "metadataList":[{
     "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "url":"https://trondheim.kommune.no",
-    "description":"",
+    "description":"This is a decRIPtrion",
     "formatName":"JSON",
     "releaseState":1,
     "metadataTypeName":"Car history",
@@ -45,7 +45,8 @@ const carHistoryResponse = `{
 const carHistoryTrondheimResponse = `{
   "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "url":"https://trondheim.kommune.no",
-  "description":"","formatName":"JSON",
+  "description":"This is a decRIPtrion",
+  "formatName":"JSON",
   "releaseState":2,
   "metadataTypeName":"Car history",
   "municipalityName":"Trondheim"
@@ -88,7 +89,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     );
 
     await findByText(new RegExp('Trondheim'));
-    getByText('Wroom wroom');
+    getByText('This is a decRIPtrion');
     expect(queryByText(new RegExp('Bergen'))).toBeNull();
 
     // should have fetched exactly twice, once for fetching municipalities and once for submitting.
