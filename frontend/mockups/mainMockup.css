@@ -1,0 +1,394 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+p {
+    margin: 0.3em 0;
+}
+
+.formWrapper {
+    padding: 1em 0.5em;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    background-color: #f5f5f5;
+}
+form {
+    max-width:50em;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    background-color: white;
+    border-radius: 0.3em;
+}
+form .flexWrapper {
+    display: flex;
+}
+form .flexWrapper label {
+    text-align: center;
+    display: block;
+}
+form .flexWrapper > div {
+    flex: 1;
+}
+form.login {
+    max-width: 30em;
+}
+form select {
+    padding: 0.3em;
+    font-size:1.0em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.3em 0 0.3em 0;
+}
+form label {
+    font-size: 0.9em;
+    margin-top: 1.2em;
+    color: dimgray;
+}
+form textarea {
+    font-family: inherit;
+    padding: 0.3em;
+    font-size:1.0em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    min-width: 100%;
+    max-width: 50em;
+    min-height: 4em;
+    box-sizing: border-box;
+    margin: 0.3em 0 0.3em 0;
+}
+form a {
+    color: #434faf;
+    text-decoration: underline;
+}
+
+form input {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.3em 0 0.3em 0;
+}
+form button {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    color: #7e6dad;
+    background-color: #dcd8ff;
+    border: solid 0.1em #9a85d3;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 1em 0 0.8em 0;
+    cursor: pointer
+}
+
+header {
+    padding: 0 1em 0 2em;
+    color: white;
+    background-color: black;
+    display: flex;
+}
+header > nav {
+    margin-left: 1em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+}
+header > a {
+    padding: 0 0.5em;
+}
+header > nav > a {
+    padding: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+header > nav > a.account {
+    margin-left: auto;
+}
+header > nav > a:hover, header > a:hover{
+    background-color: rgba(255, 255, 255, 0.15);
+}
+section#main {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+section#main #results {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+section#main #sorting {
+    background-color: #eeeeee;
+    padding: 0.5em;
+    color: #4b4b4b
+}
+
+section#sidebar {
+    border-right: solid 1px lightgrey;
+    padding: 0.5em;
+    min-width: 15em;
+    max-width: 30em;
+    overflow-y: scroll;
+}
+
+section#sidebar > div.filter {
+    margin-bottom: 1em;
+    font-size: 1.1em;
+    font-weight:300;
+}
+section#sidebar > input[type='text'] {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    border: solid 0.1em lightgrey;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 1em 0 0.3em 0;
+}
+section#sidebar > button {
+    padding: 0.3em;
+    font-size:1.1em;
+    border-radius: 0.3em;
+    color: #7e6dad;
+    background-color: #dcd8ff;
+    border: solid 0.1em #9a85d3;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 1em 0;
+    cursor: pointer
+}
+section#sidebar > button:hover {
+    background-color: #e5e8ff;
+}
+
+
+div.filter > div.filter {
+    padding-top: 0.3em;
+    margin-left: 0.5em;
+    padding-left: 0.5em;
+    border-left: solid 0.1em #e2e2e2;
+}
+
+section#content {
+    min-width: 30em;
+}
+section#content > #results {
+
+}
+.resultsInfo {
+    color: #575757;
+    font-size: 0.9em;
+    margin: 0 0 0.5em 0;
+}
+.dataSet {
+    max-width: 60em;
+    border: solid 0.2em #f0f0f0;
+    border-radius: 0.2em;
+    padding: 0;
+    margin-bottom: 0.5em;
+    display: flex;
+    flex-direction:row;
+    position: relative;
+    
+}
+.dataSet > .dataSetContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dataSet > .rating {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 0.4em;
+    background-color: #f3f3f3;
+    border-left: 0.1em solid lightgrey;
+}
+.rating > a.commentsIcon {
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    align-content:center;
+}
+.rating > a.commentsIcon > img {
+    max-width: 1.4em;
+}
+.rating > a.commentsIcon > p {
+    font-size: 0.8em;
+    max-width: 6em;
+    text-align: center;
+}
+
+.dataSet h3 {
+    margin: 0.1em 0;
+    font-weight: 500;
+}
+.dataSetText {
+    padding: 0.6em;
+}
+.dataSetText > p {
+    font-size: 0.9em;
+    color: #353535
+}
+div.tag {
+    background-color: #eeeeee;
+    color: #595959;
+    font-size: 0.8em;
+    padding: 0.1em 0.6em;
+    display: inline-block;
+    border-radius:1em;
+    margin: 0.2em 0.1em;
+}
+div.tag::before {
+    content: '# ';
+}
+p.date {
+    font-size: 0.8em;
+    color: dimgray
+}
+
+a.dataSource {
+    margin: 0.5em;
+    display: flex;
+    flex-direction: row;
+}
+a.dataSource p {
+    margin: 0;
+    font-size: 1.1em;
+}
+a.dataSource > p {
+    color: #434faf;
+    text-decoration: underline;
+}
+a.dataSource > .fileType {
+    background-color: #d8e3ff;
+    margin-left: 0.4em;
+    padding: 0 1em;
+    color: #434faf;
+}
+.status {
+    position: relative;
+    display: inline-block;
+    border-radius: 0 0 0.4em 0;
+    padding: 0.2em 1.2em;
+    font-size: 0.9em;
+}
+.green {
+    color: #1f7d1b;
+    background-color: #c9f2c8;
+}
+.yellow {
+    color: #ba8436;
+    background-color: #ffdea2;
+}
+.red {
+    color: #a42126;
+    background-color: #ffc5ca;
+}
+
+/* FOR ALTERNATE VERSION */
+.borderGreen {
+    border-color: #c9f2c8;
+}
+.borderYellow {
+    border-color: #ffdea2;
+}
+.borderRed {
+    border-color: #ffc5ca;
+}
+
+.dataViewWrapper {
+    background-color: #f5f5f5;
+    flex: 1;
+}
+.dataViewWrapper > .dataView {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    max-width: 70em;
+    height: 100%;
+}
+.dataSetInspection {
+    background-color: white;
+    max-width: 50em;
+    border: solid 0.2em #e4e4e4;
+    border-radius: 0.2em;
+    padding: 0;
+    margin: 0.5em;
+    position: relative;
+}
+.dataComments {
+    padding-left: 0.5em;
+    border-left: 0.1em solid #e4e4e4;
+    max-width: 30em;
+    min-width: 15em;
+}
+.dataComments .comment {
+    font-size: 0.9em;
+    background-color: white;
+    padding: 0.8em;
+    border-radius: 0.8em;
+    margin-bottom: 0.8em;
+}
+.dataComments .commentHeader {
+    display: flex;
+    flex-direction: row;
+}
+.dataComments .commentUser {
+    font-weight: 500;
+    color: #3e3e3e;
+}
+.dataComments .commentContent {
+    font-size: 0.9em;
+}
+.dataComments .commentDate {
+    margin-left:0.5em;
+    color: dimgray;
+}
+
+footer {
+    background-color: #efefef;
+    color: dimgray;
+}
+footer > div {
+    max-width: 40em;
+    margin: auto;
+    padding: 2em;
+}
+footer a {
+    text-decoration: underline;
+}
+
+
+/*
+a:hover, button:hover, input:hover, select:hover {
+    cursor: url('res/WoW Cursor.png'), auto;
+}*/
