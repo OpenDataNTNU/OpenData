@@ -17,12 +17,12 @@ export const Comments = (props) => {
     <Wrapper>
       <h2>Feedback</h2>
       {comments.map(({
-        id, comment, author, date,
+        id, comment, author: { name }, date,
       }) => (
         <Comment
           key={id}
           comment={comment}
-          author={author}
+          author={name}
           date={date}
         />
       ))}
@@ -31,5 +31,12 @@ export const Comments = (props) => {
 };
 
 Comments.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+    comment: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+  })).isRequired,
 };
