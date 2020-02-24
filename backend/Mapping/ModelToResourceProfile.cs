@@ -1,5 +1,6 @@
 using AutoMapper;
 using OpenData.Domain.Models;
+using OpenData.Domain.Services.Communication;
 using OpenData.Resources;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace OpenData.Mapping
             CreateMap<Municipality, MunicipalityResource>();
 
             CreateMap<SaveExperiencePostResource, ExperiencePost>();
+
+            CreateMap<SaveExperiencePostResponse, SafeSaveExperiencePostResponse>();
 
             CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
 

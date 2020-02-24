@@ -11,6 +11,7 @@ using OpenData.Resources;
 using OpenData.Services;
 using OpenData.Extensions;
 using OpenData.Exceptions;
+using OpenData.Domain.Services.Communication;
 
 using System;
 using System.Net;
@@ -102,7 +103,9 @@ namespace OpenData.Controllers
 			//commit change to metadata
 			await _unitOfWork.CompleteAsync();
 
-			return Ok();
+			var resultSafe = _mapper.Map<SaveExperiencePostResponse, SafeSaveExperiencePostResponse>(result);
+
+			return Ok(resultSafe);
 		}
 
 		[HttpPut]
