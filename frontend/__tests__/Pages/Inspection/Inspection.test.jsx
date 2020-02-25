@@ -2,8 +2,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import fetch from 'jest-fetch-mock';
+import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
+import { createMemoryHistory } from 'history';
 
 import { InspectionBody } from '../../../src/pages/Inspection/InspectionBody';
 
@@ -52,6 +54,7 @@ const carHistoryTrondheimResponse = `{
 describe('Page displays bottom-level datasets from municipalities', () => {
   // redux store
   let store;
+  let history;
 
   beforeEach(() => {
     // reset mock-fetch data and set up fetch to mock API calls
@@ -59,6 +62,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     // reset and set up redux store
     const mockStore = configureStore();
     store = mockStore({});
+    history = createMemoryHistory();
   });
 
 
@@ -77,7 +81,9 @@ describe('Page displays bottom-level datasets from municipalities', () => {
       getByText, findByText, queryByText,
     } = render(
       <Provider store={store}>
-        <InspectionBody id="3fa85f64-5717-4562-b3fc-2c963f66afa6" />
+        <Router history={history}>
+          <InspectionBody id="3fa85f64-5717-4562-b3fc-2c963f66afa6" />
+        </Router>
       </Provider>,
     );
 
