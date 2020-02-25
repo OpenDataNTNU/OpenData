@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -49,8 +50,9 @@ export const MetaData = (props) => {
   const { data, tags, description } = props;
   const date = '20-09-2019';
   const {
-    municipalityName, formatName, url, metadataTypeName,
+    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid,
   } = data;
+
   return (
     <Wrapper>
       <h2>
@@ -77,8 +79,20 @@ export const MetaData = (props) => {
           </FileFormat>
         </Source>
       </div>
+      <hr />
+      <div>
+        {
+          experiencePostGuid
+            ? <Link to={`/articles/${experiencePostGuid}`}>Read Experience Article</Link>
+            : <Link to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</Link>
+        }
+      </div>
     </Wrapper>
   );
+};
+
+MetaData.defaultTypes = {
+  uuid: '',
 };
 
 MetaData.propTypes = {
@@ -87,6 +101,8 @@ MetaData.propTypes = {
     formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    experiencePostGuid: PropTypes.string.isRequired,
+    uuid: PropTypes.string,
   }).isRequired,
   description: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
