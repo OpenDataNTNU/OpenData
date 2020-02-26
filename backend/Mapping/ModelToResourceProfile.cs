@@ -31,6 +31,8 @@ namespace OpenData.Mapping
             CreateMap<NewUserResource, User>();
             CreateMap<User, PrivateSafeUserResource>();
             CreateMap<User, SafeUserResource>();
+
+            CreateMap<NewCommentResource, Comment>();
         }
     }
 }

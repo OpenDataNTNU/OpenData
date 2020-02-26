@@ -30,14 +30,15 @@ namespace OpenData.Persistence.Repositories
             await _context.Metadata.AddAsync(metadata);
         }
 
-        public async Task AddCommentAsync(Comment comment)
+        public async Task<Comment> AddCommentAsync(Comment comment)
         {
-            await _context.Comment.AddAsync(comment);
+            await _context.Comments.AddAsync(comment);
+            return await _context.Comments.SingleOrDefaultAsync(c => c.Uuid == comment.Uuid);
         }
 
-        public async Task<IEnumerable<Comment>> FetchCommentsAsync(string uuid)
+        public async Task<IEnumerable<Comment>> FetchCommentsAsync(Guid uuid)
         {
-            return await _context.Comment.Where(p => p.MetadataUuid == uuid).OrderBy(p => p.Published).ToListAsync();
+            return await _context.Comments.Where(p => p.MetadataUuid == uuid).OrderBy(p => p.Published).ToListAsync();
         }
     }
 }

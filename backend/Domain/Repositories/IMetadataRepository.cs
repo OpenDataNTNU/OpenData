@@ -11,7 +11,7 @@ namespace OpenData.Domain.Repositories
         Task<IEnumerable<Metadata>> ListAsync();
         Task<Metadata> GetByUuidAsync(Guid uuid);
         Task AddAsync(Metadata metadata);
-        Task AddCommentAsync(Comment comment);
-        Task<IEnumerable<Comment>> FetchCommentsAsync(string uuid);
+        Task<Comment> AddCommentAsync(Comment comment);
+        Task<IEnumerable<Comment>> FetchCommentsAsync(Guid uuid);
     }
 }

@@ -41,11 +41,11 @@ namespace OpenData.Services
             }
         }
 
-        public async Task AddCommentAsync(Comment comment) {
-            await _metadataRepository.AddCommentAsync(comment);
+        public async Task<Comment> AddCommentAsync(Comment comment) {
+            return await _metadataRepository.AddCommentAsync(comment);
         }
 
-        public async Task<IEnumerable<Comment>> FetchCommentsAsync(string uuid)
+        public async Task<IEnumerable<Comment>> FetchCommentsAsync(Guid uuid)
         {
             return await _metadataRepository.FetchCommentsAsync(uuid);
         }

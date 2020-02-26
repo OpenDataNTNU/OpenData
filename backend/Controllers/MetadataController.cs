@@ -134,20 +134,34 @@ namespace OpenData.Controllers
             return Unauthorized("Invalid permissions!");
 		}
 
-        [HttpPut("{uuid}/comments")]
-        public async Task<IActionResult> PostCommentAsync(string uuid, Comment comment)
+        /// <summary>
+        /// Used to PUT comments related to a given Metadata.
+        /// </summary>
+        /// <param name="metadataGuid"></param>
+        /// <param name="newComment">New comment to be added.</param>
+        /// <returns>The comment if it was added successfully</returns>
+        [HttpPut("{metadataGuid}/comments")]
+        public async Task<IActionResult> PostCommentAsync(Guid metadataGuid, [FromBody] NewCommentResource newComment)
         {
-			comment.MetadataUuid = uuid;
+			Comment comment = _mapper.Map<NewCommentResource, Comment>(newComment);
+			comment.MetadataUuid = metadataGuid;
+			comment.UserMail = httpContextRetriever.HttpContext.User.Identity.Name;
 
-			await _metadataService.AddCommentAsync(comment);
+			comment = await _metadataService.AddCommentAsync(comment);
 			return Ok(comment);
         }
 
-		[HttpGet("{uuid}/comments")]
-		public async Task<IActionResult> GetCommentsAsync(string uuid)
+        /// <summary>
+        /// Fethes all the comments by a given metadata GUID.
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <returns>All of the comments for a given metadata GUID</returns>
+        [AllowAnonymous]
+		[HttpGet("{metadataGuid}/comments")]
+		public async Task<IActionResult> GetCommentsAsync([FromBody] Guid metadataGuid)
 		{
-            
-			return Ok();
+			IEnumerable<Comment> comments = await _metadataService.FetchCommentsAsync(metadataGuid);
+			return Ok(comments);
 		}
 
 	}
