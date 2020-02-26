@@ -18,6 +18,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -99,6 +100,11 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<MetadataTypeTagMapping>().HasKey(p => new { p.TagName, p.MetadataTypeName });
             builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Type).WithMany(p => p.Tags).HasForeignKey(p => p.MetadataTypeName);
             builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
+
+            builder.Entity<Like>().ToTable("Likes");
+            builder.Entity<Like>().HasKey(p => new { p.LikeUserEmail, p.MetadataUuid });
+            builder.Entity<Like>().HasOne(p => p.LikeUser).WithMany().HasForeignKey(p => p.LikeUserEmail);
+            builder.Entity<Like>().HasOne(p => p.Metadata).WithMany(p => p.Likes).HasForeignKey(p => p.MetadataUuid);
 
             builder.Entity<MetadataTypeTagMapping>().HasData(
                 new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Cycle History"},
