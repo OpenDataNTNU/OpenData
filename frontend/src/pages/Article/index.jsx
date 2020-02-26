@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import parse from 'html-react-parser';
 
 import { Template } from '../../sharedComponents/Template';
+import { CommentSection } from '../../sharedComponents/CommentSection';
 import { useGetExperienceArticle } from '../../sharedComponents/hooks';
 
 
@@ -51,6 +52,97 @@ const Article = () => {
   const { id } = useParams();
   const article = useGetExperienceArticle(id) || {};
 
+  const comments = {
+    1: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 1',
+    },
+    2: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 2',
+      children: {
+        21: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 21',
+        },
+        22: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 22',
+          children: {
+            221: {
+              uuid: '1a',
+              author: 'Andreas',
+              timestamp: new Date(),
+              content: 'This is a comment body 21',
+            },
+            222: {
+              uuid: '1a',
+              author: 'Andreas',
+              timestamp: new Date(),
+              content: 'This is a comment body 22',
+            },
+          },
+        },
+        23: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 3',
+        },
+        24: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 3',
+        },
+        25: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 3',
+        },
+        26: {
+          uuid: '1a',
+          author: 'Andreas',
+          timestamp: new Date(),
+          content: 'This is a comment body 3',
+        },
+      },
+    },
+    3: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 3',
+    },
+    4: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 3',
+    },
+    5: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 3',
+    },
+    6: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 3',
+    },
+  };
+
   return (
     <Template>
       <Wrapper>
@@ -70,6 +162,7 @@ const Article = () => {
             parse(article.contents || '')
           }
         </Body>
+        <CommentSection comments={comments} />
       </Wrapper>
     </Template>
   );
