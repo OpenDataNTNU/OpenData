@@ -18,6 +18,7 @@ services:
       dockerfile: ./container/production/Dockerfile.dotnet
     environment:
       ASPNETCORE_URLS: "http://*:9000"
+      ASPNETCORE_ENVIRONMENT: "Production"
     links:
       - mysql
     ports:

@@ -22,7 +22,6 @@
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://*:9000"
     }

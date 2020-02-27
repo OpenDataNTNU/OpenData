@@ -12,6 +12,8 @@ RUN chmod +x /srv/opendata-backend/dotnet-entrypoint.sh
 
 WORKDIR /srv/opendata-backend
 
+ENV ASPNETCORE_ENVIRONMENT = Production
+
 RUN dotnet restore
 
 ENTRYPOINT ["bash", "-c"]

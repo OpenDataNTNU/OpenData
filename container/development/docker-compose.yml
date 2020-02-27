@@ -24,6 +24,7 @@ services:
       dockerfile: Dockerfile.dotnet
     environment:
       ASPNETCORE_URLS: "http://*:9000"
+      ASPNETCORE_ENVIRONMENT: "Development"
     links:
       - mysql
     ports:
