@@ -16,6 +16,10 @@ const Wrapper = styled.div`
   color: #000;
 `;
 
+const StyledLink = styled(Link)`
+  font-size: 0.9em;
+`;
+
 const CommentSection = ({ comments }) => {
   // React router dom get location object for search parameters
   const location = useLocation();
@@ -83,9 +87,9 @@ const CommentSection = ({ comments }) => {
     // the condition is true
     if ((parentId && !doNotConstrainLength && values.length > 5) || depth >= 5) {
       components.push(
-        <Link to={`${location.pathname}?comment=${parentId}`}>
-          Load more comments
-        </Link>,
+        <StyledLink to={`${location.pathname}?comment=${parentId}`}>
+          Load more comments...
+        </StyledLink>,
       );
     }
 

@@ -28,10 +28,11 @@ const Info = styled.span`
 const StyledLink = styled(Link)`
   font-weight: 500;
   color: dimgray;
+  font-size: 0.9em;
 `;
 
 const Body = styled.div`
-  font-size: 0.9em;
+  font-size: 1.1em;
 `;
 
 const Footer = styled.div`
