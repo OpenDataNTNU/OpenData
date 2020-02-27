@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306
+    volumes:
+#     - ../common/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+     - ./sql:/var/lib/mysql
+    environment:
+      MYSQL_USER: OpenData
+      MYSQL_DATABASE: OpenData
+      MYSQL_PASSWORD: OpenData
+      MYSQL_ROOT_PASSWORD: sjallabajs
+  dotnet:
+    build:
+      context: ../../
+      dockerfile: ./container/production/Dockerfile.dotnet
+    environment:
+      ASPNETCORE_URLS: "http://*:9000"
+    links:
+      - mysql
+    ports:
+      - 9000:9000 # Only exposed for testing
+  nginx:
+    build:
+      context: ../../
+      dockerfile: ./container/production/Dockerfile.nginx
+    ports:
+      - 3000:3000
+    links:
+      - dotnet
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
