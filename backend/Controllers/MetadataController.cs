@@ -28,6 +28,7 @@ namespace OpenData.Controllers
 		private readonly IExperiencePostService _experiencePostService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly ILikeService _likeService;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
 
@@ -37,13 +38,15 @@ namespace OpenData.Controllers
             IMapper mapper,
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
-            IUserService userService
+            IUserService userService,
+            ILikeService likeService
             )
 		{
 			_metadataService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_experiencePostService = experiencePostService;
+			_likeService = likeService; 
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -106,6 +109,28 @@ namespace OpenData.Controllers
 			var resultSafe = _mapper.Map<SaveExperiencePostResponse, SafeSaveExperiencePostResponse>(result);
 
 			return Ok(resultSafe);
+		}
+
+		/// <summary>
+		/// Returns like information about a dataset.
+		/// </summary> 
+		[AllowAnonymous]
+		[HttpGet("{uuid}/likes")]
+		public async Task<IActionResult> GetLikes(string uuid)
+		{
+			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
+            User user = await userService.GetUserByMailAsync(targetUsername);
+
+            Metadata metadata = null; 
+			try {
+				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+            var likeReport = await _likeService.GetLikeReport(user, metadata);
+
+			return Ok(likeReport);
 		}
 
 		[HttpPut]

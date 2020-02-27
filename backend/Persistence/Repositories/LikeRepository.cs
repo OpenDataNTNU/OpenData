@@ -16,12 +16,16 @@ namespace OpenData.Persistence.Repositories
 
         }
 
-        public async Task GetLikeByUser(User user) {
-            await _context.Likes.FirstAsync(x => x.LikeUser == user);
+        public async Task<Like> GetLikeByUserAndMetadata(User user, Metadata metadata) {
+            return await _context.Likes.FirstAsync(x => x.LikeUser == user && x.Metadata == metadata);
+        }
+
+        public async Task<int> GetLikeCount(Metadata metadata) {
+            return await _context.Likes.CountAsync(x => x.Metadata == metadata);
         }
 
         public async Task AddAsync(Like like) {
-            await _context.Likes.AddAsync(metadata);
+            await _context.Likes.AddAsync(like);
         }
     }
 }
