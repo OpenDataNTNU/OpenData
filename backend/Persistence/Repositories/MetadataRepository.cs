@@ -33,6 +33,7 @@ namespace OpenData.Persistence.Repositories
         public async Task<Comment> AddCommentAsync(Comment comment)
         {
             await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
             return await _context.Comments.SingleOrDefaultAsync(c => c.Uuid == comment.Uuid);
         }
 

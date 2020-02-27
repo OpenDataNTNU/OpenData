@@ -13,6 +13,8 @@ using OpenData.Exceptions;
 
 using System;
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenData.Controllers
 {
@@ -23,13 +25,17 @@ namespace OpenData.Controllers
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ITagService _tagService;
+		private readonly IHttpContextAccessor httpContextRetriever;
+		private readonly ICommentService commentService;
 
-		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork, ITagService tagService) 
+		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork, ITagService tagService, ICommentService commentService, IHttpContextAccessor httpContextRetriever) 
 		{
 			_experiencePostService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_tagService = tagService;
+			this.commentService = commentService;
+			this.httpContextRetriever = httpContextRetriever;
 		}
 
 		//TODO this needs authentication
@@ -91,6 +97,34 @@ namespace OpenData.Controllers
 
 			await _unitOfWork.CompleteAsync();
 			return Ok(res);
+		}
+
+		/// <summary>
+		/// Used to PUT comments related to a given Metadata.
+		/// </summary>
+		/// <param name="experiencePostGuid"></param>
+		/// <param name="newComment">New comment to be added.</param>
+		/// <returns>The comment if it was added successfully</returns>
+		[HttpPut("{metadataGuid}/comments")]
+		public async Task<IActionResult> PostCommentAsync(Guid experiencePostGuid, [FromBody] NewCommentResource newComment)
+		{
+			Comment comment = _mapper.Map<NewCommentResource, Comment>(newComment);
+			comment.UserMail = httpContextRetriever.HttpContext.User.Identity.Name;
+
+			await commentService.AddRootCommentToExperiencePostAsync(experiencePostGuid, comment);
+			return Ok(comment);
+		}
+
+		/// <summary>
+		/// Fethes all the comments by a given metadata GUID.
+		/// </summary>
+		/// <param name="uuid"></param>
+		/// <returns>All of the comments for a given metadata GUID</returns>
+		[HttpGet("{metadataGuid}/comments")]
+		public async Task<IActionResult> GetCommentsAsync([FromBody] Guid metadataGuid)
+		{
+			IEnumerable<Comment> comments = await commentService.FetchCommentsForMetadataAsync(metadataGuid);
+			return Ok(comments);
 		}
 	}
 }

@@ -87,7 +87,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
 
-            builder.Entity<Comment>().ToTable("Comments");
+            builder.Entity<Comment>().ToTable("MetadataComments");
             builder.Entity<Comment>().HasKey(p => p.Uuid);
             builder.Entity<Comment>().Property(p => p.Content).IsRequired();
             builder.Entity<Comment>().Property(p => p.UserMail).IsRequired();

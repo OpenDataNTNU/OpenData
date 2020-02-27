@@ -30,6 +30,7 @@ namespace OpenData.Controllers
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
+		private readonly ICommentService commentService;
 
 		public MetadataController(
             IMetadataService metadataService,
@@ -37,7 +38,8 @@ namespace OpenData.Controllers
             IMapper mapper,
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
-            IUserService userService
+            IUserService userService,
+			ICommentService commentService
             )
 		{
 			_metadataService = metadataService;
@@ -46,6 +48,7 @@ namespace OpenData.Controllers
 			_experiencePostService = experiencePostService;
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
+			this.commentService = commentService;
 		}
 
 		[AllowAnonymous]
@@ -147,7 +150,7 @@ namespace OpenData.Controllers
 			comment.MetadataUuid = metadataGuid;
 			comment.UserMail = httpContextRetriever.HttpContext.User.Identity.Name;
 
-			comment = await _metadataService.AddCommentAsync(comment);
+			comment = await commentService.AddRootCommentToMetadataAsync(comment);
 			return Ok(comment);
         }
 
