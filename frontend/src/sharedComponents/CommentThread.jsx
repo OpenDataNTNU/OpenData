@@ -18,9 +18,12 @@ const Thread = styled.div`
 `;
 
 const CommentThread = ({ children }) => {
+  // Thread ref
   const ref = useRef(null);
+  // Thread heifght
   const [height, setHeight] = useState(null);
 
+  // Update height on ref or children change
   useEffect(() => {
     if (ref.current) {
       setHeight(ref.current.offsetHeight);

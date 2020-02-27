@@ -45,14 +45,18 @@ const Footer = styled.div`
 const Comment = ({
   id, author, timestamp, content, selected, subComments,
 }) => {
+  // React router dom for getting the location object
   const location = useLocation();
 
+  // State
   const [showNewComment, setShowNewComment] = useState(false);
 
+  // Function to call once reply is written and submitted
   const onReply = (_content) => {
 
   };
 
+  // Function to show or hide new comment input
   const onClick = () => {
     setShowNewComment(!showNewComment);
   };

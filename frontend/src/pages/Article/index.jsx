@@ -57,7 +57,7 @@ const Article = () => {
       uuid: '1a',
       author: 'Andreas',
       timestamp: new Date(),
-      content: 'This is a comment body 1',
+      content: 'This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This i This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1 This is a comment body 1s a comment body 1 This is a comment body 1 This is a comment body 1',
     },
     2: {
       uuid: '1a',
@@ -81,13 +81,37 @@ const Article = () => {
               uuid: '1a',
               author: 'Andreas',
               timestamp: new Date(),
-              content: 'This is a comment body 21',
+              content: 'This is a comment body 221',
             },
             222: {
               uuid: '1a',
               author: 'Andreas',
               timestamp: new Date(),
-              content: 'This is a comment body 22',
+              content: 'This is a comment body 222',
+              children: {
+                2222: {
+                  uuid: '1a',
+                  author: 'Andreas',
+                  timestamp: new Date(),
+                  content: 'This is a comment body 2222',
+                  children: {
+                    22222: {
+                      uuid: '1a',
+                      author: 'Andreas',
+                      timestamp: new Date(),
+                      content: 'This is a comment body 22222',
+                      children: {
+                        222222: {
+                          uuid: '1a',
+                          author: 'Andreas',
+                          timestamp: new Date(),
+                          content: 'This is a comment body 222222',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -127,19 +151,25 @@ const Article = () => {
       uuid: '1a',
       author: 'Andreas',
       timestamp: new Date(),
-      content: 'This is a comment body 3',
+      content: 'This is a comment body 4',
     },
     5: {
       uuid: '1a',
       author: 'Andreas',
       timestamp: new Date(),
-      content: 'This is a comment body 3',
+      content: 'This is a comment body 5',
     },
     6: {
       uuid: '1a',
       author: 'Andreas',
       timestamp: new Date(),
-      content: 'This is a comment body 3',
+      content: 'This is a comment body 6',
+    },
+    7: {
+      uuid: '1a',
+      author: 'Andreas',
+      timestamp: new Date(),
+      content: 'This is a comment body 7',
     },
   };
 
