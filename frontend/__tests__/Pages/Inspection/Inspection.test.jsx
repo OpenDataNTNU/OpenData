@@ -52,6 +52,10 @@ const carHistoryTrondheimResponse = `{
   "municipalityName":"Trondheim"
 }`;
 
+const commentResponse = `
+  []
+`;
+
 describe('Page displays bottom-level datasets from municipalities', () => {
   // redux store
   let store;
@@ -62,7 +66,15 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     fetch.resetMocks();
     // reset and set up redux store
     const mockStore = configureStore();
-    store = mockStore({});
+    store = mockStore({
+      user: {
+        loggedIn: false,
+        user: {
+          token: 'abcdef',
+          municipalityName: 'Trondheim',
+        },
+      },
+    });
     history = createMemoryHistory();
   });
 
@@ -74,6 +86,8 @@ describe('Page displays bottom-level datasets from municipalities', () => {
           return carHistoryResponse;
         case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return carHistoryTrondheimResponse;
+        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6/comments':
+          return commentResponse;
         default:
           return '';
       }
@@ -92,7 +106,8 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     getByText('This is a decRIPtrion');
     expect(queryByText(new RegExp('Bergen'))).toBeNull();
 
-    // should have fetched exactly twice, once for fetching municipalities and once for submitting.
-    expect(fetch.mock.calls.length).toEqual(2);
+    // should have fetched exactly three times
+    // once for fetching data, once for the metadatatype, and once for the comments
+    expect(fetch.mock.calls.length).toEqual(3);
   });
 });

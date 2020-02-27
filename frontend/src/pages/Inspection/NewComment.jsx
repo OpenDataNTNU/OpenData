@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.form`
@@ -40,6 +42,14 @@ const SubmitButton = styled.input`
   margin: 1em 0 0.8em;
 `;
 
+const LoggedOutWrapper = styled.div`
+  font-size: 0.9em;
+  background-color: white;
+  padding: 0.8em;
+  border-radius: 0.8em;
+  margin-bottom: 0.8em;
+`;
+
 export const NewComment = ({ uuid, addComment }) => {
   const [commentText, setCommentText] = useState('');
 
@@ -57,7 +67,7 @@ export const NewComment = ({ uuid, addComment }) => {
         }),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `token ${token}`,
+          Authorization: `bearer ${token}`,
         },
       });
       const { ok, status } = res;
@@ -78,13 +88,25 @@ export const NewComment = ({ uuid, addComment }) => {
         dispatch(alertActions.error('Something went wrong'));
       }
     }
+    addComment(`${commentText} would have been here, but submission failed :(`);
+    setCommentText('');
   };
 
-  return (
+  const { loggedIn } = userSelector;
+
+  return loggedIn ? (
     <Wrapper onSubmit={submit}>
       <CommentField placeholder="Leave a comment" value={commentText} onChange={(e) => setCommentText(e.target.value)} required />
       <SubmitButton type="submit" value="Post Comment" />
     </Wrapper>
+  ) : (
+    <LoggedOutWrapper>
+      <Link to="/login">
+        Logg inn
+      </Link>
+      {' '}
+      for å legge til en kommentar
+    </LoggedOutWrapper>
   );
 };
 

@@ -33,22 +33,34 @@ export const Comments = ({ id }) => {
 
   useEffect(() => {
     const internal = async () => {
-      setComments([{
-        id: 1,
-        comment: 'Beautiful comment',
-        author: {
-          mail: 'michael@b.ay',
+      try {
+        const res = await fetch(`/api/metadata/${id}/comments`);
+        const { ok, status } = res;
+        if (!ok) {
+          const err = new Error();
+          err.status = status;
+          throw err;
+        }
+        const receivedComments = await res.json();
+        setComments(receivedComments);
+      } catch (err) {
+        setComments([{
+          id: 1,
+          comment: 'Beautiful comment, indicating that the comments haven\'t been properly loaded',
+          author: {
+            mail: 'michael@b.ay',
+          },
+          date: '19-02-2019',
         },
-        date: '19-02-2019',
-      },
-      {
-        id: 2,
-        comment: 'Harsh comment',
-        author: {
-          mail: 'Shark@na.do',
-        },
-        date: '23-07-2019',
-      }]);
+        {
+          id: 2,
+          comment: 'Harsh comment, criticizing how the fetch request failed and that this is merely placeholder data',
+          author: {
+            mail: 'Shark@na.do',
+          },
+          date: '23-07-2019',
+        }]);
+      }
     };
     internal();
   }, [id]);
