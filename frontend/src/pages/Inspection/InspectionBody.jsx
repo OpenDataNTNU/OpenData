@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  background-color: #f5f5f5;
 `;
 
 export const InspectionBody = (props) => {
