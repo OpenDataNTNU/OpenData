@@ -26,6 +26,7 @@ const MetadataToolbar = styled.div`
   padding: 0.5rem;
   background-color: #F7F9FA;
   border-top: solid 0.1rem #dfe2ee; 
+  display: flex;
 `;
 
 const DateLine = styled.p`
@@ -62,7 +63,7 @@ const FileFormat = styled.div`
 `;
 
 const Favourite = styled.button`
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   align-content: center;
