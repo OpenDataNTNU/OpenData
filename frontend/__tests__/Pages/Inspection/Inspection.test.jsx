@@ -91,7 +91,10 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     getByText('Wroom wroom');
     expect(queryByText(new RegExp('Bergen'))).toBeNull();
 
-    // should have fetched exactly twice, once for fetching municipalities and once for submitting.
-    expect(fetch.mock.calls.length).toEqual(2);
+    // Should have fetched exactly thrice:
+    // - Once for fetching municipalities
+    // - Once of like counter
+    // - Once for submitting.
+    expect(fetch.mock.calls.length).toEqual(3);
   });
 });

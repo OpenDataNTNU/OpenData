@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -124,7 +124,7 @@ const DataFormat = styled.p`
 
 const StarFullStyled = styled(StarFull)`
   width: 1.4rem;
-  color: #5d5d5d;
+  color: #f9d205;
 `;
 const StarEmptyStyled = styled(StarEmpty)`
   width: 1.4rem;
@@ -136,21 +136,39 @@ const SingleMetaDataResult = ({ metadata }) => {
     uuid, formatName, url, description, releaseState, metadataTypeName, experiencePostGuid,
   } = metadata;
 
+  // TODO: Update this to use API whenever that exists.
+  const commentsCount = 0;
   const dispatch = useDispatch();
   const hasFeedback = experiencePostGuid !== null;
 
-  // TODO: Fetch comments count
-  const commentsCount = 0;
+  const [likes, setLikes] = useState(0);
+  const [isLiked, setLiked] = useState(false);
 
-  // TODO: Fix backend for favouriting.
-  const isFavourite = false;
+  useState(() => {
+    const internal = async () => {
+      try {
+        const res = await fetch(`/api/Metadata/${uuid}/likes`);
+        const { likeCount, liked } = await res.json();
+        setLikes(likeCount);
+        setLiked(liked);
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not fetch likes for dataset.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
+        }
+      }
+    };
+    internal();
+  }, []);
 
-  const handleFavourite = async () => {
+  const handleLike = async () => {
     try {
       // eslint-disable-next-line no-irregular-whitespace
       const userSelector = useSelector((state) => state.user);
       const { token } = userSelector.user;
-      await fetch(`/api/SOMETHING-FOR-ADDING-FAVOURITE/${uuid}/${token}`);
+      await fetch(`/api/SOMETHING-FOR-ADDING-LIKE/${uuid}/${token}`);
     } catch (err) {
       dispatch(alertActions.error('Something went wrong when adding/removing favourite.'));
     }
@@ -176,9 +194,9 @@ const SingleMetaDataResult = ({ metadata }) => {
         </URLWrapper>
       </MetaDataContent>
       <MetaDataRating>
-        <Favourite onClick={handleFavourite}>
-          {isFavourite ? <StarFullStyled /> : <StarEmptyStyled />}
-          <p>Interesting</p>
+        <Favourite onClick={handleLike}>
+          {isLiked ? <StarFullStyled /> : <StarEmptyStyled />}
+          <p>{likes}</p>
         </Favourite>
         <CommentsIcon href={`viewData/dataset/${uuid}`}>
           <img src={commentsIcon} alt="Comments" />
