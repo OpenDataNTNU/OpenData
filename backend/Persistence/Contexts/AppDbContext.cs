@@ -18,6 +18,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -75,6 +76,10 @@ namespace OpenData.Persistence.Contexts
 
             builder.Entity<MetadataType>().HasData(
                 new MetadataType { Name = "Cycle history", Description = "Pling pling"},
+                new MetadataType { Name = "Cycle theft", Description = "Some times, they get stolen."},
+                new MetadataType { Name = "Populasjon", Description = "Informasjon om populasjonsdensitet"},
+                new MetadataType { Name = "Kindergarden statistics", Description = "Kids grow faster in gardens"},
+                new MetadataType { Name = "Corona virus cases", Description = "Statistics about corona virus cases"},
                 new MetadataType { Name = "Car history", Description = "Wroom wroom"}
             );
             
@@ -85,6 +90,35 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().HasOne(p => p.Format);
             builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
+
+            builder.Entity<Metadata>().HasData(
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="Pling Plong", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
+                               MetadataTypeName = "Cycle history"},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="We have a lot of bikes", ReleaseState = EReleaseState.Yellow, MunicipalityName = "Oslo",
+                               MetadataTypeName = "Cycle history"},
+
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="Cycle theft for Trondheim. Contains city bike theft", ReleaseState = EReleaseState.Green, MunicipalityName = "Trondheim",
+                               MetadataTypeName = "Cycle theft"},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="We have a lot of bikes. Some get stolen. Not the city bikes though.", ReleaseState = EReleaseState.Released, MunicipalityName = "Oslo",
+                               MetadataTypeName = "Cycle theft"},
+
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
+                               MetadataTypeName = "Populasjon"},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="", ReleaseState = EReleaseState.Green, MunicipalityName = "Oslo",
+                               MetadataTypeName = "Populasjon"},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="", ReleaseState = EReleaseState.Red, MunicipalityName = "Bodø",
+                               MetadataTypeName = "Populasjon"},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                               Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Test",
+                               MetadataTypeName = "Populasjon"}
+            );
 
             builder.Entity<Tag>().ToTable("Tags");
             builder.Entity<Tag>().HasKey(p => p.Name);
@@ -99,6 +133,11 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<MetadataTypeTagMapping>().HasKey(p => new { p.TagName, p.MetadataTypeName });
             builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Type).WithMany(p => p.Tags).HasForeignKey(p => p.MetadataTypeName);
             builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
+
+            builder.Entity<Like>().ToTable("Likes");
+            builder.Entity<Like>().HasKey(p => new { p.LikeUserEmail, p.MetadataUuid });
+            builder.Entity<Like>().HasOne(p => p.LikeUser).WithMany().HasForeignKey(p => p.LikeUserEmail);
+            builder.Entity<Like>().HasOne(p => p.Metadata).WithMany(p => p.Likes).HasForeignKey(p => p.MetadataUuid);
 
             builder.Entity<MetadataTypeTagMapping>().HasData(
                 new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Cycle History"},

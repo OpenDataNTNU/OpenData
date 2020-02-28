@@ -76,6 +76,9 @@ namespace OpenData
             services.AddScoped<IMetadataTypeRepository, MetadataTypeRepository>();
             services.AddScoped<IMetadataTypeService, MetadataTypeService>();
 
+            services.AddScoped<ILikeService, LikeService>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
+
             services.AddScoped<IMetadataRepository, MetadataRepository>();
             services.AddScoped<IMetadataService, MetadataService>();
 
