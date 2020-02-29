@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -17,9 +19,10 @@ const Thread = styled.div`
   }
 `;
 
-const CommentThread = ({ children }) => {
+const CommentThread = ({ children, onresize }) => {
   // Thread ref
   const ref = useRef(null);
+
   // Thread heifght
   const [height, setHeight] = useState(null);
 
@@ -30,17 +33,32 @@ const CommentThread = ({ children }) => {
     }
   }, [ref, children]);
 
+  const newCommentUpdate = useCallback((_height) => {
+    setHeight(height + _height);
+    if (typeof (onresize) === 'function') {
+      onresize(_height);
+    }
+  });
+
   return (
     <Thread height={height} ref={ref}>
       {
-        children
+        React.Children.map(
+          children,
+          (child) => React.cloneElement(child, { onresize: newCommentUpdate }),
+        )
       }
     </Thread>
   );
 };
 
+CommentThread.defaultProps = {
+  onresize: null,
+};
+
 CommentThread.propTypes = {
   children: PropTypes.node.isRequired,
+  onresize: PropTypes.func,
 };
 
 export {

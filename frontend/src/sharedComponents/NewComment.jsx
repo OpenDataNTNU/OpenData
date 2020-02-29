@@ -32,7 +32,7 @@ const CommentButton = styled.button`
 
 `;
 
-const NewComment = ({ onClick }) => {
+const NewComment = React.forwardRef(({ onClick }, ref) => {
   const [Content, setContent] = useState('');
 
   const OnClick = () => {
@@ -44,14 +44,14 @@ const NewComment = ({ onClick }) => {
   };
 
   return (
-    <Comment>
+    <Comment ref={ref}>
       <CommentTextArea value={Content} onChange={onChange} />
       <CommentFooter>
         <CommentButton onClick={OnClick}>Reply</CommentButton>
       </CommentFooter>
     </Comment>
   );
-};
+});
 
 NewComment.propTypes = {
   onClick: PropTypes.func.isRequired,

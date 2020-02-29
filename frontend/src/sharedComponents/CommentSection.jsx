@@ -18,6 +18,14 @@ const Wrapper = styled.div`
 
 const StyledLink = styled(Link)`
   font-size: 0.9em;
+  color: #bf0022;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const CommentSection = ({ comments }) => {
@@ -66,12 +74,13 @@ const CommentSection = ({ comments }) => {
         // Append comment element to return array
         components.push(
           <Comment
+            key={uuid}
             uuid={uuid}
             author={usermail}
             timestamp={published}
             content={content}
             selected={selected}
-            subComments={render(childcomments, newDepth, doNotConstrainLength)}
+            subComments={render(childcomments, newDepth, doNotConstrainLength, false)}
           />,
         );
       }
@@ -81,7 +90,10 @@ const CommentSection = ({ comments }) => {
     // the condition is true
     if ((parentId && !doNotConstrainLength && _comments.length > 5) || depth >= 5) {
       components.push(
-        <StyledLink to={`${location.pathname}?comment=${parentId}`}>
+        <StyledLink
+          key={`${location.pathname}?comment=${parentId}`}
+          to={`${location.pathname}?comment=${parentId}`}
+        >
           Load more comments...
         </StyledLink>,
       );
@@ -128,7 +140,7 @@ const CommentSection = ({ comments }) => {
         {
           commentId
             ? render(findComment(comments), 0, true, true)
-            : render(comments, 0)
+            : render(comments, 0, false, false)
         }
       </CommentThread>
     </Wrapper>
@@ -136,7 +148,7 @@ const CommentSection = ({ comments }) => {
 };
 
 CommentSection.propTypes = {
-  comments: PropTypes.string.isRequired,
+  comments: PropTypes.shape([]).isRequired,
 };
 
 export {
