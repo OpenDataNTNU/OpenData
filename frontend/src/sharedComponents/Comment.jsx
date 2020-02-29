@@ -44,7 +44,7 @@ const Footer = styled.div`
 `;
 
 const Comment = ({
-  id, author, timestamp, content, selected, subComments,
+  uuid, author, timestamp, content, selected, subComments,
 }) => {
   // React router dom for getting the location object
   const location = useLocation();
@@ -67,7 +67,7 @@ const Comment = ({
       <Wrapper selected={selected}>
         <Header>
           <Info color="3e3e3e">{author}</Info>
-          <StyledLink to={`${location.pathname}?comment=${id}`}>{timestamp && DateToString(timestamp)}</StyledLink>
+          <StyledLink to={`${location.pathname}?comment=${uuid}`}>{timestamp && DateToString(timestamp)}</StyledLink>
         </Header>
         <Body>
           <p>{content}</p>
@@ -95,7 +95,7 @@ Comment.defaultProps = {
 };
 
 Comment.propTypes = {
-  id: PropTypes.string.isRequired,
+  uuid: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   timestamp: PropTypes.instanceOf(Date).isRequired,
   content: PropTypes.string.isRequired,
