@@ -15,7 +15,7 @@ namespace OpenData.Domain.Models
 		public string Description { get; set; }
 
 		public DataFormat Format { get; set; }
-		
+
 		public EReleaseState ReleaseState { get; set; }
 
 		public string MunicipalityName { get; set; }
