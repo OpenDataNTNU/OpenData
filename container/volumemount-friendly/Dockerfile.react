@@ -1,0 +1,18 @@
+FROM alpine:3.11
+
+RUN apk add --update --no-cache nodejs npm && npm install -g yarn
+
+COPY ./frontend /srv/opendata-frontend
+
+WORKDIR /srv/opendata-frontend
+
+RUN rm -r src && rm -rf node_modules
+RUN yarn cache clean && yarn install --network-timeout 1000000
+
+COPY ./container/volumemount-friendly/react-entrypoint.sh /srv/opendata-frontend/
+
+RUN chmod +x /srv/opendata-frontend/react-entrypoint.sh
+
+ENTRYPOINT ["sh", "-c"]
+
+CMD ["./react-entrypoint.sh"]

@@ -1,1 +1,4 @@
 ./container/development/sql
+./container/production/sql
+./container/volumemount-friendly/sql
+./frontend/node_modules

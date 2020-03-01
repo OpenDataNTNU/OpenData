@@ -5,14 +5,19 @@ RUN apt update && \
     apt install unzip && \
     curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
 
-RUN mkdir /srv/opendata-bootstrap
-COPY ./dotnet-entrypoint.sh /srv/opendata-bootstrap/
-RUN chmod +x /srv/opendata-bootstrap/dotnet-entrypoint.sh
 
-WORKDIR /srv/opendata-bootstrap
+COPY ./backend /srv/opendata-backend
+COPY ./container/production/dotnet-entrypoint.sh /srv/opendata-backend/
+RUN chmod +x /srv/opendata-backend/dotnet-entrypoint.sh
+
+WORKDIR /srv/opendata-backend
 
 # Fix SQL race condition. Kinda
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x wait-for-it.sh
+
+ENV ASPNETCORE_ENVIRONMENT = Production
+
+RUN dotnet restore
 
 ENTRYPOINT ["bash", "-c"]
 
