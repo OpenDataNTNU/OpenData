@@ -88,7 +88,7 @@ export const NewComment = ({ uuid, addComment }) => {
         dispatch(alertActions.error('Something went wrong'));
       }
     }
-    addComment(`${commentText} would have been here, but submission failed :(`);
+    addComment(`${commentText} would have been here, but submission failed :(`, (new Date() - 1).toString(16));
     setCommentText('');
   };
 

@@ -53,7 +53,30 @@ const carHistoryTrondheimResponse = `{
 }`;
 
 const commentResponse = `
-  []
+  [
+    {
+      "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
+      "content":"I quite enjoyed reading this. Lurem ipsoM.",
+      "usermail":"test@test.kommune.no",
+      "user": {},
+      "parentcommentuuid": "",
+      "parentcomment": "",
+      "published" : "02-02-2020",
+      "edited": "02-02-2020",
+      "childcomments": []
+    },
+    {
+      "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afab",
+      "content":"I REALLY hated reading this. Utter garbage. Not impressed AT ALL. qwop",
+      "usermail":"test@test.kommune.no",
+      "user": {},
+      "parentcommentuuid": "",
+      "parentcomment": "",
+      "published" : "01-01-1970",
+      "edited": "01-01-2011",
+      "childcomments": []
+    }
+  ]
 `;
 
 describe('Page displays bottom-level datasets from municipalities', () => {
@@ -109,5 +132,33 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     // should have fetched exactly three times
     // once for fetching data, once for the metadatatype, and once for the comments
     expect(fetch.mock.calls.length).toEqual(3);
+  });
+
+  it('Displays comments of a dataset correctly', async () => {
+    fetch.mockResponse(async ({ url }) => {
+      switch (url) {
+        case '/api/MetadataType/Car%20history':
+          return carHistoryResponse;
+        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return carHistoryTrondheimResponse;
+        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6/comments':
+          return commentResponse;
+        default:
+          return '';
+      }
+    });
+    const {
+      getByText, findByText,
+    } = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <InspectionBody id="3fa85f64-5717-4562-b3fc-2c963f66afa6" />
+        </Router>
+      </Provider>,
+    );
+
+    await findByText(new RegExp('Trondheim'));
+    await findByText(new RegExp('I quite enjoyed reading this\\. Lurem ipsoM\\.'));
+    getByText(new RegExp('I REALLY hated reading this\\. Utter garbage\\. Not impressed AT ALL\\. qwop'));
   });
 });

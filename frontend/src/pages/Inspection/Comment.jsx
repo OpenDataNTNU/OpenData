@@ -18,6 +18,7 @@ const CommentHeader = styled.div`
 
 const HeaderInfo = styled.p`
   font-weight: 500;
+  padding: 0 0.5em 0 0;
   color: ${(props) => props.color};
 `;
 
@@ -26,12 +27,17 @@ const CommentBody = styled.div`
 `;
 
 export const Comment = (props) => {
-  const { comment, author, date } = props;
+  const {
+    comment, author, published, edited,
+  } = props;
   return (
     <Wrapper>
       <CommentHeader>
         <HeaderInfo color="3e3e3e">{author}</HeaderInfo>
-        <HeaderInfo color="dimgray">{date}</HeaderInfo>
+        <HeaderInfo color="dimgray">
+          {published}
+          {published !== edited ? ` (edited ${edited})` : ''}
+        </HeaderInfo>
       </CommentHeader>
       <CommentBody>
         <p>{comment}</p>
@@ -43,5 +49,6 @@ export const Comment = (props) => {
 Comment.propTypes = {
   comment: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  published: PropTypes.string.isRequired,
+  edited: PropTypes.string.isRequired,
 };

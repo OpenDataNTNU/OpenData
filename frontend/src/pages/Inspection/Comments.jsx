@@ -18,16 +18,16 @@ export const Comments = ({ id }) => {
 
   const userSelector = useSelector((state) => state.user);
 
-  const addComment = (comment) => {
+  const addComment = (content, uuid) => {
     const { mail } = userSelector.user;
     const d = new Date();
+    const dateString = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
     setComments([...comments, {
-      id: new Date() - 1,
-      comment,
-      author: {
-        mail,
-      },
-      date: `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`,
+      uuid,
+      content,
+      usermail: mail,
+      published: dateString,
+      edited: dateString,
     }]);
   };
 
@@ -45,20 +45,18 @@ export const Comments = ({ id }) => {
         setComments(receivedComments);
       } catch (err) {
         setComments([{
-          id: 1,
-          comment: 'Beautiful comment, indicating that the comments haven\'t been properly loaded',
-          author: {
-            mail: 'michael@b.ay',
-          },
-          date: '19-02-2019',
+          uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
+          content: 'Beautiful comment, indicating that the comments haven\'t been properly loaded',
+          usermail: 'michael@b.ay',
+          published: '19-02-2019',
+          edited: '19-02-2019',
         },
         {
-          id: 2,
-          comment: 'Harsh comment, criticizing how the fetch request failed and that this is merely placeholder data',
-          author: {
-            mail: 'Shark@na.do',
-          },
-          date: '23-07-2019',
+          uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa8',
+          content: 'Harsh comment, criticizing how the fetch request failed and that this is merely placeholder data',
+          usermail: 'Shark@na.do',
+          published: '23-07-2019',
+          edited: '19-02-2020',
         }]);
       }
     };
@@ -69,13 +67,14 @@ export const Comments = ({ id }) => {
     <Wrapper>
       <h2>Comments</h2>
       {comments.map(({
-        id: commentId, comment, author: { mail }, date,
+        uuid: commentId, content, usermail, published, edited,
       }) => (
         <Comment
           key={commentId}
-          comment={comment}
-          author={mail}
-          date={date}
+          comment={content}
+          author={usermail}
+          published={published}
+          edited={edited}
         />
       ))}
       <NewComment addComment={addComment} uuid={id} />
