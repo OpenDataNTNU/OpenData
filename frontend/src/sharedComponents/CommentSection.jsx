@@ -141,7 +141,11 @@ const CommentSection = ({
       <h2>
         Comments
       </h2>
-      <NewComment putUrl={`/api/experiencepost/${id}/comments`} />
+      {
+        commentId
+          ? null
+          : <NewComment putUrl={`/api/experiencepost/${id}/comments`} />
+      }
       <CommentThread>
         {
           commentId
