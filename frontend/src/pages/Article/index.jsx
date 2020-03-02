@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import parse from 'html-react-parser';
@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { Template } from '../../sharedComponents/Template';
 import { CommentSection } from '../../sharedComponents/CommentSection';
 import { useGetExperienceArticle } from '../../sharedComponents/hooks';
-
+import { alertActions } from '../state/actions/alert';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -51,6 +51,39 @@ const Article = () => {
   // React router dom get id from history
   const { id } = useParams();
   const article = useGetExperienceArticle(id) || {};
+  const [comments_, setComments_] = useState([]);
+
+  useEffect(() => {
+    const init = async () => {
+      await getComments();
+    }
+    init();
+  });
+
+  const getComments = async () => {
+    try {
+      const response = fetch(putUrl, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
+
+      if (response.ok && response.status === 200) {
+        const _comments = (await response).json();
+        setCommments_(_comments);
+      } else {
+        throw new Error();
+      }
+    } catch (_) {
+      dispatch(alertActions.error('Failed to load comments.'));
+    }
+  }
 
   const comments = [
     {
