@@ -40,14 +40,5 @@ namespace OpenData.Services
                 return new SaveMetadataResponse($"An error occurred when saving the category: {ex.Message}");
             }
         }
-
-        public async Task<<CComment> AddCommentAsync((CComment comment) {
-            return await _metadataRepository.AddCommentAsync(comment);
-        }
-
-        public async Task<IEnumerable<<CComment>> FetchCommentsAsync(Guid uuid)
-        {
-            return await _metadataRepository.FetchCommentsAsync(uuid);
-        }
     }
 }

@@ -29,17 +29,5 @@ namespace OpenData.Persistence.Repositories
         public async Task AddAsync(Metadata metadata) {
             await _context.Metadata.AddAsync(metadata);
         }
-
-        public async Task<Comment> AddCommentAsync(Comment comment)
-        {
-            await _context.Comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
-            return await _context.Comments.SingleOrDefaultAsync(c => c.Uuid == comment.Uuid);
-        }
-
-        public async Task<IEnumerable<Comment>> FetchCommentsAsync(Guid uuid)
-        {
-            return await _context.Comments.Where(p => p.MetadataUuid == uuid).OrderBy(p => p.Published).ToListAsync();
-        }
     }
 }

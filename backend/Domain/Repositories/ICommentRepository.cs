@@ -8,10 +8,10 @@ namespace OpenData.Domain.Repositories
 {
     public interface ICommentRepository
     {
-        Task AddRootCommentToMetadataAsync(Comment comment);
-        Task AddRootCommentToExperiencePostAsync(Comment comment);
+        Task AddRootCommentToMetadataAsync(Guid metadataUiid, Comment comment);
+        Task AddRootCommentToExperiencePostAsync(Guid experiencePostUiid, Comment comment);
         Task ReplyToCommentAsync(Comment comment);
-        Task<IEnumerable<Comment>> FetchCommentsForMetadataAsync(Guid uuid);
-        Task<IEnumerable<Comment>> FetchCommentsForExperiencePostAsync(Guid uuid);
+        Task<IEnumerable<Comment>> FetchCommentsForMetadataAsync(Guid metadataUuid);
+        Task<IEnumerable<Comment>> FetchCommentsForExperiencePostAsync(Guid experiencePostUuid);
     }
 }

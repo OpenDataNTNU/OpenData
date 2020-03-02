@@ -16,10 +16,9 @@ namespace OpenData.Domain.Models
         public string UserMail { get; set; }
         public User User { get; set; }
 
-        [ForeignKey("ParentComment")]
-        public Guid? ParentCommentGuid { get; set; }
+        public Guid? ParentCommentUuid { get; set; }
         public Comment? ParentComment { get; set; }
-        public IList<Comment>? ChildComments { get; set; }
+        public IList<Comment> ChildComments { get; set; }
 
         [Required]
         public string Content { get; set; }
