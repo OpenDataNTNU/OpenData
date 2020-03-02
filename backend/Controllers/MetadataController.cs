@@ -111,7 +111,7 @@ namespace OpenData.Controllers
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
 
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
