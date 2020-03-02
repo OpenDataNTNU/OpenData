@@ -28,7 +28,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CommentSection = ({ comments }) => {
+const CommentSection = ({ comments, depthLimit, commentsLimit }) => {
   // React router dom get location object for search parameters
   const location = useLocation();
   const search = location.search !== '' ? location.search : null;
@@ -58,12 +58,12 @@ const CommentSection = ({ comments }) => {
     const components = [];
 
     // The condition for wheter or not to show all in that depth (stops at 5 if ot)
-    const condition = !parentId || (doNotConstrainLength || _comments.length <= 5);
+    const condition = !parentId || (doNotConstrainLength || _comments.length <= commentsLimit);
     // Set the amount of comments (at this depth) to show
-    const length = condition ? _comments.length : Math.min(_comments.length, 5);
+    const length = condition ? _comments.length : Math.min(_comments.length, commentsLimit);
 
     // Only render to the depth level of 5 before showing "load more comments"
-    if (depth < 5) {
+    if (depth < depthLimit) {
       // Create 'length' amount of comments
       for (let i = 0; i < length; i += 1) {
         // Deconstruct comment
@@ -88,7 +88,8 @@ const CommentSection = ({ comments }) => {
 
     // Append "Load more comments" link element to return array if
     // the condition is true
-    if ((parentId && !doNotConstrainLength && _comments.length > 5) || depth >= 5) {
+    if ((parentId && !doNotConstrainLength && _comments.length > commentsLimit)
+        || depth >= depthLimit) {
       components.push(
         <StyledLink
           key={`${location.pathname}?comment=${parentId}`}
@@ -147,8 +148,15 @@ const CommentSection = ({ comments }) => {
   );
 };
 
+CommentSection.defaultProps = {
+  depthLimit: 5,
+  commentsLimit: 5,
+};
+
 CommentSection.propTypes = {
   comments: PropTypes.shape([]).isRequired,
+  depthLimit: PropTypes.string,
+  commentsLimit: PropTypes.string,
 };
 
 export {
