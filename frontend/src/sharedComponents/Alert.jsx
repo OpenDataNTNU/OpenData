@@ -9,7 +9,7 @@ import { Check } from 'styled-icons/boxicons-regular/Check';
 import { Cross } from 'styled-icons/icomoon/Cross';
 
 const Wrapper = styled.div`
-    position: absolute;
+    position: fixed;
     margin-left: auto;
     margin-right: auto;
     top: 50px;
