@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { Template } from '../../sharedComponents/Template';
 import { CommentSection } from '../../sharedComponents/CommentSection';
 import { useGetExperienceArticle } from '../../sharedComponents/hooks';
-import { alertActions } from '../state/actions/alert';
+import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
   flex: 1;
