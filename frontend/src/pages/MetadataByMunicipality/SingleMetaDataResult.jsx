@@ -101,7 +101,7 @@ const SingleMetaDataResult = ({ metadata }) => {
             <h2>{metadataTypeName}</h2>
           </MetaDataTypeLink>
           <p>{description}</p>
-          <MetaDataLink to={`viewData/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
+          <MetaDataLink to={`/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
         </MetaDataDescription>
         <URLWrapper href={url}>
           <URL>{url}</URL>
