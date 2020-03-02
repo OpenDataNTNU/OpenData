@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Comment } from './Comment';
 import { NewComment } from './NewComment';
+import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
   padding-left: 0.5em;
@@ -17,6 +18,7 @@ export const Comments = ({ id }) => {
   const [comments, setComments] = useState([]);
 
   const userSelector = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const addComment = (content, uuid) => {
     const { mail } = userSelector.user;
@@ -44,20 +46,7 @@ export const Comments = ({ id }) => {
         const receivedComments = await res.json();
         setComments(receivedComments);
       } catch (err) {
-        setComments([{
-          uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
-          content: 'Beautiful comment, indicating that the comments haven\'t been properly loaded',
-          usermail: 'michael@b.ay',
-          published: '19-02-2019',
-          edited: '19-02-2019',
-        },
-        {
-          uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa8',
-          content: 'Harsh comment, criticizing how the fetch request failed and that this is merely placeholder data',
-          usermail: 'Shark@na.do',
-          published: '23-07-2019',
-          edited: '19-02-2020',
-        }]);
+        dispatch(alertActions.error('Something went wrong while fetching comments'));
       }
     };
     internal();
@@ -66,7 +55,7 @@ export const Comments = ({ id }) => {
   return (
     <Wrapper>
       <h2>Comments</h2>
-      {comments.map(({
+      {comments.length ? comments.map(({
         uuid: commentId, content, usermail, published, edited,
       }) => (
         <Comment
@@ -76,7 +65,11 @@ export const Comments = ({ id }) => {
           published={published}
           edited={edited}
         />
-      ))}
+      )) : (
+        <p>
+          No one has commented on this dataset yet
+        </p>
+      )}
       <NewComment addComment={addComment} uuid={id} />
     </Wrapper>
   );
