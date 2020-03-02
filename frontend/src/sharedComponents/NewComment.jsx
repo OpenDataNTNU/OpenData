@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { alertActions } from '../state/actions/alert';
 
 const Comment = styled.div`
   width: 100%;
@@ -32,11 +35,48 @@ const CommentButton = styled.button`
 
 `;
 
-const NewComment = React.forwardRef(({ onClick }, ref) => {
-  const [Content, setContent] = useState('');
+const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
+  // Redux state
+  const dispatch = useDispatch();
+  const userSelector = useSelector((state) => state.user);
+  const { token } = userSelector.user;
+
+  // State
+  const [content, setContent] = useState('');
 
   const OnClick = () => {
-    onClick(Content);
+    const data = {
+      content,
+    };
+
+    try {
+      const response = fetch(putUrl, {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok && response.status === 200) {
+        dispatch(alertActions.success('Comment successfully submitted. Redirecting in 3 seconds.'));
+        setContent('');
+
+        if (typeof (onComplete) === 'function') {
+          onComplete();
+        }
+      } else {
+        throw new Error();
+      }
+    } catch (_) {
+      dispatch(alertActions.error('Failed to submit comment.'));
+    }
   };
 
   const onChange = (e) => {
@@ -45,7 +85,7 @@ const NewComment = React.forwardRef(({ onClick }, ref) => {
 
   return (
     <Comment ref={ref}>
-      <CommentTextArea value={Content} onChange={onChange} />
+      <CommentTextArea value={content} onChange={onChange} />
       <CommentFooter>
         <CommentButton onClick={OnClick}>Reply</CommentButton>
       </CommentFooter>
@@ -54,7 +94,8 @@ const NewComment = React.forwardRef(({ onClick }, ref) => {
 });
 
 NewComment.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  putUrl: PropTypes.string.isRequired,
+  onComplete: PropTypes.func.isRequired,
 };
 
 export {

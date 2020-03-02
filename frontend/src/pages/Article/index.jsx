@@ -277,7 +277,7 @@ const Article = () => {
             parse(article.contents || '')
           }
         </Body>
-        <CommentSection comments={comments} />
+        <CommentSection id={id} comments={comments} />
       </Wrapper>
     </Template>
   );

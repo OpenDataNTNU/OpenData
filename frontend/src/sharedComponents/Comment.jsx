@@ -70,14 +70,13 @@ const Comment = ({
     onresize(height);
   }, [height]);
 
-  // Function to call once reply is written and submitted
-  const onReply = (_content) => {
-
-  };
-
   // Function to show or hide new comment input
   const onClick = () => {
     setShowNewComment(!showNewComment);
+  };
+
+  const onComplete = () => {
+    setShowNewComment(false);
   };
 
   return (
@@ -96,7 +95,7 @@ const Comment = ({
       </Wrapper>
       {
       showNewComment
-        ? <NewComment onClick={onReply} ref={ref} />
+        ? <NewComment putUrl={`/api/comments/reply/${uuid}`} onComplete={onComplete} ref={ref} />
         : null
       }
       {

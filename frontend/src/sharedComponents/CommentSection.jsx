@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { CommentThread } from './CommentThread';
 import { Comment } from './Comment';
+import { NewComment } from './NewComment';
 
 const Wrapper = styled.div`
   -webkit-user-select: none;
@@ -28,7 +29,9 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const CommentSection = ({ comments, depthLimit, commentsLimit }) => {
+const CommentSection = ({
+  id, comments, depthLimit, commentsLimit,
+}) => {
   // React router dom get location object for search parameters
   const location = useLocation();
   const search = location.search !== '' ? location.search : null;
@@ -68,7 +71,7 @@ const CommentSection = ({ comments, depthLimit, commentsLimit }) => {
       for (let i = 0; i < length; i += 1) {
         // Deconstruct comment
         const {
-          uuid, content, usermail, published, childcomments,
+          uuid, parentcommentuuid, content, usermail, published, childcomments,
         } = _comments[i];
 
         // Append comment element to return array
@@ -76,6 +79,7 @@ const CommentSection = ({ comments, depthLimit, commentsLimit }) => {
           <Comment
             key={uuid}
             uuid={uuid}
+            parentcommentuuid={parentcommentuuid}
             author={usermail}
             timestamp={published}
             content={content}
@@ -137,6 +141,7 @@ const CommentSection = ({ comments, depthLimit, commentsLimit }) => {
       <h2>
         Comments
       </h2>
+      <NewComment putUrl={`/api/experiencepost/${id}/comments`} />
       <CommentThread>
         {
           commentId
@@ -157,6 +162,7 @@ CommentSection.propTypes = {
   comments: PropTypes.shape([]).isRequired,
   depthLimit: PropTypes.string,
   commentsLimit: PropTypes.string,
+  id: PropTypes.string.isRequired,
 };
 
 export {
