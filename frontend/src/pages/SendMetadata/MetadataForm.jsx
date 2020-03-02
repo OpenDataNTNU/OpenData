@@ -129,7 +129,7 @@ export const MetadataForm = () => {
   };
 
   if (submissionStatus === 'success') {
-    return <Redirect to="/viewData" />;
+    return <Redirect to="/" />;
   }
 
   const {

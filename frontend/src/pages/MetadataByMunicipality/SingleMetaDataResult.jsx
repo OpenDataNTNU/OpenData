@@ -97,7 +97,7 @@ const SingleMetaDataResult = ({ metadata }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <MetaDataTypeLink to={`/viewData/dataType/${metadataTypeName}`}>
+          <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
             <h2>{metadataTypeName}</h2>
           </MetaDataTypeLink>
           <p>{description}</p>
