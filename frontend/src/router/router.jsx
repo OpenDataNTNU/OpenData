@@ -9,7 +9,6 @@ import PrivateRoute from './PrivateRoute';
 
 // Pages
 import { Splash } from '../pages/Splash';
-import { AllData } from '../pages/allData';
 import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
 import { Article } from '../pages/Article';

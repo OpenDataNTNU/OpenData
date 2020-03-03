@@ -38,7 +38,7 @@ test('renders learn react link', () => {
   );
 
   // Learn react should be rendered
-  const linkElement = getByText(/learn react/i);
+  const linkElement = getByText(/all datasets/i);
   expect(linkElement).toBeInTheDocument();
 
   // No alert is rendered
