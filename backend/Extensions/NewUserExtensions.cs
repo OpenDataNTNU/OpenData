@@ -21,7 +21,7 @@ namespace OpenData.Extensions
 
         public static bool IsValidPassword(this NewUserResource newUser)
         {
-            const string passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#-_\\$%\\^&\\*\\?\\€\\,\\;\\.\\:])(?=.{8,})";
+            const string passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\-_\\$%\\^&\\*\\?\\€\\,\\;\\.\\:])(?=.{8,})";
             return Regex.IsMatch(newUser.Password, passwordRegex);
         }
     }
