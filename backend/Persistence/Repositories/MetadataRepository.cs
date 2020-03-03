@@ -6,7 +6,6 @@ using OpenData.Domain.Repositories;
 using OpenData.Persistence.Contexts;
 using System.Web;
 using System;
-using System.Linq;
 
 namespace OpenData.Persistence.Repositories
 {
