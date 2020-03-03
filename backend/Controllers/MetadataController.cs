@@ -115,7 +115,7 @@ namespace OpenData.Controllers
 		/// Returns like information about a dataset.
 		/// </summary> 
 		[AllowAnonymous]
-		[HttpGet("{uuid}/likes")]
+		[HttpGet("{uuid}/like")]
 		public async Task<IActionResult> GetLikes(string uuid)
 		{
 			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
@@ -131,6 +131,26 @@ namespace OpenData.Controllers
             var likeReport = await _likeService.GetLikeReport(user, metadata);
 
 			return Ok(likeReport);
+		}
+
+		[HttpPut("{uuid}/like")]
+		public async Task<IActionResult> SetLike(string uuid)
+		{
+			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
+            User user = await userService.GetUserByMailAsync(targetUsername);
+
+            Metadata metadata = null; 
+			try {
+				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+			var like = new Like(){LikeUser = user, Metadata = metadata};
+
+			await _likeService.SaveAsync(like);
+
+			return Ok();
 		}
 
 		[HttpPut]
