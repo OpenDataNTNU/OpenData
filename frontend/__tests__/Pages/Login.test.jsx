@@ -66,9 +66,9 @@ describe('Template component', () => {
     });
 
     const expectedActions = store.getActions();
-    expect(expectedActions.length).toBe(3);
-    expect(expectedActions[1]).toEqual({ type: 'USER_SET_USER_LOGIN_REQUEST' });
-    expect(expectedActions[2]).toEqual({
+    expect(expectedActions.length).toBe(4);
+    expect(expectedActions[2]).toEqual({ type: 'USER_SET_USER_LOGIN_REQUEST' });
+    expect(expectedActions[3]).toEqual({
       type: 'USER_SET_USER_LOGIN_SUCCESS',
       user: { email: 'test@baerum.kommune.no', type: 'kommune' },
     });
