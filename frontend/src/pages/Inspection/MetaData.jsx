@@ -133,6 +133,11 @@ const FeedbackIcon = styled(Book)`
   padding: 0.3rem;
 `;
 
+const WriteFeedbackLink = styled(Link)`
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+`;
+
 export const MetaData = (props) => {
   const { data, tags, description } = props;
   const date = '20-09-2019';
@@ -212,14 +217,14 @@ export const MetaData = (props) => {
         </FavouriteButton>
         <div>
           {
-          experiencePostGuid !== undefined
-            ? (
-              <FeedbackLink to={`/articles/${experiencePostGuid}`}>
-                <FeedbackIcon />
-                <p>Experience Article</p>
-              </FeedbackLink>
-            )
-            : <Link to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</Link>
+            experiencePostGuid
+              ? (
+                <FeedbackLink to={`/articles/${experiencePostGuid}`}>
+                  <FeedbackIcon />
+                  <p>Experience Article</p>
+                </FeedbackLink>
+              )
+              : <WriteFeedbackLink to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</WriteFeedbackLink>
         }
         </div>
       </MetadataToolbar>

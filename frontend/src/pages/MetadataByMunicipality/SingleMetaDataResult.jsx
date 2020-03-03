@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
+import { Bubbles } from 'styled-icons/icomoon/Bubbles';
+import { Link as LinkIcon } from 'styled-icons/icomoon/Link';
 import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
-import commentsIcon from '../../assets/ui/chat_hollow.svg';
-import linkIcon from '../../assets/ui/external_link.svg';
 import { alertActions } from '../../state/actions/alert';
 import { FeedbackLabel } from './FeedbackLabel';
 
@@ -63,7 +63,7 @@ const MetaDataRating = styled.div`
   padding: 0.4rem;
   background-color: #F7F9FA;
 `;
-const CommentsIcon = styled.a`
+const CommentsLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -103,10 +103,6 @@ const URLWrapper = styled.a`
   height: 2.0rem;
   align-content: center;
   align-items: center;
-  & > img {
-    height: 1.3rem;
-    margin-right: 1.0rem;
-  }
 `;
 const URL = styled.p`
   font-size: inherit;
@@ -121,7 +117,15 @@ const DataFormat = styled.p`
   border: solid 0.1em #434faf;
   border-radius: 0.3rem;
 `;
-
+const LinkIconStyled = styled(LinkIcon)`
+  height: 1.3rem;
+  margin-right: 1.0rem;
+  color: #434faf
+`;
+const CommentsIcon = styled(Bubbles)`
+  width: 1.4rem;
+  color: #5d5d5d;
+`;
 const StarFullStyled = styled(StarFull)`
   width: 1.4rem;
   color: #f9d205;
@@ -190,7 +194,7 @@ const SingleMetaDataResult = ({ metadata }) => {
         <URLWrapper href={url} target="_blank">
           <DataFormat>{formatName}</DataFormat>
           <URL>{url}</URL>
-          <img src={linkIcon} alt="Open in new tab" />
+          <LinkIconStyled />
         </URLWrapper>
       </MetaDataContent>
       <MetaDataRating>
@@ -198,10 +202,10 @@ const SingleMetaDataResult = ({ metadata }) => {
           {isLiked ? <StarFullStyled /> : <StarEmptyStyled />}
           <p>{likes}</p>
         </Favourite>
-        <CommentsIcon href={`viewData/dataset/${uuid}`}>
-          <img src={commentsIcon} alt="Comments" />
+        <CommentsLink to={`viewData/dataset/${uuid}`}>
+          <CommentsIcon />
           <p>{`${commentsCount} comments`}</p>
-        </CommentsIcon>
+        </CommentsLink>
       </MetaDataRating>
     </SingleMetaDataResultContainer>
   );
