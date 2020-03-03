@@ -1,92 +1,97 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
+import { MetadataToolbar } from './MetadataToolbar';
 
 const Wrapper = styled.div`
-  max-width: 50em;
+  max-width: 50rem;
   background-color: white;
-  max-width: 50em;
-  border: solid 0.2em #e4e4e4;
-  border-radius: 0.2em;
+  border-radius: 0.3rem;
   padding: 0;
-  margin: 0.5em;
+  margin: 1rem 0.5rem;
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+const MetadataContent = styled.div`
+  padding: 1rem;
+  flex: 1;
 `;
 
 const DateLine = styled.p`
-  font-size: 0.8em;
+  font-size: 0.8rem;
   color: dimgray;
 `;
 
 const Description = styled.p`
-  font-size: 0.9em;
+  font-size: 0.9rem;
   color: #353535;
 `;
 
 const Tag = styled.div`
   background-color: #eeeeee;
   color: #595959;
-  font-size: 0.9em;
-  padding: 0.1em 0.7em;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.7rem;
   display: inline-block;
-  border-radius: 1em;
-  margin: 0.3em;
+  border-radius: 1rem;
+  margin: 0.3rem;
 `;
 
 const Source = styled.a`
-  margin: 0.5em;
+  margin: 0.5rem;
   display: flex;
   flex-direction: row;
 `;
 
 const FileFormat = styled.div`
   background-color: #d8e3ff;
-  margin-left: 0.4em;
-  padding: 0 1em;
+  margin-left: 0.4rem;
+  padding: 0 1rem;
   color: #434faf;
 `;
+
 
 export const MetaData = (props) => {
   const { data, tags, description } = props;
   const date = '20-09-2019';
+
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid,
+    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState,
   } = data;
 
   return (
     <Wrapper>
-      <h2>
-        Showing metadata about dataset
-        {` ${metadataTypeName} from ${municipalityName}`}
-      </h2>
-      <DateLine>
-        Published
-        {` ${date}`}
-      </DateLine>
-      <Description>
-        {description}
-      </Description>
-      <div>
-        {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-      </div>
-      <div>
-        <Source href={url}>
-          {`[${url}]`}
-          <FileFormat>
-            <p>
-              {formatName}
-            </p>
-          </FileFormat>
-        </Source>
-      </div>
-      <hr />
-      <div>
-        {
-          experiencePostGuid
-            ? <Link to={`/articles/${experiencePostGuid}`}>Read Experience Article</Link>
-            : <Link to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</Link>
-        }
-      </div>
+      <MetadataContent>
+        <ReleaseStateLabel releaseState={releaseState} />
+        <h2>
+          Showing metadata about dataset
+          {` ${metadataTypeName} from ${municipalityName}`}
+        </h2>
+        <DateLine>
+          Published
+          {` ${date}`}
+        </DateLine>
+        <Description>
+          {description}
+        </Description>
+        <div>
+          {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        </div>
+        <div>
+          <Source href={url}>
+            {`[${url}]`}
+            <FileFormat>
+              <p>
+                {formatName}
+              </p>
+            </FileFormat>
+          </Source>
+        </div>
+      </MetadataContent>
+      <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
     </Wrapper>
   );
 };
@@ -100,8 +105,9 @@ MetaData.propTypes = {
     municipalityName: PropTypes.string.isRequired,
     formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
+    releaseState: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
-    experiencePostGuid: PropTypes.string.isRequired,
+    experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
   description: PropTypes.string.isRequired,
