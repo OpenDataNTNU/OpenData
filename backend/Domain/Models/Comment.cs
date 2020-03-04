@@ -25,6 +25,8 @@ namespace OpenData.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Edited { get; set; }
 
+        public bool HasChildren { get; set; } = false;
+
         public Guid? ParentCommentUuid { get; set; }
         public Comment? ParentComment { get; set; }
         public IList<Comment> ChildComments { get; set; }
