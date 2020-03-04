@@ -147,7 +147,7 @@ const CommentSection = ({
             uuid={uuid}
             parentcommentuuid={parentCommentUuid}
             author={userMail}
-            timestamp={published}
+            timestamp={new Date(published)}
             content={content}
             selected={selected}
             subComments={render(childComments, newDepth, doNotConstrainLength, false)}
@@ -213,13 +213,19 @@ const CommentSection = ({
           ? null
           : <NewComment putUrl={putUrl} onComplete={setFetchedComments} />
       }
-      <CommentThread>
-        {
-          commentId
-            ? render(findComment(comments), 0, true, true)
-            : render(comments, 0, false, false)
-        }
-      </CommentThread>
+      {
+        comments && comments.length > 0
+          ? (
+            <CommentThread>
+              {
+                commentId
+                  ? render(findComment(comments), 0, true, true)
+                  : render(comments, 0, false, false)
+              }
+            </CommentThread>
+          )
+          : null
+      }
     </Wrapper>
   );
 };
@@ -230,8 +236,8 @@ CommentSection.defaultProps = {
 };
 
 CommentSection.propTypes = {
-  depthLimit: PropTypes.string,
-  commentsLimit: PropTypes.string,
+  depthLimit: PropTypes.number,
+  commentsLimit: PropTypes.number,
   putUrl: PropTypes.string.isRequired,
   getUrl: PropTypes.string.isRequired,
 };

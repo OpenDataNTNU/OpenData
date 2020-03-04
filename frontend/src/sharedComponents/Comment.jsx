@@ -100,7 +100,7 @@ const Comment = ({
         : null
       }
       {
-        subComments
+        subComments && subComments.length > 0
           ? (
             <CommentThread onresize={onresize}>
               {subComments.map((comment) => comment)}
