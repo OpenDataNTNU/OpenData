@@ -13,5 +13,6 @@ namespace OpenData.Domain.Repositories
         Task ReplyToCommentAsync(Comment comment);
         Task<IEnumerable<Comment>> FetchCommentsForMetadataAsync(Guid metadataUuid);
         Task<IEnumerable<Comment>> FetchCommentsForExperiencePostAsync(Guid experiencePostUuid);
+        Task<IEnumerable<Comment>> FetchChildComments(Guid commentUuid);
     }
 }

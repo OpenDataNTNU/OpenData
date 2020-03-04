@@ -113,5 +113,21 @@ namespace OpenData.Controllers
             CommentResource retComment = mapper.Map<Comment, CommentResource>(comment);
             return Ok(retComment);
         }
+
+        /// <summary>
+        /// Used to GET child comments related to a given comment.
+        /// </summary>
+        /// <param name="commentUuid">CommentUuid for the parent comment</param>
+        /// <returns>The child comments for a given comment, and 5 levels depth (not including the comment itself)</returns>
+        [HttpGet("childcomments/{commentUuid}")]
+        public async Task<IActionResult> FetchChildComments(Guid commentUuid)
+        {
+            if (commentUuid == null)
+                return BadRequest("Invalid comment UUID");
+            
+            IEnumerable<Comment> comments = await commentService.FetchChildComments(commentUuid);
+            var retComments = mapper.Map<IEnumerable<Comment>, IEnumerable<CommentResource>>(comments);
+            return Ok(retComments);
+        }
     }
 }

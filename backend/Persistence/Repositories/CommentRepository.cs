@@ -56,10 +56,10 @@ namespace OpenData.Persistence.Repositories
             return await _context
                 .ExperiencePostCommentMappings
                 .Include(m => m.Comment)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
                 .Where(m => m.ExperiencePostUuid == experiencePostUuid)
                 .Select((m) => m.Comment)
                 .ToListAsync();
@@ -70,15 +70,26 @@ namespace OpenData.Persistence.Repositories
             return await _context
                 .MetadataCommentMappings
                 .Include(m => m.Comment)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
-                .ThenInclude(m => m.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
                 .Where(m => m.MetadataUuid == metadataUuid)
                 .Select((m) => m.Comment)
                 .ToListAsync();
         }
 
-        
+        public async Task<IEnumerable<Comment>> FetchChildComments(Guid commentUuid)
+        {
+            return await _context
+                .Comments
+                .Include(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .ThenInclude(c => c.ChildComments)
+                .Where(c => c.Uuid == commentUuid)
+                .ToListAsync();
+        }
     }
 }

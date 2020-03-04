@@ -26,6 +26,11 @@ namespace OpenData.Services
             await commentRepository.AddRootCommentToMetadataAsync(metadataUiid, comment);
         }
 
+        public async Task<IEnumerable<Comment>> FetchChildComments(Guid commentUuid)
+        {
+            return await commentRepository.FetchChildComments(commentUuid);
+        }
+
         public async Task<IEnumerable<Comment>> FetchCommentsForExperiencePostAsync(Guid experiencePostGuid)
         {
             return await commentRepository.FetchCommentsForExperiencePostAsync(experiencePostGuid);

@@ -16,10 +16,6 @@ namespace OpenData.Domain.Models
         public string UserMail { get; set; }
         public User User { get; set; }
 
-        public Guid? ParentCommentUuid { get; set; }
-        public Comment? ParentComment { get; set; }
-        public IList<Comment> ChildComments { get; set; }
-
         [Required]
         public string Content { get; set; }
 
@@ -28,5 +24,9 @@ namespace OpenData.Domain.Models
         
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Edited { get; set; }
+
+        public Guid? ParentCommentUuid { get; set; }
+        public Comment? ParentComment { get; set; }
+        public IList<Comment> ChildComments { get; set; }
     }
 }
