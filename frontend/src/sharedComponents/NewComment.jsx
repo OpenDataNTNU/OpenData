@@ -99,21 +99,21 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
     <Comment ref={ref}>
       {
         token
-        ? (
-          <>
-          <CommentTextArea placeholder="Leave a reply" value={content} onChange={onChange} />
-          <CommentFooter>
-            <CommentButton onClick={OnClick}>Reply</CommentButton>
-          </CommentFooter>
-          </>
-        )
-        : (
-          <UnAuthorizedUser>
-            Please login to leave a comment.
-          </UnAuthorizedUser>
-        )
+          ? (
+            <>
+              <CommentTextArea placeholder="Leave a reply" value={content} onChange={onChange} />
+              <CommentFooter>
+                <CommentButton onClick={OnClick}>Reply</CommentButton>
+              </CommentFooter>
+            </>
+          )
+          : (
+            <UnAuthorizedUser>
+              Please login to leave a comment.
+            </UnAuthorizedUser>
+          )
       }
-      
+
     </Comment>
   );
 });
