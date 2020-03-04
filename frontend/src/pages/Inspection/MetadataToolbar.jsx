@@ -43,6 +43,8 @@ const LikeCounter = styled.div`
   padding: 0.3rem 0.7rem 0.3rem 0.4rem;
   font-size: 0.9rem;
   color: #b47b38;
+  min-width: 1.3rem;
+  text-align: center;
 `;
 
 const StarFullStyled = styled(StarFull)`
@@ -125,7 +127,11 @@ const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
           Authorization: `bearer ${token}`,
         },
       });
-      console.log(res);
+      const { status } = res;
+      if (status === 200) {
+        setLiked(!isLiked);
+        setLikes(isLiked ? likes - 1 : likes + 1);
+      }
     } catch (err) {
       dispatch(alertActions.error('Something went wrong when adding/removing star.'));
     }

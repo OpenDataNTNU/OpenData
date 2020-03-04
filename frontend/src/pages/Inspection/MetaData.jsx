@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
-import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
+import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
+import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
 
 const Wrapper = styled.div`
   max-width: 50rem;
@@ -106,16 +107,7 @@ export const MetaData = (props) => {
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
-          <div>
-            <Source href={url}>
-              {`[${url}]`}
-              <FileFormat>
-                <p>
-                  {formatName}
-                </p>
-              </FileFormat>
-            </Source>
-          </div>
+          <MetadataURL url={url} formatName={formatName} inspection={true}/>
         </MetadataContent>
         <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
       </MetadataCard>
