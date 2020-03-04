@@ -51,7 +51,7 @@ const HorizontalWrapper = styled.div`
 export const MetadataForm = () => {
   const [state, setState] = useState({
     metadataTypeName: '',
-    releaseState: 0,
+    releaseState: 1,
     description: '',
     formatName: '',
     municipalityName: '',
@@ -106,10 +106,17 @@ export const MetadataForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { token } = userSelector.user;
+
+    const newState = { ...state };
+
+    if (newState.releaseState === 4 && (!newState.url || newState.url === '')) {
+      newState.url = null;
+    }
+
     try {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
-        body: JSON.stringify(state),
+        body: JSON.stringify(newState),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `bearer ${token}`,
@@ -152,19 +159,51 @@ export const MetadataForm = () => {
         </p>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
-            <Input type="radio" name="releaseState" value={1} id="bluelight" checked={releaseState === 1} onChange={handleRadioChange} required />
+            <Input
+              type="radio"
+              name="releaseState"
+              value={1}
+              id="bluelight"
+              checked={releaseState === 1}
+              onChange={handleRadioChange}
+              required
+            />
             {' Released'}
           </RadioLabel>
           <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
-            <Input type="radio" name="releaseState" value={2} id="greenlight" checked={releaseState === 2} onChange={handleRadioChange} required />
+            <Input
+              type="radio"
+              name="releaseState"
+              value={2}
+              id="greenlight"
+              checked={releaseState === 2}
+              onChange={handleRadioChange}
+              required
+            />
             {' Ready for release'}
           </RadioLabel>
           <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
-            <Input type="radio" name="releaseState" value={3} id="yellowlight" checked={releaseState === 3} onChange={handleRadioChange} required />
+            <Input
+              type="radio"
+              name="releaseState"
+              value={3}
+              id="yellowlight"
+              checked={releaseState === 3}
+              onChange={handleRadioChange}
+              required
+            />
             {' Needs work'}
           </RadioLabel>
           <RadioLabel htmlFor="redlight" background="#ffcccc" border="#ff5555">
-            <Input type="radio" name="releaseState" value={4} id="redlight" checked={releaseState === 4} onChange={handleRadioChange} required />
+            <Input
+              type="radio"
+              name="releaseState"
+              value={4}
+              id="redlight"
+              checked={releaseState === 4}
+              onChange={handleRadioChange}
+              required
+            />
             {' Unreleasable'}
           </RadioLabel>
         </HorizontalWrapper>
@@ -179,7 +218,7 @@ export const MetadataForm = () => {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
-        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} required />
+        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} required={releaseState !== 4} />
         <Input type="submit" value="Submit" />
       </StyledForm>
     </Wrapper>
