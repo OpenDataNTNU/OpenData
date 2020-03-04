@@ -13,6 +13,8 @@ const MetadataToolbarContainer = styled.div`
   background-color: #F7F9FA;
   border-top: solid 0.1rem #dfe2ee; 
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const FavouriteButton = styled.button`
@@ -91,14 +93,14 @@ const WriteFeedbackLink = styled(Link)`
 
 const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
   const dispatch = useDispatch();
-
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
+  const userSelector = useSelector((state) => state.user);
 
   useState(() => {
     const internal = async () => {
       try {
-        const res = await fetch(`/api/Metadata/${uuid}/likes`);
+        const res = await fetch(`/api/Metadata/${uuid}/like`);
         const { likeCount, liked } = await res.json();
         setLikes(likeCount);
         setLiked(liked);
@@ -116,12 +118,16 @@ const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
 
   const handleLike = async () => {
     try {
-      // eslint-disable-next-line no-irregular-whitespace
-      const userSelector = useSelector((state) => state.user);
       const { token } = userSelector.user;
-      await fetch(`/api/SOMETHING-FOR-ADDING-LIKE/${uuid}/${token}`);
+      const res = await fetch(`/api/Metadata/${uuid}/like`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
+      console.log(res);
     } catch (err) {
-      dispatch(alertActions.error('Something went wrong when adding/removing favourite.'));
+      dispatch(alertActions.error('Something went wrong when adding/removing star.'));
     }
   };
 

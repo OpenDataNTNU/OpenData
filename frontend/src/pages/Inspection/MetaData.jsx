@@ -1,19 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
 import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
 
 const Wrapper = styled.div`
   max-width: 50rem;
+  padding: 0 0.5rem;
+`;
+const MetadataCard = styled.div`
   background-color: white;
   border-radius: 0.3rem;
   padding: 0;
-  margin: 1rem 0.5rem;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 20rem;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
@@ -52,6 +57,25 @@ const FileFormat = styled.div`
   padding: 0 1rem;
   color: #434faf;
 `;
+const ArrowRightStyled = styled(ArrowRightS)`
+  height: 0.9rem;
+  margin: 0 1.0rem;
+  color: dimgray;
+`;
+const LocationWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 0.8rem 0;
+`;
+const LocationLink = styled(Link)`
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+  padding: 0;
+  color: dimgray;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 
 export const MetaData = (props) => {
@@ -64,34 +88,37 @@ export const MetaData = (props) => {
 
   return (
     <Wrapper>
-      <MetadataContent>
-        <ReleaseStateLabel releaseState={releaseState} />
-        <h2>
-          Showing metadata about dataset
-          {` ${metadataTypeName} from ${municipalityName}`}
-        </h2>
-        <DateLine>
-          Published
-          {` ${date}`}
-        </DateLine>
-        <Description>
-          {description}
-        </Description>
-        <div>
-          {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-        </div>
-        <div>
-          <Source href={url}>
-            {`[${url}]`}
-            <FileFormat>
-              <p>
-                {formatName}
-              </p>
-            </FileFormat>
-          </Source>
-        </div>
-      </MetadataContent>
-      <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
+      <LocationWrapper>
+        <LocationLink to={`/municipalities/${municipalityName}`}>{municipalityName}</LocationLink>
+        <ArrowRightStyled />
+        <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
+      </LocationWrapper>
+      <MetadataCard>
+        <MetadataContent>
+          <ReleaseStateLabel releaseState={releaseState} />
+          <DateLine>
+            Published
+            {` ${date}`}
+          </DateLine>
+          <Description>
+            {description}
+          </Description>
+          <div>
+            {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
+          <div>
+            <Source href={url}>
+              {`[${url}]`}
+              <FileFormat>
+                <p>
+                  {formatName}
+                </p>
+              </FileFormat>
+            </Source>
+          </div>
+        </MetadataContent>
+        <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
+      </MetadataCard>
     </Wrapper>
   );
 };

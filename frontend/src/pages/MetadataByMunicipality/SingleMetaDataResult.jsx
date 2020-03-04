@@ -151,7 +151,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   useState(() => {
     const internal = async () => {
       try {
-        const res = await fetch(`/api/Metadata/${uuid}/likes`);
+        const res = await fetch(`/api/Metadata/${uuid}/like`);
         const { likeCount, liked } = await res.json();
         setLikes(likeCount);
         setLiked(liked);
@@ -182,7 +182,7 @@ const SingleMetaDataResult = ({ metadata }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <MetaDataTypeLink to={`/viewData/dataType/${metadataTypeName}`}>
+          <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
             <h2>{metadataTypeName}</h2>
           </MetaDataTypeLink>
           <FeedbackLabel hasFeedback={hasFeedback} />
