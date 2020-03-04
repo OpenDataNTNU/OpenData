@@ -44,7 +44,7 @@ const Footer = styled.div`
 `;
 
 const Comment = ({
-  uuid, author, timestamp, content, selected, subComments, onresize,
+  uuid, author, timestamp, content, selected, subComments, onresize, callback,
 }) => {
   // React router dom for getting the location object
   const location = useLocation();
@@ -77,6 +77,7 @@ const Comment = ({
 
   const onComplete = () => {
     setShowNewComment(false);
+    callback();
   };
 
   return (
@@ -95,7 +96,7 @@ const Comment = ({
       </Wrapper>
       {
       showNewComment
-        ? <NewComment putUrl={`/api/comments/reply/${uuid}`} onComplete={onComplete} ref={ref} />
+        ? <NewComment putUrl={`/api/Comment/reply/${uuid}`} onComplete={onComplete} ref={ref} />
         : null
       }
       {
@@ -123,6 +124,7 @@ Comment.propTypes = {
   selected: PropTypes.bool.isRequired,
   subComments: PropTypes.arrayOf(PropTypes.elementType),
   onresize: PropTypes.func.isRequired,
+  callback: PropTypes.func.isRequired,
 };
 
 export {

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { alertActions } from '../state/actions/alert';
 import { CommentThread } from './CommentThread';
 import { Comment } from './Comment';
 import { NewComment } from './NewComment';
@@ -30,16 +32,79 @@ const StyledLink = styled(Link)`
 `;
 
 const CommentSection = ({
-  id, comments, depthLimit, commentsLimit,
+  putUrl, getUrl, depthLimit, commentsLimit,
 }) => {
+  // Redux
+  const dispatch = useDispatch();
+
   // React router dom get location object for search parameters
   const location = useLocation();
   const search = location.search !== '' ? location.search : null;
   const params = search ? new URLSearchParams(search) : null;
   // The commentId in the url for when a comment is selected
   const commentId = params ? params.get('comment') : null;
-  // Function to render comments recursivly
+
+  // State
+  const [comments, setComments] = useState([]);
+
+  // Fetches comments from the backend and returns them
+  const getComments = async (parentUuid) => {
+    const url = parentUuid ? `/api/Comment/childcomments/${parentUuid}` : getUrl;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
+
+      if (response.ok && response.status === 200) {
+        const commentsData = await response.json();
+
+        if (!commentsData) {
+          return [];
+        }
+
+        return commentsData;
+      }
+      throw new Error();
+    } catch (error) {
+      return null;
+    }
+  };
+
+  // Uses getComments to fetch comments and the sets the state
+  const setFetchedComments = async () => {
+    let fetchedComments;
+    if (commentId) {
+      fetchedComments = await getComments(commentId);
+    } else {
+      fetchedComments = await getComments();
+    }
+
+    if (!fetchedComments) {
+      dispatch(alertActions.error('Failed to load comments.'));
+    } else {
+      setComments(fetchedComments);
+    }
+  };
+
+  // Constructor
+  useEffect(() => {
+    const init = async () => {
+      await setFetchedComments();
+    };
+    init();
+  }, [commentId]);
+
   /*
+   * Function to render comments recursivly
+   *
    * @Param parentId: String; The commentId of the 'childrens' parent comment
    * @Param children: Object; The child comment objects inside an object
    * @Param depth: Int; The current depth of the comment parent-child structure (0-indexed)
@@ -52,7 +117,8 @@ const CommentSection = ({
       return null;
     }
 
-    const parentId = _comments[0].parentcommentuuid;
+    let parentId = _comments[0].parentCommentUuid;
+    parentId = parentId === '00000000-0000-0000-0000-000000000000' ? null : parentId;
 
     // Incrase depth by 1
     const newDepth = depth + 1;
@@ -71,7 +137,7 @@ const CommentSection = ({
       for (let i = 0; i < length; i += 1) {
         // Deconstruct comment
         const {
-          uuid, parentcommentuuid, content, usermail, published, childcomments,
+          uuid, parentCommentUuid, content, userMail, published, childComments,
         } = _comments[i];
 
         // Append comment element to return array
@@ -79,12 +145,13 @@ const CommentSection = ({
           <Comment
             key={uuid}
             uuid={uuid}
-            parentcommentuuid={parentcommentuuid}
-            author={usermail}
+            parentcommentuuid={parentCommentUuid}
+            author={userMail}
             timestamp={published}
             content={content}
             selected={selected}
-            subComments={render(childcomments, newDepth, doNotConstrainLength, false)}
+            subComments={render(childComments, newDepth, doNotConstrainLength, false)}
+            callback={setFetchedComments}
           />,
         );
       }
@@ -144,7 +211,7 @@ const CommentSection = ({
       {
         commentId
           ? null
-          : <NewComment putUrl={`/api/experiencepost/${id}/comments`} />
+          : <NewComment putUrl={putUrl} onComplete={setFetchedComments} />
       }
       <CommentThread>
         {
@@ -163,10 +230,10 @@ CommentSection.defaultProps = {
 };
 
 CommentSection.propTypes = {
-  comments: PropTypes.shape([]).isRequired,
   depthLimit: PropTypes.string,
   commentsLimit: PropTypes.string,
-  id: PropTypes.string.isRequired,
+  putUrl: PropTypes.string.isRequired,
+  getUrl: PropTypes.string.isRequired,
 };
 
 export {

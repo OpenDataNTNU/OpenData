@@ -44,13 +44,13 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
   // State
   const [content, setContent] = useState('');
 
-  const OnClick = () => {
+  const OnClick = async () => {
     const data = {
       content,
     };
 
     try {
-      const response = fetch(putUrl, {
+      const response = await fetch(putUrl, {
         method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
@@ -65,7 +65,7 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
       });
 
       if (response.ok && response.status === 200) {
-        dispatch(alertActions.success('Comment successfully submitted. Redirecting in 3 seconds.'));
+        dispatch(alertActions.success('Comment successfully submitted.'));
         setContent('');
 
         if (typeof (onComplete) === 'function') {
