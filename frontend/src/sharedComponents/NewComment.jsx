@@ -31,6 +31,17 @@ const CommentFooter = styled.div`
   margin-bottom: 0.8em;
 `;
 
+const UnAuthorizedUser = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid lightgray;
+  background-color: #F6F7F8;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 0.8em;
+`;
+
 const CommentButton = styled.button`
 
 `;
@@ -39,7 +50,8 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
   // Redux state
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
-  const { token } = userSelector.user;
+  const user = userSelector ? userSelector.user : null;
+  const token = user ? userSelector.user.token : null;
 
   // State
   const [content, setContent] = useState('');
@@ -85,10 +97,23 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
 
   return (
     <Comment ref={ref}>
-      <CommentTextArea value={content} onChange={onChange} />
-      <CommentFooter>
-        <CommentButton onClick={OnClick}>Reply</CommentButton>
-      </CommentFooter>
+      {
+        token
+        ? (
+          <>
+          <CommentTextArea placeholder="Leave a reply" value={content} onChange={onChange} />
+          <CommentFooter>
+            <CommentButton onClick={OnClick}>Reply</CommentButton>
+          </CommentFooter>
+          </>
+        )
+        : (
+          <UnAuthorizedUser>
+            Please login to leave a comment.
+          </UnAuthorizedUser>
+        )
+      }
+      
     </Comment>
   );
 });

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -46,6 +47,10 @@ const Footer = styled.div`
 const Comment = ({
   uuid, author, timestamp, content, selected, subComments, onresize, callback,
 }) => {
+  // Redux
+  const userSelector = useSelector((state) => state.user);
+  const user = userSelector ? userSelector.user : null;
+
   // React router dom for getting the location object
   const location = useLocation();
 
@@ -90,9 +95,15 @@ const Comment = ({
         <Body>
           <p>{content}</p>
         </Body>
-        <Footer>
-          <span role="button" onClick={onClick} onKeyDown={onClick} tabIndex={0}>Reply</span>
-        </Footer>
+        {
+          user
+            ? (
+              <Footer>
+                <span role="button" onClick={onClick} onKeyDown={onClick} tabIndex={0}>Reply</span>
+              </Footer>
+            )
+            : null
+        }
       </Wrapper>
       {
       showNewComment
