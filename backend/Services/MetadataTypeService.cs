@@ -39,5 +39,10 @@ namespace OpenData.Services
                 return new SaveMetadataTypeResponse($"An error occurred when saving the metadata type: {ex.Message}");
             }
         }
+
+        public async Task<IEnumerable<MetadataType>> ListNamesAsync()
+        {
+            return await _metadataTypeRepository.ListNamesAsync();
+        }
     }
 }

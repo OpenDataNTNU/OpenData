@@ -27,5 +27,10 @@ namespace OpenData.Persistence.Repositories
         public async Task AddAsync(MetadataType metadata) {
             await _context.MetadataTypes.AddAsync(metadata);
         }
+
+        public async Task<IEnumerable<MetadataType>> ListNamesAsync()
+        {
+            return await _context.MetadataTypes.Select(p => p.Name).ToListAsync();
+        }
     }
 }
