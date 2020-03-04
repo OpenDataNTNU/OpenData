@@ -141,5 +141,20 @@ namespace OpenData.Controllers
 			await _unitOfWork.CompleteAsync();
 			return Ok(res);
 		}
+
+		[HttpGet("by/{name}")]
+		public async Task<IActionResult> GetByNameAsync(string name)
+		{
+			var metadatatype = await _metadataTypeService.GetByNameAsync(name);
+			if (metadatatype == null)
+			{
+				return BadRequest("No metadatatype with that name");
+			}
+			else
+			{
+				var resource = _mapper.Map<MetadataType, MetadataResource>(metadatatype);
+				return Ok(resource);
+			}
+		}
 	}
 }
