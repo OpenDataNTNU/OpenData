@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 using AutoMapper;
@@ -37,7 +36,8 @@ namespace OpenData.Controllers
             IMapper mapper,
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
-            IUserService userService
+            IUserService userService,
+			ICommentService commentService
             )
 		{
 			_metadataService = metadataService;
@@ -133,5 +133,6 @@ namespace OpenData.Controllers
 
             return Unauthorized("Invalid permissions!");
 		}
+
 	}
 }

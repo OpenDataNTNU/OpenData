@@ -8,8 +8,8 @@ namespace OpenData.Domain.Repositories
 {
     public interface IMetadataRepository
     {
-         Task<IEnumerable<Metadata>> ListAsync();
-         Task<Metadata> GetByUuidAsync(Guid uuid);
-         Task AddAsync(Metadata metadata);
+        Task<IEnumerable<Metadata>> ListAsync();
+        Task<Metadata> GetByUuidAsync(Guid uuid);
+        Task AddAsync(Metadata metadata);
     }
 }

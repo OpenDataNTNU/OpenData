@@ -13,6 +13,8 @@ using OpenData.Exceptions;
 
 using System;
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OpenData.Controllers
 {
@@ -23,13 +25,17 @@ namespace OpenData.Controllers
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ITagService _tagService;
+		private readonly IHttpContextAccessor httpContextRetriever;
+		private readonly ICommentService commentService;
 
-		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork, ITagService tagService) 
+		public ExperiencePostController(IExperiencePostService metadataService, IMapper mapper, IUnitOfWork unitOfWork, ITagService tagService, ICommentService commentService, IHttpContextAccessor httpContextRetriever) 
 		{
 			_experiencePostService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_tagService = tagService;
+			this.commentService = commentService;
+			this.httpContextRetriever = httpContextRetriever;
 		}
 
 		//TODO this needs authentication

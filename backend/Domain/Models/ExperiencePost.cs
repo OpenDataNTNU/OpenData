@@ -16,6 +16,7 @@ namespace OpenData.Domain.Models
 
 		public User LastEditedBy { get; set;}
 
+		public IList<ExperiencePostCommentMapping> Comments { get; set; }
 		public IList<ExperiencePostTagMapping> Tags { get; set; }
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
