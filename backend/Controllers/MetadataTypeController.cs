@@ -142,19 +142,12 @@ namespace OpenData.Controllers
 			return Ok(res);
 		}
 
-		[HttpGet("by/{name}")]
-		public async Task<IActionResult> GetByNameAsync(string name)
+		[HttpGet("by/name")]
+		public async Task<IActionResult> GetByNameAsync()
 		{
-			var metadatatype = await _metadataTypeService.GetByNameAsync(name);
-			if (metadatatype == null)
-			{
-				return BadRequest("No metadatatype with that name");
-			}
-			else
-			{
-				var resource = _mapper.Map<MetadataType, MetadataResource>(metadatatype);
-				return Ok(resource);
-			}
+			var metadatatype = await _metadataTypeService.GetNamesAsync();
+			var resource = _mapper.Map<MetadataType, MetadataResource>(metadatatype);
+			return Ok(resource);
 		}
 	}
 }
