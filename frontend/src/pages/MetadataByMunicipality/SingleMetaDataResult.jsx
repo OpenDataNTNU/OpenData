@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Bubbles } from 'styled-icons/icomoon/Bubbles';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
-import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
+import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
 import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { alertActions } from '../../state/actions/alert';
 import { FeedbackLabel } from '../../sharedComponents/Metadata/FeedbackLabel';

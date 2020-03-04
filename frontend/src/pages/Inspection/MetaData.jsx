@@ -45,19 +45,6 @@ const Tag = styled.div`
   border-radius: 1rem;
   margin: 0.3rem;
 `;
-
-const Source = styled.a`
-  margin: 0.5rem;
-  display: flex;
-  flex-direction: row;
-`;
-
-const FileFormat = styled.div`
-  background-color: #d8e3ff;
-  margin-left: 0.4rem;
-  padding: 0 1rem;
-  color: #434faf;
-`;
 const ArrowRightStyled = styled(ArrowRightS)`
   height: 0.9rem;
   margin: 0 1.0rem;
@@ -77,7 +64,6 @@ const LocationLink = styled(Link)`
     text-decoration: underline;
   }
 `;
-
 
 export const MetaData = (props) => {
   const { data, tags, description } = props;
@@ -107,7 +93,7 @@ export const MetaData = (props) => {
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
-          <MetadataURL url={url} formatName={formatName} inspection={true}/>
+          <MetadataURL url={url} formatName={formatName} inspection />
         </MetadataContent>
         <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
       </MetadataCard>
