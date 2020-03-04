@@ -55,17 +55,15 @@ export const Comments = ({ id }) => {
   return (
     <Wrapper>
       <h2>Comments</h2>
-      {comments.length ? comments.map(({
-        uuid: commentId, content, usermail, published, edited,
-      }) => (
-        <Comment
-          key={commentId}
-          comment={content}
-          author={usermail}
-          published={published}
-          edited={edited}
-        />
-      )) : (
+      {comments.length ? comments.map((comment) => {
+        const { commentId } = comment;
+        return (
+          <Comment
+            key={commentId}
+            comment={comment}
+          />
+        );
+      }) : (
         <p>
           No one has commented on this dataset yet
         </p>

@@ -26,10 +26,10 @@ const CommentBody = styled.div`
   font-size: 0.9em;
 `;
 
-export const Comment = (props) => {
+export const Comment = ({ comment }) => {
   const {
-    comment, author, published, edited,
-  } = props;
+    content, author, published, edited,
+  } = comment;
   return (
     <Wrapper>
       <CommentHeader>
@@ -40,15 +40,21 @@ export const Comment = (props) => {
         </HeaderInfo>
       </CommentHeader>
       <CommentBody>
-        <p>{comment}</p>
+        <p>{content}</p>
       </CommentBody>
     </Wrapper>
   );
 };
 
-Comment.propTypes = {
+const commentTypes = {
   comment: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   published: PropTypes.string.isRequired,
   edited: PropTypes.string.isRequired,
+};
+
+commentTypes.childcomments = PropTypes.arrayOf(PropTypes.shape(commentTypes));
+
+Comment.propTypes = {
+  comment: commentTypes.isRequired,
 };
