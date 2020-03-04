@@ -16,6 +16,8 @@ namespace OpenData.Resources
         public DateTime Published { get; set; }
         public DateTime Edited { get; set; }
 
+        public bool HasChildren { get; set; }
+
         public Guid ParentCommentUuid { get; set; }
         public IList<CommentResource> ChildComments { get; set; }
     }

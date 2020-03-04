@@ -90,26 +90,27 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
 
             builder.Entity<Comment>().ToTable("Comment");
-            builder.Entity<Comment>().HasKey(p => p.Uuid);
-            builder.Entity<Comment>().Property(p => p.Content).IsRequired();
-            builder.Entity<Comment>().Property(p => p.UserMail).IsRequired();
-            builder.Entity<Comment>().Property(p => p.Published).IsRequired();
-            builder.Entity<Comment>().Property(p => p.Edited).IsRequired();
+            builder.Entity<Comment>().HasKey(c => c.Uuid);
+            builder.Entity<Comment>().Property(c => c.Content).IsRequired();
+            builder.Entity<Comment>().Property(c => c.UserMail).IsRequired();
+            builder.Entity<Comment>().Property(c => c.Published).IsRequired();
+            builder.Entity<Comment>().Property(c => c.Edited).IsRequired();
+            builder.Entity<Comment>().Property(c => c.HasChildren).IsRequired();
             builder.Entity<Comment>()
-                .HasMany(p => p.ChildComments)
-                .WithOne(p => p.ParentComment)
-                .HasForeignKey(p => p.ParentCommentUuid);
+                .HasMany(c => c.ChildComments)
+                .WithOne(c => c.ParentComment)
+                .HasForeignKey(c => c.ParentCommentUuid);
 
             builder.Entity<MetadataCommentMapping>().HasKey(p => new { p.MetadataUuid, p.CommentUuid });
             builder.Entity<MetadataCommentMapping>()
-                .HasOne(p => p.Metadata)
-                .WithMany(p => p.Comments)
-                .HasForeignKey(p => p.MetadataUuid);
+                .HasOne(m => m.Metadata)
+                .WithMany(m => m.Comments)
+                .HasForeignKey(m => m.MetadataUuid);
             builder.Entity<ExperiencePostCommentMapping>().HasKey(p => new { p.ExperiencePostUuid, p.CommentUuid });
             builder.Entity<ExperiencePostCommentMapping>()
-                .HasOne(p => p.ExperiencePost)
-                .WithMany(p => p.Comments)
-                .HasForeignKey(p => p.ExperiencePostUuid);
+                .HasOne(m => m.ExperiencePost)
+                .WithMany(e => e.Comments)
+                .HasForeignKey(m => m.ExperiencePostUuid);
 
             builder.Entity<Tag>().ToTable("Tags");
             builder.Entity<Tag>().HasKey(p => p.Name);

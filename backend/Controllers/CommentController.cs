@@ -119,6 +119,7 @@ namespace OpenData.Controllers
         /// </summary>
         /// <param name="commentUuid">CommentUuid for the parent comment</param>
         /// <returns>The child comments for a given comment, and 5 levels depth (not including the comment itself)</returns>
+        [AllowAnonymous]
         [HttpGet("childcomments/{commentUuid}")]
         public async Task<IActionResult> FetchChildComments(Guid commentUuid)
         {

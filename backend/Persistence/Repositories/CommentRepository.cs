@@ -48,6 +48,13 @@ namespace OpenData.Persistence.Repositories
         public async Task ReplyToCommentAsync(Comment comment)
         {
             await AddRootComment(comment);
+
+            Comment parentComment = _context.Comments.SingleOrDefault(c => c.Uuid == comment.ParentCommentUuid);
+            if(parentComment == null)
+                throw new InvalidOperationException("Illegal parent comment for reply.");
+            
+            parentComment.HasChildren = true;
+
             await _context.SaveChangesAsync();
         }
 
