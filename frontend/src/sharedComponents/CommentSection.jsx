@@ -111,14 +111,23 @@ const CommentSection = ({
    * @Param doNotConstrainLength: Boolean; Decideds wheter or not to show "Load more comments"
    * @Param selected: Boolean; Decideds wheter or not a comment is selected (through the url)
    */
-  const render = (_comments, depth, doNotConstrainLength, selected) => {
+  const render = (parentId, _comments, _hasChildren, depth, doNotConstrainLength, selected) => {
+    if (_comments.length <= 0 && _hasChildren) {
+      return [
+        <StyledLink
+          key={`${location.pathname}?comment=${parentId}`}
+          to={`${location.pathname}?comment=${parentId}`}
+        >
+          Load more comments...
+        </StyledLink>,
+      ];
+    }
     // If childrens are empty or the object is empty then return null
     if (!_comments || _comments.length <= 0) {
       return null;
     }
 
-    let parentId = _comments[0].parentCommentUuid;
-    parentId = parentId === '00000000-0000-0000-0000-000000000000' ? null : parentId;
+    const newParentId = parentId === '00000000-0000-0000-0000-000000000000' ? null : parentId;
 
     // Incrase depth by 1
     const newDepth = depth + 1;
@@ -127,7 +136,7 @@ const CommentSection = ({
     const components = [];
 
     // The condition for wheter or not to show all in that depth (stops at 5 if ot)
-    const condition = !parentId || (doNotConstrainLength || _comments.length <= commentsLimit);
+    const condition = !newParentId || (doNotConstrainLength || _comments.length <= commentsLimit);
     // Set the amount of comments (at this depth) to show
     const length = condition ? _comments.length : Math.min(_comments.length, commentsLimit);
 
@@ -137,7 +146,7 @@ const CommentSection = ({
       for (let i = 0; i < length; i += 1) {
         // Deconstruct comment
         const {
-          uuid, parentCommentUuid, content, userMail, published, childComments,
+          uuid, parentCommentUuid, content, userMail, published, childComments, hasChildren,
         } = _comments[i];
 
         // Append comment element to return array
@@ -150,7 +159,12 @@ const CommentSection = ({
             timestamp={new Date(published)}
             content={content}
             selected={selected}
-            subComments={render(childComments, newDepth, doNotConstrainLength, false)}
+            subComments={render(uuid,
+              childComments,
+              hasChildren,
+              newDepth,
+              doNotConstrainLength,
+              false)}
             callback={setFetchedComments}
           />,
         );
@@ -159,12 +173,12 @@ const CommentSection = ({
 
     // Append "Load more comments" link element to return array if
     // the condition is true
-    if ((parentId && !doNotConstrainLength && _comments.length > commentsLimit)
-        || depth >= depthLimit) {
+    if ((newParentId && !doNotConstrainLength && _comments.length > commentsLimit)
+      || depth >= depthLimit) {
       components.push(
         <StyledLink
-          key={`${location.pathname}?comment=${parentId}`}
-          to={`${location.pathname}?comment=${parentId}`}
+          key={`${location.pathname}?comment=${newParentId}`}
+          to={`${location.pathname}?comment=${newParentId}`}
         >
           Load more comments...
         </StyledLink>,
@@ -173,34 +187,6 @@ const CommentSection = ({
 
     // Return the components
     return components;
-  };
-
-  // Look for a specific comment thread
-  /*
-   * @Params _comments:
-   */
-  const findComment = (_comments) => {
-    // Loop over all the comments
-    for (const comment of _comments) {
-      // check if the key is equal to the commentId we are searching for
-      if (comment.uuid === commentId) {
-        // return the thread if found
-        return [comment];
-      }
-
-      // Check if the children is not empty
-      if (comment.childcomments && comment.childcomments.length > 0) {
-        // Recursivly search for the commeent
-        const commentSearch = findComment(comment.childcomments);
-        // If its found, return the thread
-        if (commentSearch) {
-          return commentSearch;
-        }
-      }
-    }
-
-    // If nothing is found return null
-    return null;
   };
 
   return (
@@ -218,9 +204,7 @@ const CommentSection = ({
           ? (
             <CommentThread>
               {
-                commentId
-                  ? render(findComment(comments), 0, true, true)
-                  : render(comments, 0, false, false)
+                render(comments[0].parentCommentUuid, comments, true, 0, commentId, commentId)
               }
             </CommentThread>
           )
