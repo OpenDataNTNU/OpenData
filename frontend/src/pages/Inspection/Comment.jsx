@@ -28,12 +28,12 @@ const CommentBody = styled.div`
 
 export const Comment = ({ comment }) => {
   const {
-    content, author, published, edited,
+    content, userMail, published, edited,
   } = comment;
   return (
     <Wrapper>
       <CommentHeader>
-        <HeaderInfo color="3e3e3e">{author}</HeaderInfo>
+        <HeaderInfo color="3e3e3e">{userMail}</HeaderInfo>
         <HeaderInfo color="dimgray">
           {published}
           {published !== edited ? ` (edited ${edited})` : ''}
@@ -47,14 +47,14 @@ export const Comment = ({ comment }) => {
 };
 
 const commentTypes = {
-  comment: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  userMail: PropTypes.string.isRequired,
   published: PropTypes.string.isRequired,
   edited: PropTypes.string.isRequired,
 };
 
-commentTypes.childcomments = PropTypes.arrayOf(PropTypes.shape(commentTypes));
+commentTypes.childcomments = PropTypes.arrayOf(PropTypes.shape(commentTypes)).isRequired;
 
 Comment.propTypes = {
-  comment: commentTypes.isRequired,
+  comment: PropTypes.shape(commentTypes).isRequired,
 };

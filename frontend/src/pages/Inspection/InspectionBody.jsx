@@ -23,6 +23,7 @@ export const InspectionBody = ({ id }) => {
     metadataTypeName: '',
     municipalityName: '',
     description: '',
+    experiencePostGuid: '',
   });
   const [tags, setTags] = useState([]);
 

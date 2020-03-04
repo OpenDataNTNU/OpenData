@@ -27,7 +27,7 @@ export const Comments = ({ id }) => {
     setComments([...comments, {
       uuid,
       content,
-      usermail: mail,
+      userMail: mail,
       published: dateString,
       edited: dateString,
     }]);
@@ -36,7 +36,7 @@ export const Comments = ({ id }) => {
   useEffect(() => {
     const internal = async () => {
       try {
-        const res = await fetch(`/api/metadata/${id}/comments`);
+        const res = await fetch(`/api/Comment/metadata/${id}`);
         const { ok, status } = res;
         if (!ok) {
           const err = new Error();
@@ -56,10 +56,10 @@ export const Comments = ({ id }) => {
     <Wrapper>
       <h2>Comments</h2>
       {comments.length ? comments.map((comment) => {
-        const { commentId } = comment;
+        const { uuid } = comment;
         return (
           <Comment
-            key={commentId}
+            key={uuid}
             comment={comment}
           />
         );

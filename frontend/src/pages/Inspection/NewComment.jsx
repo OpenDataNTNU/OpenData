@@ -60,7 +60,7 @@ export const NewComment = ({ uuid, addComment }) => {
     e.preventDefault();
     try {
       const { token } = userSelector.user;
-      const res = await fetch(`/api/metadata/${uuid}/comments`, {
+      const res = await fetch(`/api/Comment/metadata/${uuid}`, {
         method: 'PUT',
         body: JSON.stringify({
           content: commentText,

@@ -57,7 +57,7 @@ const commentResponse = `
     {
       "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
       "content":"I quite enjoyed reading this. Lurem ipsoM.",
-      "usermail":"test@test.kommune.no",
+      "userMail":"test@test.kommune.no",
       "user": {},
       "parentcommentuuid": "",
       "parentcomment": "",
@@ -68,7 +68,7 @@ const commentResponse = `
     {
       "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afab",
       "content":"I REALLY hated reading this. Utter garbage. Not impressed AT ALL. qwop",
-      "usermail":"test@test.kommune.no",
+      "userMail":"test@test.kommune.no",
       "user": {},
       "parentcommentuuid": "",
       "parentcomment": "",
@@ -109,7 +109,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
           return carHistoryResponse;
         case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return carHistoryTrondheimResponse;
-        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6/comments':
+        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return commentResponse;
         default:
           return '';
@@ -141,7 +141,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
           return carHistoryResponse;
         case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return carHistoryTrondheimResponse;
-        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6/comments':
+        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return commentResponse;
         default:
           return '';
