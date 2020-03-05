@@ -143,7 +143,7 @@ export const MetadataForm = () => {
 
     const newState = { ...state };
 
-    if (newState.releaseState === 4 && (!newState.url || newState.url === '')) {
+    if (newState.releaseState !== 1 && (!newState.url || newState.url === '')) {
       newState.url = null;
     }
 
