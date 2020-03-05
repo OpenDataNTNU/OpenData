@@ -114,6 +114,9 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
 
+			if (resource.ReleaseState != EReleaseState.Red && string.IsNullOrEmpty(resource.Url))
+				return BadRequest("Url has to be supplied when releasestate is not unreleased (red)");
+
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
 			if (user.UserType == UserType.Municipality && user.MunicipalityName == resource.MunicipalityName)
