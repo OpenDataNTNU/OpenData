@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import { NewComment } from './NewComment';
+import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
   font-size: 0.9em;
@@ -24,7 +26,12 @@ const HeaderInfo = styled.p`
 `;
 
 const CommentBody = styled.p`
-  font-size: 0.9em;
+  font-size: 1em;
+`;
+
+const LoadMore = styled.p`
+  cursor: pointer;
+  font-size: 1em;
 `;
 
 const ChildComments = styled.div`
@@ -36,8 +43,10 @@ const ChildComments = styled.div`
 
 export const Comment = ({ comment, updateSelf }) => {
   const {
-    content, userMail, published, edited, childComments, uuid,
+    content, userMail, published, edited, childComments, uuid, hasChildren,
   } = comment;
+
+  const dispatch = useDispatch();
 
   const updateChild = (childComment, childUuid) => {
     const index = childComments.findIndex((c) => c.uuid === childUuid);
@@ -50,6 +59,22 @@ export const Comment = ({ comment, updateSelf }) => {
   const addChild = (childComment) => {
     const newChildren = [...childComments, childComment];
     updateSelf({ ...comment, childComments: newChildren }, uuid);
+  };
+
+  const loadChildren = async () => {
+    try {
+      const res = await fetch(`/api/Comment/childcomments/${uuid}`);
+      const { ok, status } = res;
+      if (!ok) {
+        const err = new Error();
+        err.status = status;
+        throw err;
+      }
+      const receivedComments = await res.json();
+      updateSelf({ ...comment, childComments: receivedComments }, uuid);
+    } catch (err) {
+      dispatch(alertActions.error('Something went wrong while trying to get replies'));
+    }
   };
 
   return (
@@ -65,9 +90,13 @@ export const Comment = ({ comment, updateSelf }) => {
         {content}
       </CommentBody>
       <ChildComments>
-        {childComments.map((child) => (
-          <Comment key={child.uuid} comment={child} updateSelf={updateChild} />
-        ))}
+        {hasChildren && childComments.length === 0 ? (
+          <LoadMore onClick={loadChildren}>Load comments</LoadMore>
+        ) : (
+          childComments.map((child) => (
+            <Comment key={child.uuid} comment={child} updateSelf={updateChild} />
+          ))
+        )}
         <NewComment uuid={uuid} addComment={addChild} isReply />
       </ChildComments>
     </Wrapper>
@@ -80,6 +109,7 @@ const commentTypes = {
   userMail: PropTypes.string.isRequired,
   published: PropTypes.string.isRequired,
   edited: PropTypes.string.isRequired,
+  hasChildren: PropTypes.bool.isRequired,
 };
 
 commentTypes.childComments = PropTypes.arrayOf(PropTypes.shape(commentTypes)).isRequired;
