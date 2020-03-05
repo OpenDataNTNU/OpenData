@@ -27,8 +27,10 @@ namespace OpenData.Domain.Models
 
         public bool HasChildren { get; set; } = false;
 
+#nullable enable
         public Guid? ParentCommentUuid { get; set; }
         public Comment? ParentComment { get; set; }
+#nullable disable
         public IList<Comment> ChildComments { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace OpenData.Controllers
 				var type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
 				var res = _mapper.Map<MetadataType, MetadataTypeResource>(type);
 				return res;
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 		}
@@ -122,7 +122,7 @@ namespace OpenData.Controllers
 			MetadataType type = null;
 			try {
 				type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 
@@ -130,7 +130,7 @@ namespace OpenData.Controllers
 			Tag tag = null;
 			try {
 				tag = await _tagService.GetByNameAsync(newTag.Name);
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 

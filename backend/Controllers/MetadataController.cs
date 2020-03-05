@@ -68,7 +68,7 @@ namespace OpenData.Controllers
 				var type = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
 				var res = _mapper.Map<Metadata, MetadataResource>(type);
 				return res;
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 		}
