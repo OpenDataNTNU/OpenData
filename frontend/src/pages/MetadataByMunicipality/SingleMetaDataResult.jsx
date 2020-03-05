@@ -113,16 +113,23 @@ const SingleMetaDataResult = ({ metadata }) => {
 
   // TODO: Update this to use API whenever that exists.
   const commentsCount = 0;
-  const dispatch = useDispatch();
   const hasFeedback = experiencePostGuid !== null;
+
+  const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
-  const userSelector = useSelector((state) => state.user);
+  const userSelector = useSelector((state) => state.user) || { user: { token: null } };
+  const { user: token } = userSelector;
 
   useState(() => {
     const internal = async () => {
       try {
-        const res = await fetch(`/api/Metadata/${uuid}/like`);
+        const res = await fetch(`/api/Metadata/${uuid}/like`, {
+          method: 'GET',
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        });
         const { likeCount, liked } = await res.json();
         setLikes(likeCount);
         setLiked(liked);
@@ -140,7 +147,6 @@ const SingleMetaDataResult = ({ metadata }) => {
 
   const handleLike = async () => {
     try {
-      const { token } = userSelector.user;
       const res = await fetch(`/api/Metadata/${uuid}/like`, {
         method: 'PUT',
         headers: {
