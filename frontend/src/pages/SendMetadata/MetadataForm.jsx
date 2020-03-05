@@ -22,6 +22,7 @@ const StyledForm = styled.form`
   max-width: 50em;
   min-width: 20em;
   padding: 1em;
+  margin: 10px 0px;
   background-color: white;
   border-radius: 4px;
   -webkit-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
