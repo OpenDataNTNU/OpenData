@@ -11,7 +11,7 @@ const HeaderHTML = styled.header`
   display: flex;
   align-items: center;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 650px) {
     padding: 0 1em;
     justify-content: space-between;
   }
@@ -50,26 +50,11 @@ const NavInternalLink = styled(ReactLink)`
   }
 `;
 
-const NavExternalLink = styled.a`
-  padding: 1em;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  &:last-child {
-    margin-left: auto;
-  }
-`;
-
 const Header = () => {
   // Redux state
   const userSelector = useSelector((state) => state.user);
   const user = userSelector ? userSelector.user : null;
+  const role = user ? user.userType : null;
 
   // React-router-dom
   const history = useHistory();
@@ -101,16 +86,16 @@ const Header = () => {
     // As described in the dropdown component, the title will be the title
     // supplied with the the list item object
     switch (title) {
-      case 'Source Code': {
-        window.location = 'https://github.com/OpenDataNTNU/OpenData';
+      case 'Home': {
+        history.push('/');
         break;
       }
-      case 'API': {
-        window.location = '/swagger';
+      case 'Search by municipality': {
+        history.push('/municipalities');
         break;
       }
-      case 'About': {
-        history.push('/about');
+      case 'Submit data': {
+        history.push('/sendData');
         break;
       }
       case 'Sign in': {
@@ -135,18 +120,17 @@ const Header = () => {
       {
         // Show normal nav on widht over 600
         // Else show responsive dropdown
-        width > 600
+        width > 650
           ? (
             <Nav>
-              <NavExternalLink href="https://github.com/OpenDataNTNU/OpenData">
-                <p>Source Code</p>
-              </NavExternalLink>
-              <NavExternalLink href="/swagger">
-                <p>API</p>
-              </NavExternalLink>
-              <NavInternalLink to="/about">
-                <p>About</p>
+              <NavInternalLink to="/municipalities">
+                <p>Search by municipality</p>
               </NavInternalLink>
+              {
+                role === 1
+                  ? <NavInternalLink to="/sendData">Submit data</NavInternalLink>
+                  : null
+              }
               <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>
                 <p>{user && user.mail ? 'Logout' : 'Sign in'}</p>
               </NavInternalLink>
@@ -157,9 +141,9 @@ const Header = () => {
               title="Navigation"
               onItemClick={onDropdownClick}
               list={[
-                { id: 'Source Code', title: 'Source Code' },
-                { id: 'API', title: 'API' },
-                { id: 'About', title: 'About' },
+                { id: 'Home', title: 'Home' },
+                { id: 'Search by municipality', title: 'Search by municipality' },
+                ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}
             />

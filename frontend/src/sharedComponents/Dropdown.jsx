@@ -74,6 +74,7 @@ const ListItem = styled.li`
   display: inline-block;
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: auto;
 
   &:not(:last-child) {
     border-bottom: 0.5px solid lightgrey;
