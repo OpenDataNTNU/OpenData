@@ -254,7 +254,7 @@ export const MetadataForm = () => {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
-        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleChange} required={releaseState !== 4} />
+        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleChange} required={releaseState === 1} />
         <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => {}} />
       </StyledForm>
     </Wrapper>
