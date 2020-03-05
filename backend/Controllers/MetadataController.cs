@@ -133,6 +133,9 @@ namespace OpenData.Controllers
 			return Ok(likeReport);
 		}
 
+		/// <summary>
+		/// Toggles whether or not the user has liked a metadata.
+		/// </summary> 
 		[HttpPut("{uuid}/like")]
 		public async Task<IActionResult> SetLike(string uuid)
 		{
@@ -145,14 +148,27 @@ namespace OpenData.Controllers
 			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
+			//Check if the user has already liked it
+			try {
+				var existingLike = await _likeService.GetLikeByUserAndMetadata(user, metadata);
 
-			var like = new Like(){LikeUser = user, Metadata = metadata};
+				if(existingLike != null) {
+					await _likeService.DeleteLike(existingLike);
+				}
 
-			await _likeService.SaveAsync(like);
+			} catch (InvalidOperationException) {
+				var like = new Like(){LikeUser = user, Metadata = metadata};
 
+				await _likeService.SaveAsync(like);
+			}
+
+			await _unitOfWork.CompleteAsync();
 			return Ok();
 		}
 
+		/// <summary>
+		/// Returns like information about a dataset.
+		/// </summary> 
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{

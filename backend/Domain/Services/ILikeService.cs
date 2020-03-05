@@ -11,6 +11,10 @@ namespace OpenData.Domain.Services
     {
         Task<LikeReport> GetLikeReport(User user, Metadata metadata) ;
 
+        Task<Like> GetLikeByUserAndMetadata(User user, Metadata metadata) ;
+
+        Task DeleteLike(Like like) ;
+
         Task<SaveLikeResponse> SaveAsync(Like like);
     }
 }
