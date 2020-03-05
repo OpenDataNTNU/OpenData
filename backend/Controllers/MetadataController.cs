@@ -115,7 +115,7 @@ namespace OpenData.Controllers
 				return BadRequest(ModelState.GetErrorMessages());
 
 			if (resource.ReleaseState == EReleaseState.Released && string.IsNullOrEmpty(resource.Url))
-				return BadRequest("Url has to be supplied when releasestate is not unreleased (red)");
+				return BadRequest("Url has to be supplied when releasestate is 'Released'");
 
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
