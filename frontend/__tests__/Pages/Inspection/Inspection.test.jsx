@@ -58,22 +58,32 @@ const commentResponse = `
       "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
       "content":"I quite enjoyed reading this. Lurem ipsoM.",
       "userMail":"test@test.kommune.no",
-      "user": {},
-      "parentcommentuuid": "",
-      "parentcomment": "",
-      "published" : "02-02-2020",
-      "edited": "02-02-2020",
-      "childComments": []
+      "user":null,
+      "published" :"02-02-2020",
+      "edited":"02-02-2020",
+      "hasChildren":false,
+      "parentCommentUuid":"00000000-0000-0000-0000-000000000000",
+      "childComments":[{
+        "uuid":"08d7c110-2e54-437a-8c7f-b35e57fef5e0",
+        "content":"Thank you for your INTEREST, kind sir!",
+        "userMail":"alex@trondheim.kommune.no",
+        "user":null,
+        "published" :"02-02-2020",
+        "edited":"02-02-2020",
+        "hasChildren":false,
+        "parentCommentUuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
+        "childComments":[]
+      }]
     },
     {
       "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afab",
       "content":"I REALLY hated reading this. Utter garbage. Not impressed AT ALL. qwop",
       "userMail":"test@test.kommune.no",
-      "user": {},
-      "parentcommentuuid": "",
-      "parentcomment": "",
+      "user":null,
       "published" : "01-01-1970",
       "edited": "01-01-2011",
+      "hasChildren":true,
+      "parentCommentUuid":"00000000-0000-0000-0000-000000000000",
       "childComments": []
     }
   ]
@@ -160,5 +170,6 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     await findByText(new RegExp('Trondheim'));
     await findByText(new RegExp('I quite enjoyed reading this\\. Lurem ipsoM\\.'));
     getByText(new RegExp('I REALLY hated reading this\\. Utter garbage\\. Not impressed AT ALL\\. qwop'));
+    getByText(new RegExp('Thank you for your INTEREST, kind sir!'));
   });
 });
