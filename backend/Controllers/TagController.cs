@@ -29,6 +29,9 @@ namespace OpenData.Controllers
 			_unitOfWork = unitOfWork;
 		}
 
+		/// <summary>
+		/// Returns all known tags in the system.
+		/// </summary> 
 		[HttpGet]
 		public async Task<IEnumerable<Tag>> GetAllAsync()
 		{
@@ -36,6 +39,9 @@ namespace OpenData.Controllers
 			return tags;
 		}
 		
+		/// <summary>
+		/// Creates a new tag
+		/// </summary> 
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] Tag tag)
 		{

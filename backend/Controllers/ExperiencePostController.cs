@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace OpenData.Controllers
 {
+	/// <summary>
+	/// Returns a list of experience posts
+	/// </summary> 
 	[Route("/api/[controller]")]
 	public class ExperiencePostController : Controller
 	{
@@ -39,6 +42,9 @@ namespace OpenData.Controllers
 		}
 
 		//TODO this needs authentication
+		/// <summary>
+		/// Returns all experience posts in the database
+		/// </summary> 
 		[HttpGet]
 		public async Task<IEnumerable<ExperiencePostResource>> GetAllAsync()
 		{

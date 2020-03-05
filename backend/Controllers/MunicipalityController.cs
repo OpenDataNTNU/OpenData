@@ -23,6 +23,9 @@ namespace OpenData.Controllers
 			_mapper = mapper;
 		}
 
+		/// <summary>
+		/// Returns a list of all municipalities known to this service.
+		/// </summary> 
 		[HttpGet]
 		public async Task<IEnumerable<MunicipalityResource>> GetAllAsync()
 		{
@@ -31,6 +34,9 @@ namespace OpenData.Controllers
 			return resources;
 		}
 
+		/// <summary>
+		/// Returns data about a single municipality
+		/// </summary> 
 		[HttpGet("{name}")]
 		public async Task<IActionResult> GetSingleAsync(string name)
 		{

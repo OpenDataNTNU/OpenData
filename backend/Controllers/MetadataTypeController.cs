@@ -47,6 +47,9 @@ namespace OpenData.Controllers
 			this.userService = userService;
 		}
 
+		/// <summary>
+		/// Returns all metadata types in the database.
+		/// </summary> 
         [AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataTypeResource>> GetAllAsync()
