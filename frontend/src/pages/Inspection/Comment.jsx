@@ -7,7 +7,7 @@ import { NewComment } from './NewComment';
 import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
-  font-size: 0.9em;
+  font-size: 1em;
   background-color: white;
   padding: 0.8em;
   border-radius: 0.8em;
@@ -26,7 +26,7 @@ const HeaderInfo = styled.p`
 `;
 
 const CommentBody = styled.p`
-  font-size: 1em;
+  font-size: 0.9em;
 `;
 
 const LoadMore = styled.p`
