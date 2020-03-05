@@ -92,6 +92,9 @@ namespace OpenData
 
             services.AddScoped<ISecurityService, SecurityService>();
 
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization();

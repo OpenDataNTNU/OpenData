@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 using AutoMapper;
@@ -39,7 +38,8 @@ namespace OpenData.Controllers
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
             IUserService userService,
-            ILikeService likeService
+            ILikeService likeService,
+			      ICommentService commentService
             )
 		{
 			_metadataService = metadataService;
@@ -71,7 +71,7 @@ namespace OpenData.Controllers
 				var type = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
 				var res = _mapper.Map<Metadata, MetadataResource>(type);
 				return res;
-			} catch (Exception ex) {
+			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 		}
@@ -172,8 +172,11 @@ namespace OpenData.Controllers
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
+
+			if (resource.ReleaseState == EReleaseState.Released && string.IsNullOrEmpty(resource.Url))
+				return BadRequest("Url has to be supplied when releasestate is 'Released'");
 
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
@@ -194,5 +197,6 @@ namespace OpenData.Controllers
 
             return Unauthorized("Invalid permissions!");
 		}
+
 	}
 }

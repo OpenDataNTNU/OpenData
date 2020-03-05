@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import parse from 'html-react-parser';
 
 import { Template } from '../../sharedComponents/Template';
+import { CommentSection } from '../../sharedComponents/CommentSection';
 import { useGetExperienceArticle } from '../../sharedComponents/hooks';
-
 
 const Wrapper = styled.div`
   flex: 1;
@@ -70,6 +70,10 @@ const Article = () => {
             parse(article.contents || '')
           }
         </Body>
+        <CommentSection
+          putUrl={`/api/Comment/experiencepost/${id}`}
+          getUrl={`/api/Comment/experiencepost/${id}`}
+        />
       </Wrapper>
     </Template>
   );

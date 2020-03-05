@@ -74,7 +74,7 @@ export const AllDataBody = () => {
         <div>
           {metadataTypes.map(({ name, tags, description }) => (
             <Type key={name}>
-              <Link to={`/viewData/dataType/${name}`}>
+              <Link to={`/dataType/${name}`}>
                 <h3>
                   {name}
                 </h3>

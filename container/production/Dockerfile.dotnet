@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+
+# Allow remote debugging
+RUN apt update && \
+    apt install unzip && \
+    curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l /vsdbg
+
+
+COPY ./backend /srv/opendata-backend
+COPY ./container/production/dotnet-entrypoint.sh /srv/opendata-backend/
+RUN chmod +x /srv/opendata-backend/dotnet-entrypoint.sh
+
+WORKDIR /srv/opendata-backend
+
+# Fix SQL race condition. Kinda
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x wait-for-it.sh
+
+ENV ASPNETCORE_ENVIRONMENT = Production
+
+RUN dotnet restore
+
+ENTRYPOINT ["bash", "-c"]
+
+CMD ["./dotnet-entrypoint.sh"]

@@ -9,7 +9,6 @@ import PrivateRoute from './PrivateRoute';
 
 // Pages
 import { Splash } from '../pages/Splash';
-import { AllData } from '../pages/allData';
 import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
 import { Article } from '../pages/Article';
@@ -27,9 +26,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
-        <Route exact path="/viewData" component={AllData} />
-        <Route path="/viewData/dataType/:name" component={MetadataByType} />
-        <Route path="/viewData/dataset/:id" component={Inspection} />
+        <Route path="/dataType/:name" component={MetadataByType} />
+        <Route path="/dataset/:id" component={Inspection} />
         <PrivateRoute path="/sendData" municipality component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" municipality component={NewExperienceArticle} />

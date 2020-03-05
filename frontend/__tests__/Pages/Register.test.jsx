@@ -95,9 +95,9 @@ describe('Template component', () => {
     });
 
     const expectedActions = store.getActions();
-    expect(expectedActions.length).toBe(4);
-    expect(expectedActions[2]).toEqual({ type: 'USER_SET_USER_REGISTRATION_REQUEST' });
-    expect(expectedActions[3]).toEqual({
+    expect(expectedActions.length).toBe(5);
+    expect(expectedActions[3]).toEqual({ type: 'USER_SET_USER_REGISTRATION_REQUEST' });
+    expect(expectedActions[4]).toEqual({
       type: 'USER_SET_USER_REGISTRATION_SUCCESS',
     });
   });

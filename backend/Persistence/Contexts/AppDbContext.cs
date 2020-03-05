@@ -19,6 +19,9 @@ namespace OpenData.Persistence.Contexts
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<MetadataCommentMapping> MetadataCommentMappings { get; set; }
+        public DbSet<ExperiencePostCommentMapping> ExperiencePostCommentMappings { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -86,7 +89,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().ToTable("Metadata");
             builder.Entity<Metadata>().HasKey(p => p.Uuid);
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
-            builder.Entity<Metadata>().Property( p => p.Url).IsRequired();
+            builder.Entity<Metadata>().Property( p => p.Url);
             builder.Entity<Metadata>().HasOne(p => p.Format);
             builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
@@ -119,6 +122,29 @@ namespace OpenData.Persistence.Contexts
                                Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Test",
                                MetadataTypeName = "Populasjon"}
             );
+            
+            builder.Entity<Comment>().ToTable("Comment");
+            builder.Entity<Comment>().HasKey(c => c.Uuid);
+            builder.Entity<Comment>().Property(c => c.Content).IsRequired();
+            builder.Entity<Comment>().Property(c => c.UserMail).IsRequired();
+            builder.Entity<Comment>().Property(c => c.Published).IsRequired();
+            builder.Entity<Comment>().Property(c => c.Edited).IsRequired();
+            builder.Entity<Comment>().Property(c => c.HasChildren).IsRequired();
+            builder.Entity<Comment>()
+                .HasMany(c => c.ChildComments)
+                .WithOne(c => c.ParentComment)
+                .HasForeignKey(c => c.ParentCommentUuid);
+
+            builder.Entity<MetadataCommentMapping>().HasKey(p => new { p.MetadataUuid, p.CommentUuid });
+            builder.Entity<MetadataCommentMapping>()
+                .HasOne(m => m.Metadata)
+                .WithMany(m => m.Comments)
+                .HasForeignKey(m => m.MetadataUuid);
+            builder.Entity<ExperiencePostCommentMapping>().HasKey(p => new { p.ExperiencePostUuid, p.CommentUuid });
+            builder.Entity<ExperiencePostCommentMapping>()
+                .HasOne(m => m.ExperiencePost)
+                .WithMany(e => e.Comments)
+                .HasForeignKey(m => m.ExperiencePostUuid);
 
             builder.Entity<Tag>().ToTable("Tags");
             builder.Entity<Tag>().HasKey(p => p.Name);
@@ -153,8 +179,8 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<ExperiencePost>().Property(p => p.Modified).IsRequired();
 
             builder.Entity<ExperiencePostTagMapping>().ToTable("ExperiencePostTagMapping");
-            builder.Entity<ExperiencePostTagMapping>().HasKey(p => new {p.TagName, p.ExperiencePostGuid});
-            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Post).WithMany(p => p.Tags).HasForeignKey(p => p.ExperiencePostGuid);
+            builder.Entity<ExperiencePostTagMapping>().HasKey(p => new {p.TagName, p.ExperiencePostUuid});
+            builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Post).WithMany(p => p.Tags).HasForeignKey(p => p.ExperiencePostUuid);
             builder.Entity<ExperiencePostTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
         }
     }

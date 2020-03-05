@@ -9,7 +9,7 @@ namespace OpenData.Domain.Models
 
 		public Tag Tag { get; set; }
 
-		public Guid ExperiencePostGuid { get; set; }
+		public Guid ExperiencePostUuid { get; set; }
 
 		public ExperiencePost Post { get; set; }
 	}

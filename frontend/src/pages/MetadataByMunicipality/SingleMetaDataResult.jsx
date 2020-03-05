@@ -172,9 +172,7 @@ const SingleMetaDataResult = ({ metadata }) => {
           </MetaDataTypeLink>
           <FeedbackLabel hasFeedback={hasFeedback} />
           <p>{description}</p>
-          <MetaDataLink to={`viewData/dataset/${uuid}`}>
-            Other municipalities who offer this data
-          </MetaDataLink>
+          <MetaDataLink to={`/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
         </MetaDataDescription>
         <MetadataURL url={url} formatName={formatName} />
       </MetaDataContent>

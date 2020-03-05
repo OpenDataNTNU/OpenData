@@ -1,0 +1,10 @@
+FROM alpine:3.11
+
+RUN apk add --update --no-cache nginx && apk add --update --no-cache nodejs npm && npm install -g yarn
+
+COPY ./frontend /tmp/build
+
+ENV PORT=80
+RUN cd /tmp/build && yarn cache clean && yarn install --network-timeout 1000000 && yarn production && mv public /srv/opendata-frontend && rm -rf /tmp/*
+
+ENTRYPOINT nginx

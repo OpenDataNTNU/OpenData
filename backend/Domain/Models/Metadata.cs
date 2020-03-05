@@ -15,7 +15,7 @@ namespace OpenData.Domain.Models
 		public string Description { get; set; }
 
 		public DataFormat Format { get; set; }
-		
+
 		public EReleaseState ReleaseState { get; set; }
 
 		public string MunicipalityName { get; set; }
@@ -26,8 +26,12 @@ namespace OpenData.Domain.Models
 
 		public IList<Like> Likes { get; set; }
 
+		public IList<MetadataCommentMapping> Comments { get; set; }
+
+#nullable enable
 		[ForeignKey("ExperiencePost")]
 		public Guid? ExperiencePostGuid { get; set; }
 		public ExperiencePost? ExperiencePost { get; set; }
+#nullable disable
 	}
 }
