@@ -114,7 +114,7 @@ export const MetadataByTypeBody = ({ name }) => {
             .map(({ uuid, municipalityName, releaseState }) => (
               <tr key={uuid}>
                 <td>
-                  <Link to={`/viewData/dataset/${uuid}`}>
+                  <Link to={`/dataset/${uuid}`}>
                     {municipalityName}
                   </Link>
                 </td>

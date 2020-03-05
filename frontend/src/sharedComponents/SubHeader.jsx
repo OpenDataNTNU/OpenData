@@ -28,7 +28,7 @@ const SubHeader = () => {
   return (
     <SubHeaderContainer>
       <LinkStyled to="/municipalities">Search by municipality</LinkStyled>
-      <LinkStyled to="/viewData">Search by category</LinkStyled>
+      <LinkStyled to="/">Search by category</LinkStyled>
       {
         role === 1
           ? <LinkStyled to="/sendData">Submit data</LinkStyled>
