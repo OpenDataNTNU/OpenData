@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Comment } from './Comment';
 import { NewComment } from './NewComment';
@@ -17,20 +17,18 @@ const Wrapper = styled.div`
 export const Comments = ({ id }) => {
   const [comments, setComments] = useState([]);
 
-  const userSelector = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const addComment = (content, uuid) => {
-    const { mail } = userSelector.user;
-    const d = new Date();
-    const dateString = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
-    setComments([...comments, {
-      uuid,
-      content,
-      userMail: mail,
-      published: dateString,
-      edited: dateString,
-    }]);
+  const addComment = (newComment) => {
+    setComments([...comments, newComment]);
+  };
+
+  const updateComment = (comment, uuid) => {
+    // find index of the comment in question
+    const index = comments.findIndex((c) => c.uuid === uuid);
+    const pre = comments.slice(0, index);
+    const post = comments.slice(index + 1);
+    setComments([...pre, comment, ...post]);
   };
 
   useEffect(() => {
@@ -60,6 +58,7 @@ export const Comments = ({ id }) => {
         return (
           <Comment
             key={uuid}
+            updateSelf={updateComment}
             comment={comment}
           />
         );

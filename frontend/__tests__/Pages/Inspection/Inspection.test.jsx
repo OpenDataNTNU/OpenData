@@ -63,7 +63,7 @@ const commentResponse = `
       "parentcomment": "",
       "published" : "02-02-2020",
       "edited": "02-02-2020",
-      "childcomments": []
+      "childComments": []
     },
     {
       "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afab",
@@ -74,7 +74,7 @@ const commentResponse = `
       "parentcomment": "",
       "published" : "01-01-1970",
       "edited": "01-01-2011",
-      "childcomments": []
+      "childComments": []
     }
   ]
 `;

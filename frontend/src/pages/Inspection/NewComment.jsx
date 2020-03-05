@@ -50,7 +50,7 @@ const LoggedOutWrapper = styled.div`
   margin-bottom: 0.8em;
 `;
 
-export const NewComment = ({ uuid, addComment }) => {
+export const NewComment = ({ uuid, addComment, isReply }) => {
   const [commentText, setCommentText] = useState('');
 
   const userSelector = useSelector((state) => state.user);
@@ -60,10 +60,12 @@ export const NewComment = ({ uuid, addComment }) => {
     e.preventDefault();
     try {
       const { token } = userSelector.user;
-      const res = await fetch(`/api/Comment/metadata/${uuid}`, {
+      const url = isReply ? `/api/Comment/reply/${uuid}` : `/api/Comment/metadata/${uuid}`;
+      const res = await fetch(url, {
         method: 'PUT',
         body: JSON.stringify({
           content: commentText,
+
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +78,8 @@ export const NewComment = ({ uuid, addComment }) => {
         err.status = status;
         throw err;
       }
-      addComment(commentText);
+      const receivedComment = await res.json();
+      addComment(receivedComment);
       setCommentText('');
     } catch (err) {
       const { status } = err;
@@ -94,16 +97,17 @@ export const NewComment = ({ uuid, addComment }) => {
 
   return loggedIn ? (
     <Wrapper onSubmit={submit}>
-      <CommentField placeholder="Leave a comment" value={commentText} onChange={(e) => setCommentText(e.target.value)} required />
-      <SubmitButton type="submit" value="Post Comment" />
+      <CommentField placeholder={isReply ? 'Leave a reply' : 'Leave a comment'} value={commentText} onChange={(e) => setCommentText(e.target.value)} required />
+      <SubmitButton type="submit" value={isReply ? 'Post reply' : 'Post Comment'} />
     </Wrapper>
   ) : (
     <LoggedOutWrapper>
       <Link to="/login">
-        Logg inn
+        Log in
       </Link>
       {' '}
-      for å legge til en kommentar
+      to
+      {isReply ? ' reply' : ' add a comment'}
     </LoggedOutWrapper>
   );
 };
@@ -111,4 +115,9 @@ export const NewComment = ({ uuid, addComment }) => {
 NewComment.propTypes = {
   addComment: PropTypes.func.isRequired,
   uuid: PropTypes.string.isRequired,
+  isReply: PropTypes.bool,
+};
+
+NewComment.defaultProps = {
+  isReply: false,
 };
