@@ -118,7 +118,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
-  const userSelector = useSelector((state) => state.user) || { user: { token: null } };
+  const userSelector = useSelector((state) => state.user) || { user: { token: { token: null } } };
   const { user: token } = userSelector;
 
   useState(() => {
@@ -127,7 +127,7 @@ const SingleMetaDataResult = ({ metadata }) => {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
           headers: {
-            Authorization: `bearer ${token}`,
+            Authorization: `bearer ${token.token}`,
           },
         });
         const { likeCount, liked } = await res.json();
@@ -137,6 +137,8 @@ const SingleMetaDataResult = ({ metadata }) => {
         const { status } = err;
         if (status === 404) {
           dispatch(alertActions.error('Could not fetch likes for dataset.'));
+        } else if (status === 401) {
+          dispatch(alertActions.error('Not authorized to see likes for dataset.'));
         } else {
           dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
         }
@@ -150,13 +152,15 @@ const SingleMetaDataResult = ({ metadata }) => {
       const res = await fetch(`/api/Metadata/${uuid}/like`, {
         method: 'PUT',
         headers: {
-          Authorization: `bearer ${token}`,
+          Authorization: `bearer ${token.token}`,
         },
       });
       const { status } = res;
       if (status === 200) {
         setLiked(!isLiked);
         setLikes(isLiked ? likes - 1 : likes + 1);
+      } else if (status === 401) {
+        dispatch(alertActions.error('You must be signed in to like that dataset!'));
       }
     } catch (err) {
       dispatch(alertActions.error('Something went wrong when adding/removing star.'));
