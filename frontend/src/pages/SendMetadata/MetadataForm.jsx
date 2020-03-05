@@ -4,42 +4,73 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
+import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
 const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin: auto;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
 `;
 
 const StyledForm = styled.form`
-  flex: 1;
-  margin: auto;
   display: flex;
   flex-direction: column;
   align-content: space-around;
+  max-width: 50em;
+  min-width: 20em;
+  padding: 1em;
+  margin: 10px 0px;
+  background-color: white;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+`;
+
+const NewMetadataType = styled.p`
+  margin: 0px 0px 10px 0px;
 `;
 
 const Input = styled.input`
   flex: 0 0 2em;
-  margin: 0.5em 1em;
+  margin-bottom: 5px;
+  font-size: 16px;
+`;
+
+const Radio = styled.input.attrs({ type: 'radio' })`
+  margin: 0px 5px 0px 0px;
 `;
 
 const Select = styled.select`
   flex: 0 0 2em;
-  margin: 0.5em 1em;
+  margin-bottom: 5px;
+  font-size: 16px;
 `;
 
 const TextArea = styled.textarea`
-  flex: 0 0 10em;
-  margin: 0.5em 1em;
+  min-height: 150px;
+  resize: vertical;
+  margin-bottom: 5px;
+  font-size: 16px;
 `;
 
 const RadioLabel = styled.label`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   border-radius: 0.2em;
   padding: 0.2em;
+  margin-bottom: 5px;
   ${({ background }) => (background ? `background-color: ${background};` : '')}
   ${({ border }) => (border ? `border: 1px solid ${border};` : '')}
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
 `;
 
 const HorizontalWrapper = styled.div`
@@ -51,12 +82,14 @@ const HorizontalWrapper = styled.div`
 export const MetadataForm = () => {
   const [state, setState] = useState({
     metadataTypeName: '',
-    releaseState: 0,
+    releaseState: 1,
     description: '',
     formatName: '',
     municipalityName: '',
     url: '',
   });
+
+  const [loading, setLoading] = useState(false);
 
   const [metadataTypes, setMetadataTypes] = useState([]);
   const dataFormats = ['JSON', 'CSV'];
@@ -105,11 +138,19 @@ export const MetadataForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const { token } = userSelector.user;
+
+    const newState = { ...state };
+
+    if (newState.releaseState !== 1 && (!newState.url || newState.url === '')) {
+      newState.url = null;
+    }
+
     try {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
-        body: JSON.stringify(state),
+        body: JSON.stringify(newState),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `bearer ${token}`,
@@ -123,8 +164,10 @@ export const MetadataForm = () => {
         throw err;
       }
       setSubmissionStatus('success');
+      setLoading(false);
     } catch (err) {
       dispatch(alertActions.error('Failed to post dataset'));
+      setLoading(false);
     }
   };
 
@@ -143,32 +186,64 @@ export const MetadataForm = () => {
           <option value="" disabled>Metadata type</option>
           {metadataTypes.map(({ name }) => <option key={name} value={name}>{name}</option>)}
         </Select>
-        <p>
+        <NewMetadataType>
           Are none of these types appropriate?
           {' '}
           <Link to="/newMetadataType">
             <b>Create a new one</b>
           </Link>
-        </p>
+        </NewMetadataType>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
-            <Input type="radio" name="releaseState" value={1} id="bluelight" checked={releaseState === 1} onChange={handleRadioChange} required />
+            <Radio
+              type="radio"
+              name="releaseState"
+              value={1}
+              id="bluelight"
+              checked={releaseState === 1}
+              onChange={handleRadioChange}
+              required
+            />
             {' Released'}
           </RadioLabel>
           <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
-            <Input type="radio" name="releaseState" value={2} id="greenlight" checked={releaseState === 2} onChange={handleRadioChange} required />
+            <Radio
+              type="radio"
+              name="releaseState"
+              value={2}
+              id="greenlight"
+              checked={releaseState === 2}
+              onChange={handleRadioChange}
+              required
+            />
             {' Ready for release'}
           </RadioLabel>
-          <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#ffff00">
-            <Input type="radio" name="releaseState" value={3} id="yellowlight" checked={releaseState === 3} onChange={handleRadioChange} required />
+          <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#d8d800">
+            <Radio
+              type="radio"
+              name="releaseState"
+              value={3}
+              id="yellowlight"
+              checked={releaseState === 3}
+              onChange={handleRadioChange}
+              required
+            />
             {' Needs work'}
           </RadioLabel>
           <RadioLabel htmlFor="redlight" background="#ffcccc" border="#ff5555">
-            <Input type="radio" name="releaseState" value={4} id="redlight" checked={releaseState === 4} onChange={handleRadioChange} required />
+            <Radio
+              type="radio"
+              name="releaseState"
+              value={4}
+              id="redlight"
+              checked={releaseState === 4}
+              onChange={handleRadioChange}
+              required
+            />
             {' Unreleasable'}
           </RadioLabel>
         </HorizontalWrapper>
-        <TextArea placeholder="description" name="description" value={description} onChange={handleChange} required />
+        <TextArea placeholder="Description" name="description" value={description} onChange={handleChange} required />
         <Select name="formatName" value={formatName} onChange={handleChange} required>
           <option value="" disabled>Data format</option>
           {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
@@ -179,8 +254,8 @@ export const MetadataForm = () => {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
-        <Input type="text" placeholder="url to dataset" name="url" value={url} onChange={handleChange} required />
-        <Input type="submit" value="Submit" />
+        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleChange} required={releaseState === 1} />
+        <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => {}} />
       </StyledForm>
     </Wrapper>
   );

@@ -84,7 +84,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().ToTable("Metadata");
             builder.Entity<Metadata>().HasKey(p => p.Uuid);
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
-            builder.Entity<Metadata>().Property( p => p.Url).IsRequired();
+            builder.Entity<Metadata>().Property( p => p.Url);
             builder.Entity<Metadata>().HasOne(p => p.Format);
             builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
