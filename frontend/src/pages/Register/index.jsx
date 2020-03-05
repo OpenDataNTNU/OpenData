@@ -103,7 +103,7 @@ const Register = () => {
   };
 
   const validPasswordFormat = (_password) => {
-    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/; // eslint-disable-line no-useless-escape
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\-_\$%\^&\*\?\€\,\;\.\:])(?=.{8,})/; // eslint-disable-line no-useless-escape
     return re.test(_password);
   };
 
