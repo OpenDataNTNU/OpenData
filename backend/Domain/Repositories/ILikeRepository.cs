@@ -10,6 +10,7 @@ namespace OpenData.Domain.Repositories
     {
     	public Task<Like> GetLikeByUserAndMetadata(User user, Metadata metadata);
     	public Task<int> GetLikeCount(Metadata metadata);
+    	public Task DeleteLike(Like like);
         public Task AddAsync(Like like);
     }
 }
