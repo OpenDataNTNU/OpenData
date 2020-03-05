@@ -142,12 +142,31 @@ namespace OpenData.Controllers
 			return Ok(res);
 		}
 
+		/// <summary>
+		/// Get list of metadatatype names
+		/// </summary>
+		/// <returns>
+		/// The return type of this is enum list of strings
+		/// </returns>
 		[AllowAnonymous]
 		[HttpGet("by/name")]
 		public async Task<IActionResult> GetByNameAsync()
 		{
-			var metadataTypes = await _metadataTypeService.ListNamesAsync();
-			var resources = _mapper.Map<IEnumerable<MetadataType>, IEnumerable<MetadataTypeResource>>(metadataTypes);
+			var resources = await _metadataTypeService.ListNamesAsync();
+			return Ok(resources);
+		}
+
+		/// <summary>
+		/// Get list of metadatatype tags
+		/// </summary>
+		/// <returns>
+		/// The return type of this is enum list of lists of MetadataTypeMapping
+		/// </returns>
+		[AllowAnonymous]
+		[HttpGet("by/tags")]
+		public async Task<IActionResult> GetByTagAsync()
+		{
+			var resources = await _metadataTypeService.ListTagsAsync();
 			return Ok(resources);
 		}
 	}

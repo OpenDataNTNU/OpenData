@@ -6,6 +6,7 @@ using OpenData.Domain.Repositories;
 using OpenData.Persistence.Contexts;
 using System.Web;
 using System;
+using System.Linq;
 
 namespace OpenData.Persistence.Repositories
 {
@@ -28,9 +29,14 @@ namespace OpenData.Persistence.Repositories
             await _context.MetadataTypes.AddAsync(metadata);
         }
 
-        public async Task<IEnumerable<MetadataType>> ListNamesAsync()
+        public async Task<IEnumerable<string>> ListNamesAsync()
         {
             return await _context.MetadataTypes.Select(p => p.Name).ToListAsync();
+        }
+
+        public async Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync()
+        {
+            return await _context.MetadataTypes.Select(p => p.Tags).ToListAsync();
         }
     }
 }
