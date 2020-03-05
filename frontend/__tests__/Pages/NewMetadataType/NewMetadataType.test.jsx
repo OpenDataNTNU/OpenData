@@ -116,7 +116,7 @@ describe('Provides a form to create metadata types', () => {
     await wait(() => inputValue(descriptionInput, 'This is a TeSt desCRIPTION. L0rem ipsum.'));
     // before submission, only the tags should be fetched
     expect(fetch.mock.calls.length).toEqual(1);
-    const submitButton = getByText(new RegExp('ubmit'));
+    const submitButton = getByText(new RegExp('submit'));
     await wait(() => click(submitButton));
     // should put once for the metadatatype and once for the tag
     expect(fetch.mock.calls.length).toEqual(3);
