@@ -8,7 +8,6 @@ namespace OpenData.Domain.Models
 	///</summary>
 	public class SaveMetadataResource
 	{
-		[Required]
 		[MaxLength(2048)]
 		public string Url { get; set; }
 
