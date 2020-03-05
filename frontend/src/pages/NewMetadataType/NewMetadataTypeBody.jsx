@@ -7,23 +7,49 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags } from '../../sharedComponents/hooks/GetTags';
+import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
-const Wrapper = styled.form`
+const Wrapper = styled.div`
   flex: 1;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+`;
+
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-content: space-around;
+  max-width: 30em;
+  min-width: 20em;
+  padding: 1em;
+  margin: 10px 0px;
+  background-color: white;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
 `;
 
 const Input = styled.input`
   flex: 0 0 2em;
-  margin: 0.5em 1em;
+  margin-bottom: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  color: black;
+  border: 1px solid darkgray;
 `;
 
 const TextArea = styled.textarea`
-  flex: 0 0 10em;
-  margin: 0.5em 1em;
+  min-height: 150px;
+  resize: vertical;
+  margin-bottom: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  color: black;
+  border: 1px solid darkgray;
 `;
 
 const Select = styled(Multiselect)`
@@ -42,12 +68,15 @@ export const NewMetadataTypeBody = () => {
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState([]);
   const [submissionStatus, setSubmissionStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
 
   const submit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const { token } = userSelector.user;
       const res = await fetch('/api/MetadataType', {
@@ -90,6 +119,7 @@ export const NewMetadataTypeBody = () => {
         }
       }
       setSubmissionStatus('success');
+      setLoading(false);
     } catch (err) {
       const { request } = err;
       if (request === 'initial') {
@@ -99,6 +129,7 @@ export const NewMetadataTypeBody = () => {
       } else {
         dispatch(alertActions.error('An unknown error occurred while creating this data type'));
       }
+      setLoading(false);
     }
   };
 
@@ -107,11 +138,13 @@ export const NewMetadataTypeBody = () => {
   }
 
   return (
-    <Wrapper onSubmit={submit}>
-      <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
-      <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-      <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
-      <Input type="submit" value="Submit" />
+    <Wrapper>
+      <Form onSubmit={submit}>
+        <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
+        <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+        <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
+        <LoadingButton text="submit" type="value" loading={loading} onClick={() => {}} />
+      </Form>
     </Wrapper>
   );
 };
