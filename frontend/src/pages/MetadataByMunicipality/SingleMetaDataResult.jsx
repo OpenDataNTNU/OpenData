@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
-import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { Bubbles } from 'styled-icons/icomoon/Bubbles';
-import { Link as LinkIcon } from 'styled-icons/icomoon/Link';
-import { ReleaseStateLabel } from '../../sharedComponents/ReleaseStateLabel';
+import { StarFull } from 'styled-icons/icomoon/StarFull';
+import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
+import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
+import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { alertActions } from '../../state/actions/alert';
-import { FeedbackLabel } from './FeedbackLabel';
+import { FeedbackLabel } from '../../sharedComponents/Metadata/FeedbackLabel';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5rem;
@@ -93,35 +93,6 @@ const Favourite = styled.button`
     text-align: center;
   }
 `;
-
-const URLWrapper = styled.a`
-  display: flex;
-  background-color: #d8e3ff;
-  font-size: 0.9rem;
-  color: #434faf;
-  margin: 0;
-  height: 2.0rem;
-  align-content: center;
-  align-items: center;
-`;
-const URL = styled.p`
-  font-size: inherit;
-  flex: 1;
-  margin: 0 0 0 0.5rem;
-  padding: 0;
-`;
-const DataFormat = styled.p`
-  margin: 0 0 0 1.0rem;
-  padding: 0.1rem 0.3rem;
-  font-size: 0.8rem;
-  border: solid 0.1em #434faf;
-  border-radius: 0.3rem;
-`;
-const LinkIconStyled = styled(LinkIcon)`
-  height: 1.3rem;
-  margin-right: 1.0rem;
-  color: #434faf
-`;
 const CommentsIcon = styled(Bubbles)`
   width: 1.4rem;
   color: #5d5d5d;
@@ -142,16 +113,23 @@ const SingleMetaDataResult = ({ metadata }) => {
 
   // TODO: Update this to use API whenever that exists.
   const commentsCount = 0;
-  const dispatch = useDispatch();
   const hasFeedback = experiencePostGuid !== null;
 
+  const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
+  const userSelector = useSelector((state) => state.user) || { user: { token: null } };
+  const { user: token } = userSelector;
 
   useState(() => {
     const internal = async () => {
       try {
-        const res = await fetch(`/api/Metadata/${uuid}/likes`);
+        const res = await fetch(`/api/Metadata/${uuid}/like`, {
+          method: 'GET',
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        });
         const { likeCount, liked } = await res.json();
         setLikes(likeCount);
         setLiked(liked);
@@ -169,12 +147,19 @@ const SingleMetaDataResult = ({ metadata }) => {
 
   const handleLike = async () => {
     try {
-      // eslint-disable-next-line no-irregular-whitespace
-      const userSelector = useSelector((state) => state.user);
-      const { token } = userSelector.user;
-      await fetch(`/api/SOMETHING-FOR-ADDING-LIKE/${uuid}/${token}`);
+      const res = await fetch(`/api/Metadata/${uuid}/like`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
+      const { status } = res;
+      if (status === 200) {
+        setLiked(!isLiked);
+        setLikes(isLiked ? likes - 1 : likes + 1);
+      }
     } catch (err) {
-      dispatch(alertActions.error('Something went wrong when adding/removing favourite.'));
+      dispatch(alertActions.error('Something went wrong when adding/removing star.'));
     }
   };
   return (
@@ -182,7 +167,7 @@ const SingleMetaDataResult = ({ metadata }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <MetaDataTypeLink to={`/viewData/dataType/${metadataTypeName}`}>
+          <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
             <h2>{metadataTypeName}</h2>
           </MetaDataTypeLink>
           <FeedbackLabel hasFeedback={hasFeedback} />
@@ -191,11 +176,7 @@ const SingleMetaDataResult = ({ metadata }) => {
             Other municipalities who offer this data
           </MetaDataLink>
         </MetaDataDescription>
-        <URLWrapper href={url} target="_blank">
-          <DataFormat>{formatName}</DataFormat>
-          <URL>{url}</URL>
-          <LinkIconStyled />
-        </URLWrapper>
+        <MetadataURL url={url} formatName={formatName} />
       </MetaDataContent>
       <MetaDataRating>
         <Favourite onClick={handleLike}>
