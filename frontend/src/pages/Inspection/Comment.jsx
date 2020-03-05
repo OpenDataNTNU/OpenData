@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -46,6 +46,9 @@ export const Comment = ({ comment, updateSelf }) => {
     content, userMail, published, edited, childComments, uuid, hasChildren,
   } = comment;
 
+  // should keep a separate state, to allow for fetching other comments after commenting
+  const [canLoad, setCanLoad] = useState(hasChildren && childComments.length === 0);
+
   const dispatch = useDispatch();
 
   const updateChild = (childComment, childUuid) => {
@@ -70,8 +73,9 @@ export const Comment = ({ comment, updateSelf }) => {
         err.status = status;
         throw err;
       }
-      const receivedComments = await res.json();
+      const [{ childComments: receivedComments }] = await res.json();
       updateSelf({ ...comment, childComments: receivedComments }, uuid);
+      setCanLoad(false);
     } catch (err) {
       dispatch(alertActions.error('Something went wrong while trying to get replies'));
     }
@@ -90,13 +94,12 @@ export const Comment = ({ comment, updateSelf }) => {
         {content}
       </CommentBody>
       <ChildComments>
-        {hasChildren && childComments.length === 0 ? (
+        {canLoad ? (
           <LoadMore onClick={loadChildren}>Load comments</LoadMore>
-        ) : (
-          childComments.map((child) => (
-            <Comment key={child.uuid} comment={child} updateSelf={updateChild} />
-          ))
-        )}
+        ) : null}
+        {childComments.map((child) => (
+          <Comment key={child.uuid} comment={child} updateSelf={updateChild} />
+        ))}
         <NewComment uuid={uuid} addComment={addChild} isReply />
       </ChildComments>
     </Wrapper>
