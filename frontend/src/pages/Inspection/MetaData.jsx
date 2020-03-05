@@ -91,17 +91,13 @@ export const MetaData = (props) => {
   );
 };
 
-MetaData.defaultTypes = {
-  uuid: '',
-};
-
 MetaData.propTypes = {
   data: PropTypes.shape({
     municipalityName: PropTypes.string.isRequired,
     formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
-    experiencePostGuid: PropTypes.string.isRequired,
+    experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
   }).isRequired,
   description: PropTypes.string.isRequired,
