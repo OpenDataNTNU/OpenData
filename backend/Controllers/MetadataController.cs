@@ -133,6 +133,9 @@ namespace OpenData.Controllers
 			return Ok(likeReport);
 		}
 
+		/// <summary>
+		/// Toggles whether or not the user has liked a metadata.
+		/// </summary> 
 		[HttpPut("{uuid}/like")]
 		public async Task<IActionResult> SetLike(string uuid)
 		{
@@ -163,6 +166,9 @@ namespace OpenData.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Returns like information about a dataset.
+		/// </summary> 
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{
