@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as ReactLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FooterHTML = styled.footer`
@@ -16,6 +17,10 @@ const Link = styled.a`
   text-decoration: underline;
 `;
 
+const InnerLink = styled(ReactLink)`
+  text-decoration: underline;
+`;
+
 const Footer = () => (
   <FooterHTML>
     <Container>
@@ -27,6 +32,14 @@ const Footer = () => (
         <Link href="https://github.com/OpenDataNTNU/OpenData">
           Source code on GitHub
         </Link>
+        {', '}
+        <Link href="/swagger">
+          API
+        </Link>
+        {', '}
+        <InnerLink to="/about">
+          About us
+        </InnerLink>
       </p>
     </Container>
   </FooterHTML>
