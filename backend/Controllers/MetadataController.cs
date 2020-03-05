@@ -145,11 +145,21 @@ namespace OpenData.Controllers
 			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
+			//Check if the user has already liked it
+			try {
+				var existingLike = await _likeService.GetLikeByUserAndMetadata(user, metadata);
 
-			var like = new Like(){LikeUser = user, Metadata = metadata};
+				if(existingLike != null) {
+					await _likeService.DeleteLike(existingLike);
+				}
 
-			await _likeService.SaveAsync(like);
+			} catch (InvalidOperationException) {
+				var like = new Like(){LikeUser = user, Metadata = metadata};
 
+				await _likeService.SaveAsync(like);
+			}
+
+			await _unitOfWork.CompleteAsync();
 			return Ok();
 		}
 

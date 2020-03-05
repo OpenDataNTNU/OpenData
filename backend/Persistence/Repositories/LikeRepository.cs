@@ -24,6 +24,10 @@ namespace OpenData.Persistence.Repositories
             return await _context.Likes.CountAsync(x => x.Metadata == metadata);
         }
 
+        public async Task DeleteLike(Like like) {
+            _context.Likes.Remove(like);
+        }
+
         public async Task AddAsync(Like like) {
             await _context.Likes.AddAsync(like);
         }
