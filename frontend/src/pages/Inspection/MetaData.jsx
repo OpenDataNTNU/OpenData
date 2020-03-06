@@ -20,6 +20,7 @@ const MetadataCard = styled.div`
   flex-direction: column;
   overflow: hidden;
   min-height: 20rem;
+  min-width: 20em;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
@@ -95,7 +96,11 @@ export const MetaData = (props) => {
           </div>
           <MetadataURL url={url} formatName={formatName} inspection />
         </MetadataContent>
-        <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
+        <MetadataToolbar
+          uuid={uuid}
+          experiencePostGuid={experiencePostGuid}
+          municipalityName={municipalityName}
+        />
       </MetadataCard>
     </Wrapper>
   );
