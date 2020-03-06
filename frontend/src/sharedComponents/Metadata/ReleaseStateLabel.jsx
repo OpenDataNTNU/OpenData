@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 const ReleaseStateLabelContainer = styled.div`
   float: right;
-  margin: 0.1em;
+  margin: 0.1rem;
   display: inline-block;
   background-color: ${(props) => props.backgroundColor};
-  border-radius: 0.2em;
+  border-radius: 0.2rem;
 `;
 const Text = styled.p`
   color: ${(props) => props.color};
-  padding: 0.4em;
-  font-size: 0.9em;
+  padding: 0.4rem;
+  font-size: 0.9rem;
   margin: 0;
 `;
 const releaseStates = {

@@ -28,6 +28,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route exact path="/" component={Splash} />
         <Route path="/dataType/:name" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
+        <Route path="/municipalities/:name" component={MetadataByMunicipality} />
+        <Route path="/municipalities" component={MetadataByMunicipality} />
         <Route path="/dataset/:id" component={Inspection} />
         <PrivateRoute path="/sendData" municipality component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
@@ -37,7 +39,6 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
-        <Route path="/municipalities" component={MetadataByMunicipality} />
         <Route component={Error404} />
       </Switch>
     </Router>

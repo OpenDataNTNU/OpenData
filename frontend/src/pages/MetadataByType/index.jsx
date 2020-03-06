@@ -7,14 +7,22 @@ import { TypeMetadataResults } from './TypeMetadataResults';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { alertActions } from '../../state/actions/alert';
 
+const Background = styled.div`
+  width: 100%;
+  flex: 1;
+  background-color: #eeeeee;
+  padding: 0.5rem;
+  box-sizing: border-box;
+`;
 const MetadataTypesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  height: 100%;
   max-width: 60rem;
   margin: auto;
   background-color: white;
-  flex: 1;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   box-sizing: border-box;
 `;
 
@@ -24,7 +32,6 @@ const LeftPane = styled.div`
   display: flex;
   flex-direction: column;  
   border-right: 0.1rem solid lightgray;
-  border-left: 0.1rem solid lightgray;
   overflow-y: scroll;
   & > h2 {
     padding: 0.2rem 0.5rem;
@@ -145,30 +152,32 @@ export const MetadataByType = () => {
   }
   return (
     <Template>
-      <MetadataTypesViewContainer>
-        <LeftPane>
-          <MetadataTypeFilter type="text" placeholder="Search categories" onChange={handleCategoryFilterSelection} />
-          <Picker onChange={handleCategorySelection}>
-            { categories.length === 0 ? <p>No categories found!</p>
-              : categories.map((c) => (
-                <RadioDiv key={c.name}>
-                  <input type="radio" key={c.name} id={`radio-${c.name}`} name="radio-category" value={c.name} />
-                  <label htmlFor={`radio-${c.name}`}>
-                    {c.name}
-                    <p>{c.description}</p>
-                  </label>
-                </RadioDiv>
-              )) }
-          </Picker>
-        </LeftPane>
-        <ResultView>
-          { selectedCategory !== null
-            ? <TypeMetadataResults metadataTypeName={selectedCategory} />
-            : (
-              <NoResult text="Select a category to examine." />
-            )}
-        </ResultView>
-      </MetadataTypesViewContainer>
+      <Background>
+        <MetadataTypesViewContainer>
+          <LeftPane>
+            <MetadataTypeFilter type="text" placeholder="Search categories" onChange={handleCategoryFilterSelection} />
+            <Picker onChange={handleCategorySelection}>
+              { categories.length === 0 ? <p>No categories found!</p>
+                : categories.map((c) => (
+                  <RadioDiv key={c.name}>
+                    <input type="radio" key={c.name} id={`radio-${c.name}`} name="radio-category" value={c.name} />
+                    <label htmlFor={`radio-${c.name}`}>
+                      {c.name}
+                      <p>{c.description}</p>
+                    </label>
+                  </RadioDiv>
+                )) }
+            </Picker>
+          </LeftPane>
+          <ResultView>
+            { selectedCategory !== null
+              ? <TypeMetadataResults metadataTypeName={selectedCategory} />
+              : (
+                <NoResult text="Select a category to examine." />
+              )}
+          </ResultView>
+        </MetadataTypesViewContainer>
+      </Background>
     </Template>
   );
 };

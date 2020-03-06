@@ -41,7 +41,17 @@ const MetaDataDescription = styled.div`
     word-wrap: break-word;
     position: relative;
   }
-  
+`;
+
+const MetaDataMunicipalityLink = styled(Link)`
+  & > p {
+    color: #3e3e3e;
+    font-size: 0.9rem;
+    background-color: #f2f2f2;
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+    display: inline-block;
+  }
 `;
 const MetaDataLink = styled(Link)`
   padding: 0.4rem;
@@ -103,7 +113,7 @@ const StarEmptyStyled = styled(StarEmpty)`
 
 const SingleMetaDataResult = ({ metadata }) => {
   const {
-    uuid, formatName, url, description, releaseState, experiencePostGuid,
+    uuid, formatName, url, description, releaseState, experiencePostGuid, municipalityName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
@@ -167,8 +177,11 @@ const SingleMetaDataResult = ({ metadata }) => {
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
           <FeedbackLabel hasFeedback={hasFeedback} />
+          <MetaDataMunicipalityLink to={`/municipalities/${municipalityName}`}>
+            <p>{municipalityName}</p>
+          </MetaDataMunicipalityLink>
           <p>{description}</p>
-          <MetaDataLink to={`/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
+          <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
         <MetadataURL url={url} formatName={formatName} />
       </MetaDataContent>
@@ -193,7 +206,7 @@ SingleMetaDataResult.propTypes = {
     url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    metadataTypeName: PropTypes.string,
+    municipalityName: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
 };

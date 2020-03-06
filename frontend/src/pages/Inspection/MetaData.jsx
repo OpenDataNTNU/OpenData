@@ -14,8 +14,8 @@ const Wrapper = styled.div`
 const MetadataCard = styled.div`
   background-color: white;
   border-radius: 0.3rem;
-  padding: 0;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;

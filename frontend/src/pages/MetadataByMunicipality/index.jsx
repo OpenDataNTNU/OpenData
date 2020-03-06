@@ -7,11 +7,21 @@ import { Template } from '../../sharedComponents/Template';
 import { NoResult } from './NoResult';
 import { alertActions } from '../../state/actions/alert';
 
+const Background = styled.div`
+  width: 100%;
+  flex: 1;
+  background-color: #eeeeee;
+  padding: 0.5rem;
+  box-sizing: border-box;
+`;
+
 const MunicipalitiesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  height: 100%;
   max-width: 60em;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
   box-sizing: border-box;
   margin: auto;
   background-color: white;
@@ -20,11 +30,10 @@ const MunicipalitiesViewContainer = styled.div`
 
 const LeftPane = styled.div`
   box-sizing: border-box;
-  widht: 14rem;
+  width: 12rem;
   display: flex;
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
-  border-left: 0.1em solid lightgray;
   overflow-y: scroll;
   & > h2 {
     padding: 0.2em 0.5em;
@@ -81,7 +90,7 @@ const RadioDiv = styled.div`
 const ResultView = styled.div`
   flex: 1;
   display: flex;
-  max-width: 46rem;
+  max-width: 48rem;
   box-sizing: border-box;
 `;
 
@@ -136,33 +145,39 @@ const MetadataByMunicipality = () => {
   if (loading) {
     return (
       <Template>
-        <NoResult text="Loading municipalities..." />
+        <Background>
+          <MunicipalitiesViewContainer>
+            <NoResult text="Loading municipalities..." />
+          </MunicipalitiesViewContainer>
+        </Background>
       </Template>
     );
   }
   return (
     <Template>
-      <MunicipalitiesViewContainer>
-        <LeftPane>
-          <MunicipalityFilter type="text" placeholder="Search municipalites" onChange={handleMunicipalityFilterSelection} />
-          <Picker onChange={handleMunicipalitySelection}>
-            { municipalities.length === 0 ? <p>No municipalities found!</p>
-              : municipalities.map((m) => (
-                <RadioDiv key={m.name}>
-                  <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
-                  <label htmlFor={`radio-${m.name}`}>{m.name}</label>
-                </RadioDiv>
-              )) }
-          </Picker>
-        </LeftPane>
-        <ResultView>
-          { selectedMunicipality !== null
-            ? <MunicipalityMetadataResults municipalityName={selectedMunicipality} />
-            : (
-              <NoResult text="Select a municipality to examine." />
-            )}
-        </ResultView>
-      </MunicipalitiesViewContainer>
+      <Background>
+        <MunicipalitiesViewContainer>
+          <LeftPane>
+            <MunicipalityFilter type="text" placeholder="Search municipalites" onChange={handleMunicipalityFilterSelection} />
+            <Picker onChange={handleMunicipalitySelection}>
+              { municipalities.length === 0 ? <p>No municipalities found!</p>
+                : municipalities.map((m) => (
+                  <RadioDiv key={m.name}>
+                    <input type="radio" key={m.name} id={`radio-${m.name}`} name="radio-municipality" value={m.name} />
+                    <label htmlFor={`radio-${m.name}`}>{m.name}</label>
+                  </RadioDiv>
+                )) }
+            </Picker>
+          </LeftPane>
+          <ResultView>
+            { selectedMunicipality !== null
+              ? <MunicipalityMetadataResults municipalityName={selectedMunicipality} />
+              : (
+                <NoResult text="Select a municipality to examine." />
+              )}
+          </ResultView>
+        </MunicipalitiesViewContainer>
+      </Background>
     </Template>
   );
 };

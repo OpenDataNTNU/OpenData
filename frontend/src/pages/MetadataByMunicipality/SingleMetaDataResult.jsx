@@ -35,6 +35,10 @@ const MetaDataTypeLink = styled(Link)`
   & > p {
     color: #3e3e3e;
     font-size: 0.9rem;
+    background-color: #f2f2f2;
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+    display: inline-block;
   }
 `;
 const MetaDataDescription = styled.div`
@@ -172,12 +176,12 @@ const SingleMetaDataResult = ({ metadata }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
+          <FeedbackLabel hasFeedback={hasFeedback} />
           <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
             <p>{metadataTypeName}</p>
           </MetaDataTypeLink>
-          <FeedbackLabel hasFeedback={hasFeedback} />
           <p>{description}</p>
-          <MetaDataLink to={`/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
+          <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
         <MetadataURL url={url} formatName={formatName} />
       </MetaDataContent>
