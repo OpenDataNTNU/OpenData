@@ -99,7 +99,7 @@ const Header = () => {
         break;
       }
       case 'My data': {
-        history.push('/crossreference');
+        history.push('/myData');
         break;
       }
       case 'Sign in': {
@@ -137,7 +137,7 @@ const Header = () => {
               }
               {
                 role === 1
-                  ? <NavInternalLink to="/crossreference">My data</NavInternalLink>
+                  ? <NavInternalLink to="/myData">My data</NavInternalLink>
                   : null
               }
               <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>

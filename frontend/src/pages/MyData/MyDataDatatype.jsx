@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { CrossReferenceData } from './CrossReferenceData';
+import { MyDataDataset } from './MyDataDataset';
 
 const Wrapper = styled.div`
   max-width: 50em;
@@ -25,7 +25,7 @@ const Tag = styled.div`
   margin: 0.3em;
 `;
 
-export const CrossReferenceDatatype = ({ datatype }) => {
+export const MyDataDatatype = ({ datatype }) => {
   const {
     name, metadataList, description, tags,
   } = datatype;
@@ -46,14 +46,14 @@ export const CrossReferenceDatatype = ({ datatype }) => {
       </div>
       {otherMunicipalitiesData.map((data) => {
         const { uuid } = data;
-        return <CrossReferenceData key={uuid} data={data} />;
+        return <MyDataDataset key={uuid} data={data} />;
       })}
     </Wrapper>
   );
 };
 
 
-CrossReferenceDatatype.propTypes = {
+MyDataDatatype.propTypes = {
   datatype: PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
-import { CrossReferenceDatatype } from './CrossReferenceDatatype';
+import { MyDataDatatype } from './MyDataDatatype';
 
 const Wrapper = styled.div`
   flex: 1;
 `;
 
-export const CrossReferenceBody = () => {
+export const MyDataBody = () => {
   const [datatypes, setDatatypes] = useState([]);
 
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ export const CrossReferenceBody = () => {
     <Wrapper>
       <h1>Other municipalities who offer my datasets</h1>
       {datatypes.map((datatype) => (
-        <CrossReferenceDatatype key={datatype.name} datatype={datatype} />
+        <MyDataDatatype key={datatype.name} datatype={datatype} />
       ))}
     </Wrapper>
   );

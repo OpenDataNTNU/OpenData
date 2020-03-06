@@ -21,7 +21,7 @@ const HorizontalWrapper = styled.div`
 `;
 
 
-export const CrossReferenceData = ({ data }) => {
+export const MyDataDataset = ({ data }) => {
   const {
     municipalityName, uuid, description, releaseState,
   } = data;
@@ -40,7 +40,7 @@ export const CrossReferenceData = ({ data }) => {
   );
 };
 
-CrossReferenceData.propTypes = {
+MyDataDataset.propTypes = {
   data: PropTypes.shape({
     municipalityName: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
