@@ -1,92 +1,107 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
+import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
+import { MetadataToolbar } from './MetadataToolbar';
+import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
 
 const Wrapper = styled.div`
-  max-width: 50em;
+  max-width: 50rem;
+  padding: 0 0.5rem;
+`;
+const MetadataCard = styled.div`
   background-color: white;
-  max-width: 50em;
-  border: solid 0.2em #e4e4e4;
-  border-radius: 0.2em;
+  border-radius: 0.3rem;
   padding: 0;
-  margin: 0.5em;
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 20rem;
+  min-width: 20em;
+`;
+const MetadataContent = styled.div`
+  padding: 1rem;
+  flex: 1;
 `;
 
 const DateLine = styled.p`
-  font-size: 0.8em;
+  font-size: 0.8rem;
   color: dimgray;
 `;
 
 const Description = styled.p`
-  font-size: 0.9em;
+  font-size: 0.9rem;
   color: #353535;
 `;
 
 const Tag = styled.div`
   background-color: #eeeeee;
   color: #595959;
-  font-size: 0.9em;
-  padding: 0.1em 0.7em;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.7rem;
   display: inline-block;
-  border-radius: 1em;
-  margin: 0.3em;
+  border-radius: 1rem;
+  margin: 0.3rem;
 `;
-
-const Source = styled.a`
-  margin: 0.5em;
+const ArrowRightStyled = styled(ArrowRightS)`
+  height: 0.9rem;
+  margin: 0 1.0rem;
+  color: dimgray;
+`;
+const LocationWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 0.8rem 0;
 `;
-
-const FileFormat = styled.div`
-  background-color: #d8e3ff;
-  margin-left: 0.4em;
-  padding: 0 1em;
-  color: #434faf;
+const LocationLink = styled(Link)`
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+  padding: 0;
+  color: dimgray;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const MetaData = (props) => {
   const { data, tags } = props;
   const date = '20-09-2019';
+
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName, description, experiencePostGuid,
+    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState, description, experiencePostGuid,
   } = data;
 
   return (
     <Wrapper>
-      <h2>
-        Showing metadata about dataset
-        {` ${metadataTypeName} from ${municipalityName}`}
-      </h2>
-      <DateLine>
-        Published
-        {` ${date}`}
-      </DateLine>
-      <Description>
-        {description}
-      </Description>
-      <div>
-        {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-      </div>
-      <div>
-        <Source href={url}>
-          {`[${url}]`}
-          <FileFormat>
-            <p>
-              {formatName}
-            </p>
-          </FileFormat>
-        </Source>
-      </div>
-      <hr />
-      <div>
-        {
-          experiencePostGuid
-            ? <Link to={`/articles/${experiencePostGuid}`}>Read Experience Article</Link>
-            : <Link to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</Link>
-        }
-      </div>
+      <LocationWrapper>
+        <LocationLink to={`/municipalities/${municipalityName}`}>{municipalityName}</LocationLink>
+        <ArrowRightStyled />
+        <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
+      </LocationWrapper>
+      <MetadataCard>
+        <MetadataContent>
+          <ReleaseStateLabel releaseState={releaseState} />
+          <DateLine>
+            Published
+            {` ${date}`}
+          </DateLine>
+          <Description>
+            {description}
+          </Description>
+          <div>
+            {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          </div>
+          <MetadataURL url={url} formatName={formatName} inspection />
+        </MetadataContent>
+        <MetadataToolbar
+          uuid={uuid}
+          experiencePostGuid={experiencePostGuid}
+          municipalityName={municipalityName}
+        />
+      </MetadataCard>
     </Wrapper>
   );
 };
@@ -96,6 +111,7 @@ MetaData.propTypes = {
     municipalityName: PropTypes.string.isRequired,
     formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
+    releaseState: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,

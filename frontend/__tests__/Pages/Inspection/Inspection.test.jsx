@@ -139,8 +139,10 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     getByText('This is a decRIPtrion');
     expect(queryByText(new RegExp('Bergen'))).toBeNull();
 
-    // should have fetched exactly three times
-    // once for fetching data, once for the metadatatype, and once for the comments
+    // Should have fetched exactly thrice:
+    // - Once for fetching municipalities
+    // - Once of like counter
+    // - Once for submitting.
     expect(fetch.mock.calls.length).toEqual(3);
   });
 
