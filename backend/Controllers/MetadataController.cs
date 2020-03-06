@@ -167,7 +167,7 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Returns like information about a dataset.
+		/// Creates a metadata object.
 		/// </summary> 
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
