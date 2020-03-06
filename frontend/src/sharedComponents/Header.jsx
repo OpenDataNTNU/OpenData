@@ -102,6 +102,10 @@ const Header = () => {
         history.push('/sendData');
         break;
       }
+      case 'My data': {
+        history.push('/myData');
+        break;
+      }
       case 'Sign in': {
         history.push('/login');
         break;
@@ -135,6 +139,11 @@ const Header = () => {
                   ? <NavInternalLink to="/sendData">Submit data</NavInternalLink>
                   : null
               }
+              {
+                role === 1
+                  ? <NavInternalLink to="/myData">My data</NavInternalLink>
+                  : null
+              }
               <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>
                 <p>{user && user.mail ? 'Logout' : 'Sign in'}</p>
               </NavInternalLink>
@@ -147,7 +156,8 @@ const Header = () => {
               list={[
                 { id: 'Home', title: 'Home' },
                 { id: 'Search by municipality', title: 'Search by municipality' },
-                ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' }] : [],
+                ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' },
+                  { id: 'My data', title: 'My data' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}
             />

@@ -20,6 +20,7 @@ import { Register } from '../pages/Register';
 import { Logout } from '../pages/Logout';
 import { NewExperienceArticle } from '../pages/NewExperienceArticle';
 import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
+import { MyData } from '../pages/MyData';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -39,6 +40,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/login" loggedOut component={Login} />
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
+        <PrivateRoute path="/myData" municipality component={MyData} />
         <Route component={Error404} />
       </Switch>
     </Router>
