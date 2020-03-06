@@ -76,7 +76,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
             metadataList,
           } = await res.json();
           // setTags(receivedTags);
-          setTags([receivedTags]);
+          setTags(receivedTags);
           setDescription(receivedDescription);
           setFetchedMetadataSet(metadataList);
           setMetadataSet(metadataList);
@@ -110,7 +110,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
         <div>
           <h3>{metadataTypeName}</h3>
           <p>{description}</p>
-          { tags.length <= 1 ? (
+          { tags.length === 0 ? (
             <NoTags>No tags for this category.</NoTags>
           ) : tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
         </div>
