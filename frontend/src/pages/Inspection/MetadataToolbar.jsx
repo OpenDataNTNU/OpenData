@@ -98,8 +98,12 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
-  const userSelector = useSelector((state) => state.user) || { user: { token: { token: null } } };
-  const { user: token } = userSelector;
+  const userSelector = useSelector((state) => state.user);
+  const { user } = userSelector || { user: null };
+  const {
+    token,
+    municipalityName: userMunicipalityName,
+  } = user || { token: null, municipalityName: null };
 
   useState(() => {
     const internal = async () => {
@@ -107,7 +111,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
           headers: {
-            Authorization: `bearer ${token.token}`,
+            Authorization: `bearer ${token}`,
           },
         });
         const { likeCount, liked } = await res.json();
@@ -132,7 +136,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
       const res = await fetch(`/api/Metadata/${uuid}/like`, {
         method: 'PUT',
         headers: {
-          Authorization: `bearer ${token.token}`,
+          Authorization: `bearer ${token}`,
         },
       });
       const { status } = res;
@@ -140,7 +144,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
         setLiked(!isLiked);
         setLikes(isLiked ? likes - 1 : likes + 1);
       } else if (status === 401) {
-        dispatch(alertActions.error('You must be signed in to like that dataset!'));
+        dispatch(alertActions.info('You must be signed in to like that dataset!'));
       }
     } catch (err) {
       dispatch(alertActions.error('Something went wrong when adding/removing star.'));
@@ -163,7 +167,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
                 <p>Experience Article</p>
               </FeedbackLink>
             )
-            : [municipalityName === token.municipalityName
+            : [municipalityName === userMunicipalityName
               ? <WriteFeedbackLink key={`/articles/new/${uuid}`} to={`/articles/new/${uuid}`}>Write an experience article here.</WriteFeedbackLink>
               : null,
             ]
