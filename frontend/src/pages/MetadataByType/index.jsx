@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { Template } from '../../sharedComponents/Template';
-import { TypeMetadataResults } from './TypeMetadataResults';
+import { MetadataByTypeResults } from './MetadataByTypeResults';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { alertActions } from '../../state/actions/alert';
 
@@ -39,7 +39,15 @@ const LeftPane = styled.div`
     color: dimgray;
   }
 `;
-
+const Tag = styled.p`
+  background-color: #eeeeee;
+  color: #595959;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.7rem;
+  display: inline-block;
+  border-radius: 1rem;
+  margin: 0.3rem;
+`;
 const MetadataTypeFilter = styled.input`
   padding: 0.3rem;
   border-radius: 0.3rem;
@@ -164,6 +172,7 @@ export const MetadataByType = () => {
                     <label htmlFor={`radio-${c.name}`}>
                       {c.name}
                       <p>{c.description}</p>
+                      {c.tags.map((t) => <Tag>{t}</Tag>)}
                     </label>
                   </RadioDiv>
                 )) }
@@ -171,7 +180,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <TypeMetadataResults metadataTypeName={selectedCategory} />
+              ? <MetadataByTypeResults metadataTypeName={selectedCategory} />
               : (
                 <NoResult text="Select a category to examine." />
               )}

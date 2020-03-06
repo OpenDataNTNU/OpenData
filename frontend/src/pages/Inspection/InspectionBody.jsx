@@ -27,8 +27,6 @@ export const InspectionBody = (props) => {
   });
   // const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
-  const [description, setDescription] = useState('');
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -81,10 +79,9 @@ export const InspectionBody = (props) => {
           if (!ok) {
             throw new Error();
           }
-          const { tags: receivedTags, description: receivedDescription } = await res.json();
+          const { tags: receivedTags } = await res.json();
           const tagNames = receivedTags.map(({ tagName }) => tagName);
           setTags(tagNames);
-          setDescription(receivedDescription);
         } catch (err) {
           dispatch(alertActions.error('Failed to fetch information about the category'));
         }
@@ -95,7 +92,7 @@ export const InspectionBody = (props) => {
 
   return (
     <Wrapper>
-      <MetaData data={data} description={description} tags={tags} />
+      <MetaData data={data} tags={tags} />
       {/* <Comments comments={comments} /> */}
     </Wrapper>
   );
