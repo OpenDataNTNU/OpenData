@@ -67,11 +67,11 @@ const LocationLink = styled(Link)`
 `;
 
 export const MetaData = (props) => {
-  const { data, tags, description } = props;
+  const { data, tags } = props;
   const date = '20-09-2019';
 
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState,
+    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState, description, experiencePostGuid,
   } = data;
 
   return (
@@ -115,7 +115,7 @@ MetaData.propTypes = {
     url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
+    description: PropTypes.string.isRequired,
   }).isRequired,
-  description: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

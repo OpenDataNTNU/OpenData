@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { MetaData } from './MetaData';
 import { alertActions } from '../../state/actions/alert';
-// import { Comments } from './Comments';
+import { Comments } from './Comments';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -15,8 +15,7 @@ const Wrapper = styled.div`
   background-color: #f5f5f5;
 `;
 
-export const InspectionBody = (props) => {
-  const { id } = props;
+export const InspectionBody = ({ id }) => {
   const [data, setData] = useState({
     uuid: id,
     url: '',
@@ -24,10 +23,10 @@ export const InspectionBody = (props) => {
     releaseState: 0,
     metadataTypeName: '',
     municipalityName: '',
+    description: '',
+    experiencePostGuid: '',
   });
-  // const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
-  const [description, setDescription] = useState('');
 
   const dispatch = useDispatch();
 
@@ -51,22 +50,6 @@ export const InspectionBody = (props) => {
           dispatch(alertActions.error('Failed to fetch this data. Please try again later.'));
         }
       }
-
-      // get received comments when this is implemented backend
-      /*
-      setComments([{
-        id: 1,
-        comment: 'Beautiful comment',
-        author: 'Michael Bay',
-        date: '19-02-2019',
-      },
-      {
-        id: 2,
-        comment: 'Harsh comment',
-        author: 'Sharknado',
-        date: '23-07-2019',
-      }]);
-      */
     };
     internal();
   }, [id]);
@@ -81,10 +64,9 @@ export const InspectionBody = (props) => {
           if (!ok) {
             throw new Error();
           }
-          const { tags: receivedTags, description: receivedDescription } = await res.json();
+          const { tags: receivedTags } = await res.json();
           const tagNames = receivedTags.map(({ tagName }) => tagName);
           setTags(tagNames);
-          setDescription(receivedDescription);
         } catch (err) {
           dispatch(alertActions.error('Failed to fetch information about the category'));
         }
@@ -95,8 +77,8 @@ export const InspectionBody = (props) => {
 
   return (
     <Wrapper>
-      <MetaData data={data} description={description} tags={tags} />
-      {/* <Comments comments={comments} /> */}
+      <MetaData data={data} tags={tags} />
+      <Comments id={id} />
     </Wrapper>
   );
 };
