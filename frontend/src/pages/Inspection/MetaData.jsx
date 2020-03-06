@@ -95,7 +95,11 @@ export const MetaData = (props) => {
           </div>
           <MetadataURL url={url} formatName={formatName} inspection />
         </MetadataContent>
-        <MetadataToolbar uuid={uuid} experiencePostGuid={experiencePostGuid} />
+        <MetadataToolbar
+          uuid={uuid}
+          experiencePostGuid={experiencePostGuid}
+          municipalityName={municipalityName}
+        />
       </MetadataCard>
     </Wrapper>
   );

@@ -94,7 +94,7 @@ const WriteFeedbackLink = styled(Link)`
   font-size: 0.8rem;
 `;
 
-const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
+const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
@@ -163,7 +163,10 @@ const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
                 <p>Experience Article</p>
               </FeedbackLink>
             )
-            : <WriteFeedbackLink to={`/articles/new/${uuid}`}>Are you the owner of this data set? Write an experience article here</WriteFeedbackLink>
+            : [municipalityName === token.municipalityName
+              ? <WriteFeedbackLink key={`/articles/new/${uuid}`} to={`/articles/new/${uuid}`}>Write an experience article here.</WriteFeedbackLink>
+              : null,
+            ]
         }
       </div>
     </MetadataToolbarContainer>
@@ -172,6 +175,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid }) => {
 MetadataToolbar.propTypes = {
   uuid: PropTypes.string.isRequired,
   experiencePostGuid: PropTypes.string,
+  municipalityName: PropTypes.string.isRequired,
 };
 MetadataToolbar.defaultProps = {
   experiencePostGuid: undefined,
