@@ -185,7 +185,7 @@ const SingleMetaDataResult = ({ metadata }) => {
           {isLiked ? <StarFullStyled /> : <StarEmptyStyled />}
           <p>{likes}</p>
         </Favourite>
-        <CommentsLink to={`viewData/dataset/${uuid}`}>
+        <CommentsLink to={`/dataset/${uuid}`}>
           <CommentsIcon />
           <p>{`${commentsCount} comments`}</p>
         </CommentsLink>
