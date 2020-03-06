@@ -99,7 +99,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
   const userSelector = useSelector((state) => state.user);
-  const { user } = userSelector || null;
+  const { user } = userSelector || { user: null };
   const {
     token,
     municipalityName: userMunicipalityName,
