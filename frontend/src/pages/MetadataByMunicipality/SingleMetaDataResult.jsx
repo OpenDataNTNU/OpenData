@@ -123,8 +123,9 @@ const SingleMetaDataResult = ({ metadata }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
-  const userSelector = useSelector((state) => state.user) || { user: { token: { token: null } } };
-  const { user: token } = userSelector;
+  const userSelector = useSelector((state) => state.user);
+  const { user } = userSelector || { user: null };
+  const { token } = user || { token: null };
 
   useState(() => {
     const internal = async () => {
@@ -132,7 +133,7 @@ const SingleMetaDataResult = ({ metadata }) => {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
           headers: {
-            Authorization: `bearer ${token.token}`,
+            Authorization: `bearer ${token}`,
           },
         });
         const { likeCount, liked } = await res.json();
@@ -157,7 +158,7 @@ const SingleMetaDataResult = ({ metadata }) => {
       const res = await fetch(`/api/Metadata/${uuid}/like`, {
         method: 'PUT',
         headers: {
-          Authorization: `bearer ${token.token}`,
+          Authorization: `bearer ${token}`,
         },
       });
       const { status } = res;
@@ -203,7 +204,7 @@ SingleMetaDataResult.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
     formatName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
+    url: PropTypes.string,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     metadataTypeName: PropTypes.string.isRequired,

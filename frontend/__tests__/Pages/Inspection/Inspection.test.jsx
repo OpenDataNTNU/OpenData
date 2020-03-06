@@ -25,7 +25,7 @@ const carHistoryResponse = `{
   "metadataList":[{
     "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "url":"https://trondheim.kommune.no",
-    "description":"",
+    "description":"This is a decRIPtrion",
     "formatName":"JSON",
     "releaseState":1,
     "metadataTypeName":"Car history",
@@ -45,11 +45,49 @@ const carHistoryResponse = `{
 const carHistoryTrondheimResponse = `{
   "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "url":"https://trondheim.kommune.no",
-  "description":"","formatName":"JSON",
+  "description":"This is a decRIPtrion",
+  "formatName":"JSON",
   "releaseState":2,
   "metadataTypeName":"Car history",
   "municipalityName":"Trondheim"
 }`;
+
+const commentResponse = `
+  [
+    {
+      "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
+      "content":"I quite enjoyed reading this. Lurem ipsoM.",
+      "userMail":"test@test.kommune.no",
+      "user":null,
+      "published" :"02-02-2020",
+      "edited":"02-02-2020",
+      "hasChildren":false,
+      "parentCommentUuid":"00000000-0000-0000-0000-000000000000",
+      "childComments":[{
+        "uuid":"08d7c110-2e54-437a-8c7f-b35e57fef5e0",
+        "content":"Thank you for your INTEREST, kind sir!",
+        "userMail":"alex@trondheim.kommune.no",
+        "user":null,
+        "published" :"02-02-2020",
+        "edited":"02-02-2020",
+        "hasChildren":false,
+        "parentCommentUuid":"3fa85f64-5717-4562-b3fc-2c963f66afaa",
+        "childComments":[]
+      }]
+    },
+    {
+      "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afab",
+      "content":"I REALLY hated reading this. Utter garbage. Not impressed AT ALL. qwop",
+      "userMail":"test@test.kommune.no",
+      "user":null,
+      "published" : "01-01-1970",
+      "edited": "01-01-2011",
+      "hasChildren":true,
+      "parentCommentUuid":"00000000-0000-0000-0000-000000000000",
+      "childComments": []
+    }
+  ]
+`;
 
 describe('Page displays bottom-level datasets from municipalities', () => {
   // redux store
@@ -61,7 +99,15 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     fetch.resetMocks();
     // reset and set up redux store
     const mockStore = configureStore();
-    store = mockStore({});
+    store = mockStore({
+      user: {
+        loggedIn: false,
+        user: {
+          token: 'abcdef',
+          municipalityName: 'Trondheim',
+        },
+      },
+    });
     history = createMemoryHistory();
   });
 
@@ -73,6 +119,8 @@ describe('Page displays bottom-level datasets from municipalities', () => {
           return carHistoryResponse;
         case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return carHistoryTrondheimResponse;
+        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return commentResponse;
         default:
           return '';
       }
@@ -95,5 +143,34 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     // - Once of like counter
     // - Once for submitting.
     expect(fetch.mock.calls.length).toEqual(3);
+  });
+
+  it('Displays comments of a dataset correctly', async () => {
+    fetch.mockResponse(async ({ url }) => {
+      switch (url) {
+        case '/api/MetadataType/Car%20history':
+          return carHistoryResponse;
+        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return carHistoryTrondheimResponse;
+        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return commentResponse;
+        default:
+          return '';
+      }
+    });
+    const {
+      getByText, findByText,
+    } = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <InspectionBody id="3fa85f64-5717-4562-b3fc-2c963f66afa6" />
+        </Router>
+      </Provider>,
+    );
+
+    await findByText(new RegExp('Trondheim'));
+    await findByText(new RegExp('I quite enjoyed reading this\\. Lurem ipsoM\\.'));
+    getByText(new RegExp('I REALLY hated reading this\\. Utter garbage\\. Not impressed AT ALL\\. qwop'));
+    getByText(new RegExp('Thank you for your INTEREST, kind sir!'));
   });
 });
