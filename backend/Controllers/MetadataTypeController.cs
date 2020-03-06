@@ -163,10 +163,10 @@ namespace OpenData.Controllers
 		/// The return type of this is enum list of lists of MetadataTypeMapping
 		/// </returns>
 		[AllowAnonymous]
-		[HttpGet("by/tags")]
-		public async Task<IActionResult> GetByTagAsync()
+		[HttpGet("by/tags/{name}")]
+		public async Task<IActionResult> GetByTagAsync(string name)
 		{
-			var resources = await _metadataTypeService.ListTagsAsync();
+			var resources = await _metadataTypeService.ListTagsAsync(name);
 			return Ok(resources);
 		}
 	}

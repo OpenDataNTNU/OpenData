@@ -8,6 +8,7 @@ using System.Web;
 using System;
 using System.Linq;
 
+
 namespace OpenData.Persistence.Repositories
 {
     public class MetadataTypeRepository : BaseRepository, IMetadataTypeRepository
@@ -31,12 +32,12 @@ namespace OpenData.Persistence.Repositories
 
         public async Task<MetadataType> ListNamesAsync(string name)
         {
-            return await _context.MetadataTypes.SingleOrDefaultAsync<MetadataType>(p => p.Name == name);
+            return await _context.MetadataTypes.SingleOrDefaultAsync(p => p.Name == name);
         }
 
-        public async Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync()
+        public async Task<MetadataType> ListTagsAsync(string name)
         {
-            return await _context.MetadataTypes.Select(p => p.Tags).ToListAsync();
+            return await _context.MetadataTypes.Include(p => p.Tags).ThenInclude(p => p.TagName).FirstAsync(x => x.Name == name);
         }
     }
 }

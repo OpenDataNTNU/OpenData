@@ -11,6 +11,6 @@ namespace OpenData.Domain.Services
          Task<MetadataType> GetByNameAsync(string name);
          Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata);
          Task<MetadataType> ListNamesAsync(string name);
-         Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync();
+         Task<MetadataType> ListTagsAsync(string name);
     }
 }
