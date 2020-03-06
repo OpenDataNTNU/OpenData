@@ -112,7 +112,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
   });
 
 
-  it('Shows the title of a single dataset', async () => {
+  it('Shows the title and description of a single dataset', async () => {
     fetch.mockResponse(async ({ url }) => {
       switch (url) {
         case '/api/MetadataType/Car%20history':
@@ -126,7 +126,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
       }
     });
     const {
-      findByText, queryByText,
+      findByText, queryByText, getByText,
     } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -136,6 +136,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     );
 
     await findByText(new RegExp('Trondheim'));
+    getByText('This is a decRIPtrion');
     expect(queryByText(new RegExp('Bergen'))).toBeNull();
 
     // Should have fetched exactly thrice:
