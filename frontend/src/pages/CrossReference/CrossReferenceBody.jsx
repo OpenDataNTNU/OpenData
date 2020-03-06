@@ -59,7 +59,8 @@ export const CrossReferenceBody = () => {
     <Wrapper>
       <h1>Other municipalities who offer my datasets</h1>
       {datatypes.map((datatype) => (
-        <CrossReferenceDatatype key={datatype.name} datatype={datatype} />))}
+        <CrossReferenceDatatype key={datatype.name} datatype={datatype} />
+      ))}
     </Wrapper>
   );
 };
