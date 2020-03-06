@@ -99,7 +99,11 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
   const userSelector = useSelector((state) => state.user) || { user: { token: { token: null } } };
-  const { user: token } = userSelector;
+  const { user } = userSelector;
+  const {
+    token,
+    municipalityName: userMunicipalityName,
+  } = user || { token: null, municipalityName: null };
 
   useState(() => {
     const internal = async () => {
@@ -107,7 +111,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
           headers: {
-            Authorization: `bearer ${token.token}`,
+            Authorization: `bearer ${token}`,
           },
         });
         const { likeCount, liked } = await res.json();
@@ -163,7 +167,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
                 <p>Experience Article</p>
               </FeedbackLink>
             )
-            : [municipalityName === token.municipalityName
+            : [municipalityName === userMunicipalityName
               ? <WriteFeedbackLink key={`/articles/new/${uuid}`} to={`/articles/new/${uuid}`}>Write an experience article here.</WriteFeedbackLink>
               : null,
             ]
