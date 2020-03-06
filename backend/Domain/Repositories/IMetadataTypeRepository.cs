@@ -9,7 +9,7 @@ namespace OpenData.Domain.Repositories
          Task<IEnumerable<MetadataType>> ListAsync();
          Task<MetadataType> GetByNameAsync(string name);
          Task AddAsync(MetadataType metadata);
-         Task<IEnumerable<string>> ListNamesAsync();
+         Task<MetadataType> ListNamesAsync(string name);
          Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync();
     }
 }
