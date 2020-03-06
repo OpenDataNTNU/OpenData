@@ -24,6 +24,8 @@ namespace OpenData.Domain.Models
 		public string MetadataTypeName { get; set; }
 		public MetadataType Type { get; set; }
 
+		public IList<Like> Likes { get; set; }
+
 		public IList<MetadataCommentMapping> Comments { get; set; }
 
 #nullable enable

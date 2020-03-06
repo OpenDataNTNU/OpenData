@@ -27,6 +27,7 @@ namespace OpenData.Controllers
 		private readonly IExperiencePostService _experiencePostService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly ILikeService _likeService;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
 
@@ -37,13 +38,15 @@ namespace OpenData.Controllers
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
             IUserService userService,
-			ICommentService commentService
+            ILikeService likeService,
+			      ICommentService commentService
             )
 		{
 			_metadataService = metadataService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_experiencePostService = experiencePostService;
+			_likeService = likeService; 
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -108,6 +111,64 @@ namespace OpenData.Controllers
 			return Ok(resultSafe);
 		}
 
+		/// <summary>
+		/// Returns like information about a dataset.
+		/// </summary> 
+		[AllowAnonymous]
+		[HttpGet("{uuid}/like")]
+		public async Task<IActionResult> GetLikes(string uuid)
+		{
+			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
+            User user = await userService.GetUserByMailAsync(targetUsername);
+
+            Metadata metadata = null; 
+			try {
+				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+
+            var likeReport = await _likeService.GetLikeReport(user, metadata);
+
+			return Ok(likeReport);
+		}
+
+		/// <summary>
+		/// Toggles whether or not the user has liked a metadata.
+		/// </summary> 
+		[HttpPut("{uuid}/like")]
+		public async Task<IActionResult> SetLike(string uuid)
+		{
+			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
+            User user = await userService.GetUserByMailAsync(targetUsername);
+
+            Metadata metadata = null; 
+			try {
+				metadata = await _metadataService.GetByUuidAsync(Guid.Parse(uuid));
+			} catch (Exception) {
+				throw new HttpException(HttpStatusCode.NotFound);
+			}
+			//Check if the user has already liked it
+			try {
+				var existingLike = await _likeService.GetLikeByUserAndMetadata(user, metadata);
+
+				if(existingLike != null) {
+					await _likeService.DeleteLike(existingLike);
+				}
+
+			} catch (InvalidOperationException) {
+				var like = new Like(){LikeUser = user, Metadata = metadata};
+
+				await _likeService.SaveAsync(like);
+			}
+
+			await _unitOfWork.CompleteAsync();
+			return Ok();
+		}
+
+		/// <summary>
+		/// Creates a metadata object.
+		/// </summary> 
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{

@@ -112,7 +112,7 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Not releasable').length).toBe(1);
     expect(queryAllByText('Unknown release state!').length).toBe(1);
 
-    // should have fetched exactly once
-    expect(fetch.mock.calls.length).toEqual(1);
+    // should have fetched exactly 7 times. Each result fetches a like counter and like status.
+    expect(fetch.mock.calls.length).toEqual(7);
   });
 });
