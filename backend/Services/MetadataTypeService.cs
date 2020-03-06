@@ -40,9 +40,9 @@ namespace OpenData.Services
             }
         }
 
-        public async Task<IEnumerable<string>> ListNamesAsync()
+        public async Task<MetadataType> ListNamesAsync(string name)
         {
-            return await _metadataTypeRepository.ListNamesAsync();
+            return await _metadataTypeRepository.ListNamesAsync(name);
         }
 
         public async Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync()

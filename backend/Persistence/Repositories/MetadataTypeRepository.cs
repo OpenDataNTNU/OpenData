@@ -29,9 +29,9 @@ namespace OpenData.Persistence.Repositories
             await _context.MetadataTypes.AddAsync(metadata);
         }
 
-        public async Task<IEnumerable<string>> ListNamesAsync()
+        public async Task<MetadataType> ListNamesAsync(string name)
         {
-            return await _context.MetadataTypes.Select(p => p.Name).ToListAsync();
+            return await _context.MetadataTypes.SingleOrDefaultAsync<MetadataType>(p => p.Name == name);
         }
 
         public async Task<IEnumerable<IList<MetadataTypeTagMapping>>> ListTagsAsync()

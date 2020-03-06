@@ -149,10 +149,10 @@ namespace OpenData.Controllers
 		/// The return type of this is enum list of strings
 		/// </returns>
 		[AllowAnonymous]
-		[HttpGet("by/name")]
-		public async Task<IActionResult> GetByNameAsync()
+		[HttpGet("by/name/{name}")]
+		public async Task<IActionResult> GetByNameAsync(string name)
 		{
-			var resources = await _metadataTypeService.ListNamesAsync();
+			var resources = await _metadataTypeService.ListNamesAsync(name);
 			return Ok(resources);
 		}
 
