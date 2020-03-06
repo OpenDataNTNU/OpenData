@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
 import { Template } from '../../sharedComponents/Template';
 import { NoResult } from './NoResult';
@@ -11,13 +12,15 @@ const MunicipalitiesViewContainer = styled.div`
   flex-direction: row;
   width: 100%;
   max-width: 60em;
+  box-sizing: border-box;
   margin: auto;
   background-color: white;
   flex: 1;
 `;
 
 const LeftPane = styled.div`
-  width: 200px;
+  box-sizing: border-box;
+  widht: 14rem;
   display: flex;
   flex-direction: column;  
   border-right: 0.1em solid lightgray;
@@ -78,10 +81,12 @@ const RadioDiv = styled.div`
 const ResultView = styled.div`
   flex: 1;
   display: flex;
+  max-width: 46rem;
+  box-sizing: border-box;
 `;
 
 const MetadataByMunicipality = () => {
-  // let { urlMunicipality, urlCategory } = useParams();
+  const { name } = useParams();
   const [municipalities, setMunicipalities] = useState([]);
   const [fetchedMunicipalities, setFetchedMunicipalities] = useState([]);
   const [selectedMunicipality, setSelectedMunicipality] = useState(null);
@@ -110,6 +115,7 @@ const MetadataByMunicipality = () => {
           setFetchedMunicipalities(receivedMunicipalities);
           setMunicipalities(receivedMunicipalities);
         }
+        if (name) setSelectedMunicipality(name);
       } catch (err) {
         const { status } = err;
         if (status === 404) {

@@ -94,6 +94,10 @@ const Header = () => {
         history.push('/municipalities');
         break;
       }
+      case 'Search by category': {
+        history.push('/dataType');
+        break;
+      }
       case 'Submit data': {
         history.push('/sendData');
         break;
@@ -126,6 +130,9 @@ const Header = () => {
               <NavInternalLink to="/municipalities">
                 <p>Search by municipality</p>
               </NavInternalLink>
+              <NavInternalLink to="/dataType">
+                <p>Search by category</p>
+              </NavInternalLink>
               {
                 role === 1
                   ? <NavInternalLink to="/sendData">Submit data</NavInternalLink>
@@ -143,6 +150,7 @@ const Header = () => {
               list={[
                 { id: 'Home', title: 'Home' },
                 { id: 'Search by municipality', title: 'Search by municipality' },
+                { id: 'Search by category', title: 'Search by category' },
                 ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}

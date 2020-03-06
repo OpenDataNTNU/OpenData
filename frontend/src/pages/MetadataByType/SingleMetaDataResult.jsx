@@ -31,12 +31,6 @@ const MetaDataContent = styled.div`
   overflow: hidden;
   max-width: 100%;
 `;
-const MetaDataTypeLink = styled(Link)`
-  & > p {
-    color: #3e3e3e;
-    font-size: 0.9rem;
-  }
-`;
 const MetaDataDescription = styled.div`
   flex-grow: 1;
   padding: 0.5rem;
@@ -109,7 +103,7 @@ const StarEmptyStyled = styled(StarEmpty)`
 
 const SingleMetaDataResult = ({ metadata }) => {
   const {
-    uuid, formatName, url, description, releaseState, metadataTypeName, experiencePostGuid,
+    uuid, formatName, url, description, releaseState, experiencePostGuid,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
@@ -172,9 +166,6 @@ const SingleMetaDataResult = ({ metadata }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
-            <p>{metadataTypeName}</p>
-          </MetaDataTypeLink>
           <FeedbackLabel hasFeedback={hasFeedback} />
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>Other municipalities who offer this data</MetaDataLink>
@@ -202,7 +193,7 @@ SingleMetaDataResult.propTypes = {
     url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    metadataTypeName: PropTypes.string,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
 };
