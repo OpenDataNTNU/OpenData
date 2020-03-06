@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { NoResult } from './NoResult';
+import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { SingleMetaDataResult } from './SingleMetaDataResult';
 import { alertActions } from '../../state/actions/alert';
 
-const MunicipalityCategoriesContainer = styled.div`
+const CategoriesContainer = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -34,11 +34,26 @@ const MetadataFilter = styled.input`
   margin: 0.3rem;
   font-size: 1.0rem;
 `;
+const Tag = styled.p`
+  background-color: #eeeeee;
+  color: #595959;
+  font-size: 0.9rem;
+  padding: 0.1rem 0.7rem;
+  display: inline-block;
+  border-radius: 1rem;
+  margin: 0.3rem;
+`;
+const NoTags = styled.p`
+  color: dimgray;
+  font-size: 0.8rem;
+`;
 
-const MunicipalityMetadataResults = ({ municipalityName }) => {
-  const [metaDataSet, setMetadataSet] = useState([]);
+const MetadataByTypeResults = ({ metadataTypeName }) => {
+  const [metadataSet, setMetadataSet] = useState([]);
   const [fetchedMetadataSet, setFetchedMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [description, setDescription] = useState('');
+  const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
 
   const handleFilterSelection = ({ target: { value } }) => {
@@ -53,20 +68,23 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
     const internal = async () => {
       setLoading(true);
       try {
-        // TODO: Filter this result within API, not frontend!
-        const res = await fetch('/api/Metadata');
+        const res = await fetch(`/api/MetadataType/${metadataTypeName}`);
         if (res.status === 200) {
-          const receivedMetadataSet = await res.json();
-          const filteredResult = receivedMetadataSet.filter((m) => (
-            m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
-          ));
-          setFetchedMetadataSet(filteredResult);
-          setMetadataSet(filteredResult);
+          const {
+            tags: receivedTags,
+            description: receivedDescription,
+            metadataList,
+          } = await res.json();
+          // setTags(receivedTags);
+          setTags(receivedTags);
+          setDescription(receivedDescription);
+          setFetchedMetadataSet(metadataList);
+          setMetadataSet(metadataList);
         }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error(`Could not find the metadata for municipality ${municipalityName}`));
+          dispatch(alertActions.error(`Could not find the metadata for category ${metadataTypeName}`));
         } else {
           dispatch(alertActions.error('Failed to fetch metadata. Please try again later.'));
         }
@@ -74,39 +92,45 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
       setLoading(false);
     };
     internal();
-  }, [municipalityName]);
+  }, [metadataTypeName]);
 
   if (loading) {
     return (
-      <MunicipalityCategoriesContainer>
-        <h1>{municipalityName}</h1>
+      <CategoriesContainer>
+        <ResultsHeader>
+          <h1>{metadataTypeName}</h1>
+        </ResultsHeader>
         <NoResult text="Loading..." />
-      </MunicipalityCategoriesContainer>
+      </CategoriesContainer>
     );
   }
   return (
-    <MunicipalityCategoriesContainer>
+    <CategoriesContainer>
       <ResultsHeader>
         <div>
-          <h3>{municipalityName}</h3>
+          <h3>{metadataTypeName}</h3>
+          <p>{description}</p>
+          { tags.length === 0 ? (
+            <NoTags>No tags for this category.</NoTags>
+          ) : tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
         </div>
         <MetadataFilter onChange={handleFilterSelection} type="text" placeholder="Filter results" />
       </ResultsHeader>
       <ResultsContainer>
-        { metaDataSet.length === 0 ? (
-          <NoResult text={`No results were found for ${municipalityName}.`} />
-        ) : metaDataSet.map((m) => (
+        { metadataSet.length === 0 ? (
+          <NoResult text={`No results were found for ${metadataTypeName}.`} />
+        ) : metadataSet.map((m) => (
           <SingleMetaDataResult key={m.uuid} metadata={m} />
         ))}
       </ResultsContainer>
-    </MunicipalityCategoriesContainer>
+    </CategoriesContainer>
   );
 };
 
-MunicipalityMetadataResults.propTypes = {
-  municipalityName: PropTypes.string.isRequired,
+MetadataByTypeResults.propTypes = {
+  metadataTypeName: PropTypes.string.isRequired,
 };
 
 export {
-  MunicipalityMetadataResults,
+  MetadataByTypeResults,
 };

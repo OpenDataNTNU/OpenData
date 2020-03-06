@@ -27,7 +27,6 @@ export const InspectionBody = ({ id }) => {
     experiencePostGuid: '',
   });
   const [tags, setTags] = useState([]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

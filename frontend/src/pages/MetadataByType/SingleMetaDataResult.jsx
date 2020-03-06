@@ -31,16 +31,6 @@ const MetaDataContent = styled.div`
   overflow: hidden;
   max-width: 100%;
 `;
-const MetaDataTypeLink = styled(Link)`
-  & > p {
-    color: #3e3e3e;
-    font-size: 0.9rem;
-    background-color: #f2f2f2;
-    border-radius: 0.2rem;
-    padding: 0.2rem;
-    display: inline-block;
-  }
-`;
 const MetaDataDescription = styled.div`
   flex-grow: 1;
   padding: 0.5rem;
@@ -51,7 +41,17 @@ const MetaDataDescription = styled.div`
     word-wrap: break-word;
     position: relative;
   }
-  
+`;
+
+const MetaDataMunicipalityLink = styled(Link)`
+  & > p {
+    color: #3e3e3e;
+    font-size: 0.9rem;
+    background-color: #f2f2f2;
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+    display: inline-block;
+  }
 `;
 const MetaDataLink = styled(Link)`
   padding: 0.4rem;
@@ -113,7 +113,7 @@ const StarEmptyStyled = styled(StarEmpty)`
 
 const SingleMetaDataResult = ({ metadata }) => {
   const {
-    uuid, formatName, url, description, releaseState, metadataTypeName, experiencePostGuid,
+    uuid, formatName, url, description, releaseState, experiencePostGuid, municipalityName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
@@ -178,9 +178,9 @@ const SingleMetaDataResult = ({ metadata }) => {
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
           <FeedbackLabel hasFeedback={hasFeedback} />
-          <MetaDataTypeLink to={`/dataType/${metadataTypeName}`}>
-            <p>{metadataTypeName}</p>
-          </MetaDataTypeLink>
+          <MetaDataMunicipalityLink to={`/municipalities/${municipalityName}`}>
+            <p>{municipalityName}</p>
+          </MetaDataMunicipalityLink>
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
@@ -204,10 +204,10 @@ SingleMetaDataResult.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
     formatName: PropTypes.string.isRequired,
-    url: PropTypes.string,
+    url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    municipalityName: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
 };

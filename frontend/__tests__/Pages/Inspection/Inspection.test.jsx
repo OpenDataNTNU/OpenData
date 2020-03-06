@@ -126,7 +126,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
       }
     });
     const {
-      getByText, findByText, queryByText,
+      findByText, queryByText, getByText,
     } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -143,7 +143,8 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     // - Once for fetching municipalities
     // - Once of like counter
     // - Once for submitting.
-    expect(fetch.mock.calls.length).toEqual(3);
+    // - Once for comments
+    expect(fetch.mock.calls.length).toEqual(4);
   });
 
   it('Displays comments of a dataset correctly', async () => {

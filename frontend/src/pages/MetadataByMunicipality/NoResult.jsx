@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const NoResultContainer = styled.div`
-  padding: 2em;
+  padding: 2rem;
   display: flex;
   flex: 1;
   align-content: center;
@@ -15,8 +15,7 @@ const NoResultContainer = styled.div`
   & > p {
     display: inline-block;
     color: lightgray;
-    font-size: 8em;
-    max-width: 40em;
+    font-size: 5rem;
     font-weight: bold;
     text-align: center;
   }

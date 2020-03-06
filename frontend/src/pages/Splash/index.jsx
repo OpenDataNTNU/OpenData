@@ -1,12 +1,9 @@
 import React from 'react';
-import { Template } from '../../sharedComponents/Template';
-import { AllDataBody } from '../allData/AllDataBody';
+import { Redirect } from 'react-router-dom';
 
 const Splash = () => { // eslint-disable-line arrow-body-style
   return (
-    <Template>
-      <AllDataBody />
-    </Template>
+    <Redirect to="/dataType" />
   );
 };
 

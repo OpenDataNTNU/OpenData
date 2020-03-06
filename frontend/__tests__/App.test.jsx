@@ -31,14 +31,14 @@ beforeAll(() => {
 });
 
 test('renders learn react link', () => {
-  const { container, getByText } = render(
+  const { container, getByPlaceholderText } = render(
     <Provider store={mock.emptyStore}>
       <App />
     </Provider>,
   );
 
   // Learn react should be rendered
-  const linkElement = getByText(/all datasets/i);
+  const linkElement = getByPlaceholderText(/Search categories/i);
   expect(linkElement).toBeInTheDocument();
 
   // No alert is rendered

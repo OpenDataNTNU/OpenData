@@ -94,6 +94,10 @@ const Header = () => {
         history.push('/municipalities');
         break;
       }
+      case 'Search by category': {
+        history.push('/dataType');
+        break;
+      }
       case 'Submit data': {
         history.push('/sendData');
         break;

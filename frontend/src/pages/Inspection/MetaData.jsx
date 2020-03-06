@@ -14,13 +14,13 @@ const Wrapper = styled.div`
 const MetadataCard = styled.div`
   background-color: white;
   border-radius: 0.3rem;
-  padding: 0;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   min-height: 20rem;
-  min-width: 20em;
+  min-width: 35rem;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
@@ -48,7 +48,7 @@ const Tag = styled.div`
 `;
 const ArrowRightStyled = styled(ArrowRightS)`
   height: 0.9rem;
-  margin: 0 1.0rem;
+  margin: 0 0.3rem;
   color: dimgray;
 `;
 const LocationWrapper = styled.div`
@@ -71,7 +71,8 @@ export const MetaData = (props) => {
   const date = '20-09-2019';
 
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState, description, experiencePostGuid,
+    uuid, municipalityName, formatName, url, metadataTypeName,
+    experiencePostGuid, releaseState, description,
   } = data;
 
   return (
@@ -111,11 +112,11 @@ MetaData.propTypes = {
     municipalityName: PropTypes.string.isRequired,
     formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
-    description: PropTypes.string.isRequired,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
