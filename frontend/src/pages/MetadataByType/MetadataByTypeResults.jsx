@@ -20,7 +20,7 @@ const ResultsHeader = styled.div`
     border-bottom: 0.1rem solid lightgray;
     padding: 0 0.5rem;
     & > h3 {
-      margin: 0.2rem 0;
+      margin: 0.4rem 0;
     }
   }
 `;
@@ -110,7 +110,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
         <div>
           <h3>{metadataTypeName}</h3>
           <p>{description}</p>
-          { tags.length === 0 ? (
+          { tags.length <= 1 ? (
             <NoTags>No tags for this category.</NoTags>
           ) : tags.map((t) => <Tag>{t}</Tag>)}
         </div>

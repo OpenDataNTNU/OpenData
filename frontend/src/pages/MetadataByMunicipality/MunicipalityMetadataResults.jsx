@@ -15,11 +15,39 @@ const MunicipalityCategoriesContainer = styled.div`
 const ResultsContainer = styled.div`
   flex: 1;
 `;
+const ResultsHeader = styled.div`
+  & > div {
+    border-bottom: 0.1rem solid lightgray;
+    padding: 0 0.5rem;
+    & > h3 {
+      margin: 0.4rem 0;
+    }
+  }
+`;
+
+const MetadataFilter = styled.input`
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  border: solid 0.1rem lightgrey;
+  display: block;
+  box-sizing: border-box;
+  margin: 0.3rem;
+  font-size: 1.0rem;
+`;
 
 const MunicipalityMetadataResults = ({ municipalityName }) => {
   const [metaDataSet, setMetadataSet] = useState([]);
+  const [fetchedMetadataSet, setFetchedMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+
+  const handleFilterSelection = ({ target: { value } }) => {
+    setMetadataSet(
+      fetchedMetadataSet.filter(
+        (c) => c.description.toLowerCase().includes(value.toLowerCase()),
+      ),
+    );
+  };
 
   useEffect(() => {
     const internal = async () => {
@@ -27,11 +55,12 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
       try {
         // TODO: Filter this result within API, not frontend!
         const res = await fetch('/api/Metadata');
-        const receivedMetadataSet = await res.json();
-        const filteredResult = receivedMetadataSet.filter((m) => (
-          m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
-        ));
-        if (receivedMetadataSet) {
+        if (res.status === 200) {
+          const receivedMetadataSet = await res.json();
+          const filteredResult = receivedMetadataSet.filter((m) => (
+            m.municipalityName.toLowerCase() === municipalityName.toLowerCase()
+          ));
+          setFetchedMetadataSet(filteredResult);
           setMetadataSet(filteredResult);
         }
       } catch (err) {
@@ -57,7 +86,12 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
   }
   return (
     <MunicipalityCategoriesContainer>
-      <h1>{municipalityName}</h1>
+      <ResultsHeader>
+        <div>
+          <h3>{municipalityName}</h3>
+        </div>
+        <MetadataFilter onChange={handleFilterSelection} type="text" placeholder="Filter results" />
+      </ResultsHeader>
       <ResultsContainer>
         { metaDataSet.length === 0 ? (
           <NoResult text={`No results were found for ${municipalityName}.`} />
