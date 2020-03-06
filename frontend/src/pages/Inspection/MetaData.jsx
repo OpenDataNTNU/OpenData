@@ -20,6 +20,7 @@ const MetadataCard = styled.div`
   flex-direction: column;
   overflow: hidden;
   min-height: 20rem;
+  min-width: 20em;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
