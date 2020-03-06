@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -123,16 +123,17 @@ const SingleMetaDataResult = ({ metadata }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
-  const userSelector = useSelector((state) => state.user) || { user: { token: { token: null } } };
-  const { user: token } = userSelector;
+  const userSelector = useSelector((state) => state.user);
+  const { user } = userSelector || { user: null };
+  const { token } = user || { token: null };
 
-  useState(() => {
+  useEffect(() => {
     const internal = async () => {
       try {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
           headers: {
-            Authorization: `bearer ${token.token}`,
+            Authorization: `bearer ${token}`,
           },
         });
         const { likeCount, liked } = await res.json();
@@ -157,7 +158,7 @@ const SingleMetaDataResult = ({ metadata }) => {
       const res = await fetch(`/api/Metadata/${uuid}/like`, {
         method: 'PUT',
         headers: {
-          Authorization: `bearer ${token.token}`,
+          Authorization: `bearer ${token}`,
         },
       });
       const { status } = res;

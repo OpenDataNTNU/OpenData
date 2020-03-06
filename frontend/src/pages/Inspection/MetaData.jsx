@@ -71,7 +71,8 @@ export const MetaData = (props) => {
   const date = '20-09-2019';
 
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName, experiencePostGuid, releaseState, description, experiencePostGuid,
+    uuid, municipalityName, formatName, url, metadataTypeName,
+    experiencePostGuid, releaseState, description,
   } = data;
 
   return (
@@ -116,7 +117,6 @@ MetaData.propTypes = {
     url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
-    description: PropTypes.string.isRequired,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

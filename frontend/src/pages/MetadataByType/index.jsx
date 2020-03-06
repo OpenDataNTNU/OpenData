@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -125,7 +125,7 @@ export const MetadataByType = () => {
     );
   };
 
-  useState(() => {
+  useEffect(() => {
     const internal = async () => {
       setLoading(true);
       try {
@@ -172,7 +172,7 @@ export const MetadataByType = () => {
                     <label htmlFor={`radio-${c.name}`}>
                       {c.name}
                       <p>{c.description}</p>
-                      {c.tags.map((t) => <Tag>{t}</Tag>)}
+                      {c.tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
                     </label>
                   </RadioDiv>
                 )) }

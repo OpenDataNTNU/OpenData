@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -114,7 +114,7 @@ const MetadataByMunicipality = () => {
     );
   };
 
-  useState(() => {
+  useEffect(() => {
     const internal = async () => {
       setLoading(true);
       try {
@@ -124,7 +124,9 @@ const MetadataByMunicipality = () => {
           setFetchedMunicipalities(receivedMunicipalities);
           setMunicipalities(receivedMunicipalities);
         }
-        if (name) setSelectedMunicipality(name);
+        if (name) {
+          setSelectedMunicipality(name);
+        }
       } catch (err) {
         const { status } = err;
         if (status === 404) {

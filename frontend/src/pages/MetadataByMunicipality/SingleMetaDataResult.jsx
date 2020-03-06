@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -127,7 +127,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   const { user } = userSelector || { user: null };
   const { token } = user || { token: null };
 
-  useState(() => {
+  useEffect(() => {
     const internal = async () => {
       try {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {

@@ -112,7 +112,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
           <p>{description}</p>
           { tags.length <= 1 ? (
             <NoTags>No tags for this category.</NoTags>
-          ) : tags.map((t) => <Tag>{t}</Tag>)}
+          ) : tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
         </div>
         <MetadataFilter onChange={handleFilterSelection} type="text" placeholder="Filter results" />
       </ResultsHeader>
