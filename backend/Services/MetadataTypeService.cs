@@ -41,7 +41,7 @@ namespace OpenData.Services
             }
         }
 
-        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParameters searchParams)
+        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams)
         {
             return await _metadataTypeRepository.FilterSearchAsync(searchParams);
         }

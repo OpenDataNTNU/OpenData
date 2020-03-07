@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenData.Resources
 {
-    public class MetadataTypeSearchParameters
+    public class MetadataTypeSearchParametersResource
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public IEnumerable<Tag> Tags { get; set; }
-        public string Keywords { get; set; }
+        public string Keywords { get; set; } = "";
     }
 }

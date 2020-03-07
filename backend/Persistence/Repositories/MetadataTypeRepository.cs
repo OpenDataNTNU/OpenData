@@ -30,10 +30,10 @@ namespace OpenData.Persistence.Repositories
             await _context.MetadataTypes.AddAsync(metadata);
         }
 
-        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParameters searchParams)
+        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams)
         {
-            return await _context.MetadataTypes.Where(m => m.Name.Contains(searchParams.Name))
-                .Where(m => m.Tags.All(t => searchParams.Tags.ToList().Select(t => t.Name).Contains(t.TagName)))
+            return await _context.MetadataTypes.Where(m => m.Name.Contains(searchParams.Name, StringComparison.OrdinalIgnoreCase))
+                .Where(m => m.Tags.All(t => searchParams.Tags == null || searchParams.Tags.ToList().Select(t => t.Name).Contains(t.TagName)))
                 .Where(m => m.Description.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
                 .ToListAsync();
         }

@@ -10,6 +10,6 @@ namespace OpenData.Domain.Repositories
          Task<IEnumerable<MetadataType>> ListAsync();
          Task<MetadataType> GetByNameAsync(string name);
          Task AddAsync(MetadataType metadata);
-         Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParameters searchParams);
+         Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams);
     }
 }
