@@ -143,10 +143,10 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Get list of metadatatype names
+		/// Filter serach options
 		/// </summary>
 		/// <returns>
-		/// The return type of this is enum list of strings
+		/// The return type of this is enum list of metadatatypes
 		/// </returns>
 		[AllowAnonymous]
 		[HttpGet("search")]
