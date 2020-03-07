@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenData.Domain.Models;
 using OpenData.Domain.Services.Communication;
+using OpenData.Resources;
 
 namespace OpenData.Domain.Services
 {
@@ -10,7 +11,6 @@ namespace OpenData.Domain.Services
          Task<IEnumerable<MetadataType>> ListAsync();
          Task<MetadataType> GetByNameAsync(string name);
          Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata);
-         Task<MetadataType> ListNamesAsync(string name);
-         Task<MetadataType> ListTagsAsync(string name);
+         Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParameters searchParams);
     }
 }

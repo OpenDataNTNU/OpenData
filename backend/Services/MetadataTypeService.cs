@@ -5,6 +5,7 @@ using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
 using OpenData.Domain.Services.Communication;
 using System;
+using OpenData.Resources;
 
 namespace OpenData.Services
 {
@@ -40,14 +41,9 @@ namespace OpenData.Services
             }
         }
 
-        public async Task<MetadataType> ListNamesAsync(string name)
+        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParameters searchParams)
         {
-            return await _metadataTypeRepository.ListNamesAsync(name);
-        }
-
-        public async Task<MetadataType> ListTagsAsync(string name)
-        {
-            return await _metadataTypeRepository.ListTagsAsync(name);
+            return await _metadataTypeRepository.FilterSearchAsync(searchParams);
         }
     }
 }
