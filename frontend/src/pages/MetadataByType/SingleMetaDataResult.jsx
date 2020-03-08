@@ -117,7 +117,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
-  const commentsCount = 0;
+  const [commentsCount, setCommentsCount] = useState(-1);
   const hasFeedback = experiencePostGuid !== null;
 
   const dispatch = useDispatch();
@@ -128,7 +128,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   const { token } = user || { token: null };
 
   useEffect(() => {
-    const internal = async () => {
+    const getLikes = async () => {
       try {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
@@ -144,13 +144,30 @@ const SingleMetaDataResult = ({ metadata }) => {
         if (status === 404) {
           dispatch(alertActions.error('Could not fetch likes for dataset.'));
         } else if (status === 401) {
-          dispatch(alertActions.error('Not authorized to see likes for dataset.'));
+          dispatch(alertActions.info('Not authorized to see likes for dataset.'));
         } else {
           dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
         }
       }
     };
-    internal();
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/Comment/metadata/${uuid}`);
+        const comments = await res.json();
+        setCommentsCount(comments.length);
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not fetch comments count for dataset.'));
+        } else if (status === 401) {
+          dispatch(alertActions.info('Not authorized to see comments count for dataset.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch comments count. Please try again later.'));
+        }
+      }
+    };
+    getLikes();
+    getComments();
   }, []);
 
   const handleLike = async () => {
