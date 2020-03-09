@@ -14,9 +14,13 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const HorizontalWrapper = styled.div`
+const SearchBar = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 0.5em;
+  & > * {
+    margin-right: 0.3em;
+  }
 `;
 
 const Select = styled(Multiselect)`
@@ -24,7 +28,7 @@ const Select = styled(Multiselect)`
     display: flex;
     align-items: center;
     & > ul > li {
-      margin-top 0px;
+      margin-top: 0px;
     }
   }
 `;
@@ -92,9 +96,14 @@ export const SearchBody = () => {
     internal();
   }, [query]);
 
+  const metadataList = metadatas.length > 0
+    ? metadatas.map((data) => (
+      <SingleMetaDataResult key={data.uuid} metadata={data} showMunicipality showCategory />
+    )) : <h2>No results found for your query</h2>;
+
   return (
     <Wrapper>
-      <HorizontalWrapper>
+      <SearchBar>
         <input type="text" placeholder="Search" ref={searchField} />
         <Select data={allTags} value={tags} onChange={setTags} placeholder="Tags" />
         <Select
@@ -106,12 +115,12 @@ export const SearchBody = () => {
         <button type="button" onClick={updateQueries}>
           Search
         </button>
-      </HorizontalWrapper>
+      </SearchBar>
       {loading ? (
         <h2>Loading...</h2>
-      ) : metadatas.map((data) => (
-        <SingleMetaDataResult key={data.uuid} metadata={data} showMunicipality showCategory />
-      ))}
+      ) : (
+        metadataList
+      )}
     </Wrapper>
   );
 };
