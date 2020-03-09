@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Bubbles } from 'styled-icons/icomoon/Bubbles';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
-import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
-import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
+import { MetadataURL } from './MetadataURL';
+import { ReleaseStateLabel } from './ReleaseStateLabel';
 import { alertActions } from '../../state/actions/alert';
-import { FeedbackLabel } from '../../sharedComponents/Metadata/FeedbackLabel';
+import { FeedbackLabel } from './FeedbackLabel';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5rem;
@@ -43,7 +43,7 @@ const MetaDataDescription = styled.div`
   }
 `;
 
-const MetaDataMunicipalityLink = styled(Link)`
+const SmallLink = styled(Link)`
   & > p {
     color: #3e3e3e;
     font-size: 0.9rem;
@@ -111,9 +111,10 @@ const StarEmptyStyled = styled(StarEmpty)`
   color: #5d5d5d;
 `;
 
-const SingleMetaDataResult = ({ metadata }) => {
+const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
   const {
-    uuid, formatName, url, description, releaseState, experiencePostGuid, municipalityName,
+    uuid, formatName, url, description, releaseState,
+    experiencePostGuid, municipalityName, metadataTypeName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
@@ -195,9 +196,17 @@ const SingleMetaDataResult = ({ metadata }) => {
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
           <FeedbackLabel hasFeedback={hasFeedback} />
-          <MetaDataMunicipalityLink to={`/municipalities/${municipalityName}`}>
-            <p>{municipalityName}</p>
-          </MetaDataMunicipalityLink>
+          { showMunicipality ? (
+            <SmallLink to={`/municipalities/${municipalityName}`}>
+              <p>{municipalityName}</p>
+            </SmallLink>
+          ) : null }
+          { showCategory ? (
+              <SmallLink to={`/dataType/${metadataTypeName}`}>
+                <p>{metadataTypeName}</p>
+              </SmallLink>
+          ) : null }
+
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
@@ -225,10 +234,16 @@ SingleMetaDataResult.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
+    metadataTypeName: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
+  showCategory: PropTypes.bool,
+  showMunicipality: PropTypes.bool,
 };
-
+SingleMetaDataResult.defaultProps = {
+  showCategory: false,
+  showMunicipality: false,
+};
 export {
   SingleMetaDataResult,
 };
