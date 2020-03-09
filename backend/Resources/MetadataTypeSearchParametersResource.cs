@@ -9,7 +9,7 @@ namespace OpenData.Resources
     public class MetadataTypeSearchParametersResource
     {
         public string Name { get; set; } = "";
-        public IEnumerable<Tag> Tags { get; set; }
+        public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
         public string Keywords { get; set; } = "";
     }
 }

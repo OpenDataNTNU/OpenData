@@ -151,7 +151,7 @@ namespace OpenData.Controllers
 		[HttpGet("search")]
 		public async Task<IActionResult> FilterSearchAsync([FromBody] MetadataTypeSearchParametersResource searchParams)
 		{
-			var resources = await _metadataTypeService.FilterSearchAsync(searchParams);
+			IEnumerable<MetadataType> resources = await _metadataTypeService.FilterSearchAsync(searchParams);
 			return Ok(resources);
 		}
 	}
