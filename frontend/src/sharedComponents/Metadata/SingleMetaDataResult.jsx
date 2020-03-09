@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Bubbles } from 'styled-icons/icomoon/Bubbles';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
-import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
-import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
+import { MetadataURL } from './MetadataURL';
+import { ReleaseStateLabel } from './ReleaseStateLabel';
 import { alertActions } from '../../state/actions/alert';
-import { FeedbackLabel } from '../../sharedComponents/Metadata/FeedbackLabel';
+import { FeedbackLabel } from './FeedbackLabel';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5rem;
@@ -43,7 +43,7 @@ const MetaDataDescription = styled.div`
   }
 `;
 
-const MetaDataMunicipalityLink = styled(Link)`
+const SmallLink = styled(Link)`
   & > p {
     color: #3e3e3e;
     font-size: 0.9rem;
@@ -111,13 +111,14 @@ const StarEmptyStyled = styled(StarEmpty)`
   color: #5d5d5d;
 `;
 
-const SingleMetaDataResult = ({ metadata }) => {
+const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
   const {
-    uuid, formatName, url, description, releaseState, experiencePostGuid, municipalityName,
+    uuid, formatName, url, description, releaseState,
+    experiencePostGuid, municipalityName, metadataTypeName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
-  const commentsCount = 0;
+  const [commentsCount, setCommentsCount] = useState(-1);
   const hasFeedback = experiencePostGuid !== null;
 
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ const SingleMetaDataResult = ({ metadata }) => {
   const { token } = user || { token: null };
 
   useEffect(() => {
-    const internal = async () => {
+    const getLikes = async () => {
       try {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
           method: 'GET',
@@ -144,13 +145,30 @@ const SingleMetaDataResult = ({ metadata }) => {
         if (status === 404) {
           dispatch(alertActions.error('Could not fetch likes for dataset.'));
         } else if (status === 401) {
-          dispatch(alertActions.error('Not authorized to see likes for dataset.'));
+          dispatch(alertActions.info('Not authorized to see likes for dataset.'));
         } else {
           dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
         }
       }
     };
-    internal();
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/Comment/metadata/${uuid}`);
+        const comments = await res.json();
+        setCommentsCount(comments.length);
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not fetch comments count for dataset.'));
+        } else if (status === 401) {
+          dispatch(alertActions.info('Not authorized to see comments count for dataset.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch comments count. Please try again later.'));
+        }
+      }
+    };
+    getLikes();
+    getComments();
   }, []);
 
   const handleLike = async () => {
@@ -178,9 +196,17 @@ const SingleMetaDataResult = ({ metadata }) => {
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
           <FeedbackLabel hasFeedback={hasFeedback} />
-          <MetaDataMunicipalityLink to={`/municipalities/${municipalityName}`}>
-            <p>{municipalityName}</p>
-          </MetaDataMunicipalityLink>
+          { showMunicipality ? (
+            <SmallLink to={`/municipalities/${municipalityName}`}>
+              <p>{municipalityName}</p>
+            </SmallLink>
+          ) : null }
+          { showCategory ? (
+            <SmallLink to={`/dataType/${metadataTypeName}`}>
+              <p>{metadataTypeName}</p>
+            </SmallLink>
+          ) : null }
+
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
@@ -208,10 +234,16 @@ SingleMetaDataResult.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
+    metadataTypeName: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
+  showCategory: PropTypes.bool,
+  showMunicipality: PropTypes.bool,
 };
-
+SingleMetaDataResult.defaultProps = {
+  showCategory: false,
+  showMunicipality: false,
+};
 export {
   SingleMetaDataResult,
 };

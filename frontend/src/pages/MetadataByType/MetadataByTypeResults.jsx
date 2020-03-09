@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
-import { SingleMetaDataResult } from './SingleMetaDataResult';
+import { SingleMetaDataResult } from '../../sharedComponents/Metadata/SingleMetaDataResult';
 import { alertActions } from '../../state/actions/alert';
 
 const CategoriesContainer = styled.div`
@@ -120,7 +120,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
         { metadataSet.length === 0 ? (
           <NoResult text={`No results were found for ${metadataTypeName}.`} />
         ) : metadataSet.map((m) => (
-          <SingleMetaDataResult key={m.uuid} metadata={m} />
+          <SingleMetaDataResult key={m.uuid} metadata={m} showMunicipality />
         ))}
       </ResultsContainer>
     </CategoriesContainer>
