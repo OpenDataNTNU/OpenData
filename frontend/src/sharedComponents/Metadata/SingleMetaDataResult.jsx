@@ -202,9 +202,9 @@ const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
             </SmallLink>
           ) : null }
           { showCategory ? (
-              <SmallLink to={`/dataType/${metadataTypeName}`}>
-                <p>{metadataTypeName}</p>
-              </SmallLink>
+            <SmallLink to={`/dataType/${metadataTypeName}`}>
+              <p>{metadataTypeName}</p>
+            </SmallLink>
           ) : null }
 
           <p>{description}</p>
