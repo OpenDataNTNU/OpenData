@@ -20,7 +20,7 @@ services:
       - 3739:8080
   server:
     build:
-      context: ./
+      context: ../
       dockerfile: Dockerfile.dotnet
     environment:
       ASPNETCORE_URLS: "http://*:9000"

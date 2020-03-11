@@ -1,10 +1,12 @@
 #!/bin/bash
 
-cd /srv/opendata-backend
 
 echo "Waiting for DB to fire up...."
-./wait-for-it.sh db:3306 -t 30
-sleep 2
+./wait-for-it.sh mysql:3306 -t 120
 
+echo "Switching directory"
+cd /srv/opendata-backend
+
+echo "Restoring..."
 dotnet restore
 dotnet watch run
