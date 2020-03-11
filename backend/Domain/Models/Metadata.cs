@@ -28,10 +28,6 @@ namespace OpenData.Domain.Models
 
 		public IList<MetadataCommentMapping> Comments { get; set; }
 
-#nullable enable
-		[ForeignKey("ExperiencePost")]
-		public Guid? ExperiencePostGuid { get; set; }
-		public ExperiencePost? ExperiencePost { get; set; }
-#nullable disable
+		public IList<MetadataExperiencePostMapping> ExperiencePosts { get; set; }
 	}
 }
