@@ -114,6 +114,10 @@ const Header = () => {
         history.push('/logout');
         break;
       }
+      case 'Search': {
+        history.push('/search');
+        break;
+      }
       default: {
         break;
       }
@@ -133,6 +137,9 @@ const Header = () => {
             <Nav>
               <NavInternalLink to="/municipalities">
                 <p>Search by municipality</p>
+              </NavInternalLink>
+              <NavInternalLink to="/search">
+                <p>Search</p>
               </NavInternalLink>
               {
                 role === 1
@@ -156,6 +163,7 @@ const Header = () => {
               list={[
                 { id: 'Home', title: 'Home' },
                 { id: 'Search by municipality', title: 'Search by municipality' },
+                { id: 'Search', title: 'Search' },
                 ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' },
                   { id: 'My data', title: 'My data' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
