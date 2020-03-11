@@ -102,7 +102,7 @@ namespace OpenData.Controllers
 
 			var result = await _experiencePostService.SaveAsync(experience);
 
-			metadata.ExperiencePost = experience;
+			metadata.ExperiencePosts.Add(new MetadataExperiencePostMapping() { ExperiencePost = experience, Metadata = metadata });
 			//commit change to metadata
 			await _unitOfWork.CompleteAsync();
 

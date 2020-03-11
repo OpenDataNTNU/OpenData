@@ -91,7 +91,6 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
             builder.Entity<Metadata>().Property( p => p.Url);
             builder.Entity<Metadata>().HasOne(p => p.Format);
-            builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
 
             builder.Entity<Metadata>().HasData(
@@ -145,6 +144,12 @@ namespace OpenData.Persistence.Contexts
                 .HasOne(m => m.ExperiencePost)
                 .WithMany(e => e.Comments)
                 .HasForeignKey(m => m.ExperiencePostUuid);
+
+            builder.Entity<MetadataExperiencePostMapping>().HasKey(p => new {p.ExperiencePostUuid, p.MetadataUuid});
+            builder.Entity<MetadataExperiencePostMapping>()
+                .HasOne(m => m.Metadata)
+                .WithMany(e => e.ExperiencePosts)
+                .HasForeignKey(m => m.MetadataUuid);
 
             builder.Entity<Tag>().ToTable("Tags");
             builder.Entity<Tag>().HasKey(p => p.Name);
