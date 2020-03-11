@@ -40,5 +40,20 @@ namespace OpenData.Services
                 return new SaveMetadataResponse($"An error occurred when saving the category: {ex.Message}");
             }
         }
+
+        public async Task PutDataSourceAsync(DataSource dataSource)
+        {
+            await _metadataRepository.PutDataSourceAsync(dataSource);
+        }
+
+        public async Task DeleteDataSourceAsync(Guid dataSourceUuid)
+        {
+            await _metadataRepository.DeleteDataSourceAsync(dataSourceUuid);
+        }
+
+        public async Task<DataSource> GetDataSourceByUuid(Guid dataSourceUuid)
+        {
+            return await _metadataRepository.GetDataSourceByUuid(dataSourceUuid);
+        }
     }
 }

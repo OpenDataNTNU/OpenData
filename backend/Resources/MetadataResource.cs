@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using OpenData.Resources;
 
 namespace OpenData.Domain.Models
 {
@@ -7,9 +8,7 @@ namespace OpenData.Domain.Models
 	{
 		public Guid Uuid { get; set; }
 
-		public string Url { get; set; }
 		public string Description { get; set; }
-		public string FormatName { get; set; }
 
 		public EReleaseState ReleaseState { get; set; }
 
@@ -18,5 +17,7 @@ namespace OpenData.Domain.Models
 		public string MunicipalityName { get; set; }
 
 		public string ExperiencePostGuid { get; set; }
+
+		public IList<DataSourceResource> DataSource { get; set; }
 	}
 }

@@ -17,6 +17,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
+        public DbSet<DataSource> DataSource { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -85,40 +86,44 @@ namespace OpenData.Persistence.Contexts
                 new MetadataType { Name = "Corona virus cases", Description = "Statistics about corona virus cases"},
                 new MetadataType { Name = "Car history", Description = "Wroom wroom"}
             );
-            
+
+            builder.Entity<DataSource>().ToTable("DataSource");
+            builder.Entity<DataSource>().HasKey(d => d.Uuid);
+            builder.Entity<DataSource>().HasOne(d => d.DataFormat);
+            builder.Entity<DataSource>().HasOne(d => d.Metadata);
+
             builder.Entity<Metadata>().ToTable("Metadata");
             builder.Entity<Metadata>().HasKey(p => p.Uuid);
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
-            builder.Entity<Metadata>().Property( p => p.Url);
-            builder.Entity<Metadata>().HasOne(p => p.Format);
             builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
+            builder.Entity<Metadata>().HasMany(p => p.DataSource).WithOne(d => d.Metadata).HasForeignKey(d => d.MetadataUuid);
 
             builder.Entity<Metadata>().HasData(
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="Pling Plong", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
                                MetadataTypeName = "Cycle history"},
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="We have a lot of bikes", ReleaseState = EReleaseState.Yellow, MunicipalityName = "Oslo",
                                MetadataTypeName = "Cycle history"},
 
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="Cycle theft for Trondheim. Contains city bike theft", ReleaseState = EReleaseState.Green, MunicipalityName = "Trondheim",
                                MetadataTypeName = "Cycle theft"},
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="We have a lot of bikes. Some get stolen. Not the city bikes though.", ReleaseState = EReleaseState.Released, MunicipalityName = "Oslo",
                                MetadataTypeName = "Cycle theft"},
 
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
                                MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="", ReleaseState = EReleaseState.Green, MunicipalityName = "Oslo",
                                MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="", ReleaseState = EReleaseState.Red, MunicipalityName = "Bodø",
                                MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
+                new Metadata { Uuid = Guid.NewGuid(),
                                Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Test",
                                MetadataTypeName = "Populasjon"}
             );

@@ -175,9 +175,6 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
 
-			if (resource.ReleaseState == EReleaseState.Released && string.IsNullOrEmpty(resource.Url))
-				return BadRequest("Url has to be supplied when releasestate is 'Released'");
-
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
 			if (user.UserType == UserType.Municipality && user.MunicipalityName == resource.MunicipalityName)
@@ -196,6 +193,42 @@ namespace OpenData.Controllers
 			}
 
             return Unauthorized("Invalid permissions!");
+		}
+
+		[HttpPut("url")]
+		public async Task<IActionResult> PutUrlAsync([FromBody] NewDataSourceResource newDataSource)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+			var metadata = await _metadataService.GetByUuidAsync(newDataSource.MetadataUuid);
+
+            if(user.MunicipalityName != metadata.MunicipalityName)
+				return BadRequest("Invalid permissions for given Metadata! Must match Municipality.");
+
+			DataSource dataSource = _mapper.Map<NewDataSourceResource, DataSource>(newDataSource);
+			await _metadataService.PutDataSourceAsync(dataSource);
+			return Ok();
+        }
+
+		[HttpDelete("url")]
+		public async Task<IActionResult> DeleteUrlAsync([FromBody] DeleteDataSourceResource deleteDataSourceResource)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+			var dataSource = await _metadataService.GetDataSourceByUuid(deleteDataSourceResource.DataSourceUuid);
+			var metadata = await _metadataService.GetByUuidAsync(dataSource.MetadataUuid);
+
+			if (user.MunicipalityName != metadata.MunicipalityName)
+				return BadRequest("Invalid permissions for given Metadata! Must match Municipality.");
+
+			await _metadataService.DeleteDataSourceAsync(deleteDataSourceResource.DataSourceUuid);
+			return Ok();
 		}
 
 	}
