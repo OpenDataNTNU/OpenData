@@ -195,6 +195,12 @@ namespace OpenData.Controllers
             return Unauthorized("Invalid permissions!");
 		}
 
+		/// <summary>
+		/// Adds a new DataSource, and connects it to a given Metadata.
+		/// Ensures the user is a member of the correct municipality, therby ensuring only relevant people can add DataSources.
+		/// </summary>
+		/// <param name="newDataSource">The data for the new DataSource to add.</param>
+		/// <returns>HTTP response code</returns>
 		[HttpPut("url")]
 		public async Task<IActionResult> PutUrlAsync([FromBody] NewDataSourceResource newDataSource)
 		{
@@ -213,6 +219,12 @@ namespace OpenData.Controllers
 			return Ok();
         }
 
+        /// <summary>
+        /// Deletes a given DataSource, and it will therefore not be connected to the Metadata it was create for.
+        /// Ensures the user is a member of the correct municipality, therby ensuring only relevant people can delete DataSources.
+        /// </summary>
+        /// <param name="deleteDataSourceResource">The uuid of the DataSource to be deleted.</param>
+        /// <returns>HTTP response code</returns>
 		[HttpDelete("url")]
 		public async Task<IActionResult> DeleteUrlAsync([FromBody] DeleteDataSourceResource deleteDataSourceResource)
 		{
