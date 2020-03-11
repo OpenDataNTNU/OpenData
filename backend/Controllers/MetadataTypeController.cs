@@ -141,5 +141,19 @@ namespace OpenData.Controllers
 			await _unitOfWork.CompleteAsync();
 			return Ok(res);
 		}
+
+		/// <summary>
+		/// Filter/search on MetadataTypes
+		/// </summary>
+		/// <param name="searchParams">SearchParams object that includes name, Tags and keywords</param>
+		/// <returns>The return type of this is enum list of metadatatypes</returns>
+		[AllowAnonymous]
+		[HttpGet("search")]
+		public async Task<IActionResult> FilterSearchAsync([FromBody] MetadataTypeSearchParametersResource searchParams)
+		{
+			var metadataTypes = await _metadataTypeService.FilterSearchAsync(searchParams);
+			var retMetadataTypes = _mapper.Map<IEnumerable<MetadataType>, IEnumerable<MetadataTypeResource>>(metadataTypes);
+			return Ok(retMetadataTypes);
+		}
 	}
 }
