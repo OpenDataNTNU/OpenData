@@ -92,6 +92,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().Property( p => p.Url);
             builder.Entity<Metadata>().HasOne(p => p.Format);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
+            builder.Entity<Metadata>().HasMany(p => p.ExperiencePosts).WithOne(p => p.Metadata).HasForeignKey(p => p.MetadataUuid);
 
             builder.Entity<Metadata>().HasData(
                 new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
