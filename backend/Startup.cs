@@ -8,13 +8,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
+using OpenData.Persistence.Repositories;
 using OpenData.Persistence.Contexts;
 using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
-using OpenData.Persistence.Repositories;
-using OpenData.Services;
 using OpenData.Domain.Models;
 using OpenData.Middleware;
+using OpenData.Services;
+using OpenData.Filters;
 
 using System;
 using System.IO;
@@ -27,11 +28,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
 
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-
-using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Services;
-
 
 namespace OpenData
 {
@@ -143,7 +139,7 @@ namespace OpenData
                     }
                 });
 
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
+                c.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
             }); 
         }
 
