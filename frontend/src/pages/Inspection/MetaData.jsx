@@ -21,6 +21,7 @@ const MetadataCard = styled.div`
   overflow: hidden;
   min-height: 20rem;
   min-width: 35rem;
+  overflow: visible;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
