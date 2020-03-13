@@ -1,14 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OpenData.backend;
-using OpenData.Controllers;
-using OpenData.Domain.Models;
-using OpenData.Domain.Repositories;
-using OpenData.Domain.Services;
-using OpenData.Persistence.Contexts;
-using OpenData.Persistence.Repositories;
-using OpenData.Services;
+﻿using OpenData.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,7 +10,6 @@ namespace OpenData.backend
     : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
 
-        MunicipalityController _controller;
         private readonly CustomWebApplicationFactory<Startup> _factory;
         private readonly List<Municipality> _municipality;
         private readonly Random _random;
@@ -40,33 +29,25 @@ namespace OpenData.backend
             _random = new Random();
         }
 
-        [Fact]
-        public void Get_WhenCalled_ReturnsOkResult()
-        {
-            // Arrange
-            
-
-            // Act
-            var okResult = _controller.GetAllAsync();
-
-            // Assert
-            Assert.IsType<OkObjectResult>(okResult.Result);
-        }
-
         [Theory]
         [InlineData("/api/municipality")]
-        public async Task Get_EndpointsReturnSuccess(string url)
+        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
         {
             // Arrange
             var client = _factory.CreateDefaultClient();
 
             // Act
             var getDefaultResponse = await client.GetAsync(url);
-            var getByNameResponse = await client.GetAsync(url + "/" + _municipality[_random.Next(0, _municipality.Count)].Name);
+            var getByNameResponse = await client.GetAsync(url + "/" + _municipality[_random.Next(0,
+                _municipality.Count)].Name);
 
             // Assert
             getDefaultResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             getByNameResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                getDefaultResponse.Content.Headers.ContentType.ToString());
+            Assert.Equal("application/json; charset=utf-8",
+                getByNameResponse.Content.Headers.ContentType.ToString());
         }
 
     }
