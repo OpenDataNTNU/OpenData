@@ -52,19 +52,26 @@ namespace OpenData.backend
         //        getDefaultResponse.Content.Headers.ContentType.ToString());
         //}
 
+        /// <summary>
+        /// Asserts unauthorized results for all HttpGet calls on the user controller
+        /// </summary>
         [Theory]
         [InlineData("/api/user")]
+        [InlineData("/api/user/profile")]
         public async Task Get_InvalidScope_ReturnsUnauthorizedResult(string url)
         {
             // Arrange
+
             var client = _factory.CreateDefaultClient();
             var expected = HttpStatusCode.Unauthorized;
 
             // Act
-            var getDefaultResponse = await client.GetAsync(url);
+
+            var response = await client.GetAsync(url);
 
             // Assert
-            Assert.Equal(expected, getDefaultResponse.StatusCode);
+
+            Assert.Equal(expected, response.StatusCode);
         }
 
     }

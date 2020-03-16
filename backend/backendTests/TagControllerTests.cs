@@ -14,20 +14,45 @@ namespace OpenData.backend
             _factory = factory;
         }
 
+        /// <summary>
+        /// Asserts correct status code for all HttpGet calls on the tag controller
+        /// </summary>
         [Theory]
         [InlineData("/api/tag")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+        public async Task Get_EndpointsReturnSuccess(string url)
         {
             // Arrange
+
             var client = _factory.CreateDefaultClient();
 
             // Act
-            var getDefaultResponse = await client.GetAsync(url);
+
+            var response = await client.GetAsync(url);
 
             // Assert
-            getDefaultResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+        }
+
+        /// <summary>
+        /// Asserts correct content type for all HttpGet calls on the tag controller
+        /// </summary>
+        [Theory]
+        [InlineData("/api/tag")]
+        public async Task Get_CorrectContentType(string url)
+        {
+            // Arrange
+
+            var client = _factory.CreateDefaultClient();
+
+            // Act
+
+            var response = await client.GetAsync(url);
+
+            // Assert
+
             Assert.Equal("application/json; charset=utf-8",
-                getDefaultResponse.Content.Headers.ContentType.ToString());
+                response.Content.Headers.ContentType.ToString());
         }
 
     }

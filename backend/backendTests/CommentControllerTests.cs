@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Xunit;
 
 namespace OpenData.backend
@@ -15,29 +14,49 @@ namespace OpenData.backend
             _factory = factory;
         }
 
+        /// <summary>
+        /// Asserts correct status code for all HttpGet calls on the comment controller
+        /// </summary>
         [Theory]
-        [InlineData("/api/comment")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+        [InlineData("/api/comment/metadata/{metadataUuid}")]
+        [InlineData("/api/comment/experiencepost/{experiencePostUuid}")]
+        [InlineData("/api/comment/childcomments/{commentUuid}")]
+        public async Task Get_EndpointsReturnSuccess(string url)
         {
             // Arrange
+
             var client = _factory.CreateDefaultClient();
 
             // Act
-            var getDefaultResponse = await client.GetAsync(url);
-            var getByMetadataUuidResponse = await client.GetAsync(url + "/metadata/" + Guid.NewGuid());
-            var getByExperiencePostUuidResponse = await client.GetAsync(url + "/experiencepost/" + Guid.NewGuid());
-            var getByCommentUuidResponse = await client.GetAsync(url + "/childcomments/" + Guid.NewGuid());
+
+            var response = await client.GetAsync(url);
 
             // Assert
-            getByMetadataUuidResponse.EnsureSuccessStatusCode(); // Status Code 200-299
-            getByExperiencePostUuidResponse.EnsureSuccessStatusCode(); // Status Code 200-299
-            getByCommentUuidResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+        }
+
+        /// <summary>
+        /// Asserts correct content type for all HttpGet calls on the comment controller
+        /// </summary>
+        [Theory]
+        [InlineData("/api/comment/metadata/{metadataUuid}")]
+        [InlineData("/api/comment/experiencepost/{experiencePostUuid}")]
+        [InlineData("/api/comment/childcomments/{commentUuid}")]
+        public async Task Get_CorrectContentType(string url)
+        {
+            // Arrange
+
+            var client = _factory.CreateDefaultClient();
+
+            // Act
+
+            var response = await client.GetAsync(url);
+
+            // Assert
+
             Assert.Equal("application/json; charset=utf-8",
-                getByMetadataUuidResponse.Content.Headers.ContentType.ToString());
-            Assert.Equal("application/json; charset=utf-8",
-                getByExperiencePostUuidResponse.Content.Headers.ContentType.ToString());
-            Assert.Equal("application/json; charset=utf-8",
-                getByCommentUuidResponse.Content.Headers.ContentType.ToString());
+                response.Content.Headers.ContentType.ToString());
         }
 
     }
