@@ -34,7 +34,7 @@ namespace OpenData.Controllers
         /// <summary>
         /// Used to PUT comments related to a given Metadata.
         /// </summary>
-        /// <param name="metadataUuid"></param>
+        /// <param name="metadataUuid">UUID of the metadata to attach the comment to</param>
         /// <param name="newComment">New comment to be added.</param>
         /// <returns>The comment if it was added successfully</returns>
         [HttpPut("metadata/{metadataUuid}")]
@@ -51,7 +51,7 @@ namespace OpenData.Controllers
         /// <summary>
         /// Fethes all the comments by a given metadata GUID.
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="uuid">UUID of the metadata to fetch comments for</param>
         /// <returns>All of the comments for a given metadata GUID</returns>
         [AllowAnonymous]
         [HttpGet("metadata/{metadataUuid}")]
@@ -65,7 +65,7 @@ namespace OpenData.Controllers
         /// <summary>
         /// Used to PUT comments related to a given experience post.
         /// </summary>
-        /// <param name="experiencePostUuid"></param>
+        /// <param name="experiencePostUuid">UUID of experience post to attach the comment to</param>
         /// <param name="newComment">New comment to be added.</param>
         /// <returns>The comment if it was added successfully</returns>
         [HttpPut("experiencepost/{experiencePostUuid}")]
@@ -82,7 +82,7 @@ namespace OpenData.Controllers
         /// <summary>
         /// Fethes all the comments by a given experience post GUID.
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="uuid">UUID of experience post to fetch comments for</param>
         /// <returns>All of the comments for a given experience post GUID</returns>
         [AllowAnonymous]
         [HttpGet("experiencepost/{experiencePostUuid}")]

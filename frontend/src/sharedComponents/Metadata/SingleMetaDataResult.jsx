@@ -40,7 +40,6 @@ const CollapseIcon = styled(Shrink2)`
   color: dimgray;
 `;
 
-
 const SingleMetaDataResult = ({
   metadata, showCategory, showMunicipality, expanded,
 }) => {
@@ -83,7 +82,10 @@ SingleMetaDataResult.propTypes = {
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
-    experiencePostGuid: PropTypes.string,
+    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+      experiencePostUuid: PropTypes.string.isRequired,
+      metadataUuid: PropTypes.string.isRequired,
+    })),
   }).isRequired,
   showCategory: PropTypes.bool,
   showMunicipality: PropTypes.bool,
