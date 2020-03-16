@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Multiselect from 'react-widgets/lib/Multiselect';
@@ -31,18 +31,18 @@ const Select = styled(Multiselect)`
 `;
 
 export const SearchBar = ({ setQuery }) => {
-  const nameField = useRef('');
-  const descriptionField = useRef('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [municipalities, setMunicipalities] = useState([]);
 
   const allMunicipalities = useGetValidMunicipalities() || [];
-  const allMunicipalityNames = allMunicipalities.map(({ name }) => name);
+  const allMunicipalityNames = allMunicipalities.map(({ name: n }) => n);
 
 
   const updateQueries = () => {
     setQuery({
-      name: nameField.current.value,
-      description: descriptionField.current.value,
+      name,
+      description,
       municipalities,
     });
   };
@@ -50,8 +50,8 @@ export const SearchBar = ({ setQuery }) => {
   return (
     <OuterWrapper>
       <InputWrapper>
-        <input type="text" placeholder="Name" ref={nameField} />
-        <input type="text" placeholder="Description" ref={descriptionField} />
+        <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+        <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
         <Select
           data={allMunicipalityNames}
           value={municipalities}
