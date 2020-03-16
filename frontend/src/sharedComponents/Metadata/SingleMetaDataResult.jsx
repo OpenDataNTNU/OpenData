@@ -114,12 +114,12 @@ const StarEmptyStyled = styled(StarEmpty)`
 const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
   const {
     uuid, formatName, url, description, releaseState,
-    experiencePostGuid, municipalityName, metadataTypeName,
+    experiencePosts, municipalityName, metadataTypeName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
   const [commentsCount, setCommentsCount] = useState(-1);
-  const hasFeedback = experiencePostGuid !== null;
+  const hasFeedback = experiencePosts && experiencePosts.length > 0;
 
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
@@ -235,7 +235,10 @@ SingleMetaDataResult.propTypes = {
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
-    experiencePostGuid: PropTypes.string,
+    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+      experiencePostUuid: PropTypes.string.isRequired,
+      metadataUuid: PropTypes.string.isRequired,
+    })),
   }).isRequired,
   showCategory: PropTypes.bool,
   showMunicipality: PropTypes.bool,
