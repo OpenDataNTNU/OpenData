@@ -50,6 +50,7 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns all metadata types in the database.
 		/// </summary> 
+        /// <returns>All metadata types in the database</returns>
         [AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataTypeResource>> GetAllAsync()
@@ -62,6 +63,8 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns a single metadata type, and all its associated metadata entries.
 		/// </summary> 
+		/// <param name="name">Name of the metadata type to fetch</param>
+        /// <returns>The metadata type, if it exists</returns>
 		[AllowAnonymous]
 		[HttpGet("{name}")]
 		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(string name)
@@ -76,8 +79,10 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Allows the creation of a new Metadata Type
+		/// Creates a new Metadata Type
 		/// </summary>
+		/// <param name="resource">The metadata type to create</param>
+        /// <returns>The metadata type, if it was created successfully</returns>
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataTypeResource resource)
 		{
@@ -107,6 +112,9 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Adds a new tag to an existing metadata type.
 		/// </summary>
+		/// <param name="name">The metadata type to attach the tag to</param>
+		/// <param name="newTag">The tag to attach to the metadata type</param>
+        /// <returns>The metadata type, with the tag attached</returns>
 		[HttpPut("{name}/tag")]
 		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, string name)
 		{

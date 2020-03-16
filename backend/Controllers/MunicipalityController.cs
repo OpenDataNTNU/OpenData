@@ -26,6 +26,7 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns a list of all municipalities known to this service.
 		/// </summary> 
+        /// <returns>The municipalities that are stored in the database.</returns>
 		[HttpGet]
 		public async Task<IEnumerable<MunicipalityResource>> GetAllAsync()
 		{
@@ -37,6 +38,8 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns data about a single municipality
 		/// </summary> 
+		/// <param name="name">The municipality to fetch data about</param>
+        /// <returns>The municipality, if it exists</returns>
 		[HttpGet("{name}")]
 		public async Task<IActionResult> GetSingleAsync(string name)
 		{

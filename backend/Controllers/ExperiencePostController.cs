@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace OpenData.Controllers
 {
 	/// <summary>
-	/// Returns a list of experience posts
+	/// Experience posts are documentation regarding the work required to publish a metadata.
 	/// </summary> 
 	[Route("/api/[controller]")]
 	public class ExperiencePostController : Controller
@@ -45,6 +45,7 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns all experience posts in the database
 		/// </summary> 
+        /// <returns>A list of all experience posts</returns>
 		[HttpGet]
 		public async Task<IEnumerable<ExperiencePostResource>> GetAllAsync()
 		{
@@ -56,6 +57,8 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns a single metadata type, and all its associated metadata entries.
 		/// </summary> 
+		/// <param name="uuid">UUID of experience post to fetch</param>
+        /// <returns>The experience post, if it exists.</returns>
 		[HttpGet("{uuid}")]
 		public async Task<ExperiencePostResource> GetExperiencePost(string uuid)
 		{
@@ -71,6 +74,9 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Adds a new tag to an existing experience post.
 		/// </summary>
+		/// <param name="newTag">The tag to attach to the experience post.</param>
+		/// <param name="uuid">UUID of the experience post that the tag should be attached to</param>
+        /// <returns>The experience post, with the tag attached.</returns>
 		[HttpPut("{uuid}/tag")]
 		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, string uuid)
 		{
