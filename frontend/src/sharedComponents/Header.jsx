@@ -3,6 +3,7 @@ import { Link as ReactLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { Dropdown } from './Dropdown';
+import { HeaderLink } from './HeaderLink';
 
 const HeaderHTML = styled.header`
   padding: 0 1em 0 2em;
@@ -10,7 +11,7 @@ const HeaderHTML = styled.header`
   background-color: black;
   display: flex;
   align-items: center;
-
+ 
   @media screen and (max-width: 650px) {
     padding: 0 1em;
     justify-content: space-between;
@@ -26,27 +27,11 @@ const Nav = styled.nav`
   flex: 1;
 `;
 
-const HeaderLink = styled(ReactLink)`
+const Logo = styled(ReactLink)`
   padding: 0 0.5em;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.15);
-  }
-`;
-
-const NavInternalLink = styled(ReactLink)`
-  padding: 1em;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  &:last-child {
-    margin-left: auto;
   }
 `;
 
@@ -71,7 +56,7 @@ const Header = () => {
   useEffect(() => {
     // Update window dimensions
     updateWindowDimensions();
-    // Add resize eventlinstener to window
+    // Add resize event listener to window
     window.addEventListener('resize', updateWindowDimensions);
 
     // Remove eventlistener at unmount
@@ -122,31 +107,31 @@ const Header = () => {
 
   return (
     <HeaderHTML>
-      <HeaderLink to="/">
+      <Logo to="/">
         <h1>OpenData</h1>
-      </HeaderLink>
+      </Logo>
       {
-        // Show normal nav on widht over 600
+        // Show normal nav on width over 600
         // Else show responsive dropdown
         width > 650
           ? (
             <Nav>
-              <NavInternalLink to="/municipalities">
-                <p>Search by municipality</p>
-              </NavInternalLink>
+              <HeaderLink to="/dataType" text="Search by category" />
+              <HeaderLink to="/municipalities" text="Search by municipality" />
               {
                 role === 1
-                  ? <NavInternalLink to="/sendData">Submit data</NavInternalLink>
+                  ? <HeaderLink to="/sendData" text="Submit data" />
                   : null
               }
               {
                 role === 1
-                  ? <NavInternalLink to="/myData">My data</NavInternalLink>
+                  ? <HeaderLink to="/myData" text="My data" />
                   : null
               }
-              <NavInternalLink to={user && user.mail ? '/logout' : '/login'}>
-                <p>{user && user.mail ? 'Logout' : 'Sign in'}</p>
-              </NavInternalLink>
+              <HeaderLink
+                to={user && user.mail ? '/logout' : '/login'}
+                text={user && user.mail ? 'Logout' : 'Sign in'}
+              />
             </Nav>
           )
           : (
