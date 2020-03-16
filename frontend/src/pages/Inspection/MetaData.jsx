@@ -21,6 +21,7 @@ const MetadataCard = styled.div`
   overflow: hidden;
   min-height: 20rem;
   min-width: 35rem;
+  overflow: visible;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
@@ -72,7 +73,7 @@ export const MetaData = (props) => {
 
   const {
     uuid, municipalityName, formatName, url, metadataTypeName,
-    experiencePostGuid, releaseState, description,
+    experiencePosts, releaseState, description,
   } = data;
 
   return (
@@ -99,7 +100,7 @@ export const MetaData = (props) => {
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
-          experiencePostGuid={experiencePostGuid}
+          experiencePosts={experiencePosts}
           municipalityName={municipalityName}
         />
       </MetadataCard>
@@ -115,7 +116,10 @@ MetaData.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
-    experiencePostGuid: PropTypes.string,
+    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+      experiencePostUuid: PropTypes.string.isRequired,
+      metadataUuid: PropTypes.string.isRequired,
+    })),
     uuid: PropTypes.string,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
