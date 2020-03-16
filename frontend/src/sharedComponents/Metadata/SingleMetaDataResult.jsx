@@ -6,7 +6,7 @@ import { Shrink2 } from 'styled-icons/icomoon/Shrink2';
 import { ContentCollapsed, ContentExpanded } from './ContentComps';
 
 const SingleMetaDataResultContainer = styled.div`
-  margin: 0.5rem;
+  margin: 0.4rem 0.5rem;
   border-radius: 0.5rem;
   overflow: hidden;
   padding: 0;
@@ -14,7 +14,7 @@ const SingleMetaDataResultContainer = styled.div`
   flex-direction: row;
   background-color: #f3f3f3;
   max-width: 100%;
-  box-shadow: 0 0.05rem 0.25rem #c4c4c4; 
+  box-shadow: 0 0.05rem 0.20rem #d1d1d1; 
 `;
 
 const ExpansionBar = styled.div`
@@ -41,10 +41,12 @@ const CollapseIcon = styled(Shrink2)`
 `;
 
 
-const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
-  const [expanded, setExpanded] = useState(false);
+const SingleMetaDataResult = ({
+  metadata, showCategory, showMunicipality, expanded,
+}) => {
+  const [expandedState, setExpandedState] = useState(expanded);
   const handleExpansion = () => {
-    setExpanded(!expanded);
+    setExpandedState(!expandedState);
   };
   return (
     <SingleMetaDataResultContainer>
@@ -53,7 +55,7 @@ const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
           { expanded ? <CollapseIcon /> : <ExpandIcon /> }
         </ExpansionButton>
       </ExpansionBar>
-      { expanded
+      { expandedState
         ? (
           <ContentExpanded
             metadata={metadata}
@@ -85,10 +87,12 @@ SingleMetaDataResult.propTypes = {
   }).isRequired,
   showCategory: PropTypes.bool,
   showMunicipality: PropTypes.bool,
+  expanded: PropTypes.bool,
 };
 SingleMetaDataResult.defaultProps = {
   showCategory: false,
   showMunicipality: false,
+  expanded: false,
 };
 export {
   SingleMetaDataResult,

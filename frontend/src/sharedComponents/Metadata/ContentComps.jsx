@@ -7,7 +7,6 @@ import { Bubbles } from 'styled-icons/icomoon/Bubbles';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
 import { MetadataURL } from './MetadataURL';
-import { FeedbackLabel } from './FeedbackLabel';
 import { alertActions } from '../../state/actions/alert';
 import { ReleaseStateLabel } from './ReleaseStateLabel';
 
@@ -18,11 +17,15 @@ const ContentExpandedWrapper = styled.div`
   flex: 1;
 `;
 const ContentCollapsedWrapper = styled.div`
-  padding: 0.1rem 0.3rem;
+  padding: 0.2rem 0.3rem 0.4rem 0.3rem;
   flex: 1;
   background-color: white;
-  & p {
-    font-size: 0.9rem;
+`;
+
+const CollapsedLink = styled(Link)`
+  font-size: 0.9rem;
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -122,7 +125,7 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
   return (
     <ContentCollapsedWrapper>
       <div>
-        <ReleaseStateLabel releaseState={releaseState} />
+        <ReleaseStateLabel compact releaseState={releaseState} />
         { showMunicipality ? (
           <SmallLink to={`/municipalities/${municipalityName}`}>
             <p>{municipalityName}</p>
@@ -135,7 +138,7 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
         ) : null }
       </div>
       <div>
-        <Link to={`/dataset/${uuid}`}>{description}</Link>
+        <CollapsedLink to={`/dataset/${uuid}`}>{description}</CollapsedLink>
       </div>
     </ContentCollapsedWrapper>
   );
@@ -143,13 +146,11 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
 const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
   const {
     uuid, formatName, url, description, releaseState,
-    experiencePostGuid, municipalityName, metadataTypeName,
+    municipalityName, metadataTypeName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
   const [commentsCount, setCommentsCount] = useState(0);
-  const hasFeedback = experiencePostGuid !== null;
-
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
@@ -224,7 +225,6 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <FeedbackLabel hasFeedback={hasFeedback} />
           { showMunicipality ? (
             <SmallLink to={`/municipalities/${municipalityName}`}>
               <p>{municipalityName}</p>
