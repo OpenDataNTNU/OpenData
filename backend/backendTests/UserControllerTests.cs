@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
@@ -20,28 +21,50 @@ namespace OpenData.backend
             _factory = factory;
         }
 
+        //[Theory]
+        //[InlineData("/api/user")]
+        //public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+        //{
+        //    // Arrange
+        //    var client = _factory.WithWebHostBuilder(builder =>
+        //    {
+        //        builder.ConfigureTestServices(services =>
+        //        {
+        //            services.AddAuthentication("Test")
+        //                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+        //                    "Test", options => { });
+        //        });
+        //    })
+        //    .CreateClient(new WebApplicationFactoryClientOptions
+        //    {
+        //        AllowAutoRedirect = false,
+        //    });
+
+        //    client.DefaultRequestHeaders.Authorization =
+        //        new AuthenticationHeaderValue("Test");
+
+        //    // Act
+        //    var getDefaultResponse = await client.GetAsync(url);
+
+        //    // Assert
+        //    getDefaultResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+        //    Assert.Equal("application/json; charset=utf-8",
+        //        getDefaultResponse.Content.Headers.ContentType.ToString());
+        //}
+
         [Theory]
         [InlineData("/api/user")]
-        public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
+        public async Task Get_InvalidScope_ReturnsUnauthorizedResult(string url)
         {
             // Arrange
-            var factory = _factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(services =>
-                {
-                    services.AddAuthentication("Test").AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
-                });
-            });
-            var client = factory.CreateClient( new WebApplicationFactoryClientOptions { AllowAutoRedirect = false } );
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Test");
+            var client = _factory.CreateDefaultClient();
+            var expected = HttpStatusCode.Unauthorized;
 
             // Act
             var getDefaultResponse = await client.GetAsync(url);
 
             // Assert
-            getDefaultResponse.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("application/json; charset=utf-8",
-                getDefaultResponse.Content.Headers.ContentType.ToString());
+            Assert.Equal(expected, getDefaultResponse.StatusCode);
         }
 
     }
