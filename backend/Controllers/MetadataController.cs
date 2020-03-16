@@ -65,7 +65,7 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Returns a single metadata object, and some more granular information than what is retured by `/api/Matadata/`
+		/// Returns a single metadata object, and some more granular information than what is returned by `/api/Matadata/`
 		/// </summary>
 		/// <param name="uuid">UUID of the metadata to fetch</param>
         /// <returns>The metadata object</returns>
