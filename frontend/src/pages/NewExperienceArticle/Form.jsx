@@ -84,8 +84,7 @@ const Form = () => {
   let metadatas = !id ? useGetMetadatas() : [];
   // Only show onces that isnt connected to an article
   // map the uuid as we only need that (should be name once we get that)
-  metadatas = metadatas ? metadatas.filter((m) => !m.experiencePostGuid)
-    .filter((m) => m.municipalityName === municipalityName)
+  metadatas = metadatas ? metadatas.filter((m) => m.municipalityName === municipalityName)
     .map((m) => m.uuid) : [];
   const [metadataId, setMetadataId] = useState('');
   const [tags, setTags] = useState([]);
