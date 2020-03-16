@@ -51,6 +51,10 @@ namespace OpenData.Controllers
 			this.userService = userService;
 		}
 
+		/// <summary>
+		/// Returns a list of all metadata objects in the database
+		/// </summary> 
+        /// <returns>All metadata objects</returns>
 		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataResource>> GetAllAsync()
@@ -61,8 +65,10 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Returns a single metadata type, and all its associated metadata entries.
+		/// Returns a single metadata object, and some more granular information than what is returned by `/api/Matadata/`
 		/// </summary>
+		/// <param name="uuid">UUID of the metadata to fetch</param>
+        /// <returns>The metadata object</returns>
         [AllowAnonymous]
 		[HttpGet("{uuid}")]
 		public async Task<MetadataResource> GetMetadata(string uuid)
@@ -77,8 +83,11 @@ namespace OpenData.Controllers
 		}
 
 		/// <summary>
-		/// Returns a single metadata type, and all its associated metadata entries.
+		/// Creates an experience post, and attaches it to a metadata object.
 		/// </summary> 
+		/// <param name="uuid">UUID of the metadata to attach the experience to</param>
+		/// <param name="experienceResource">The experience post to create</param>
+        /// <returns>The experience post, if everything was successful</returns>
 		[HttpPut("{uuid}/experience")]
 		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
 		{
@@ -169,6 +178,8 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Creates a metadata object.
 		/// </summary> 
+		/// <param name="resource">The metadata object to be created</param>
+        /// <returns>The metadata, if everything was successful</returns>
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
 		{
