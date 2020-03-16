@@ -9,7 +9,6 @@ import { StarEmpty } from 'styled-icons/icomoon/StarEmpty';
 import { MetadataURL } from './MetadataURL';
 import { ReleaseStateLabel } from './ReleaseStateLabel';
 import { alertActions } from '../../state/actions/alert';
-import { FeedbackLabel } from './FeedbackLabel';
 
 const SingleMetaDataResultContainer = styled.div`
   margin: 0.5rem;
@@ -114,12 +113,11 @@ const StarEmptyStyled = styled(StarEmpty)`
 const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
   const {
     uuid, formatName, url, description, releaseState,
-    experiencePosts, municipalityName, metadataTypeName,
+    municipalityName, metadataTypeName,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
   const [commentsCount, setCommentsCount] = useState(-1);
-  const hasFeedback = experiencePosts && experiencePosts.length > 0;
 
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
@@ -195,7 +193,6 @@ const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
       <MetaDataContent>
         <MetaDataDescription>
           <ReleaseStateLabel releaseState={releaseState} />
-          <FeedbackLabel hasFeedback={hasFeedback} />
           { showMunicipality ? (
             <SmallLink to={`/municipalities/${municipalityName}`}>
               <p>{municipalityName}</p>

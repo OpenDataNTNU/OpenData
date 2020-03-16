@@ -126,12 +126,12 @@ const FeedbackLink = ({ experiencePosts }) => {
                     ? (
                       <Dropdown>
                         {
-                          experiencePosts.map((experiencePost, index) => (
+                          experiencePosts.map((experiencePost) => (
                             <InnerDropdownLink>
                               <InnerLink to={`/articles/${experiencePost.experiencePostUuid}`}>
                                 Article
                                 {' '}
-                                {index + 1}
+                                {experiencePost.title}
                               </InnerLink>
                             </InnerDropdownLink>
                           ))
