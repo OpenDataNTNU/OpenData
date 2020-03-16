@@ -101,7 +101,7 @@ const Icon = styled(Book)`
   padding: 0.3rem;
 `;
 
-const FeedbackLink = ({ experiencePostGuid }) => {
+const FeedbackLink = ({ experiencePosts }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const onClick = (e) => {
@@ -113,8 +113,8 @@ const FeedbackLink = ({ experiencePostGuid }) => {
   return (
     <Wrapper>
       {
-      experiencePostGuid
-        ? [experiencePostGuid.length > 1
+      experiencePosts && experiencePosts.length > 0
+        ? [experiencePosts.length > 1
           ? (
             <DropdownLink showDropdown={showDropdown}>
               <IconWrapper onClick={onClick}>
@@ -125,9 +125,17 @@ const FeedbackLink = ({ experiencePostGuid }) => {
                   showDropdown
                     ? (
                       <Dropdown>
-                        <InnerDropdownLink><InnerLink to="/">Link 1</InnerLink></InnerDropdownLink>
-                        <InnerDropdownLink><InnerLink to="/">Link 1</InnerLink></InnerDropdownLink>
-                        <InnerDropdownLink><InnerLink to="/">Link 1</InnerLink></InnerDropdownLink>
+                        {
+                          experiencePosts.map((experiencePost, index) => (
+                            <InnerDropdownLink>
+                              <InnerLink to={`/articles/${experiencePost.experiencePostUuid}`}>
+                                Article
+                                {' '}
+                                {index + 1}
+                              </InnerLink>
+                            </InnerDropdownLink>
+                          ))
+                        }
                       </Dropdown>
                     )
                     : null
@@ -135,7 +143,7 @@ const FeedbackLink = ({ experiencePostGuid }) => {
             </DropdownLink>
           )
           : (
-            <Link to={`/articles/${experiencePostGuid}`}>
+            <Link to={`/articles/${experiencePosts[0].experiencePostUuid}`}>
               <Icon />
               <p>Experience Article</p>
             </Link>
@@ -147,11 +155,14 @@ const FeedbackLink = ({ experiencePostGuid }) => {
 };
 
 FeedbackLink.propTypes = {
-  experiencePostGuid: PropTypes.string,
+  experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+    experiencePostUuid: PropTypes.string.isRequired,
+    metadataUuid: PropTypes.string.isRequired,
+  })),
 };
 
 FeedbackLink.defaultProps = {
-  experiencePostGuid: null,
+  experiencePosts: [],
 };
 
 export {

@@ -64,7 +64,7 @@ const WriteLink = styled(InnerLink)`
   font-size: 0.8rem;
 `;
 
-const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
+const MetadataToolbar = ({ uuid, experiencePosts, municipalityName }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState(0);
   const [isLiked, setLiked] = useState(false);
@@ -130,7 +130,7 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
       </FavouriteButton>
       <FeedbackLink
         uuid={uuid}
-        experiencePostGuid={experiencePostGuid}
+        experiencePosts={experiencePosts}
         municipalityName={municipalityName}
         userMunicipalityName={userMunicipalityName}
       />
@@ -145,11 +145,14 @@ const MetadataToolbar = ({ uuid, experiencePostGuid, municipalityName }) => {
 };
 MetadataToolbar.propTypes = {
   uuid: PropTypes.string.isRequired,
-  experiencePostGuid: PropTypes.string,
+  experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+    experiencePostUuid: PropTypes.string.isRequired,
+    metadataUuid: PropTypes.string.isRequired,
+  })),
   municipalityName: PropTypes.string.isRequired,
 };
 MetadataToolbar.defaultProps = {
-  experiencePostGuid: undefined,
+  experiencePosts: [],
 };
 export {
   MetadataToolbar,
