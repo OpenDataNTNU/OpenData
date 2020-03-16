@@ -118,7 +118,7 @@ MetaData.propTypes = {
     url: PropTypes.string.isRequired,
     experiencePosts: PropTypes.arrayOf(PropTypes.shape({
       experiencePostUuid: PropTypes.string.isRequired,
-      metadataUuid: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
     })),
     uuid: PropTypes.string,
   }).isRequired,

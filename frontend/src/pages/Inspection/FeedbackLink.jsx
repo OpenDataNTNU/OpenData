@@ -157,7 +157,7 @@ const FeedbackLink = ({ experiencePosts }) => {
 FeedbackLink.propTypes = {
   experiencePosts: PropTypes.arrayOf(PropTypes.shape({
     experiencePostUuid: PropTypes.string.isRequired,
-    metadataUuid: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
   })),
 };
 
