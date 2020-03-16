@@ -18,13 +18,12 @@ const Wrapper = styled.div`
 export const InspectionBody = ({ id }) => {
   const [data, setData] = useState({
     uuid: id,
-    url: '',
-    formatName: '',
     releaseState: 0,
     metadataTypeName: '',
     municipalityName: '',
     description: '',
     experiencePostGuid: '',
+    dataSource: [],
   });
   const [tags, setTags] = useState([]);
   const dispatch = useDispatch();

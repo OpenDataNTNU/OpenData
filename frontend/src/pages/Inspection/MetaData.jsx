@@ -71,8 +71,8 @@ export const MetaData = (props) => {
   const date = '20-09-2019';
 
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName,
-    experiencePostGuid, releaseState, description,
+    uuid, municipalityName, metadataTypeName, experiencePostGuid,
+    releaseState, description, dataSource,
   } = data;
 
   return (
@@ -95,7 +95,9 @@ export const MetaData = (props) => {
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
-          <MetadataURL url={url} formatName={formatName} inspection />
+          {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
+            <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} inspection />
+          ))}
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
@@ -110,13 +112,25 @@ export const MetaData = (props) => {
 MetaData.propTypes = {
   data: PropTypes.shape({
     municipalityName: PropTypes.string.isRequired,
-    formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string.isRequired,
+        endDate: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
