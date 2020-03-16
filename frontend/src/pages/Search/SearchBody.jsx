@@ -16,7 +16,6 @@ export const SearchBody = () => {
   const [query, setQuery] = useState({
     name: '',
     description: '',
-    tags: [],
     municipalities: [],
   });
   const [metadatas, setMetadatas] = useState([]);
@@ -27,11 +26,9 @@ export const SearchBody = () => {
   useEffect(() => {
     const internal = async () => {
       // TODO: do this filtering backend rather than frontend
-      // TODO: add tags into filtering
       const {
         name: queryName,
         description: queryDescription,
-        // tags: queryTags, - currently not used since tags are not loaded in this
         municipalities: queryMunicipalities,
       } = query;
       try {
