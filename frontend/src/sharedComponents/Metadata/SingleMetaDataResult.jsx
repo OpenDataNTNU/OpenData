@@ -113,8 +113,8 @@ const StarEmptyStyled = styled(StarEmpty)`
 
 const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
   const {
-    uuid, formatName, url, description, releaseState,
-    experiencePostGuid, municipalityName, metadataTypeName,
+    uuid, description, releaseState, experiencePostGuid,
+    municipalityName, metadataTypeName, dataSource,
   } = metadata;
 
   // TODO: Update this to use API whenever that exists.
@@ -210,7 +210,9 @@ const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
-        <MetadataURL url={url} formatName={formatName} />
+        {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
+          <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} />
+        ))}
       </MetaDataContent>
       <MetaDataRating>
         <Favourite onClick={handleLike}>
@@ -229,13 +231,25 @@ const SingleMetaDataResult = ({ metadata, showCategory, showMunicipality }) => {
 SingleMetaDataResult.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
-    formatName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string.isRequired,
+        endDate: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
   showCategory: PropTypes.bool,
   showMunicipality: PropTypes.bool,
