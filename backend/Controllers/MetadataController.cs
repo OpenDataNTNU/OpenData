@@ -212,9 +212,19 @@ namespace OpenData.Controllers
 			var metadata = await _metadataService.GetByUuidAsync(newDataSource.MetadataUuid);
 
             if(user.MunicipalityName != metadata.MunicipalityName)
-				return BadRequest("Invalid permissions for given Metadata! Must match Municipality.");
+				return Unauthorized("Invalid permissions for given Metadata! User must match Municipality.");
 
 			DataSource dataSource = _mapper.Map<NewDataSourceResource, DataSource>(newDataSource);
+
+            if(dataSource.StartDate == null && dataSource.EndDate != null)
+            {
+				return BadRequest("Cannot have startDate as null, but a set endDate");
+            } else if(dataSource.StartDate != null && dataSource.EndDate != null)
+            {
+				if (dataSource.StartDate > dataSource.EndDate)
+					return BadRequest("Cannot have a endDate be before startDate");
+            }
+
 			await _metadataService.PutDataSourceAsync(dataSource);
 			return Ok();
         }
@@ -237,7 +247,7 @@ namespace OpenData.Controllers
 			var metadata = await _metadataService.GetByUuidAsync(dataSource.MetadataUuid);
 
 			if (user.MunicipalityName != metadata.MunicipalityName)
-				return BadRequest("Invalid permissions for given Metadata! Must match Municipality.");
+				return Unauthorized("Invalid permissions for given Metadata! User must match Municipality.");
 
 			await _metadataService.DeleteDataSourceAsync(deleteDataSourceResource.DataSourceUuid);
 			return Ok();
