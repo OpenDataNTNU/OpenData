@@ -11,7 +11,6 @@ const HeaderHTML = styled.header`
   background-color: black;
   display: flex;
   align-items: center;
- 
   @media screen and (max-width: 650px) {
     padding: 0 1em;
     justify-content: space-between;
