@@ -58,6 +58,7 @@ const SmallLink = styled(Link)`
     padding: 0.2rem;
     display: inline-block;
   }
+  margin-right: 0.3rem;
 `;
 const MetaDataLink = styled(Link)`
   padding: 0.4rem;
