@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import { Pencil } from 'styled-icons/icomoon/Pencil';
 import { StarFull } from 'styled-icons/icomoon/StarFull';
 import { Location } from 'styled-icons/icomoon/Location';
@@ -8,8 +7,6 @@ import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { MyDataStarred } from './MyDataStarred';
 import { MyDataCrossRef } from './MyDataCrossRef';
 import { MyDataSubmitted } from './MyDataSubmitted';
-import { alertActions } from '../../state/actions/alert';
-
 
 const MyDataBodyWrapper = styled.div`
   display: flex;
@@ -39,14 +36,12 @@ const PaneButton = styled.div`
   &:hover {
     background-color: #f2f2f2;
   }
-  
   & > input[type="radio"] {
     display: none;
     width: 0;
     height: 0;
     position: fixed;
   }
-  
   & > label {
     font-size: 1.1rem;
     padding: 0.8rem 0.5rem 0.5rem 0.5rem;
@@ -58,7 +53,6 @@ const PaneButton = styled.div`
     height: 100%;
     box-sizing: border-box;
   }
-  
   & > input[type="radio"]:checked+label {
     border-bottom: solid 0.3em #a19ae6;
     color: #8983c4;
@@ -67,7 +61,6 @@ const PaneButton = styled.div`
 const Content = styled.div`
   padding: 0.8rem;
 `;
-
 const StarFullStyled = styled(StarFull)`
   width: 1.2rem;
   height: 1.2rem;
@@ -106,16 +99,9 @@ const MyDataBody = () => {
       icon: <CopyStyled />,
     },
   ];
-  const dispatch = useDispatch();
   const [SelectedComponent, setSelectedComponent] = useState(null);
-
   const handlePaneSelection = ({ target: { value } }) => {
-    try {
-      setSelectedComponent(panes[value].comp);
-    } catch (err) {
-      dispatch(alertActions.error('Something went wrong when selecting a tab.'));
-      setSelectedComponent(null);
-    }
+    setSelectedComponent(panes[value].comp);
   };
 
   return (
