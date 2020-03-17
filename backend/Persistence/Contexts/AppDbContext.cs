@@ -22,6 +22,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<MetadataCategory> MetadataCategory { get; set; }
         public DbSet<MetadataCommentMapping> MetadataCommentMappings { get; set; }
         public DbSet<ExperiencePostCommentMapping> ExperiencePostCommentMappings { get; set; }
 
@@ -73,19 +74,51 @@ namespace OpenData.Persistence.Contexts
                 new DataFormat { Name = "CSV", Description = "Comma seperated values", DocumentationUrl = "https://tools.ietf.org/html/rfc4180"}
             );
 
+            builder.Entity<MetadataCategory>().ToTable("MetadataCategory");
+            builder.Entity<MetadataCategory>().HasKey(c => c.Uuid);
+            builder.Entity<MetadataCategory>().Property(c => c.Name).IsRequired();
+            builder.Entity<MetadataCategory>().Property(c => c.HasChildren).IsRequired();
+            builder.Entity<MetadataCategory>()
+                .HasMany(c => c.Children)
+                .WithOne(c => c.Parent)
+                .HasForeignKey(c => c.ParentUuid);
+            builder.Entity<MetadataCategory>()
+                .HasMany(c => c.Types)
+                .WithOne(c => c.Category)
+                .HasForeignKey(c => c.CategoryUuid);
+
+            //Build some tree structure we can play around with
+            var travel = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Travel", HasChildren = true};
+            var cars = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Cars", ParentUuid = travel.Uuid};
+            var bike = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Bikes", ParentUuid = travel.Uuid};
+            var population = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Population"};
+            var govtProp = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Government property", HasChildren = true};
+            var powerConsumption = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Power consumption", ParentUuid = govtProp.Uuid};
+
+            var health = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Health & wellbeing"};
+
+            var organization = new MetadataCategory { Uuid = Guid.NewGuid(), Name = "Organization and cooperation"};
+
+            builder.Entity<MetadataCategory>().HasData(
+                travel, cars, bike, govtProp, population, powerConsumption,
+                health, organization
+            );
+
             builder.Entity<MetadataType>().ToTable("MetadataTypes");
-            builder.Entity<MetadataType>().HasKey(p => p.Name);
-
+            builder.Entity<MetadataType>().HasKey(p => p.Uuid);
+            builder.Entity<MetadataType>().Property(nameof(MetadataType.Name)).IsRequired();
             builder.Entity<MetadataType>().Property(nameof(MetadataType.Description)).IsRequired();
-            builder.Entity<MetadataType>().HasMany(p => p.MetadataList).WithOne(p => p.Type).HasForeignKey(p => p.MetadataTypeName).IsRequired();
+            builder.Entity<MetadataType>().HasMany(p => p.MetadataList).WithOne(p => p.Type).HasForeignKey(p => p.MetadataTypeUuid).IsRequired();
 
+            //Define metadata types
+            var type_cycle = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle history", CategoryUuid = bike.Uuid, Description = "Pling pling"};
+            var type_cycle_theft = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle theft", CategoryUuid = bike.Uuid,  Description = "Some times, they get stolen."};
+            var type_population = new MetadataType { Uuid = Guid.NewGuid(), Name = "Populasjon", CategoryUuid = population.Uuid,  Description = "Informasjon om populasjonsdensitet"};
+            var type_kindergarden = new MetadataType { Uuid = Guid.NewGuid(), Name = "Kindergarden statistics", CategoryUuid = health.Uuid,  Description = "Kids grow faster in gardens"};
+            var type_corona = new MetadataType { Uuid = Guid.NewGuid(), Name = "Corona virus cases", CategoryUuid = health.Uuid,  Description = "Statistics about corona virus cases"};
+            var type_car = new MetadataType { Uuid = Guid.NewGuid(), Name = "Car history", CategoryUuid = cars.Uuid,  Description = "Wroom wroom"};
             builder.Entity<MetadataType>().HasData(
-                new MetadataType { Name = "Cycle history", Description = "Pling pling"},
-                new MetadataType { Name = "Cycle theft", Description = "Some times, they get stolen."},
-                new MetadataType { Name = "Populasjon", Description = "Informasjon om populasjonsdensitet"},
-                new MetadataType { Name = "Kindergarden statistics", Description = "Kids grow faster in gardens"},
-                new MetadataType { Name = "Corona virus cases", Description = "Statistics about corona virus cases"},
-                new MetadataType { Name = "Car history", Description = "Wroom wroom"}
+                type_cycle, type_cycle_theft, type_population, type_kindergarden, type_corona, type_car
             );
 
             builder.Entity<DataSource>().ToTable("DataSource");
@@ -107,30 +140,30 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().HasData(
                 new Metadata { Uuid = Guid.NewGuid(),
                                Description="Pling Plong", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
-                               MetadataTypeName = "Cycle history"},
-                new Metadata { Uuid = Guid.NewGuid(),
+                               MetadataTypeUuid = type_cycle.Uuid},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
                                Description="We have a lot of bikes", ReleaseState = EReleaseState.Yellow, MunicipalityName = "Oslo",
-                               MetadataTypeName = "Cycle history"},
+                               MetadataTypeUuid = type_cycle.Uuid},
 
                 new Metadata { Uuid = Guid.NewGuid(),
                                Description="Cycle theft for Trondheim. Contains city bike theft", ReleaseState = EReleaseState.Green, MunicipalityName = "Trondheim",
-                               MetadataTypeName = "Cycle theft"},
-                new Metadata { Uuid = Guid.NewGuid(),
+                               MetadataTypeUuid = type_cycle_theft.Uuid},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
                                Description="We have a lot of bikes. Some get stolen. Not the city bikes though.", ReleaseState = EReleaseState.Released, MunicipalityName = "Oslo",
-                               MetadataTypeName = "Cycle theft"},
+                               MetadataTypeUuid = type_cycle_theft.Uuid},
 
                 new Metadata { Uuid = Guid.NewGuid(),
                                Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
-                               MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(),
+                               MetadataTypeUuid = type_population.Uuid},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
                                Description="", ReleaseState = EReleaseState.Green, MunicipalityName = "Oslo",
-                               MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(),
+                               MetadataTypeUuid = type_population.Uuid},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
                                Description="", ReleaseState = EReleaseState.Red, MunicipalityName = "Bodø",
-                               MetadataTypeName = "Populasjon"},
-                new Metadata { Uuid = Guid.NewGuid(),
+                               MetadataTypeUuid = type_population.Uuid},
+                new Metadata { Uuid = Guid.NewGuid(), FormatName = "JSON", Url = "https://google.com", 
                                Description="", ReleaseState = EReleaseState.Released, MunicipalityName = "Test",
-                               MetadataTypeName = "Populasjon"}
+                               MetadataTypeUuid = type_population.Uuid}
             );
             
             builder.Entity<Comment>().ToTable("Comment");
@@ -144,6 +177,7 @@ namespace OpenData.Persistence.Contexts
                 .HasMany(c => c.ChildComments)
                 .WithOne(c => c.ParentComment)
                 .HasForeignKey(c => c.ParentCommentUuid);
+
 
             builder.Entity<MetadataCommentMapping>().HasKey(p => new { p.MetadataUuid, p.CommentUuid });
             builder.Entity<MetadataCommentMapping>()
@@ -167,8 +201,8 @@ namespace OpenData.Persistence.Contexts
             );
 
             builder.Entity<MetadataTypeTagMapping>().ToTable("MetadataTypeTagMapping");
-            builder.Entity<MetadataTypeTagMapping>().HasKey(p => new { p.TagName, p.MetadataTypeName });
-            builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Type).WithMany(p => p.Tags).HasForeignKey(p => p.MetadataTypeName);
+            builder.Entity<MetadataTypeTagMapping>().HasKey(p => new { p.TagName, p.MetadataTypeUuid });
+            builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Type).WithMany(p => p.Tags).HasForeignKey(p => p.MetadataTypeUuid);
             builder.Entity<MetadataTypeTagMapping>().HasOne(p => p.Tag).WithMany().HasForeignKey(p => p.TagName);
 
             builder.Entity<Like>().ToTable("Likes");
@@ -177,9 +211,9 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Like>().HasOne(p => p.Metadata).WithMany(p => p.Likes).HasForeignKey(p => p.MetadataUuid);
 
             builder.Entity<MetadataTypeTagMapping>().HasData(
-                new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Cycle History"},
-                new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeName = "Car History"},
-                new MetadataTypeTagMapping { TagName = "Traffic", MetadataTypeName = "Car History"}
+                new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeUuid = type_cycle.Uuid},
+                new MetadataTypeTagMapping { TagName = "Public activity", MetadataTypeUuid = type_car.Uuid},
+                new MetadataTypeTagMapping { TagName = "Traffic", MetadataTypeUuid = type_car.Uuid}
             );
 
             builder.Entity<ExperiencePost>().ToTable("ExperiencePost");

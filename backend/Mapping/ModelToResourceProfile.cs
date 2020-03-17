@@ -14,6 +14,9 @@ namespace OpenData.Mapping
             CreateMap<MetadataType, MetadataTypeResource>();
 
             CreateMap<Metadata, MetadataResource>();
+            CreateMap<MetadataCategory, MetadataCategoryResource>();
+            CreateMap<MetadataCategory, MetadataCategoryChildResource>();
+            
             CreateMap<SaveMetadataResource, Metadata>();
             CreateMap<SaveMetadataTypeResource, MetadataType>();
 
