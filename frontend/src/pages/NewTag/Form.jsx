@@ -149,7 +149,7 @@ const Form = () => {
         throw new Error();
       } else {
         setTag('');
-        dispatch(alertActions.success('Successfully submitteed tag. Redirecting in 5 second.'));
+        dispatch(alertActions.success('Successfully submitted tag. Redirecting in 5 seconds.'));
         setTimeout(() => {
           history.push('/tags');
         }, 5000);

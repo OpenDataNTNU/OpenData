@@ -129,7 +129,7 @@ describe('Tags', () => {
     expect(expectedActions.length).toBe(1);
     expect(expectedActions[0]).toEqual({
       type: 'ALERT_SUCCESS',
-      message: 'Successfully submitteed tag. Redirecting in 5 second.',
+      message: 'Successfully submitted tag. Redirecting in 5 seconds.',
     });
   });
 
