@@ -26,29 +26,25 @@ const MyDataStarred = () => {
       setLoading(true);
       try {
         // TODO: Fetch with a dedicated API call
-        const likedSet = [];
         const res = await fetch('/api/Metadata');
         if (res.status === 200) {
           const receivedMetadataSet = await res.json();
-          receivedMetadataSet.forEach((m, i) => {
-            fetch(`/api/Metadata/${m.uuid}/like`, {
+          const likeResPromises = receivedMetadataSet.map(async (m) => {
+            const r = await fetch(`/api/Metadata/${m.uuid}/like`, {
               method: 'GET',
               headers: {
                 Authorization: `bearer ${token}`,
               },
-            }).then((l) => {
-              Promise.resolve(l).then((value) => {
-                value.json().then(({ liked }) => {
-                  if (liked) likedSet.push(m);
-                  setTimeout(() => { // Combating race condition
-                    if (i + 1 === receivedMetadataSet.length) {
-                      setStarredData(likedSet);
-                    }
-                  }, 100);
-                });
-              });
             });
+            return r.json();
           });
+          const likeResponses = await Promise.all(likeResPromises);
+          const likedMetadata = receivedMetadataSet.filter((_, i) => likeResponses[i].liked);
+          setStarredData(likedMetadata);
+        } else {
+          const err = new Error();
+          err.status = res.status;
+          throw err;
         }
       } catch (error) {
         if (error.status === 404) {
