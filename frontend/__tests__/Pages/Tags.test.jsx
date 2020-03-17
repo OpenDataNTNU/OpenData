@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  render, wait, fireEvent, getByText,
+  render, wait, fireEvent,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
@@ -40,16 +40,16 @@ describe('Tags', () => {
   it('should allow us to able to load all tags and display them in a list', async () => {
     fetch.mockResponse(JSON.stringify([
       {
-        name: "Tag 1",
+        name: 'Tag 1',
       },
       {
-        name: "Tag 2",
+        name: 'Tag 2',
       },
       {
-        name: "Tag 3",
+        name: 'Tag 3',
       },
       {
-        name: "Tag 4",
+        name: 'Tag 4',
       },
     ]));
 
@@ -63,8 +63,8 @@ describe('Tags', () => {
         </Provider>,
       );
       GetByText = getByText;
-    })
-    
+    });
+
 
     const tag1 = GetByText('Tag 1');
     const tag2 = GetByText('Tag 2');
@@ -81,16 +81,16 @@ describe('Tags', () => {
   it('should let us submit a new tag', async () => {
     fetch.mockResponse(JSON.stringify([
       {
-        name: "Tag 1",
+        name: 'Tag 1',
       },
       {
-        name: "Tag 2",
+        name: 'Tag 2',
       },
       {
-        name: "Tag 3",
+        name: 'Tag 3',
       },
       {
-        name: "Tag 4",
+        name: 'Tag 4',
       },
     ]));
 
@@ -105,9 +105,9 @@ describe('Tags', () => {
         </Provider>,
       );
       GetByText = getByText;
-      GetByPlaceholderText = getByPlaceholderText
-    })
-    
+      GetByPlaceholderText = getByPlaceholderText;
+    });
+
     await wait(() => {
       fireEvent.change(
         GetByPlaceholderText('New Tag'),
@@ -127,25 +127,25 @@ describe('Tags', () => {
 
     const expectedActions = store.getActions();
     expect(expectedActions.length).toBe(1);
-    expect(expectedActions[0]).toEqual({ 
+    expect(expectedActions[0]).toEqual({
       type: 'ALERT_SUCCESS',
-      message: "Successfully submitteed tag. Redirecting in 5 second.",
+      message: 'Successfully submitteed tag. Redirecting in 5 second.',
     });
   });
 
   it('should not let us submit an existing tag or a tag with non-alphabetical letters in it', async () => {
     fetch.mockResponse(JSON.stringify([
       {
-        name: "Tag",
+        name: 'Tag',
       },
       {
-        name: "Tag 2",
+        name: 'Tag 2',
       },
       {
-        name: "Tag 3",
+        name: 'Tag 3',
       },
       {
-        name: "Tag 4",
+        name: 'Tag 4',
       },
     ]));
 
@@ -161,8 +161,8 @@ describe('Tags', () => {
       );
       GetByText = getByText;
       GetByPlaceholderText = getByPlaceholderText;
-    })
-    
+    });
+
     await wait(() => {
       fireEvent.change(
         GetByPlaceholderText('New Tag'),
@@ -199,11 +199,11 @@ describe('Tags', () => {
 
     const expectedActions = store.getActions();
     expect(expectedActions.length).toBe(2);
-    expect(expectedActions[0]).toEqual({ 
+    expect(expectedActions[0]).toEqual({
       type: 'ALERT_ERROR',
       message: 'The tag already exists.',
     });
-    expect(expectedActions[1]).toEqual({ 
+    expect(expectedActions[1]).toEqual({
       type: 'ALERT_ERROR',
       message: 'Tags can only contain letters',
     });
