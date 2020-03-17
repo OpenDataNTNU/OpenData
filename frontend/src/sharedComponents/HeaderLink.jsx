@@ -30,7 +30,7 @@ const HeaderLinkWrapper = styled(Link)`
 
 const HeaderLink = ({ text, to }) => {
   const { pathname } = useLocation();
-  const isActive = to.includes(pathname);
+  const isActive = to.startsWith(pathname);
 
   return (
     <HeaderLinkWrapper to={to} active={isActive}>
