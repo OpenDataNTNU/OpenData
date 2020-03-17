@@ -376,8 +376,14 @@ export const MetadataForm = () => {
         </Select>
         <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
         <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />
-        <Input type="date" placeholder="From" name="startDate" value={startDate} onChange={handleFormatChange} />
-        <Input type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
+        <label htmlFor="dateFrom">
+          Start date:
+          <Input id="dateFrom" type="date" placeholder="From" name="startDate" value={startDate} onChange={handleFormatChange} />
+        </label>
+        <label htmlFor="dateTo">
+          End date:
+          <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
+        </label>
         <button type="button" onClick={addDataSource}>Add source</button>
         <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => null} />
       </StyledForm>

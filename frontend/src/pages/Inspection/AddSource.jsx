@@ -5,9 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
 
+const Wrapper = styled.div`
+  margin: 1.5em 0 0;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  margin: 0 0 1.5em;
 `;
 
 export const AddSource = ({ addSource, uuid }) => {
@@ -73,7 +78,7 @@ export const AddSource = ({ addSource, uuid }) => {
 
   if (expand) {
     return (
-      <div>
+      <Wrapper>
         <Form onSubmit={submit}>
           <select name="dataFormatName" value={format} onChange={(e) => setFormat(e.target.value)} required>
             <option value="" disabled>Data format</option>
@@ -81,23 +86,29 @@ export const AddSource = ({ addSource, uuid }) => {
           </select>
           <input type="text" placeholder="Url to dataset" value={url} onChange={(e) => setUrl(e.target.value)} required />
           <input type="text" placeholder="Description of source" value={description} onChange={(e) => setDescription(e.target.value)} />
-          <input type="date" placeholder="From" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-          <input type="date" placeholder="To" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          <label htmlFor="dateFrom">
+            Start date:
+            <input id="dateFrom" type="date" placeholder="From" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+          </label>
+          <label htmlFor="dateTo">
+            End date:
+            <input id="dateTo" type="date" placeholder="To" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          </label>
           <input type="submit" value="Submit" />
         </Form>
         <button type="button" onClick={() => setExpand(false)}>
           I am done
         </button>
-      </div>
+      </Wrapper>
     );
   }
 
   return (
-    <div>
+    <Wrapper>
       <button type="button" onClick={() => setExpand(true)}>
         Add more sources
       </button>
-    </div>
+    </Wrapper>
   );
 };
 
