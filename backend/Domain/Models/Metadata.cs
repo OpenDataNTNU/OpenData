@@ -21,7 +21,7 @@ namespace OpenData.Domain.Models
 		public string MunicipalityName { get; set; }
 		public Municipality Owner { get; set; }
 		
-		public string MetadataTypeName { get; set; }
+		public Guid MetadataTypeUuid { get; set; }
 		public MetadataType Type { get; set; }
 
 		public IList<Like> Likes { get; set; }
