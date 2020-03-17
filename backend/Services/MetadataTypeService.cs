@@ -23,8 +23,8 @@ namespace OpenData.Services
         	return await _metadataTypeRepository.ListAsync();
         }
 
-        public async Task<MetadataType> GetByNameAsync(string name) {
-            return await _metadataTypeRepository.GetByNameAsync(name);
+        public async Task<MetadataType> GetByUuidAsync(Guid uuid){
+            return await _metadataTypeRepository.GetByUuidAsync(uuid);
         }
 
         public async Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata) {

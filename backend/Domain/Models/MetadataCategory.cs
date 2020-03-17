@@ -21,6 +21,7 @@ namespace OpenData.Domain.Models
         public DateTime LastEdited { get; set; }
 
         public bool HasChildren { get; set; } = false;
+        public bool HasTypes { get; set; } = false;
 
 #nullable enable
         public Guid? ParentUuid { get; set; }

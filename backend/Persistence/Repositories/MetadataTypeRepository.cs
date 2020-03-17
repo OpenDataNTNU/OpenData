@@ -28,7 +28,7 @@ namespace OpenData.Persistence.Repositories
                 .Include(p => p.MetadataList)
                 .ThenInclude(p => p.DataSource)
                 .ThenInclude(p => p.DataFormat)
-                .FirstAsync(x => x.Name == name);
+                .FirstAsync(x => x.Uuid == uuid);
         }
 
         public async Task AddAsync(MetadataType metadata) {
