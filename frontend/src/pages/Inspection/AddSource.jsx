@@ -59,6 +59,7 @@ export const AddSource = ({ addSource, uuid }) => {
         throw err;
       }
       // TODO: use the response body rather than making up a time-based uuid
+      // (requires backend to supply it)
       addSource({
         uuid: Number(new Date() - 0).toString(16),
         url,
@@ -71,6 +72,11 @@ export const AddSource = ({ addSource, uuid }) => {
         startDate,
         endDate,
       });
+      setFormat('');
+      setUrl('');
+      setDescription('');
+      setStartDate('');
+      setEndDate('');
     } catch (err) {
       dispatch(alertActions.error('Something went wrong while trying to add this data source'));
     }
