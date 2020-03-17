@@ -21,7 +21,7 @@ services:
   server:
     build:
       context: ../
-      dockerfile: Dockerfile.dotnet
+      dockerfile: ./development/Dockerfile.dotnet
     environment:
       ASPNETCORE_URLS: "http://*:9000"
       ASPNETCORE_ENVIRONMENT: "Development"
