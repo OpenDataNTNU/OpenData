@@ -57,7 +57,7 @@ const Select = styled(Multiselect)`
     display: flex;
     align-items: center;
     & > ul > li {
-      margin-top 0px;
+      margin-top: 0px;
     }
   }
 `;

@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
+import { useSelector } from 'react-redux';
+
 import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
 import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
+import { AddSource } from './AddSource';
 
 const Wrapper = styled.div`
   max-width: 50rem;
@@ -25,11 +28,6 @@ const MetadataCard = styled.div`
 const MetadataContent = styled.div`
   padding: 1rem;
   flex: 1;
-`;
-
-const DateLine = styled.p`
-  font-size: 0.8rem;
-  color: dimgray;
 `;
 
 const Description = styled.p`
@@ -66,14 +64,17 @@ const LocationLink = styled(Link)`
   }
 `;
 
-export const MetaData = (props) => {
-  const { data, tags } = props;
-  const date = '20-09-2019';
-
+export const MetaData = ({ data, tags }) => {
   const {
     uuid, municipalityName, metadataTypeName, experiencePostGuid,
     releaseState, description, dataSource,
   } = data;
+
+  const [newDatasources, setNewDatasources] = useState([]);
+  const addSource = (source) => setNewDatasources([...newDatasources, source]);
+
+  const userSelector = useSelector(({ user }) => user);
+  const { municipalityName: userMunicipality } = userSelector.user || { municipalityName: null };
 
   return (
     <Wrapper>
@@ -85,19 +86,24 @@ export const MetaData = (props) => {
       <MetadataCard>
         <MetadataContent>
           <ReleaseStateLabel releaseState={releaseState} />
-          <DateLine>
-            Published
-            {` ${date}`}
-          </DateLine>
           <Description>
             {description}
           </Description>
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
+          <h3>This data set is available in the following places:</h3>
           {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
             <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} inspection />
           ))}
+          {newDatasources.map(({ uuid: sourceUuid, url, dataFormat }) => (
+            <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} inspection />
+          ))}
+          {
+            municipalityName === userMunicipality
+              ? <AddSource addSource={addSource} uuid={uuid} />
+              : null
+          }
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
@@ -127,8 +133,8 @@ MetaData.propTypes = {
           description: PropTypes.string.isRequired,
           documentationUrl: PropTypes.string.isRequired,
         }),
-        startDate: PropTypes.string.isRequired,
-        endDate: PropTypes.string.isRequired,
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
       }),
     ).isRequired,
   }).isRequired,
