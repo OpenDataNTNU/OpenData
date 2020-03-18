@@ -24,6 +24,7 @@ namespace OpenData.Controllers
 	public class MetadataTypeController : Controller
 	{
 		private readonly IMetadataTypeService _metadataTypeService;
+		private readonly IMetadataCategoryService _metadataCategoryService;
 		private readonly ITagService _tagService;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
@@ -32,6 +33,7 @@ namespace OpenData.Controllers
 
 		public MetadataTypeController(
             IMetadataTypeService metadataTypeService,
+            IMetadataCategoryService metadataCategoryService,
             ITagService tagService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
@@ -40,6 +42,7 @@ namespace OpenData.Controllers
 			) 
 		{
 			_metadataTypeService = metadataTypeService;
+			_metadataCategoryService = metadataCategoryService;
 			_tagService = tagService;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
@@ -63,14 +66,14 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns a single metadata type, and all its associated metadata entries.
 		/// </summary> 
-		/// <param name="name">Name of the metadata type to fetch</param>
+		/// <param name="uuid">Uuid of the metadata type to fetch</param>
         /// <returns>The metadata type, if it exists</returns>
 		[AllowAnonymous]
 		[HttpGet("{name}")]
-		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(string name)
+		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(Guid uuid)
 		{
 			try {
-				var type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
+				var type = await _metadataTypeService.GetByUuidAsync(uuid);
 				var res = _mapper.Map<MetadataType, MetadataTypeResource>(type);
 				return res;
 			} catch (Exception) {
@@ -100,6 +103,10 @@ namespace OpenData.Controllers
 			var metadataType = _mapper.Map<SaveMetadataTypeResource, MetadataType>(resource);
 			var result = await _metadataTypeService.SaveAsync(metadataType);
 
+			//Make sure the metadata category knows it has a type
+			var metadataCategory = await _metadataCategoryService.GetByUuidAsync(resource.CategoryUuid);
+			metadataCategory.HasTypes = true;
+
 			if(!result.Success)
 				return BadRequest(result.Message);
 
@@ -112,11 +119,11 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Adds a new tag to an existing metadata type.
 		/// </summary>
-		/// <param name="name">The metadata type to attach the tag to</param>
+		/// <param name="uuid">The metadata type to attach the tag to</param>
 		/// <param name="newTag">The tag to attach to the metadata type</param>
         /// <returns>The metadata type, with the tag attached</returns>
-		[HttpPut("{name}/tag")]
-		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, string name)
+		[HttpPut("{uuid}/tag")]
+		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, Guid uuid)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
@@ -132,7 +139,7 @@ namespace OpenData.Controllers
 			//Try to fetch the metadata type, and return 404 if it doesnt exist
 			MetadataType type = null;
 			try {
-				type = await _metadataTypeService.GetByNameAsync(WebUtility.UrlDecode(name));
+				type = await _metadataTypeService.GetByUuidAsync(uuid);
 			} catch (Exception) {
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
