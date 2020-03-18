@@ -141,6 +141,18 @@ export const MetadataForm = () => {
       startDate,
       endDate,
     } = dataFormat;
+    if (dataFormatName === '') {
+      dispatch(alertActions.error('Please choose a data format'));
+      return;
+    }
+    if (url === '') {
+      dispatch(alertActions.error('Please supply a URL'));
+      return;
+    }
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      dispatch(alertActions.error('Start date can\'t be after end date'));
+      return;
+    }
     if (url && dataFormatName && formatDescription && startDate && endDate) {
       setState({
         ...state,
