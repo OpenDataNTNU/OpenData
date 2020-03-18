@@ -153,7 +153,7 @@ export const MetadataForm = () => {
       dispatch(alertActions.error('Start date can\'t be after end date'));
       return;
     }
-    if (url && dataFormatName && formatDescription && startDate && endDate) {
+    if (url && dataFormatName && formatDescription) {
       setState({
         ...state,
         dataSource: [...dataSource, dataFormat],
@@ -245,8 +245,8 @@ export const MetadataForm = () => {
             url,
             description: formatDescription,
             dataFormatName,
-            startDate,
-            endDate,
+            startDate: startDate || undefined,
+            endDate: endDate || undefined,
           }),
           headers: {
             'Content-Type': 'application/json',
