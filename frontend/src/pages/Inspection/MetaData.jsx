@@ -65,9 +65,12 @@ const LocationLink = styled(Link)`
   }
 `;
 
-const HorizontalWrapper = styled.div`
+const SourceWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  & > *:first-child {
+    flex: 1;
+  }
 `;
 
 export const MetaData = ({ data, tags, removeDataSource }) => {
@@ -90,7 +93,7 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
       const res = await fetch('/api/Metadata/url', {
         method: 'DELETE',
         body: JSON.stringify({
-          dataSourceUuid: uuid,
+          dataSourceUuid: uuidToDelete,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -128,23 +131,23 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
           </div>
           <h3>This data set is available in the following places:</h3>
           {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
-            <HorizontalWrapper key={sourceUuid}>
+            <SourceWrapper key={sourceUuid}>
               <MetadataURL url={url} formatName={dataFormat.name} inspection />
               {municipalityName === userMunicipality
                 ? <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
                 : null}
-            </HorizontalWrapper>
+            </SourceWrapper>
           ))}
           {municipalityName === userMunicipality
             ? (
               <>
-                <AddSource addSource={addSource} uuid={uuid} />
                 {newDatasources.map(({ uuid: sourceUuid, url, dataFormat }) => (
-                  <HorizontalWrapper key={sourceUuid}>
+                  <SourceWrapper key={sourceUuid}>
                     <MetadataURL url={url} formatName={dataFormat.name} inspection />
                     <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
-                  </HorizontalWrapper>
+                  </SourceWrapper>
                 ))}
+                <AddSource addSource={addSource} uuid={uuid} />
               </>
             )
             : null}
