@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System;
 
 namespace OpenData.Domain.Models
 {
@@ -21,7 +22,7 @@ namespace OpenData.Domain.Models
 		public EReleaseState ReleaseState { get; set; }
 
 		[Required]
-		public string MetadataTypeName { get; set; }
+		public Guid MetadataTypeUuid { get; set; }
 
 		[Required]
 		public string MunicipalityName { get; set; }

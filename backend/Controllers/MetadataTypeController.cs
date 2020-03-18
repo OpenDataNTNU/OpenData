@@ -69,7 +69,7 @@ namespace OpenData.Controllers
 		/// <param name="uuid">Uuid of the metadata type to fetch</param>
         /// <returns>The metadata type, if it exists</returns>
 		[AllowAnonymous]
-		[HttpGet("{name}")]
+		[HttpGet("{uuid}")]
 		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(Guid uuid)
 		{
 			try {
