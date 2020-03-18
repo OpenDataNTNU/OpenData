@@ -84,9 +84,17 @@ export const MetadataForm = () => {
     metadataTypeName: '',
     releaseState: 1,
     description: '',
-    formatName: '',
+    dataSource: [],
     municipalityName: '',
+  });
+
+  const [dataFormat, setDataFormat] = useState({
     url: '',
+    formatName: '',
+    formatDescription: '',
+    dataFormatName: '',
+    startDate: '',
+    endDate: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -116,6 +124,61 @@ export const MetadataForm = () => {
     setState(nextState);
   };
 
+  const handleFormatChange = (event) => {
+    const { name, value } = event.target;
+    const nextFormat = { ...dataFormat };
+    nextFormat[name] = value;
+    setDataFormat(nextFormat);
+  };
+
+  const addDataSource = () => {
+    // appends dataFormat at the end of dataSource
+    const { dataSource } = state;
+    const {
+      url,
+      formatDescription,
+      dataFormatName,
+      startDate,
+      endDate,
+    } = dataFormat;
+    if (dataFormatName === '') {
+      dispatch(alertActions.error('Please choose a data format'));
+      return;
+    }
+    if (url === '') {
+      dispatch(alertActions.error('Please supply a URL'));
+      return;
+    }
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      dispatch(alertActions.error('Start date can\'t be after end date'));
+      return;
+    }
+    if (url && dataFormatName && formatDescription) {
+      setState({
+        ...state,
+        dataSource: [...dataSource, dataFormat],
+      });
+      setDataFormat({
+        url: '',
+        formatName: '',
+        formatDescription: '',
+        dataFormatName: '',
+        startDate: '',
+        endDate: '',
+      });
+    }
+  };
+
+  const removeDataSource = (index) => {
+    const { dataSource } = state;
+    const pre = dataSource.slice(0, index);
+    const post = dataSource.slice(index + 1);
+    setState({
+      ...state,
+      dataSource: [...pre, ...post],
+    });
+  };
+
   // fetch metadata types
   useEffect(() => {
     const internal = async () => {
@@ -141,16 +204,23 @@ export const MetadataForm = () => {
     setLoading(true);
     const { token } = userSelector.user;
 
-    const newState = { ...state };
-
-    if (newState.releaseState !== 1 && (!newState.url || newState.url === '')) {
-      newState.url = null;
-    }
+    const {
+      metadataTypeName,
+      releaseState,
+      description,
+      dataSource,
+      municipalityName,
+    } = state;
 
     try {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
-        body: JSON.stringify(newState),
+        body: JSON.stringify({
+          metadataTypeName,
+          releaseState,
+          description,
+          municipalityName,
+        }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `bearer ${token}`,
@@ -163,6 +233,35 @@ export const MetadataForm = () => {
         err.status = status;
         throw err;
       }
+      const { uuid } = await res.json();
+      const sourceReses = await Promise.all(dataSource.map((source) => {
+        const {
+          url, dataFormatName, formatDescription, startDate, endDate,
+        } = source;
+        return fetch('/api/Metadata/url', {
+          method: 'PUT',
+          body: JSON.stringify({
+            metadataUuid: uuid,
+            url,
+            description: formatDescription,
+            dataFormatName,
+            startDate: startDate || undefined,
+            endDate: endDate || undefined,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `bearer ${token}`,
+          },
+        });
+      }));
+      sourceReses.forEach((sourceRes) => {
+        const { ok: sourceOk, status: sourceStatus } = sourceRes;
+        if (!sourceOk) {
+          const err = new Error();
+          err.status = sourceStatus;
+          throw err;
+        }
+      });
       setSubmissionStatus('success');
       setLoading(false);
     } catch (err) {
@@ -176,8 +275,16 @@ export const MetadataForm = () => {
   }
 
   const {
-    metadataTypeName, releaseState, description, formatName, municipalityName, url,
+    metadataTypeName, releaseState, description, municipalityName,
   } = state;
+
+  const {
+    url,
+    dataFormatName,
+    formatDescription,
+    startDate,
+    endDate,
+  } = dataFormat;
 
   return (
     <Wrapper>
@@ -244,18 +351,53 @@ export const MetadataForm = () => {
           </RadioLabel>
         </HorizontalWrapper>
         <TextArea placeholder="Description" name="description" value={description} onChange={handleChange} required />
-        <Select name="formatName" value={formatName} onChange={handleChange} required>
-          <option value="" disabled>Data format</option>
-          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
-        </Select>
         <Select name="municipalityName" value={municipalityName} onChange={handleChange} required>
           <option value="" disabled>Municipality</option>
           {
             municipalities.map(({ name }) => (<option key={name} value={name}>{name}</option>))
           }
         </Select>
-        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleChange} required={releaseState === 1} />
-        <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => {}} />
+        <h3>Data sources: </h3>
+        <ul>
+          {state.dataSource.map((source, i) => {
+            const {
+              url: sourceUrl,
+              dataFormatName: sourceType,
+              formatDescription: sourceDesc,
+              startDate: sourceStart,
+              endDate: sourceEnd,
+            } = source;
+            return (
+              <li key={sourceUrl}>
+                {sourceUrl}
+                <ul>
+                  <li>{sourceDesc}</li>
+                  <li>{sourceType}</li>
+                  <li>{`${sourceStart} - ${sourceEnd}`}</li>
+                  <li>
+                    <button type="button" onClick={() => removeDataSource(i)}>Delete</button>
+                  </li>
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+        <Select name="dataFormatName" value={dataFormatName} onChange={handleFormatChange}>
+          <option value="" disabled>Data format</option>
+          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
+        </Select>
+        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
+        <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />
+        <label htmlFor="dateFrom">
+          Start date:
+          <Input id="dateFrom" type="date" placeholder="From" name="startDate" value={startDate} onChange={handleFormatChange} />
+        </label>
+        <label htmlFor="dateTo">
+          End date:
+          <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
+        </label>
+        <button type="button" onClick={addDataSource}>Add source</button>
+        <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => null} />
       </StyledForm>
     </Wrapper>
   );

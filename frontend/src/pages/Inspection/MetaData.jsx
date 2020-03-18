@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { alertActions } from '../../state/actions/alert';
 import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
 import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
+import { AddSource } from './AddSource';
 
 const Wrapper = styled.div`
   max-width: 50rem;
@@ -25,11 +29,6 @@ const MetadataCard = styled.div`
 const MetadataContent = styled.div`
   padding: 1rem;
   flex: 1;
-`;
-
-const DateLine = styled.p`
-  font-size: 0.8rem;
-  color: dimgray;
 `;
 
 const Description = styled.p`
@@ -66,14 +65,53 @@ const LocationLink = styled(Link)`
   }
 `;
 
-export const MetaData = (props) => {
-  const { data, tags } = props;
-  const date = '20-09-2019';
+const SourceWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  & > *:first-child {
+    flex: 1;
+  }
+`;
 
+export const MetaData = ({ data, tags, removeDataSource }) => {
   const {
-    uuid, municipalityName, formatName, url, metadataTypeName,
-    experiencePostGuid, releaseState, description,
+    uuid, municipalityName, metadataTypeName, experiencePostGuid,
+    releaseState, description, dataSource,
   } = data;
+
+  const [newDatasources, setNewDatasources] = useState([]);
+  const dispatch = useDispatch();
+  const userSelector = useSelector(({ user }) => user);
+  const {
+    municipalityName: userMunicipality,
+    token,
+  } = userSelector.user || { municipalityName: null, token: null };
+
+  const addSource = (source) => setNewDatasources([...newDatasources, source]);
+  const removeSource = async (uuidToDelete) => {
+    try {
+      const res = await fetch('/api/Metadata/url', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          dataSourceUuid: uuidToDelete,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      });
+      const { ok, status } = res;
+      if (!ok) {
+        const err = new Error();
+        err.status = status;
+        throw err;
+      }
+      removeDataSource(uuidToDelete);
+      setNewDatasources(newDatasources.filter((source) => source.uuid !== uuidToDelete));
+    } catch (error) {
+      dispatch(alertActions.error('Failed to delete the source'));
+    }
+  };
 
   return (
     <Wrapper>
@@ -85,17 +123,34 @@ export const MetaData = (props) => {
       <MetadataCard>
         <MetadataContent>
           <ReleaseStateLabel releaseState={releaseState} />
-          <DateLine>
-            Published
-            {` ${date}`}
-          </DateLine>
           <Description>
             {description}
           </Description>
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
-          <MetadataURL url={url} formatName={formatName} inspection />
+          <h3>This data set is available in the following places:</h3>
+          {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
+            <SourceWrapper key={sourceUuid}>
+              <MetadataURL url={url} formatName={dataFormat.name} inspection />
+              {municipalityName === userMunicipality
+                ? <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
+                : null}
+            </SourceWrapper>
+          ))}
+          {municipalityName === userMunicipality
+            ? (
+              <>
+                {newDatasources.map(({ uuid: sourceUuid, url, dataFormat }) => (
+                  <SourceWrapper key={sourceUuid}>
+                    <MetadataURL url={url} formatName={dataFormat.name} inspection />
+                    <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
+                  </SourceWrapper>
+                ))}
+                <AddSource addSource={addSource} uuid={uuid} />
+              </>
+            )
+            : null}
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
@@ -110,13 +165,26 @@ export const MetaData = (props) => {
 MetaData.propTypes = {
   data: PropTypes.shape({
     municipalityName: PropTypes.string.isRequired,
-    formatName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    url: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
     uuid: PropTypes.string,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+      }),
+    ).isRequired,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  removeDataSource: PropTypes.func.isRequired,
 };

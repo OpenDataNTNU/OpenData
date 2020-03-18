@@ -24,32 +24,68 @@ const carHistoryResponse = `{
   "description":"Wroom wroom",
   "metadataList":[{
     "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "url":"https://trondheim.kommune.no",
     "description":"This is a decRIPtrion",
-    "formatName":"JSON",
     "releaseState":1,
     "metadataTypeName":"Car history",
-    "municipalityName":"Trondheim"
+    "municipalityName":"Trondheim",
+    "dataSource": [
+      {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+        "url": "https://trondheim.kommune.no",
+        "description": "string",
+        "dataFormat": {
+          "name": "JSON",
+          "description": "recent info on trondheims stuff",
+          "documentationUrl": "https://google.com"
+        },
+        "startDate": "2019-03-16T10:07:38.067Z",
+        "endDate": "2021-03-16T10:07:38.067Z"
+      }
+    ]
   },
   {
     "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afb7",
-    "url":"https://bergen.kommune.no",
     "description":"",
-    "formatName":"JSON",
     "releaseState":1,
     "metadataTypeName":"Car history",
-    "municipalityName":"Bergen"
+    "municipalityName":"Bergen",
+    "dataSource": [
+      {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
+        "url": "https://bergen.kommune.no",
+        "description": "string",
+        "dataFormat": {
+          "name": "JSON",
+          "description": "recent info on bergensk stuff",
+          "documentationUrl": "https://google.com"
+        },
+        "startDate": "2019-03-16T10:07:38.067Z",
+        "endDate": "2021-03-16T10:07:38.067Z"
+      }
+    ]
   }]
 }`;
 
 const carHistoryTrondheimResponse = `{
   "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "url":"https://trondheim.kommune.no",
   "description":"This is a decRIPtrion",
-  "formatName":"JSON",
   "releaseState":2,
   "metadataTypeName":"Car history",
-  "municipalityName":"Trondheim"
+  "municipalityName":"Trondheim",
+  "dataSource": [
+    {
+      "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
+      "url": "https://trondheim.kommune.no",
+      "description": "string",
+      "dataFormat": {
+        "name": "JSON",
+        "description": "recent info on stuff",
+        "documentationUrl": "https://google.com"
+      },
+      "startDate": "2019-03-16T10:07:38.067Z",
+      "endDate": "2021-03-16T10:07:38.067Z"
+    }
+  ]
 }`;
 
 const commentResponse = `
