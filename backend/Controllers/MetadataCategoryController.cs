@@ -68,10 +68,10 @@ namespace OpenData.Controllers
         /// <returns>The category node</returns>
         [AllowAnonymous]
 		[HttpGet("{uuid}")]
-		public async Task<MetadataCategoryResource> GetCategory(string uuid)
+		public async Task<MetadataCategoryResource> GetCategory(Guid uuid)
 		{
 			try {
-				var category = await _metadataCategoryService.GetByUuidAsync(Guid.Parse(uuid));
+				var category = await _metadataCategoryService.GetByUuidAsync(uuid);
 				var res = _mapper.Map<MetadataCategory, MetadataCategoryResource>(category);
 				return res;
 			} catch (Exception) {
