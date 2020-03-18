@@ -19,11 +19,20 @@ namespace OpenData.Persistence.Repositories
 
         public async Task<IEnumerable<MetadataCategory>> ListRootElementsAsync()
         {
-            return await _context.MetadataCategory.Where(m => m.Parent == null).Include(x => x.Children).ThenInclude(x => x.Types).Include(x => x.Types).ToListAsync();
+            return await _context.MetadataCategory
+                .Where(m => m.Parent == null)
+                .Include(x => x.Children)
+                    .ThenInclude(x => x.Types)
+                .Include(x => x.Types)
+                .ToListAsync();
         }
 
         public async Task<MetadataCategory> GetByUuidAsync(Guid uuid) {
-            return await _context.MetadataCategory.Include(x => x.Children).ThenInclude(x => x.Types).Include(x => x.Types).FirstAsync(x => x.Uuid == uuid);
+            return await _context.MetadataCategory
+                .Include(x => x.Children)
+                    .ThenInclude(x => x.Types)
+                .Include(x => x.Types)
+                .FirstAsync(x => x.Uuid == uuid);
         }
 
         public async Task AddAsync(MetadataCategory category) {
