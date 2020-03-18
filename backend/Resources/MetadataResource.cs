@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System;
 
+using OpenData.Resources;
+
 namespace OpenData.Domain.Models
 {
 	public class MetadataResource
@@ -17,6 +19,6 @@ namespace OpenData.Domain.Models
 
 		public string MunicipalityName { get; set; }
 
-		public string ExperiencePostGuid { get; set; }
+		public IList<MetadataExperiencePostMappingResource> ExperiencePosts { get; set; }
 	}
 }

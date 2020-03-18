@@ -11,7 +11,7 @@ const ReleaseStateLabelContainer = styled.div`
 `;
 const Text = styled.p`
   color: ${(props) => props.color};
-  padding: 0.4rem;
+  padding: ${(props) => (props.compact ? '0.2rem 0.4rem' : '0.4rem')};
   font-size: 0.9rem;
   margin: 0;
 `;
@@ -43,17 +43,21 @@ const releaseStates = {
   },
 };
 
-const ReleaseStateLabel = ({ releaseState }) => {
+const ReleaseStateLabel = ({ releaseState, compact }) => {
   const selected = releaseStates[releaseState] || releaseStates.fallback;
   return (
     <ReleaseStateLabelContainer backgroundColor={selected.backgroundColor}>
-      <Text color={selected.textColor}>{selected.text}</Text>
+      <Text color={selected.textColor} compact={compact}>{selected.text}</Text>
     </ReleaseStateLabelContainer>
   );
 };
 
 ReleaseStateLabel.propTypes = {
   releaseState: PropTypes.number.isRequired,
+  compact: PropTypes.bool,
+};
+ReleaseStateLabel.defaultProps = {
+  compact: false,
 };
 
 export {

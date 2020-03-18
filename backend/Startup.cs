@@ -8,22 +8,26 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
+using OpenData.Persistence.Repositories;
 using OpenData.Persistence.Contexts;
 using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
-using OpenData.Persistence.Repositories;
-using OpenData.Services;
 using OpenData.Domain.Models;
 using OpenData.Middleware;
+using OpenData.Services;
+using OpenData.Filters;
 
 using System;
 using System.IO;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Collections.Generic ;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
+
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace OpenData
 {
@@ -106,6 +110,35 @@ namespace OpenData
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Description = "", Version = "v1" });
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "backend.xml"));
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "Bearer",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
+                c.OperationFilter<AddAuthHeaderOperationFilter>();
             }); 
         }
 
