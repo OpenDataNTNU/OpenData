@@ -60,18 +60,8 @@ export const AddSource = ({ addSource, uuid }) => {
       }
       // TODO: use the response body rather than making up a time-based uuid
       // (requires backend to supply it)
-      addSource({
-        uuid: Number(new Date() - 0).toString(16),
-        url,
-        description,
-        dataFormat: {
-          name: format,
-          description: `Description of ${format}`,
-          documentationUrl: '',
-        },
-        startDate,
-        endDate,
-      });
+      const receivedSource = await res.json();
+      addSource(receivedSource);
       setFormat('');
       setUrl('');
       setDescription('');

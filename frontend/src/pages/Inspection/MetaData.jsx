@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { alertActions } from '../../state/actions/alert';
 import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
 import { MetadataURL } from '../../sharedComponents/Metadata/MetadataURL';
@@ -64,17 +65,50 @@ const LocationLink = styled(Link)`
   }
 `;
 
-export const MetaData = ({ data, tags }) => {
+const HorizontalWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const MetaData = ({ data, tags, removeDataSource }) => {
   const {
     uuid, municipalityName, metadataTypeName, experiencePostGuid,
     releaseState, description, dataSource,
   } = data;
 
   const [newDatasources, setNewDatasources] = useState([]);
-  const addSource = (source) => setNewDatasources([...newDatasources, source]);
-
+  const dispatch = useDispatch();
   const userSelector = useSelector(({ user }) => user);
-  const { municipalityName: userMunicipality } = userSelector.user || { municipalityName: null };
+  const {
+    municipalityName: userMunicipality,
+    token,
+  } = userSelector.user || { municipalityName: null, token: null };
+
+  const addSource = (source) => setNewDatasources([...newDatasources, source]);
+  const removeSource = async (uuidToDelete) => {
+    try {
+      const res = await fetch('/api/Metadata/url', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          dataSourceUuid: uuid,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      });
+      const { ok, status } = res;
+      if (!ok) {
+        const err = new Error();
+        err.status = status;
+        throw err;
+      }
+      removeDataSource(uuidToDelete);
+      setNewDatasources(newDatasources.filter((source) => source.uuid !== uuidToDelete));
+    } catch (error) {
+      dispatch(alertActions.error('Failed to delete the source'));
+    }
+  };
 
   return (
     <Wrapper>
@@ -94,16 +128,26 @@ export const MetaData = ({ data, tags }) => {
           </div>
           <h3>This data set is available in the following places:</h3>
           {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
-            <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} inspection />
+            <HorizontalWrapper key={sourceUuid}>
+              <MetadataURL url={url} formatName={dataFormat.name} inspection />
+              {municipalityName === userMunicipality
+                ? <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
+                : null}
+            </HorizontalWrapper>
           ))}
-          {newDatasources.map(({ uuid: sourceUuid, url, dataFormat }) => (
-            <MetadataURL key={sourceUuid} url={url} formatName={dataFormat.name} inspection />
-          ))}
-          {
-            municipalityName === userMunicipality
-              ? <AddSource addSource={addSource} uuid={uuid} />
-              : null
-          }
+          {municipalityName === userMunicipality
+            ? (
+              <>
+                <AddSource addSource={addSource} uuid={uuid} />
+                {newDatasources.map(({ uuid: sourceUuid, url, dataFormat }) => (
+                  <HorizontalWrapper key={sourceUuid}>
+                    <MetadataURL url={url} formatName={dataFormat.name} inspection />
+                    <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
+                  </HorizontalWrapper>
+                ))}
+              </>
+            )
+            : null}
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
@@ -139,4 +183,5 @@ MetaData.propTypes = {
     ).isRequired,
   }).isRequired,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  removeDataSource: PropTypes.func.isRequired,
 };
