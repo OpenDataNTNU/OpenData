@@ -226,7 +226,7 @@ namespace OpenData.Controllers
             }
 
 			await _metadataService.PutDataSourceAsync(dataSource);
-			return Ok();
+			return Ok(dataSource);
         }
 
         /// <summary>
