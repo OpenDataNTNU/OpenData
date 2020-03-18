@@ -170,8 +170,8 @@ describe('Displays all bottom-level datasets with a given name', () => {
     // wait for the data to load
     await findByText('En nettside for bra folk');
 
-    // once loaded, eliasv.com should be there too
-    getByText('eliasv.com');
+    // once loaded, release state label should be there
+    getByText('Not releasable');
 
     // Not loading anymore.
     expect(queryByText('Loading')).toBeNull();
@@ -184,8 +184,9 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Not releasable').length).toBe(1);
     expect(queryAllByText('Unknown release state!').length).toBe(1);
 
-    // should have fetched exactly 13 times. Each result fetches
-    // a like counter and comments counter.
-    expect(fetch.mock.calls.length).toEqual(13);
+    // Usually fetches 13 times. Each result fetches
+    // a like counter and comments counter. However, after
+    // results are by default collapsed, there is only 1 initial fetch.
+    expect(fetch.mock.calls.length).toEqual(1);
   });
 });

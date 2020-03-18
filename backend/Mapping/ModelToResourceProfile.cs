@@ -30,6 +30,8 @@ namespace OpenData.Mapping
             CreateMap<SaveExperiencePostResponse, SafeSaveExperiencePostResponse>();
 
             CreateMap<MetadataTypeTagMapping, MetadataTypeTagMappingResource>();
+            CreateMap<MetadataExperiencePostMapping, MetadataExperiencePostMappingResource>().IncludeMembers(s => s.ExperiencePost);
+            CreateMap<ExperiencePost, MetadataExperiencePostMappingResource>(MemberList.None);
 
             CreateMap<NewUserResource, User>();
             CreateMap<User, PrivateSafeUserResource>();

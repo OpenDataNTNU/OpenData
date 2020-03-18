@@ -22,7 +22,7 @@ const FeedbackLabelContainer = styled.div`
 `;
 const Checked = styled(Checkmark)`
   color: #37dd38;
-  height: 1.0rem;
+  height: 0.9rem;
   margin: 0 0.5rem 0 0;
   padding: 0;
 `;
@@ -36,7 +36,7 @@ const Crossed = styled(Cross)`
 const FeedbackLabel = ({ hasFeedback }) => (
   <FeedbackLabelContainer positive={hasFeedback}>
     {hasFeedback ? <Checked /> : <Crossed />}
-    <p>{hasFeedback ? 'Has feedback' : 'Missing feedback'}</p>
+    <p>{hasFeedback ? 'Has feedback article' : 'Missing feedback article'}</p>
   </FeedbackLabelContainer>
 );
 FeedbackLabel.propTypes = {

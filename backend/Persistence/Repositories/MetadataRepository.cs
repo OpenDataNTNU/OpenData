@@ -27,6 +27,8 @@ namespace OpenData.Persistence.Repositories
 
         public async Task<Metadata> GetByUuidAsync(Guid uuid) {
             return await _context.Metadata
+                .Include(x => x.ExperiencePosts)
+                .ThenInclude(x => x.ExperiencePost)
                 .Include(m => m.DataSource)
                 .ThenInclude(d => d.DataFormat)
                 .FirstAsync(m => m.Uuid == uuid);

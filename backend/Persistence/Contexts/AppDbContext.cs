@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Linq;
 using System;
 
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -95,10 +96,14 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Metadata>().ToTable("Metadata");
             builder.Entity<Metadata>().HasKey(p => p.Uuid);
             builder.Entity<Metadata>().Property( p => p.Description).IsRequired();
-            builder.Entity<Metadata>().HasOne(p => p.ExperiencePost);
             builder.Entity<Metadata>().Property( p => p.ReleaseState).IsRequired();
             builder.Entity<Metadata>().HasMany(p => p.DataSource).WithOne(d => d.Metadata).HasForeignKey(d => d.MetadataUuid);
 
+            builder.Entity<MetadataExperiencePostMapping>().ToTable("MetadataExperiencePostMapping");
+            builder.Entity<MetadataExperiencePostMapping>().HasKey(p => new {p.ExperiencePostUuid, p.MetadataUuid});
+            builder.Entity<MetadataExperiencePostMapping>().HasOne(m => m.Metadata).WithMany(e => e.ExperiencePosts).HasForeignKey(m => m.MetadataUuid);
+            builder.Entity<MetadataExperiencePostMapping>().HasOne(p => p.ExperiencePost).WithMany().HasForeignKey(p => p.ExperiencePostUuid);
+            
             builder.Entity<Metadata>().HasData(
                 new Metadata { Uuid = Guid.NewGuid(),
                                Description="Pling Plong", ReleaseState = EReleaseState.Released, MunicipalityName = "Trondheim",
@@ -150,6 +155,7 @@ namespace OpenData.Persistence.Contexts
                 .HasOne(m => m.ExperiencePost)
                 .WithMany(e => e.Comments)
                 .HasForeignKey(m => m.ExperiencePostUuid);
+
 
             builder.Entity<Tag>().ToTable("Tags");
             builder.Entity<Tag>().HasKey(p => p.Name);

@@ -25,6 +25,7 @@ const MetadataCard = styled.div`
   overflow: hidden;
   min-height: 20rem;
   min-width: 35rem;
+  overflow: visible;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
@@ -75,8 +76,8 @@ const SourceWrapper = styled.div`
 
 export const MetaData = ({ data, tags, removeDataSource }) => {
   const {
-    uuid, municipalityName, metadataTypeName, experiencePostGuid,
-    releaseState, description, dataSource,
+    uuid, municipalityName, metadataTypeName, dataSource,
+    experiencePosts, releaseState, description,
   } = data;
 
   const [newDatasources, setNewDatasources] = useState([]);
@@ -154,7 +155,7 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
         </MetadataContent>
         <MetadataToolbar
           uuid={uuid}
-          experiencePostGuid={experiencePostGuid}
+          experiencePosts={experiencePosts}
           municipalityName={municipalityName}
         />
       </MetadataCard>
@@ -168,7 +169,11 @@ MetaData.propTypes = {
     metadataTypeName: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    experiencePostGuid: PropTypes.string,
+    url: PropTypes.string.isRequired,
+    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+      experiencePostUuid: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    })),
     uuid: PropTypes.string,
     dataSource: PropTypes.arrayOf(
       PropTypes.shape({
