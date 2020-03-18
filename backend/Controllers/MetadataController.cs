@@ -226,7 +226,8 @@ namespace OpenData.Controllers
             }
 
 			await _metadataService.PutDataSourceAsync(dataSource);
-			return Ok(dataSource);
+			var dataSourceResource = _mapper.Map<DataSource, DataSourceResource>(dataSource);
+			return Ok(dataSourceResource);
         }
 
         /// <summary>
