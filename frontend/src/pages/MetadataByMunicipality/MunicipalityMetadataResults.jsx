@@ -39,6 +39,9 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
   const [metaDataSet, setMetadataSet] = useState([]);
   const [fetchedMetadataSet, setFetchedMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
+  // in order to memoize and avoid fetching the same thing too many times
+  const [uuidToName, setUuidToName] = useState({});
+
   const dispatch = useDispatch();
 
   const handleFilterSelection = ({ target: { value } }) => {
@@ -76,6 +79,22 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
     internal();
   }, [municipalityName]);
 
+  useEffect(() => {
+    const internal = async (i) => {
+      const { metadataTypeUuid } = metaDataSet[i];
+      if (!uuidToName[metadataTypeUuid]) {
+        const newUuidToName = {};
+        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+        const { name } = await res.json();
+        newUuidToName[metadataTypeUuid] = name;
+        setUuidToName((obj) => ({ ...newUuidToName, ...obj }));
+      }
+    };
+    for (let i = 0; i < metaDataSet.length; i += 1) {
+      internal(i);
+    }
+  }, [metaDataSet]);
+
   if (loading) {
     return (
       <MunicipalityCategoriesContainer>
@@ -96,7 +115,11 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
         { metaDataSet.length === 0 ? (
           <NoResult text={`No results were found for ${municipalityName}.`} />
         ) : metaDataSet.map((m) => (
-          <SingleMetaDataResult key={m.uuid} metadata={m} showCategory />
+          <SingleMetaDataResult
+            key={m.uuid}
+            metadata={{ ...m, metadataTypeName: uuidToName[m.metadataTypeUuid] || '' }}
+            showCategory
+          />
         ))}
       </ResultsContainer>
     </MunicipalityCategoriesContainer>
