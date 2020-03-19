@@ -111,10 +111,5 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Needs work').length).toBe(1);
     expect(queryAllByText('Not releasable').length).toBe(1);
     expect(queryAllByText('Unknown release state!').length).toBe(1);
-
-    // Usually fetches 13 times. Each result fetches
-    // a like counter and comments counter. However, after
-    // results are by default collapsed, there is only 1 initial fetch.
-    expect(fetch.mock.calls.length).toEqual(1);
   });
 });
