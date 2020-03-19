@@ -15,7 +15,7 @@ namespace OpenData.Domain.Models
 
 		public EReleaseState ReleaseState { get; set; }
 
-		public string MetadataTypeName { get; set; }
+		public Guid MetadataTypeUuid { get; set; }
 
 		public string MunicipalityName { get; set; }
 
