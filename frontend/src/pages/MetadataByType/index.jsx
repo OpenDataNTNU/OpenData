@@ -182,7 +182,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <MetadataByTypeResults metadataTypeName={selectedCategory} />
+              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory} />
               : (
                 <NoResult text="Select a category to examine." />
               )}
