@@ -83,11 +83,21 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
     const internal = async (i) => {
       const { metadataTypeUuid } = metaDataSet[i];
       if (!uuidToName[metadataTypeUuid]) {
-        const newUuidToName = {};
-        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
-        const { name } = await res.json();
-        newUuidToName[metadataTypeUuid] = name;
-        setUuidToName((obj) => ({ ...newUuidToName, ...obj }));
+        try {
+          const newUuidToName = {};
+          const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+          const { ok, status } = res;
+          if (!ok) {
+            const err = new Error();
+            err.status = status;
+            throw err;
+          }
+          const { name } = await res.json();
+          newUuidToName[metadataTypeUuid] = name;
+          setUuidToName((obj) => ({ ...newUuidToName, ...obj }));
+        } catch (err) {
+          dispatch(alertActions.error('Failed to get the name of metadata types'));
+        }
       }
     };
     for (let i = 0; i < metaDataSet.length; i += 1) {
