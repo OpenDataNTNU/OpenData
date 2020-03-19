@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Multiselect from 'react-widgets/lib/Multiselect';
 import 'react-widgets/dist/css/react-widgets.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
@@ -60,6 +60,10 @@ const Select = styled(Multiselect)`
       margin-top 0px;
     }
   }
+`;
+
+const NewTag = styled.p`
+  margin: 5px 0px 0px 0px;
 `;
 
 export const NewMetadataTypeBody = () => {
@@ -143,6 +147,13 @@ export const NewMetadataTypeBody = () => {
         <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
         <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
         <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
+        <NewTag>
+          Are none of these tags appropriate?
+          {' '}
+          <Link to="/tags/new">
+            <b>Create a new one</b>
+          </Link>
+        </NewTag>
         <LoadingButton text="submit" type="value" loading={loading} onClick={() => {}} />
       </Form>
     </Wrapper>

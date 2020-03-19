@@ -22,6 +22,8 @@ import { NewExperienceArticle } from '../pages/NewExperienceArticle';
 import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
 import { MyData } from '../pages/MyData';
 import { Search } from '../pages/Search';
+import { NewTag } from '../pages/NewTag';
+import { Tags } from '../pages/Tags';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -43,6 +45,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/register" loggedOut component={Register} />
         <PrivateRoute path="/logout" component={Logout} />
         <PrivateRoute path="/myData" municipality component={MyData} />
+        <PrivateRoute path="/tags/new" municipality component={NewTag} />
+        <PrivateRoute path="/tags" municipality component={Tags} />
         <Route component={Error404} />
       </Switch>
     </Router>

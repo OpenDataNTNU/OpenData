@@ -6,6 +6,8 @@ using OpenData.Domain.Repositories;
 using OpenData.Persistence.Contexts;
 using System.Web;
 using System;
+using System.Linq;
+using OpenData.Resources;
 
 namespace OpenData.Persistence.Repositories
 {
@@ -26,6 +28,17 @@ namespace OpenData.Persistence.Repositories
 
         public async Task AddAsync(MetadataType metadata) {
             await _context.MetadataTypes.AddAsync(metadata);
+        }
+
+        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams)
+        {
+            return await _context.MetadataTypes
+                .Where(m => m.Name.Contains(searchParams.Name, StringComparison.OrdinalIgnoreCase))
+                .Where(m => searchParams.Tags == null ||
+                            searchParams.Tags.Count() == 0 ||
+                            m.Tags.Select(t => t.TagName).Any(tname => searchParams.Tags.Select(t => t.Name).Contains(tname)))
+                .Where(m => m.Description.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
+                .ToListAsync();
         }
     }
 }

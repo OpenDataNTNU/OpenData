@@ -5,6 +5,7 @@ using OpenData.Domain.Repositories;
 using OpenData.Domain.Services;
 using OpenData.Domain.Services.Communication;
 using System;
+using OpenData.Resources;
 
 namespace OpenData.Services
 {
@@ -38,6 +39,11 @@ namespace OpenData.Services
                 // Do some logging stuff
                 return new SaveMetadataTypeResponse($"An error occurred when saving the metadata type: {ex.Message}");
             }
+        }
+
+        public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams)
+        {
+            return await _metadataTypeRepository.FilterSearchAsync(searchParams);
         }
     }
 }

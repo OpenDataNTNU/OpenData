@@ -13,7 +13,8 @@ RUN chmod +x /srv/opendata-backend/dotnet-entrypoint.sh
 WORKDIR /srv/opendata-backend
 
 # Fix SQL race condition. Kinda
-RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && chmod +x wait-for-it.sh
+COPY ./container/common/wait-for-it.sh /srv/opendata-backend/
+RUN chmod +x wait-for-it.sh
 
 ENV ASPNETCORE_ENVIRONMENT = Production
 
