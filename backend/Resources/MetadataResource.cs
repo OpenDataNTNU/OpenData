@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System;
 using OpenData.Resources;
 
-using OpenData.Resources;
-
 namespace OpenData.Domain.Models
 {
 	public class MetadataResource
