@@ -70,11 +70,14 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
       try {
         const res = await fetch(`/api/MetadataType/${metadataTypeName}`);
         if (res.status === 200) {
+          console.log(res);
+          const j = await res.json();
+          console.log(j);
           const {
             tags: receivedTags,
             description: receivedDescription,
             metadataList,
-          } = await res.json();
+          } = j;
           // setTags(receivedTags);
           setTags(receivedTags);
           setDescription(receivedDescription);

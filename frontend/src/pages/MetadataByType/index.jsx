@@ -166,13 +166,15 @@ export const MetadataByType = () => {
             <MetadataTypeFilter type="text" placeholder="Search categories" onChange={handleCategoryFilterSelection} />
             <Picker onChange={handleCategorySelection}>
               { categories.length === 0 ? <p>No categories found!</p>
-                : categories.map((c) => (
-                  <RadioDiv key={c.name}>
-                    <input type="radio" key={c.name} id={`radio-${c.name}`} name="radio-category" value={c.name} />
-                    <label htmlFor={`radio-${c.name}`}>
-                      {c.name}
-                      <p>{c.description}</p>
-                      {c.tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
+                : categories.map(({
+                  uuid, name: typeName, description, tags,
+                }) => (
+                  <RadioDiv key={uuid}>
+                    <input type="radio" id={`radio-${uuid}`} name="radio-category" value={uuid} />
+                    <label htmlFor={`radio-${uuid}`}>
+                      {typeName}
+                      <p>{description}</p>
+                      {tags.map(({ tagName }) => <Tag key={tagName}>{tagName}</Tag>)}
                     </label>
                   </RadioDiv>
                 )) }
