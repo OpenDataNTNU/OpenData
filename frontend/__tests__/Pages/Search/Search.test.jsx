@@ -192,7 +192,6 @@ describe('Search component works as expected', () => {
     await wait(() => click(municipalitySelector));
     await wait(() => click(getByText('Oslo')));
     await wait(() => click(getByText('Search')));
-    await findByText('https://google.co.uk');
     getByText('We have a lot of bikes');
     expect(queryAllByText('Cycle theft for Trondheim. Contains city bike theft').length).toBe(0);
   });

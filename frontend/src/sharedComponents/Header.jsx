@@ -121,7 +121,7 @@ const Header = () => {
             <Nav>
               <HeaderLink to="/dataType" text="Search by category" />
               <HeaderLink to="/municipalities" text="Search by municipality" />
-              <HeaderLink to="/search" text="" />
+              <HeaderLink to="/search" text="Search" />
               {
                 role === 1
                   ? <HeaderLink to="/sendData" text="Submit data" />
