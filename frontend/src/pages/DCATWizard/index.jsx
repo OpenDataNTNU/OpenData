@@ -8,8 +8,7 @@ import { alertActions } from '../../state/actions/alert';
 // import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,9 +17,10 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  width: 80%;
+  width: 90%;
   height: 80%;
-  min-width: 500px;
+  min-width: 40px;
+  max-width: 800px;
   min-height: 300px;
   background-color: #ffffff;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
