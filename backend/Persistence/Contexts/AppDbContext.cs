@@ -17,6 +17,8 @@ namespace OpenData.Persistence.Contexts
         public DbSet<ExperiencePost> ExperiencePosts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<MetadataType> MetadataTypes { get; set; }
+        public DbSet<MetadataTypeDescription> MetadataTypeDescriptions { get; set; }
+        public DbSet<MetadataTypeDescriptionVote> MetadataTypeDescriptionVotes { get; set; }
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<DataSource> DataSource { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -110,13 +112,20 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<MetadataType>().Property(nameof(MetadataType.Description)).IsRequired();
             builder.Entity<MetadataType>().HasMany(p => p.MetadataList).WithOne(p => p.Type).HasForeignKey(p => p.MetadataTypeUuid).IsRequired();
 
+            builder.Entity<MetadataTypeDescription>().ToTable("MetadataTypeDescription");
+            builder.Entity<MetadataTypeDescription>().HasKey(p => p.Uuid);
+
+            builder.Entity<MetadataTypeDescriptionVote>().ToTable("MetadataTypeDescriptionVote");
+            builder.Entity<MetadataTypeDescriptionVote>().HasKey(p => new { p.UserMail, p.MetadataTypeDescriptionUuid });
+
+
             //Define metadata types
-            var type_cycle = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle history", CategoryUuid = bike.Uuid, Description = "Pling pling"};
-            var type_cycle_theft = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle theft", CategoryUuid = bike.Uuid,  Description = "Some times, they get stolen."};
-            var type_population = new MetadataType { Uuid = Guid.NewGuid(), Name = "Populasjon", CategoryUuid = population.Uuid,  Description = "Informasjon om populasjonsdensitet"};
-            var type_kindergarden = new MetadataType { Uuid = Guid.NewGuid(), Name = "Kindergarden statistics", CategoryUuid = health.Uuid,  Description = "Kids grow faster in gardens"};
-            var type_corona = new MetadataType { Uuid = Guid.NewGuid(), Name = "Corona virus cases", CategoryUuid = health.Uuid,  Description = "Statistics about corona virus cases"};
-            var type_car = new MetadataType { Uuid = Guid.NewGuid(), Name = "Car history", CategoryUuid = cars.Uuid,  Description = "Wroom wroom"};
+            var type_cycle = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle history", CategoryUuid = bike.Uuid};
+            var type_cycle_theft = new MetadataType { Uuid = Guid.NewGuid(), Name = "Cycle theft", CategoryUuid = bike.Uuid};
+            var type_population = new MetadataType { Uuid = Guid.NewGuid(), Name = "Populasjon", CategoryUuid = population.Uuid};
+            var type_kindergarden = new MetadataType { Uuid = Guid.NewGuid(), Name = "Kindergarden statistics", CategoryUuid = health.Uuid};
+            var type_corona = new MetadataType { Uuid = Guid.NewGuid(), Name = "Corona virus cases", CategoryUuid = health.Uuid};
+            var type_car = new MetadataType { Uuid = Guid.NewGuid(), Name = "Car history", CategoryUuid = cars.Uuid};
             builder.Entity<MetadataType>().HasData(
                 type_cycle, type_cycle_theft, type_population, type_kindergarden, type_corona, type_car
             );
