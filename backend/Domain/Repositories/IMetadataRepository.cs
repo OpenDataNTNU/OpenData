@@ -11,5 +11,8 @@ namespace OpenData.Domain.Repositories
         Task<IEnumerable<Metadata>> ListAsync();
         Task<Metadata> GetByUuidAsync(Guid uuid);
         Task AddAsync(Metadata metadata);
+        Task PutDataSourceAsync(DataSource dataSource);
+        Task DeleteDataSourceAsync(Guid dataSourceUuid);
+        Task<DataSource> GetDataSourceByUuid(Guid dataSourceUuid);
     }
 }

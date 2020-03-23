@@ -18,13 +18,12 @@ const Wrapper = styled.div`
 export const InspectionBody = ({ id }) => {
   const [data, setData] = useState({
     uuid: id,
-    url: '',
-    formatName: '',
     releaseState: 0,
     metadataTypeName: '',
     municipalityName: '',
     description: '',
     experiencePostGuid: '',
+    dataSource: [],
   });
   const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
@@ -74,9 +73,18 @@ export const InspectionBody = ({ id }) => {
     }
   }, [data]);
 
+  const removeDataSource = (uuidToDelete) => {
+    const { dataSource } = data;
+    const newDatasources = dataSource.filter(({ uuid }) => uuid !== uuidToDelete);
+    setData({
+      ...data,
+      dataSource: newDatasources,
+    });
+  };
+
   return (
     <Wrapper>
-      <MetaData data={data} tags={tags} />
+      <MetaData data={data} tags={tags} removeDataSource={removeDataSource} />
       <Comments id={id} />
     </Wrapper>
   );

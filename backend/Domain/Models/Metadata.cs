@@ -10,11 +10,7 @@ namespace OpenData.Domain.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Uuid { get; set; }
 
-		public string FormatName { get; set; }
-		public string Url { get; set; }
 		public string Description { get; set; }
-
-		public DataFormat Format { get; set; }
 
 		public EReleaseState ReleaseState { get; set; }
 
@@ -23,6 +19,8 @@ namespace OpenData.Domain.Models
 		
 		public string MetadataTypeName { get; set; }
 		public MetadataType Type { get; set; }
+
+		public IList<DataSource> DataSource { get; set; }
 
 		public IList<Like> Likes { get; set; }
 

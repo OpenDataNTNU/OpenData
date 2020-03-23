@@ -186,9 +186,6 @@ namespace OpenData.Controllers
 			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
 
-			if (resource.ReleaseState == EReleaseState.Released && string.IsNullOrEmpty(resource.Url))
-				return BadRequest("Url has to be supplied when releasestate is 'Released'");
-
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
 			if (user.UserType == UserType.Municipality && user.MunicipalityName == resource.MunicipalityName)
@@ -207,6 +204,65 @@ namespace OpenData.Controllers
 			}
 
             return Unauthorized("Invalid permissions!");
+		}
+
+		/// <summary>
+		/// Adds a new DataSource, and connects it to a given Metadata.
+		/// Ensures the user is a member of the correct municipality, therby ensuring only relevant people can add DataSources.
+		/// </summary>
+		/// <param name="newDataSource">The data for the new DataSource to add.</param>
+		/// <returns>HTTP response code</returns>
+		[HttpPut("url")]
+		public async Task<IActionResult> PutUrlAsync([FromBody] NewDataSourceResource newDataSource)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+			var metadata = await _metadataService.GetByUuidAsync(newDataSource.MetadataUuid);
+
+            if(user.MunicipalityName != metadata.MunicipalityName)
+				return Unauthorized("Invalid permissions for given Metadata! User must match Municipality.");
+
+			DataSource dataSource = _mapper.Map<NewDataSourceResource, DataSource>(newDataSource);
+
+            if(dataSource.StartDate == null && dataSource.EndDate != null)
+            {
+				return BadRequest("Cannot have startDate as null, but a set endDate");
+            } else if(dataSource.StartDate != null && dataSource.EndDate != null)
+            {
+				if (dataSource.StartDate > dataSource.EndDate)
+					return BadRequest("Cannot have a endDate be before startDate");
+            }
+
+			await _metadataService.PutDataSourceAsync(dataSource);
+			var dataSourceResource = _mapper.Map<DataSource, DataSourceResource>(dataSource);
+			return Ok(dataSourceResource);
+        }
+
+        /// <summary>
+        /// Deletes a given DataSource, and it will therefore not be connected to the Metadata it was create for.
+        /// Ensures the user is a member of the correct municipality, therby ensuring only relevant people can delete DataSources.
+        /// </summary>
+        /// <param name="deleteDataSourceResource">The uuid of the DataSource to be deleted.</param>
+        /// <returns>HTTP response code</returns>
+		[HttpDelete("url")]
+		public async Task<IActionResult> DeleteUrlAsync([FromBody] DeleteDataSourceResource deleteDataSourceResource)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState.GetErrorMessages());
+
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+			var dataSource = await _metadataService.GetDataSourceByUuid(deleteDataSourceResource.DataSourceUuid);
+			var metadata = await _metadataService.GetByUuidAsync(dataSource.MetadataUuid);
+
+			if (user.MunicipalityName != metadata.MunicipalityName)
+				return Unauthorized("Invalid permissions for given Metadata! User must match Municipality.");
+
+			await _metadataService.DeleteDataSourceAsync(deleteDataSourceResource.DataSourceUuid);
+			return Ok();
 		}
 
 	}

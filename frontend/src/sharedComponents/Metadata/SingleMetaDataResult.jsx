@@ -76,12 +76,24 @@ const SingleMetaDataResult = ({
 SingleMetaDataResult.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
-    formatName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
     metadataTypeName: PropTypes.string.isRequired,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+      }),
+    ).isRequired,
     experiencePosts: PropTypes.arrayOf(PropTypes.shape({
       experiencePostUuid: PropTypes.string.isRequired,
       metadataUuid: PropTypes.string.isRequired,

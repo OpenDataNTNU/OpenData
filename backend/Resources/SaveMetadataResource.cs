@@ -8,14 +8,8 @@ namespace OpenData.Domain.Models
 	///</summary>
 	public class SaveMetadataResource
 	{
-		[MaxLength(2048)]
-		public string Url { get; set; }
-
 		[Required]
 		public string Description { get; set; }
-
-		[Required]
-		public string FormatName { get; set; }
 
 		[Required]
 		public EReleaseState ReleaseState { get; set; }
