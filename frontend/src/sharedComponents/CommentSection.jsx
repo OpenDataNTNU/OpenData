@@ -197,7 +197,7 @@ const CommentSection = ({
       {
         commentId
           ? null
-          : <NewComment putUrl={putUrl} onComplete={setFetchedComments} />
+          : <NewComment putUrl={putUrl} onComplete={setFetchedComments} buttonText="Comment" />
       }
       {
         comments && comments.length > 0

@@ -28,7 +28,7 @@ const CommentFooter = styled.div`
   background-color: #F6F7F8;
   border-radius: 0px 0px 4px 4px;
   padding: 8px;
-  margin-bottom: 0.8em;
+  margin-bottom: 10px;
 `;
 
 const UnAuthorizedUser = styled.div`
@@ -39,14 +39,14 @@ const UnAuthorizedUser = styled.div`
   background-color: #F6F7F8;
   border-radius: 4px;
   padding: 8px;
-  margin-bottom: 0.8em;
+  margin-bottom: 10px;
 `;
 
 const CommentButton = styled.button`
 
 `;
 
-const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
+const NewComment = React.forwardRef(({ putUrl, onComplete, buttonText }, ref) => {
   // Redux state
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
@@ -103,7 +103,7 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
             <>
               <CommentTextArea placeholder="Leave a reply" value={content} onChange={onChange} />
               <CommentFooter>
-                <CommentButton onClick={OnClick}>Reply</CommentButton>
+                <CommentButton onClick={OnClick}>{ buttonText }</CommentButton>
               </CommentFooter>
             </>
           )
@@ -121,6 +121,7 @@ const NewComment = React.forwardRef(({ putUrl, onComplete }, ref) => {
 NewComment.propTypes = {
   putUrl: PropTypes.string.isRequired,
   onComplete: PropTypes.func.isRequired,
+  buttonText: PropTypes.string.isRequired,
 };
 
 export {
