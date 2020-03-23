@@ -32,14 +32,14 @@ namespace OpenData.Controllers
 		private readonly IUserService userService;
 
 		public MetadataTypeController(
-			IMetadataTypeService metadataTypeService,
-			IMetadataCategoryService metadataCategoryService,
-			ITagService tagService,
-			IMapper mapper,
-			IUnitOfWork unitOfWork,
+            IMetadataTypeService metadataTypeService,
+            IMetadataCategoryService metadataCategoryService,
+            ITagService tagService,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
 			IUserService userService
-			)
+			) 
 		{
 			_metadataTypeService = metadataTypeService;
 			_metadataCategoryService = metadataCategoryService;
@@ -53,8 +53,8 @@ namespace OpenData.Controllers
 		/// <summary>
 		/// Returns all metadata types in the database.
 		/// </summary> 
-		/// <returns>All metadata types in the database</returns>
-		[AllowAnonymous]
+        /// <returns>All metadata types in the database</returns>
+        [AllowAnonymous]
 		[HttpGet]
 		public async Task<IEnumerable<MetadataTypeResource>> GetAllAsync()
 		{
@@ -67,7 +67,7 @@ namespace OpenData.Controllers
 		/// Returns a single metadata type, and all its associated metadata entries.
 		/// </summary> 
 		/// <param name="uuid">Uuid of the metadata type to fetch</param>
-		/// <returns>The metadata type, if it exists</returns>
+        /// <returns>The metadata type, if it exists</returns>
 		[AllowAnonymous]
 		[HttpGet("{uuid}")]
 		public async Task<MetadataTypeResource> GetMetadataTypeDeepCopy(Guid uuid)
@@ -85,7 +85,7 @@ namespace OpenData.Controllers
 		/// Creates a new Metadata Type
 		/// </summary>
 		/// <param name="resource">The metadata type to create</param>
-		/// <returns>The metadata type, if it was created successfully</returns>
+        /// <returns>The metadata type, if it was created successfully</returns>
 		[HttpPut]
 		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataTypeResource resource)
 		{
@@ -95,10 +95,10 @@ namespace OpenData.Controllers
 			var username = httpContextRetriever.HttpContext.User.Identity.Name;
 			var user = await userService.GetUserByMailAsync(username);
 
-			if (user.UserType < UserType.Municipality)
-			{
+            if(user.UserType < UserType.Municipality)
+            {
 				return Unauthorized("Invalid permission for creation of a new MetadataType");
-			}
+            }
 
 			var metadataType = _mapper.Map<SaveMetadataTypeResource, MetadataType>(resource);
 			var result = await _metadataTypeService.SaveAsync(metadataType);
@@ -107,7 +107,7 @@ namespace OpenData.Controllers
 			var metadataCategory = await _metadataCategoryService.GetByUuidAsync(resource.CategoryUuid);
 			metadataCategory.HasTypes = true;
 
-			if (!result.Success)
+			if(!result.Success)
 				return BadRequest(result.Message);
 
 			var res = _mapper.Map<MetadataType, MetadataTypeResource>(metadataType);
@@ -121,7 +121,7 @@ namespace OpenData.Controllers
 		/// </summary>
 		/// <param name="uuid">The metadata type to attach the tag to</param>
 		/// <param name="newTag">The tag to attach to the metadata type</param>
-		/// <returns>The metadata type, with the tag attached</returns>
+        /// <returns>The metadata type, with the tag attached</returns>
 		[HttpPut("{uuid}/tag")]
 		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, Guid uuid)
 		{
@@ -152,7 +152,7 @@ namespace OpenData.Controllers
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 
-			type.Tags.Add(new MetadataTypeTagMapping { Tag = tag, Type = type });
+			type.Tags.Add(new MetadataTypeTagMapping { Tag = tag, Type = type});
 
 			var res = _mapper.Map<MetadataType, MetadataTypeResource>(type);
 
@@ -172,67 +172,6 @@ namespace OpenData.Controllers
 			var metadataTypes = await _metadataTypeService.FilterSearchAsync(searchParams);
 			var retMetadataTypes = _mapper.Map<IEnumerable<MetadataType>, IEnumerable<MetadataTypeResource>>(metadataTypes);
 			return Ok(retMetadataTypes);
-		}
-
-		[HttpPut("{metadataTypeUuid}/description")]
-        public async Task<IActionResult> AddNewDescriptionAsync(
-            Guid metadataTypeUuid,
-            [FromBody] NewMetadataTypeDescriptionResource newMetadataDescriptionRes
-            )
-		{
-			if (!ModelState.IsValid)
-				return BadRequest(ModelState.GetErrorMessages());
-
-			var username = httpContextRetriever.HttpContext.User.Identity.Name;
-			var user = await userService.GetUserByMailAsync(username);
-
-			if (user.UserType < UserType.Municipality)
-				return Unauthorized("User must have municipality privileges or higher");
-
-			var metadataTypeDescription = _mapper.Map<NewMetadataTypeDescriptionResource, MetadataTypeDescription>(newMetadataDescriptionRes);
-			metadataTypeDescription.MetadataTypeUuid = metadataTypeUuid;
-			metadataTypeDescription.AuthorMail = user.Mail;
-
-			await _metadataTypeService.AddNewDescriptionAsync(metadataTypeDescription);
-
-			return Ok(metadataTypeDescription);
-        }
-
-		[HttpGet("{metadataTypeUuid}/description")]
-		public async Task<IActionResult> FetchDescriptionsAsync(Guid metadataTypeUuid)
-		{
-			IEnumerable<MetadataTypeDescription> descriptions = await _metadataTypeService.ListDescriptionsAsync(metadataTypeUuid);
-			return Ok(descriptions);
-		}
-
-		[HttpPut("{metadataTypeUuid}/description/{descUuid}/vote")]
-		public async Task<IActionResult> VoteOnDescription(Guid metadataTypeUuid, Guid descUuid)
-        {
-			var username = httpContextRetriever.HttpContext.User.Identity.Name;
-			var user = await userService.GetUserByMailAsync(username);
-
-			if (user.UserType < UserType.Municipality)
-				return Unauthorized("User must have municipality privileges or higher");
-
-			MetadataTypeDescriptionVote vote = new MetadataTypeDescriptionVote();
-			vote.UserMail = user.Mail;
-			vote.MetadataTypeDescriptionUuid = descUuid;
-
-			return Ok();
-		}
-
-		[HttpDelete("{metadataTypeUuid}/description/{descUuid}/vote")]
-		public async Task<IActionResult> DeleteVoteOnDescription(Guid metadataTypeUuid, Guid descUuid)
-		{
-			var username = httpContextRetriever.HttpContext.User.Identity.Name;
-			var user = await userService.GetUserByMailAsync(username);
-
-			if (user.UserType < UserType.Municipality)
-				return Unauthorized("User must have municipality privileges or higher");
-
-			await _metadataTypeService.RemoveVoteOnDescriptionAsync(user.Mail, descUuid, metadataTypeUuid);
-
-			return Ok();
 		}
 	}
 }

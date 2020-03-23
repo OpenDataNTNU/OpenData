@@ -11,10 +11,8 @@ namespace OpenData.Domain.Models
 		public Guid Uuid { get; set; }
 
 		public string Name { get; set; }
-		public MetadataTypeDescription Description { get; set; } = null;
-
 		public IList<MetadataTypeTagMapping> Tags { get; set; }
-		public IList<MetadataTypeDescription> Descriptions { get; set; }
+		public string Description { get; set; }
 		public IList<Metadata> MetadataList { get; set; }
 
 		public Guid CategoryUuid { get; set; }

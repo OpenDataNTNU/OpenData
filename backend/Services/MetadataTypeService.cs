@@ -45,25 +45,5 @@ namespace OpenData.Services
         {
             return await _metadataTypeRepository.FilterSearchAsync(searchParams);
         }
-
-        public async Task AddNewDescriptionAsync(MetadataTypeDescription metadataTypeDescription)
-        {
-            await _metadataTypeRepository.AddNewDescriptionAsync(metadataTypeDescription);
-        }
-
-        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid)
-        {
-            return await _metadataTypeRepository.ListDescriptionsAsync(metadataTypeUuid);
-        }
-
-        public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
-        {
-            await _metadataTypeRepository.VoteOnDescriptionAsync(vote, metadataUuid);
-        }
-
-        public async Task RemoveVoteOnDescriptionAsync(string userMail, Guid descUuid, Guid metadataUuid)
-        {
-            await _metadataTypeRepository.RemoveVoteOnDescriptionAsync(userMail, descUuid, metadataUuid);
-        }
     }
 }

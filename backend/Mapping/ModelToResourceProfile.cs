@@ -12,7 +12,6 @@ namespace OpenData.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<MetadataType, MetadataTypeResource>();
-            CreateMap<NewMetadataTypeDescriptionResource, MetadataTypeDescription>();
 
             CreateMap<Metadata, MetadataResource>();
             CreateMap<MetadataCategory, MetadataCategoryResource>();
