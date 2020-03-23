@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { FileUpload } from 'styled-icons/fa-solid/FileUpload';
 
 const Upload = styled.div`
+  position: relative;
   max-height: 100%;
   height: 100%;
   box-sizing: content-box;
@@ -36,8 +37,35 @@ const ExtensionText = styled.span`
   margin-left: 5px;
 `;
 
+const TooltipText = styled.span`
+  visibility: ${(props) => (props.showTooltip ? 'visible' : 'hidden')};
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: Calc(100% + 10px);
+  left: 50%;
+  margin-left: -100px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+`;
+
 const FileDropper = ({ uploadFile }) => {
   const [isHoveringDropArea, setIsHoveringDropArea] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const onDragOver = (e) => {
     // Prevent default behavior (Prevent file from being opened)
@@ -73,14 +101,19 @@ const FileDropper = ({ uploadFile }) => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
       isHoveringDropArea={isHoveringDropArea}
     >
       <Label>
         <FileUpload size="1em" />
         <UploadText>Add file</UploadText>
-        <Input type="file" accept="image/*" onChange={onChange} />
+        <Input type="file" accept=".jsonld,.xml,.rdf" onChange={onChange} />
       </Label>
       <ExtensionText>or drop file here</ExtensionText>
+      <TooltipText showTooltip={showTooltip}>
+        Accepted file formats are: .jsonld, .xml, and .rdf
+      </TooltipText>
     </Upload>
   );
 };

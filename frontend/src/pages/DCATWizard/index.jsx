@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { /* useDispatch, */useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Template } from '../../sharedComponents/Template';
 import { FileDropper } from './FileDropper';
+import { alertActions } from '../../state/actions/alert';
 // import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
 const Wrapper = styled.div`
@@ -41,24 +42,57 @@ const Header = styled.h2`
 
 const DCATWizard = () => {
   // Redux
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user) || { user: { token: null } };
   const { token } = userSelector.user;
 
   const uploadFile = async (file) => {
-    await fetch('/api/something', {
-      method: 'PUT',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      body: file,
-    });
+    const filename = file.type || file.name.split('.').pop();
+    let contentType;
+    switch (filename) {
+      case 'text/xml':
+      case 'xml': {
+        contentType = 'application/xml';
+        break;
+      }
+      case 'application/ld+json':
+      case 'jsonld': {
+        contentType = 'application/ld+json';
+        break;
+      }
+      case 'application/rdf+xml':
+      case 'rdf': {
+        contentType = 'application/rdf+xml';
+        break;
+      }
+      default: {
+        return;
+      }
+    }
+
+    try {
+      const response = await fetch('/api/something', {
+        method: 'PUT',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': contentType,
+          Authorization: `Bearer ${token}`,
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: file,
+      });
+
+      if (response.ok && response.status === 200) {
+        dispatch(alertActions.success('placeholder'));
+      } else {
+        throw Error('Failed to upload file');
+      }
+    } catch (_) {
+      dispatch(alertActions.error('Failed to upload file'));
+    }
   };
 
   return (
