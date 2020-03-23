@@ -41,8 +41,44 @@ namespace OpenData.Persistence.Repositories
                 .Where(m => searchParams.Tags == null ||
                             searchParams.Tags.Count() == 0 ||
                             m.Tags.Select(t => t.TagName).Any(tname => searchParams.Tags.Select(t => t.Name).Contains(tname)))
-                .Where(m => m.Description.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
+                .Where(m => m.Description.Content.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
                 .ToListAsync();
+        }
+
+        public async Task AddNewDescriptionAsync(MetadataTypeDescription metadataTypeDescription)
+        {
+            await _context.MetadataTypeDescriptions.AddAsync(metadataTypeDescription);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid)
+        {
+            return await _context.MetadataTypeDescriptions
+                .Where(mtd => mtd.MetadataTypeUuid == metadataTypeUuid)
+                .ToListAsync();
+        }
+
+        private async Task TallyVotes(Guid metadataUuid)
+        {
+            /*await _context.MetadataTypeDescriptions
+                .Where(mtd => mtd.MetadataTypeUuid == metadataUuid)
+                .Include(d => d.Votes)
+                .OrderBy(mt => mt.Description.Votes.Count())
+                .ToListAsync();*/
+        }
+
+        public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
+        {
+            await _context.MetadataTypeDescriptionVotes.AddAsync(vote);
+        }
+
+        public async Task RemoveVoteOnDescriptionAsync(string userMail, Guid descUuid, Guid metadataUuid)
+        {
+            MetadataTypeDescriptionVote vote = new MetadataTypeDescriptionVote();
+            vote.UserMail = userMail;
+            vote.MetadataTypeDescriptionUuid = descUuid;
+
+            _context.MetadataTypeDescriptionVotes.Remove(vote);
         }
     }
 }
