@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-// import { useDispatch, useSelector } from 'react-redux';
-import { FileUpload } from 'styled-icons/fa-solid/FileUpload';
+import { /* useDispatch, */useSelector } from 'react-redux';
 
 import { Template } from '../../sharedComponents/Template';
+import { FileDropper } from './FileDropper';
 // import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
 const Wrapper = styled.div`
@@ -39,42 +39,26 @@ const Header = styled.h2`
 
 `;
 
-const Upload = styled.div`
-  max-height: 100%;
-  height: 100%;
-  box-sizing: content-box;
-  border: 2px #e6e6e6 solid;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  display: none;
-`;
-
-const Label = styled.label`
-
-`;
-
-const UploadText = styled.span`
-  margin-left: 5px;
-  color: #1291ff;
-`;
-
-const ExtensionText = styled.span`
-  margin-left: 5px;
-`;
-
 const DCATWizard = () => {
-  const onDragOver = () => {
+  // Redux
+  // const dispatch = useDispatch();
+  const userSelector = useSelector((state) => state.user) || { user: { token: null } };
+  const { token } = userSelector.user;
 
-  };
-
-  const onDrop = () => {
-
+  const uploadFile = async (file) => {
+    await fetch('/api/something', {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: file,
+    });
   };
 
   return (
@@ -83,14 +67,7 @@ const DCATWizard = () => {
         <Content>
           <Uploader>
             <Header>DCAT Wizard</Header>
-            <Upload onDragOver={onDragOver} onDrop={onDrop}>
-              <Label>
-                <FileUpload size="1em" />
-                <UploadText>Add file</UploadText>
-              </Label>
-              <Input type="file" accept="image/*" />
-              <ExtensionText>or drop file here</ExtensionText>
-            </Upload>
+            <FileDropper uploadFile={uploadFile} />
           </Uploader>
         </Content>
       </Wrapper>
