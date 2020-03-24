@@ -10,6 +10,7 @@ using OpenData.Controllers;
 using OpenData.Domain.Models;
 using OpenData.Extensions;
 using OpenData.Resources;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -113,7 +114,8 @@ namespace OpenData.backend
 
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             var user = JsonSerializer.Deserialize<PrivateSafeUserResource>(await response.Content.ReadAsStringAsync());
-            //Assert.Equal(UserType.Municipality, user.UserType);
+            //SafeUserResource safeUserResource = new SafeUserResource();
+            //Assert.Equal(UserType.Municipality, safeUserResource.UserType);
             //Assert.Equal("Bodø", user.MunicipalityName);
             // TODO: FIks kommune stuff
         }
@@ -144,10 +146,22 @@ namespace OpenData.backend
             // var loginResponse = await client.PostAsync("");
 
             var response = await client.PostAsync("/api/user/auth", new StringContent(JsonSerializer.Serialize(resource), Encoding.UTF8, "application/json"));
-
+            
             // Assert
-
             response.EnsureSuccessStatusCode(); // Status Code 200-299
+            //Assert.Equal("", response.Content.ReadAsStringAsync().Result);
+            Assert.NotNull(response.Content);
+            // var user = Newtonsoft.Json.JsonConvert<PrivateSafeUserResource>(response.Content.ReadAsStringAsync());
+            var user = Extract<PrivateSafeUserResource>(response);
+            Assert.Equal(resource.Mail, user.Mail);
+        }
+
+        private T Extract<T>(HttpResponseMessage msg)
+        {
+            Utf8JsonReader jsonBytes = new Utf8JsonReader(msg.Content.ReadAsByteArrayAsync().Result);
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var obj = JsonSerializer.Deserialize<T>(ref jsonBytes, options);
+            return obj;
         }
 
         /// <summary>
@@ -170,20 +184,30 @@ namespace OpenData.backend
 
             var newUserResponse = await client.PutAsync("api/user", new StringContent(JsonSerializer.Serialize(newUserResource), Encoding.UTF8, "application/json"));
             newUserResponse.EnsureSuccessStatusCode();
-            System.Threading.Thread.Sleep(5000);
 
             AuthUserResource loginResource = new AuthUserResource();
             loginResource.Mail = "profiletest@bodo.kommune.no";
             loginResource.Password = "Test123456@";
             var loginResponse = await client.PostAsync("/api/user/auth", new StringContent(JsonSerializer.Serialize(loginResource), Encoding.UTF8, "application/json"));
             loginResponse.EnsureSuccessStatusCode();
-            System.Threading.Thread.Sleep(5000);
 
-            var user = JsonSerializer.Deserialize<PrivateSafeUserResource>(await loginResponse.Content.ReadAsStringAsync());
+            Assert.NotNull(loginResponse.Content);
+            var user = Extract<PrivateSafeUserResource>(loginResponse);
+            Assert.Equal(loginResource.Mail, user.Mail);
 
-            var token = user.Token;
+
+            //SafeUserResource resource = new SafeUserResource();
+            //var user = JsonSerializer.Deserialize<PrivateSafeUserResource>(await loginResponse.Content.ReadAsStringAsync());
+
+            string token = user.Token;
+            //Assert.False(string.IsNullOrEmpty(token));
+            //Console.WriteLine(token);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+           
+
+            //client.DefaultRequestHeaders.Add("Authorization", string.Format("Bearer {0}", token));
+            
             // Act
 
             var response = await client.GetAsync(url);
@@ -191,6 +215,8 @@ namespace OpenData.backend
             // Assert
 
             response.EnsureSuccessStatusCode(); // Status Code 200-299
+
+
         }
 
     }
