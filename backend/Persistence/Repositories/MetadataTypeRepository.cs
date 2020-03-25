@@ -55,16 +55,18 @@ namespace OpenData.Persistence.Repositories
         {
             return await _context.MetadataTypeDescriptions
                 .Where(mtd => mtd.MetadataTypeUuid == metadataTypeUuid)
+                .SelectMany(mtd => mtd.Votes)
+                .GroupBy(v => v.MetadataTypeDescriptionUuid)
+                .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count()})
                 .ToListAsync();
         }
 
-        private async Task TallyVotes(Guid metadataUuid)
+        private async Task<MetadataTypeDescription> GetMetadataTypeDescription(Guid metadataUuid)
         {
-            /*await _context.MetadataTypeDescriptions
-                .Where(mtd => mtd.MetadataTypeUuid == metadataUuid)
-                .Include(d => d.Votes)
-                .OrderBy(mt => mt.Description.Votes.Count())
-                .ToListAsync();*/
+            return await _context.MetadataTypeDescriptions
+                .Where(d => d.MetadataTypeUuid == metadataUuid)
+                .OrderBy(d => d.Published)
+                .SingleOrDefaultAsync();
         }
 
         public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
@@ -79,6 +81,7 @@ namespace OpenData.Persistence.Repositories
             vote.MetadataTypeDescriptionUuid = descUuid;
 
             _context.MetadataTypeDescriptionVotes.Remove(vote);
+            await _context.SaveChangesAsync();
         }
     }
 }

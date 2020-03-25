@@ -174,6 +174,12 @@ namespace OpenData.Controllers
 			return Ok(retMetadataTypes);
 		}
 
+        /// <summary>
+        /// Adds a new description to the list of descriptions for a metadataType.
+        /// </summary>
+        /// <param name="metadataTypeUuid">Uuid for the MetadataType the description belongs to</param>
+        /// <param name="newMetadataDescriptionRes">The new description to add for the metadataType</param>
+        /// <returns>MetadataTypeDescription if successful</returns>
 		[HttpPut("{metadataTypeUuid}/description")]
         public async Task<IActionResult> AddNewDescriptionAsync(
             Guid metadataTypeUuid,
@@ -198,6 +204,11 @@ namespace OpenData.Controllers
 			return Ok(metadataTypeDescription);
         }
 
+        /// <summary>
+        /// Fetches all of the descriptions for a given metadataType.
+        /// </summary>
+        /// <param name="metadataTypeUuid">The uuid for the metadataType</param>
+        /// <returns>All descriptions for the metadataType</returns>
 		[HttpGet("{metadataTypeUuid}/description")]
 		public async Task<IActionResult> FetchDescriptionsAsync(Guid metadataTypeUuid)
 		{
@@ -205,6 +216,12 @@ namespace OpenData.Controllers
 			return Ok(descriptions);
 		}
 
+        /// <summary>
+        /// Vote on a description for a metadataType.
+        /// </summary>
+        /// <param name="metadataTypeUuid">MetadataType for description</param>
+        /// <param name="descUuid">Description uuid that should be voted on</param>
+        /// <returns>Ok status if success</returns>
 		[HttpPut("{metadataTypeUuid}/description/{descUuid}/vote")]
 		public async Task<IActionResult> VoteOnDescription(Guid metadataTypeUuid, Guid descUuid)
         {
@@ -221,6 +238,12 @@ namespace OpenData.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Deletes a vote on a description for a metadataType.
+		/// </summary>
+		/// <param name="metadataTypeUuid">MetadataType for description</param>
+		/// <param name="descUuid">Description uuid that should be deleted vote from</param>
+		/// <returns>Ok status if success</returns>
 		[HttpDelete("{metadataTypeUuid}/description/{descUuid}/vote")]
 		public async Task<IActionResult> DeleteVoteOnDescription(Guid metadataTypeUuid, Guid descUuid)
 		{
