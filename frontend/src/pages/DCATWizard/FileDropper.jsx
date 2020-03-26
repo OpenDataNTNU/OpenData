@@ -1,23 +1,41 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 // import { useDispatch, useSelector } from 'react-redux';
 import { FileUpload } from 'styled-icons/fa-solid/FileUpload';
 
+const fadeOut = keyframes`
+  from {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  to {
+    transform-origin: top center;
+    transform: scaleY(0) translate(0, -100%);
+    opacity: 0;
+  }
+`;
+
 const Upload = styled.div`
   position: relative;
-  max-height: 100%;
-  height: 100%;
+  padding: 40px 20px;
+  width: 100%;
   box-sizing: content-box;
   border: 2px #e6e6e6 solid;
   border-radius: 8px;
-  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   outline: ${(props) => (props.isHoveringDropArea ? 'none' : null)};
   border-color: ${(props) => (props.isHoveringDropArea ? '#9ecaed' : null)};
   box-shadow: ${(props) => (props.isHoveringDropArea ? '#0 0 10px #9ecaed' : null)};
+
+  display: ${(props) => (props.animationOver ? 'none' : 'flex')};
+  transform: ${(props) => (props.hidden ? 'scaleY(0)' : 'scaleY(1)')};
+  visibility: ${(props) => (props.hidden ? 'hidden' : 'visible')};
+  animation: ${(props) => (props.hidden ? fadeOut : null)} 1s linear;
+  transition: visibility 1s linear;
 `;
 
 const Input = styled.input`
@@ -63,9 +81,10 @@ const TooltipText = styled.span`
   }
 `;
 
-const FileDropper = ({ uploadFile }) => {
+const FileDropper = ({ uploadFile, hidden }) => {
   const [isHoveringDropArea, setIsHoveringDropArea] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [animationOver, setAnimationOver] = useState(false);
 
   const onDragOver = (e) => {
     // Prevent default behavior (Prevent file from being opened)
@@ -96,6 +115,10 @@ const FileDropper = ({ uploadFile }) => {
     uploadFile(e.target.files[0]);
   };
 
+  const onAnimationOver = () => {
+    setAnimationOver(true);
+  };
+
   return (
     <Upload
       onDragOver={onDragOver}
@@ -104,6 +127,9 @@ const FileDropper = ({ uploadFile }) => {
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
       isHoveringDropArea={isHoveringDropArea}
+      hidden={hidden}
+      animationOver={animationOver}
+      onAnimationEnd={onAnimationOver}
     >
       <Label>
         <FileUpload size="1em" />
@@ -120,6 +146,7 @@ const FileDropper = ({ uploadFile }) => {
 
 FileDropper.propTypes = {
   uploadFile: PropTypes.func.isRequired,
+  hidden: PropTypes.string.isRequired,
 };
 
 export {

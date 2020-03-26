@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 
 import { Template } from '../../sharedComponents/Template';
 import { FileDropper } from './FileDropper';
-import { alertActions } from '../../state/actions/alert';
+import { TabView } from './TabView';
+// import { alertActions } from '../../state/actions/alert';
 // import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
 const Wrapper = styled.div`
@@ -24,9 +25,7 @@ const Content = styled.div`
   min-height: 300px;
   background-color: #ffffff;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 40% 60%;
+  display: flex;
 `;
 
 const Uploader = styled.div`
@@ -34,6 +33,7 @@ const Uploader = styled.div`
   box-sizing: content-box;
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const Header = styled.h2`
@@ -42,12 +42,15 @@ const Header = styled.h2`
 
 const DCATWizard = () => {
   // Redux
-  const dispatch = useDispatch();
-  const userSelector = useSelector((state) => state.user) || { user: { token: null } };
-  const { token } = userSelector.user;
+  // const dispatch = useDispatch();
+  // const userSelector = useSelector((state) => state.user) || { user: { token: null } };
+  // const { token } = userSelector.user;
 
-  const uploadFile = async (file) => {
-    const filename = file.type || file.name.split('.').pop();
+  // State
+  const [uploaderHidden, setUploaderHidden] = useState(false);
+
+  const uploadFile = async (/* file */) => {
+    /* const filename = file.type || file.name.split('.').pop();
     let contentType;
     switch (filename) {
       case 'text/xml':
@@ -92,7 +95,8 @@ const DCATWizard = () => {
       }
     } catch (_) {
       dispatch(alertActions.error('Failed to upload file'));
-    }
+    } */
+    setUploaderHidden(true);
   };
 
   return (
@@ -100,8 +104,11 @@ const DCATWizard = () => {
       <Wrapper>
         <Content>
           <Uploader>
-            <Header>DCAT Wizard</Header>
-            <FileDropper uploadFile={uploadFile} />
+            <TabView tabs={['Upload File', '2', '3']}>
+              <FileDropper hidden={uploaderHidden} uploadFile={uploadFile} />
+              <Header>DCAT Wizard 2</Header>
+              <Header>DCAT Wizard 3</Header>
+            </TabView>
           </Uploader>
         </Content>
       </Wrapper>
