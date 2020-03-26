@@ -23,6 +23,7 @@ import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
 import { MyData } from '../pages/MyData';
 import { NewTag } from '../pages/NewTag';
 import { Tags } from '../pages/Tags';
+import { Category } from '../pages/Category';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -34,6 +35,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route path="/municipalities/:name" component={MetadataByMunicipality} />
         <Route path="/municipalities" component={MetadataByMunicipality} />
         <Route path="/dataset/:id" component={Inspection} />
+        <Route path="/category/:uuid" component={Category} />
+        <Route path="/category" component={Category} />
         <PrivateRoute path="/sendData" municipality component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" municipality component={NewExperienceArticle} />
