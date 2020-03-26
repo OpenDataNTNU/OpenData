@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 // import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,57 +47,11 @@ const DCATWizard = () => {
   // const { token } = userSelector.user;
 
   // State
-  const [uploaderHidden, setUploaderHidden] = useState(false);
+  const [file, setFile] = useState(null);
 
-  const uploadFile = async (/* file */) => {
-    /* const filename = file.type || file.name.split('.').pop();
-    let contentType;
-    switch (filename) {
-      case 'text/xml':
-      case 'xml': {
-        contentType = 'application/xml';
-        break;
-      }
-      case 'application/ld+json':
-      case 'jsonld': {
-        contentType = 'application/ld+json';
-        break;
-      }
-      case 'application/rdf+xml':
-      case 'rdf': {
-        contentType = 'application/rdf+xml';
-        break;
-      }
-      default: {
-        return;
-      }
-    }
+  useEffect(() => {
 
-    try {
-      const response = await fetch('/api/something', {
-        method: 'PUT',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': contentType,
-          Authorization: `Bearer ${token}`,
-        },
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-        body: file,
-      });
-
-      if (response.ok && response.status === 200) {
-        dispatch(alertActions.success('placeholder'));
-      } else {
-        throw Error('Failed to upload file');
-      }
-    } catch (_) {
-      dispatch(alertActions.error('Failed to upload file'));
-    } */
-    setUploaderHidden(true);
-  };
+  }, [file]);
 
   return (
     <Template>
@@ -105,7 +59,7 @@ const DCATWizard = () => {
         <Content>
           <Uploader>
             <TabView tabs={['Upload File', '2', '3']}>
-              <FileDropper hidden={uploaderHidden} uploadFile={uploadFile} />
+              <FileDropper file={file} setFile={setFile} hidden={file != null} />
               <Header>DCAT Wizard 2</Header>
               <Header>DCAT Wizard 3</Header>
             </TabView>
