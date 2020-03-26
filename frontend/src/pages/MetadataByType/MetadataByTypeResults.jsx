@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { SingleMetaDataResult } from '../../sharedComponents/Metadata/SingleMetaDataResult';
 import { alertActions } from '../../state/actions/alert';
+import { DescriptionEditButton } from '../EditDescriptionMetadataType/DescriptionEditButton';
 
 const CategoriesContainer = styled.div`
   height: 100%;
@@ -87,7 +88,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error(`Could not find the metadata for category ${metadataTypeName}`));
+          dispatch(alertActions.error(`Could not find the category ${uuid}`));
         } else {
           dispatch(alertActions.error('Failed to fetch metadata. Please try again later.'));
         }
@@ -101,7 +102,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
     return (
       <CategoriesContainer>
         <ResultsHeader>
-          <h1>{metadataTypeName}</h1>
+          <h3>{name}</h3>
         </ResultsHeader>
         <NoResult text="Loading..." />
       </CategoriesContainer>
@@ -111,7 +112,8 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
     <CategoriesContainer>
       <ResultsHeader>
         <div>
-          <h3>{metadataTypeName}</h3>
+          <h3>{metadataType.name}</h3>
+          <DescriptionEditButton uuid={metadataTypeUuid} currentDescription={description} />
           <p>{description}</p>
           { tags.length === 0 ? (
             <NoTags>No tags for this category.</NoTags>
@@ -121,7 +123,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       </ResultsHeader>
       <ResultsContainer>
         { metadataSet.length === 0 ? (
-          <NoResult text={`No results were found for ${metadataTypeName}.`} />
+          <NoResult text={`No results were found for ${uuid}.`} />
         ) : metadataSet.map((m) => (
           <SingleMetaDataResult
             key={m.uuid}

@@ -25,11 +25,20 @@ const MetadataCard = styled.div`
   overflow: hidden;
   min-height: 20rem;
   min-width: 35rem;
-  overflow: visible;
+`;
+const MetadataHeader = styled.div`
+  padding: 0.5rem;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const DateLine = styled.p`
+  font-size: 0.8rem;
+  color: dimgray;
 `;
 
 const Description = styled.p`
@@ -122,14 +131,19 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
         <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
       </LocationWrapper>
       <MetadataCard>
-        <MetadataContent>
+        <MetadataHeader>
           <ReleaseStateLabel releaseState={releaseState} />
-          <Description>
-            {description}
-          </Description>
+          <DateLine>
+            Published
+            {` ${date}`}
+          </DateLine>
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
+        </MetadataHeader>
+        <MetadataContent>
+          <p>{description}</p>
+          <MetadataURL url={url} formatName={formatName} inspection />
           <h3>This data set is available in the following places:</h3>
           {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
             <SourceWrapper key={sourceUuid}>
