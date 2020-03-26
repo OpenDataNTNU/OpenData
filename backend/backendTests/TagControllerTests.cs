@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using OpenData.Domain.Models;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace OpenData.backend
@@ -15,11 +19,11 @@ namespace OpenData.backend
         }
 
         /// <summary>
-        /// Asserts correct status code for all HttpGet calls on the tag controller
+        /// Asserts correct status code and correct content type for all HttpGet calls on the tag controller
         /// </summary>
         [Theory]
         [InlineData("/api/tag")]
-        public async Task Get_EndpointsReturnSuccess(string url)
+        public async Task Get_EndpointsReturnSuccess_CorrectContentType(string url)
         {
             // Arrange
 
@@ -32,25 +36,30 @@ namespace OpenData.backend
             // Assert
 
             response.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                response.Content.Headers.ContentType.ToString());
         }
 
         /// <summary>
-        /// Asserts correct content type for all HttpGet calls on the tag controller
+        /// Asserts correct status code and correct content type for all HttpPut calls on the tag controller
         /// </summary>
         [Theory]
         [InlineData("/api/tag")]
-        public async Task Get_CorrectContentType(string url)
+        public async Task Put_EndpointsReturnSuccess_CorrectContentType(string url)
         {
             // Arrange
 
             var client = _factory.CreateDefaultClient();
-
+            Tag resource = new Tag();
+            resource.Name = "TestTag";
+            
             // Act
 
-            var response = await client.GetAsync(url);
+            var response = await client.PutAsync(url, new StringContent(JsonSerializer.Serialize(resource), Encoding.UTF8, "application/json"));
 
             // Assert
 
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
         }
