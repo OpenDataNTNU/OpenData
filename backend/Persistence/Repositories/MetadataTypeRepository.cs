@@ -73,7 +73,7 @@ namespace OpenData.Persistence.Repositories
                 .GroupBy(v => v.MetadataTypeDescriptionUuid)
                 .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count() })
                 .OrderBy(d => d.VoteCount)
-                .OrderBy(d => d.Published)
+                //.OrderBy(d => d.Published)
                 .FirstOrDefaultAsync();
         }
 

@@ -238,6 +238,8 @@ namespace OpenData.Controllers
 			vote.UserMail = user.Mail;
 			vote.MetadataTypeDescriptionUuid = descUuid;
 
+			await _metadataTypeService.VoteOnDescriptionAsync(vote, metadataTypeUuid);
+
 			return Ok();
 		}
 
