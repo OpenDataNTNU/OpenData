@@ -8,6 +8,7 @@ namespace OpenData.Domain.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Uuid { get; set; }
+
         public string Content { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

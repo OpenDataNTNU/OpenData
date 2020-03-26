@@ -23,11 +23,13 @@ namespace OpenData.Persistence.Repositories
         }
 
         public async Task<MetadataType> GetByUuidAsync(Guid uuid) {
-            return await _context.MetadataTypes
+            var metadataType = await _context.MetadataTypes
                 .Include(p => p.Tags)
                 .Include(p => p.MetadataList)
                     .ThenInclude(p => p.Format)
                 .FirstAsync(x => x.Uuid == uuid);
+            metadataType.Description = await GetMetadataTypeDescription(metadataType.Uuid);
+            return metadataType;
         }
 
         public async Task AddAsync(MetadataType metadata) {
@@ -59,7 +61,7 @@ namespace OpenData.Persistence.Repositories
                 .GroupBy(v => v.MetadataTypeDescriptionUuid)
                 .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count()})
                 .OrderBy(mtd => mtd.VoteCount)
-                .OrderBy(mtd => mtd.Published)
+                //.OrderBy(mtd => mtd.Published)
                 .ToListAsync();
         }
 
@@ -70,7 +72,7 @@ namespace OpenData.Persistence.Repositories
                 .SelectMany(mtd => mtd.Votes)
                 .GroupBy(v => v.MetadataTypeDescriptionUuid)
                 .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count() })
-                .OrderBy(mtd => mtd.VoteCount)
+                .OrderBy(d => d.VoteCount)
                 .OrderBy(d => d.Published)
                 .FirstOrDefaultAsync();
         }
@@ -78,6 +80,7 @@ namespace OpenData.Persistence.Repositories
         public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
         {
             await _context.MetadataTypeDescriptionVotes.AddAsync(vote);
+            await _context.SaveChangesAsync();
         }
 
         public async Task RemoveVoteOnDescriptionAsync(string userMail, Guid descUuid, Guid metadataUuid)

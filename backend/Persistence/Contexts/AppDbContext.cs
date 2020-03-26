@@ -112,10 +112,15 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<MetadataType>().HasMany(p => p.MetadataList).WithOne(p => p.Type).HasForeignKey(p => p.MetadataTypeUuid).IsRequired();
 
             builder.Entity<MetadataTypeDescription>().ToTable("MetadataTypeDescription");
-            builder.Entity<MetadataTypeDescription>().HasKey(p => p.Uuid);
+            builder.Entity<MetadataTypeDescription>().HasKey(d => d.Uuid);
+            builder.Entity<MetadataTypeDescription>().Property(d => d.Content).IsRequired();
+            builder.Entity<MetadataTypeDescription>().Property(d => d.AuthorMail).IsRequired();
+            builder.Entity<MetadataTypeDescription>().Property(d => d.MetadataTypeUuid).IsRequired();
 
             builder.Entity<MetadataTypeDescriptionVote>().ToTable("MetadataTypeDescriptionVote");
             builder.Entity<MetadataTypeDescriptionVote>().HasKey(p => new { p.UserMail, p.MetadataTypeDescriptionUuid });
+            builder.Entity<MetadataTypeDescriptionVote>().Property(v => v.MetadataTypeDescriptionUuid).IsRequired();
+            builder.Entity<MetadataTypeDescriptionVote>().Property(v => v.UserMail).IsRequired();
 
 
             //Define metadata types
