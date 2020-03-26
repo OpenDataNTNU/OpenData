@@ -41,7 +41,7 @@ namespace OpenData.Persistence.Repositories
                 .Where(m => searchParams.Tags == null ||
                             searchParams.Tags.Count() == 0 ||
                             m.Tags.Select(t => t.TagName).Any(tname => searchParams.Tags.Select(t => t.Name).Contains(tname)))
-                .Where(m => m.Description.Content.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
+                //.Where(m => m.Description.Content.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
                 .ToListAsync();
         }
 
@@ -58,6 +58,8 @@ namespace OpenData.Persistence.Repositories
                 .SelectMany(mtd => mtd.Votes)
                 .GroupBy(v => v.MetadataTypeDescriptionUuid)
                 .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count()})
+                .OrderBy(mtd => mtd.VoteCount)
+                .OrderBy(mtd => mtd.Published)
                 .ToListAsync();
         }
 
@@ -65,8 +67,12 @@ namespace OpenData.Persistence.Repositories
         {
             return await _context.MetadataTypeDescriptions
                 .Where(d => d.MetadataTypeUuid == metadataUuid)
+                .SelectMany(mtd => mtd.Votes)
+                .GroupBy(v => v.MetadataTypeDescriptionUuid)
+                .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count() })
+                .OrderBy(mtd => mtd.VoteCount)
                 .OrderBy(d => d.Published)
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)

@@ -108,7 +108,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<MetadataType>().ToTable("MetadataTypes");
             builder.Entity<MetadataType>().HasKey(p => p.Uuid);
             builder.Entity<MetadataType>().Property(nameof(MetadataType.Name)).IsRequired();
-            builder.Entity<MetadataType>().Property(nameof(MetadataType.Description)).IsRequired();
+            //builder.Entity<MetadataType>().Property(nameof(MetadataType.Description)).IsRequired();
             builder.Entity<MetadataType>().HasMany(p => p.MetadataList).WithOne(p => p.Type).HasForeignKey(p => p.MetadataTypeUuid).IsRequired();
 
             builder.Entity<MetadataTypeDescription>().ToTable("MetadataTypeDescription");

@@ -13,6 +13,7 @@ namespace OpenData.Mapping
         {
             CreateMap<MetadataType, MetadataTypeResource>();
             CreateMap<NewMetadataTypeDescriptionResource, MetadataTypeDescription>();
+            CreateMap<MetadataTypeDescription, MetadataTypeDescriptionResource>();
 
             CreateMap<Metadata, MetadataResource>();
             CreateMap<MetadataCategory, MetadataCategoryResource>();

@@ -201,7 +201,9 @@ namespace OpenData.Controllers
 
 			await _metadataTypeService.AddNewDescriptionAsync(metadataTypeDescription);
 
-			return Ok(metadataTypeDescription);
+			var metadataTypeDescriptionRes = _mapper.Map<MetadataTypeDescription, MetadataTypeDescriptionResource>(metadataTypeDescription);
+
+			return Ok(metadataTypeDescriptionRes);
         }
 
         /// <summary>
@@ -213,7 +215,8 @@ namespace OpenData.Controllers
 		public async Task<IActionResult> FetchDescriptionsAsync(Guid metadataTypeUuid)
 		{
 			IEnumerable<MetadataTypeDescription> descriptions = await _metadataTypeService.ListDescriptionsAsync(metadataTypeUuid);
-			return Ok(descriptions);
+			var descriptionResources = _mapper.Map<IEnumerable<MetadataTypeDescription>, IEnumerable<MetadataTypeDescriptionResource>>(descriptions);
+			return Ok(descriptionResources);
 		}
 
         /// <summary>
