@@ -3,8 +3,10 @@ import styled from 'styled-components';
 // import { useDispatch, useSelector } from 'react-redux';
 
 import { Template } from '../../sharedComponents/Template';
-import { FileDropper } from './FileDropper';
 import { TabView } from './TabView';
+import { FileDropper } from './FileDropper';
+import { DatasetsSelection } from './DatasetsSelection';
+import { CatalogsSelection } from './CatalogsSelection';
 // import { alertActions } from '../../state/actions/alert';
 // import { LoadingButton } from '../../sharedComponents/LoadingButton';
 
@@ -58,10 +60,10 @@ const DCATWizard = () => {
       <Wrapper>
         <Content>
           <Uploader>
-            <TabView tabs={['Upload File', '2', '3']}>
+            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs']}>
               <FileDropper file={file} setFile={setFile} hidden={file != null} />
-              <Header>DCAT Wizard 2</Header>
-              <Header>DCAT Wizard 3</Header>
+              <DatasetsSelection />
+              <CatalogsSelection />
             </TabView>
           </Uploader>
         </Content>
