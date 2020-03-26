@@ -114,7 +114,7 @@ export const MetadataByType = () => {
   const dispatch = useDispatch();
 
   const handleCategorySelection = ({ target: { value } }) => {
-    setSelectedCategory(value);
+    setSelectedCategory(fetchedCategories.find((c) => c.name === value));
   };
 
   const handleCategoryFilterSelection = ({ target: { value } }) => {
@@ -135,7 +135,10 @@ export const MetadataByType = () => {
           setFetchedCategories(receivedCategories);
           setCategories(receivedCategories);
         }
-        if (name) setSelectedCategory(name);
+        const matchingType = receivedCategories.find((c) => c.name === name);
+        if (matchingType) {
+          setSelectedCategory(matchingType);
+        }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
@@ -180,7 +183,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <MetadataByTypeResults metadataTypeName={selectedCategory} />
+              ? <MetadataByTypeResults metadataType={selectedCategory} />
               : (
                 <NoResult text="Select a category to examine." />
               )}

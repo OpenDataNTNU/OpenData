@@ -21,21 +21,20 @@ const MetadataCard = styled.div`
   overflow: hidden;
   min-height: 20rem;
   min-width: 35rem;
-  overflow: visible;
+`;
+const MetadataHeader = styled.div`
+  padding: 0.5rem;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const DateLine = styled.p`
   font-size: 0.8rem;
   color: dimgray;
-`;
-
-const Description = styled.p`
-  font-size: 0.9rem;
-  color: #353535;
 `;
 
 const Tag = styled.div`
@@ -84,18 +83,18 @@ export const MetaData = (props) => {
         <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
       </LocationWrapper>
       <MetadataCard>
-        <MetadataContent>
+        <MetadataHeader>
           <ReleaseStateLabel releaseState={releaseState} />
           <DateLine>
             Published
             {` ${date}`}
           </DateLine>
-          <Description>
-            {description}
-          </Description>
           <div>
             {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
           </div>
+        </MetadataHeader>
+        <MetadataContent>
+          <p>{description}</p>
           <MetadataURL url={url} formatName={formatName} inspection />
         </MetadataContent>
         <MetadataToolbar

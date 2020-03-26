@@ -23,12 +23,14 @@ import { MetadataByMunicipality } from '../pages/MetadataByMunicipality';
 import { MyData } from '../pages/MyData';
 import { NewTag } from '../pages/NewTag';
 import { Tags } from '../pages/Tags';
+import { EditDescriptionMetadataType } from '../pages/EditDescriptionMetadataType';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
+        <PrivateRoute path="/dataType/description/:id" component={EditDescriptionMetadataType} />
         <Route path="/dataType/:name" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
         <Route path="/municipalities/:name" component={MetadataByMunicipality} />

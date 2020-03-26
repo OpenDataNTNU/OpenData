@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { SingleMetaDataResult } from '../../sharedComponents/Metadata/SingleMetaDataResult';
 import { alertActions } from '../../state/actions/alert';
+import { DescriptionEditButton } from '../EditDescriptionMetadataType/DescriptionEditButton';
 
 const CategoriesContainer = styled.div`
   height: 100%;
@@ -48,12 +49,13 @@ const NoTags = styled.p`
   font-size: 0.8rem;
 `;
 
-const MetadataByTypeResults = ({ metadataTypeName }) => {
+const MetadataByTypeResults = ({ metadataType }) => {
+  const {
+    uuid, name, description, tags,
+  } = metadataType;
   const [metadataSet, setMetadataSet] = useState([]);
   const [fetchedMetadataSet, setFetchedMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
 
   const handleFilterSelection = ({ target: { value } }) => {
@@ -68,23 +70,17 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
     const internal = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/MetadataType/${metadataTypeName}`);
+        const res = await fetch(`/api/MetadataType/${uuid}`);
         if (res.status === 200) {
-          const {
-            tags: receivedTags,
-            description: receivedDescription,
-            metadataList,
-          } = await res.json();
-          // setTags(receivedTags);
-          setTags(receivedTags);
-          setDescription(receivedDescription);
+          const receivedMetadataType = await res.json();
+          const { metadataList } = receivedMetadataType;
           setFetchedMetadataSet(metadataList);
           setMetadataSet(metadataList);
         }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error(`Could not find the metadata for category ${metadataTypeName}`));
+          dispatch(alertActions.error(`Could not find the category ${uuid}`));
         } else {
           dispatch(alertActions.error('Failed to fetch metadata. Please try again later.'));
         }
@@ -92,13 +88,13 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
       setLoading(false);
     };
     internal();
-  }, [metadataTypeName]);
+  }, [uuid]);
 
   if (loading) {
     return (
       <CategoriesContainer>
         <ResultsHeader>
-          <h1>{metadataTypeName}</h1>
+          <h3>{name}</h3>
         </ResultsHeader>
         <NoResult text="Loading..." />
       </CategoriesContainer>
@@ -108,7 +104,8 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
     <CategoriesContainer>
       <ResultsHeader>
         <div>
-          <h3>{metadataTypeName}</h3>
+          <h3>{metadataType.name}</h3>
+          <DescriptionEditButton uuid={uuid} currentDescription={description} />
           <p>{description}</p>
           { tags.length === 0 ? (
             <NoTags>No tags for this category.</NoTags>
@@ -118,7 +115,7 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
       </ResultsHeader>
       <ResultsContainer>
         { metadataSet.length === 0 ? (
-          <NoResult text={`No results were found for ${metadataTypeName}.`} />
+          <NoResult text={`No results were found for ${uuid}.`} />
         ) : metadataSet.map((m) => (
           <SingleMetaDataResult key={m.uuid} metadata={m} showMunicipality />
         ))}
@@ -128,7 +125,12 @@ const MetadataByTypeResults = ({ metadataTypeName }) => {
 };
 
 MetadataByTypeResults.propTypes = {
-  metadataTypeName: PropTypes.string.isRequired,
+  metadataType: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tags: PropTypes.array.isRequired,
+  }).isRequired,
 };
 
 export {
