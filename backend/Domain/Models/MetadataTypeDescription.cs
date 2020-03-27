@@ -30,6 +30,6 @@ namespace OpenData.Domain.Models
         public IEnumerable<MetadataTypeDescriptionVote> Votes { get; set; }
 
         [NotMapped]
-        public bool HasVoted { get; set; } = false;
+        public bool? HasVoted { get; set; } = null;
     }
 }
