@@ -19,5 +19,6 @@ namespace OpenData.Resources
         public SafeUserResource Author { get; set; }
 
         public int VoteCount { get; set; } = 0;
+        public bool HasVoted { get; set; } = false;
     }
 }

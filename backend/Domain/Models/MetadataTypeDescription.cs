@@ -28,5 +28,8 @@ namespace OpenData.Domain.Models
         [NotMapped]
         public int VoteCount { get; set; } = 0;
         public IEnumerable<MetadataTypeDescriptionVote> Votes { get; set; }
+
+        [NotMapped]
+        public bool HasVoted { get; set; } = false;
     }
 }

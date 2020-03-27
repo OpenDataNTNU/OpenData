@@ -15,7 +15,7 @@ namespace OpenData.Domain.Services
          Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata);
          Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams);
          Task AddNewDescriptionAsync(MetadataTypeDescription metadataTypeDescription);
-         Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid);
+         Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid, string userMail);
          Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid);
          Task RemoveVoteOnDescriptionAsync(string userMail, Guid descUuid, Guid metadataUuid);
     }

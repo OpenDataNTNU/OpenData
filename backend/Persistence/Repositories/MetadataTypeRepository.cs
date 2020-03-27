@@ -53,27 +53,40 @@ namespace OpenData.Persistence.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid)
+        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid, string userMail)
         {
             return await _context.MetadataTypeDescriptions
-                .Where(mtd => mtd.MetadataTypeUuid == metadataTypeUuid)
-                .SelectMany(mtd => mtd.Votes)
-                .GroupBy(v => v.MetadataTypeDescriptionUuid)
-                .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count()})
-                .OrderBy(mtd => mtd.VoteCount)
-                //.OrderBy(mtd => mtd.Published)
+                .Where(d => d.MetadataTypeUuid == metadataTypeUuid)
+                .Select(d => new MetadataTypeDescription
+                {
+                    Uuid = d.Uuid,
+                    Content = d.Content,
+                    Author = d.Author,
+                    Published = d.Published,
+                    HasVoted = d.Votes.Any(v => v.UserMail == userMail),
+                    Edited = d.Edited,
+                    VoteCount = d.Votes.Count()
+                })
+                .OrderByDescending(d => d.Published)
+                .OrderByDescending(d => d.VoteCount)
                 .ToListAsync();
         }
 
-        private async Task<MetadataTypeDescription> GetMetadataTypeDescription(Guid metadataUuid)
+        private async Task<MetadataTypeDescription> GetMetadataTypeDescription(Guid metadataTypeUuid)
         {
             return await _context.MetadataTypeDescriptions
-                .Where(d => d.MetadataTypeUuid == metadataUuid)
-                .SelectMany(mtd => mtd.Votes)
-                .GroupBy(v => v.MetadataTypeDescriptionUuid)
-                .Select(gr => new MetadataTypeDescription { Uuid = gr.Key, VoteCount = gr.Count() })
-                .OrderBy(d => d.VoteCount)
-                //.OrderBy(d => d.Published)
+                .Where(d => d.MetadataTypeUuid == metadataTypeUuid)
+                .Select(d => new MetadataTypeDescription
+                {
+                    Uuid = d.Uuid,
+                    Content = d.Content,
+                    Author = d.Author,
+                    Published = d.Published,
+                    Edited = d.Edited,
+                    VoteCount = d.Votes.Count()
+                })
+                .OrderByDescending(d => d.Published)
+                .OrderByDescending(d => d.VoteCount)
                 .FirstOrDefaultAsync();
         }
 

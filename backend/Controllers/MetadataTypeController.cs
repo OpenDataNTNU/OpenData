@@ -214,7 +214,10 @@ namespace OpenData.Controllers
 		[HttpGet("{metadataTypeUuid}/description")]
 		public async Task<IActionResult> FetchDescriptionsAsync(Guid metadataTypeUuid)
 		{
-			IEnumerable<MetadataTypeDescription> descriptions = await _metadataTypeService.ListDescriptionsAsync(metadataTypeUuid);
+			var username = httpContextRetriever.HttpContext.User.Identity.Name;
+			var user = await userService.GetUserByMailAsync(username);
+
+			IEnumerable<MetadataTypeDescription> descriptions = await _metadataTypeService.ListDescriptionsAsync(metadataTypeUuid, user.Mail);
 			var descriptionResources = _mapper.Map<IEnumerable<MetadataTypeDescription>, IEnumerable<MetadataTypeDescriptionResource>>(descriptions);
 			return Ok(descriptionResources);
 		}

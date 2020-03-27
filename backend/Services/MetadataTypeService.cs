@@ -51,9 +51,9 @@ namespace OpenData.Services
             await _metadataTypeRepository.AddNewDescriptionAsync(metadataTypeDescription);
         }
 
-        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid)
+        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid, string userMail)
         {
-            return await _metadataTypeRepository.ListDescriptionsAsync(metadataTypeUuid);
+            return await _metadataTypeRepository.ListDescriptionsAsync(metadataTypeUuid, userMail);
         }
 
         public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
