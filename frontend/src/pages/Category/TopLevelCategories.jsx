@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { CategoryList } from './CategoryList';
+import { CategoryListElement } from './CategoryListElement';
 import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
@@ -36,7 +36,11 @@ export const TopLevelCategories = () => {
   return (
     <Wrapper>
       <h2>Categories</h2>
-      <CategoryList categories={categories} />
+      <ul>
+        {categories.map((category) => (
+          <CategoryListElement key={category.uuid} category={category} />
+        ))}
+      </ul>
     </Wrapper>
   );
 };

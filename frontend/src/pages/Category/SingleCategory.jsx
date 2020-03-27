@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { CategoryList } from './CategoryList';
+import { CategoryListElement } from './CategoryListElement';
 import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
@@ -57,7 +57,9 @@ export const SingleCategory = ({ uuid }) => {
         ? (
           <>
             <h2>Subcategories</h2>
-            <CategoryList categories={children} />
+            <ul>
+              {children.map((child) => <CategoryListElement key={child.uuid} category={child} />)}
+            </ul>
           </>
         )
         : null}
