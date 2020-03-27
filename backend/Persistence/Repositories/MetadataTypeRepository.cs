@@ -43,7 +43,11 @@ namespace OpenData.Persistence.Repositories
                 .Where(m => searchParams.Tags == null ||
                             searchParams.Tags.Count() == 0 ||
                             m.Tags.Select(t => t.TagName).Any(tname => searchParams.Tags.Select(t => t.Name).Contains(tname)))
-                //.Where(m => m.Description.Content.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase))
+                .Where(m => m.Descriptions
+                    .OrderByDescending(d => d.Published)
+                    .OrderByDescending(d => d.Votes.Count())
+                    .First().Content.Contains(searchParams.Keywords, StringComparison.OrdinalIgnoreCase)
+                 )
                 .ToListAsync();
         }
 
