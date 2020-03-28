@@ -56,7 +56,7 @@ const DatasetsSelection = ({ state: { datasets, selections }, setState }) => {
   const reducedDatasets = datasets ? datasets.slice(0, showCount) : [];
 
   const onClick = () => {
-    setShowCount(showCount + 10);
+    setShowCount(showCount + Math.min(10, datasets.length - showCount));
   }
 
   const onSelection = (index) => {
@@ -98,8 +98,8 @@ const DatasetsSelection = ({ state: { datasets, selections }, setState }) => {
             <Dataset key={title} selected={selections[index]} onSelection={onSelection} index={index} title={title} distributions={distributions} />
           ))
         }
-        <LoadMoreButton onClick={onClick}> Load more ({datasets.length - showCount}) </LoadMoreButton>
       </Datasets>
+      <LoadMoreButton onClick={onClick}> Load more ({datasets.length - showCount}) </LoadMoreButton>
     </Wrapper>
   );
 };
