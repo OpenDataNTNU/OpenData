@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
+  height: 100%;
   flex-direction: column;
 `;
 
@@ -18,10 +18,11 @@ const Head = styled.div`
 `;
 
 const Tab = styled.div`
-  cursor: pointer;
+  cursor: ${(props) => props.disabled ? "default" : "pointer"};
   min-width: 160px;
   flex: ${(props) => props.flex};
   color: ${(props) => (props.active ? '#90caf9' : null)};
+  background-color: ${(props) => props.disabled ? "#262525" : null};
   border-bottom: ${(props) => (props.active ? 'solid 3px #90caf9' : null)};
   justify-content: center;
   align-items: center;
@@ -56,25 +57,25 @@ const fadeIn2 = keyframes`
 `;
 
 const Views = styled.div`
-  flex: 1;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   animation: ${(props) => (props.force ? fadeIn : fadeIn2)} 1s ease-in;
 `;
 
-const TabView = ({ children, tabs }) => {
+const TabView = ({ children, tabs, BBDisabled, FBDisabled }) => {
   // State
   const [currentView, setCurrentView] = useState(0);
 
   const forward = () => {
-    if (currentView < tabs.length - 1) {
+    if (currentView < tabs.length - 1 && !FBDisabled) {
       setCurrentView(currentView + 1);
     }
   };
 
   const backward = () => {
-    if (currentView !== 0) {
+    if (currentView !== 0 && !BBDisabled) {
       setCurrentView(currentView - 1);
     }
   };
@@ -82,7 +83,7 @@ const TabView = ({ children, tabs }) => {
   return (
     <Container>
       <Head>
-        <Tab flex="10" onClick={backward}>
+        <Tab flex="10" onClick={backward} disabled={BBDisabled}>
           {
             currentView === 0
               ? ''
@@ -94,7 +95,7 @@ const TabView = ({ children, tabs }) => {
             tabs[currentView]
           }
         </Tab>
-        <Tab flex="10" onClick={forward}>
+        <Tab flex="10" onClick={forward} disabled={FBDisabled}>
           {
             currentView === tabs.length
               ? ''
@@ -117,6 +118,8 @@ TabView.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
+  BBDisabled: PropTypes.bool.isRequired,
+  FBDisabled: PropTypes.bool.isRequired,
 };
 
 export {

@@ -85,7 +85,7 @@ function parseJsonLd(ld) {
 	return dcatExports;
 }
 
-module.exports = parseJsonld;
+export default parseJsonLd;
 
 //console.log("Extracted data:");
 //console.log(JSON.stringify(dcatExports, null, 4));

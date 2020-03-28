@@ -6,19 +6,17 @@ const Wrapper = styled.div`
   flex: 1;
 `;
 
-const CatalogsSelection = ({ catalogs }) => {
-  return(
-    <Wrapper>
-      {
+const CatalogsSelection = ({ catalogs }) => (
+  <Wrapper>
+    {
         catalogs
       }
-    </Wrapper>
-  )
-}
+  </Wrapper>
+);
 
 CatalogsSelection.propTypes = {
-  catalogs: PropTypes.arrayOf(PropTypes.string)
-}
+  catalogs: PropTypes.arrayOf(PropTypes.string),
+};
 
 export {
   CatalogsSelection,
