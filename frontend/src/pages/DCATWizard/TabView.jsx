@@ -57,7 +57,8 @@ const fadeIn2 = keyframes`
 `;
 
 const Views = styled.div`
-  height: 100%;
+  flex: 1;
+  overflow: auto;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   width: 90%;
-  height: 80%;
+  height: 95%;
   min-width: 40px;
   max-width: 800px;
   min-height: 300px;
