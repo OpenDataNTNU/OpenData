@@ -65,18 +65,42 @@ const Wizard = () => {
   useEffect(() => {
     if (!state.fileContent) return;
     const result = parseJsonld(state.fileContent);
-    const datasetsArray = Object.values(result.datasets);
-    const selections = new Map();
+    const datasetsSelections = new Map();
+    const datasetsArray = [];
+    const catalogsArray = [];
 
+    // Set datasets
+    for (const [key, value] of Object.entries(result.datasets)) {
+      const dataset = value;
+      dataset.id = key;
+      datasetsArray.push(dataset);
+    }
+
+    // Set catalog
+    for (const [key, value] of Object.entries(result.catalogs)) {
+      const catalog = value;
+      catalog.id = key;
+      catalogsArray.push(catalog);
+    }
+
+    // Set datasets selections
     datasetsArray.forEach((dataset) => {
-      selections.set(dataset.title, new Array(dataset.distributions.length).fill(true));
+      datasetsSelections.set(dataset.title, new Array(dataset.distributions.length).fill(true));
     });
 
     dispatch({
       type: 'addDatasets',
       payload: {
         datasets: datasetsArray,
-        selections,
+        selections: datasetsSelections,
+      },
+    });
+
+    dispatch({
+      type: 'addCatalogs',
+      payload: {
+        catalogs: catalogsArray,
+        selections: new Array(catalogsArray.length).fill(false),
       },
     });
   }, [state.fileContent]);

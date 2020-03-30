@@ -10,7 +10,8 @@ const init = {
     selections: new Map(),
   },
   catalogsState: {
-
+    catalogs: [],
+    selections: new Map(),
   },
 };
 
@@ -58,6 +59,38 @@ const reducer = (state, action) => {
         ...state,
         datasetsState: {
           ...state.datasetsState,
+          selections: action.payload.selections,
+        },
+      };
+    case 'addCatalogs':
+      return {
+        ...state,
+        catalogsState: {
+          ...state.catalogsState,
+          catalogs: action.payload.catalogs,
+        },
+      };
+    case 'selectCatalog':
+      return {
+        ...state,
+        catalogsState: {
+          ...state.catalogsState,
+          selections: action.payload.selections,
+        },
+      };
+    case 'selectAllCatalogs':
+      return {
+        ...state,
+        catalogsState: {
+          ...state.catalogsState,
+          selections: action.payload.selections,
+        },
+      };
+    case 'deselectAllCatalogs':
+      return {
+        ...state,
+        catalogsState: {
+          ...state.catalogsState,
           selections: action.payload.selections,
         },
       };
