@@ -18,11 +18,11 @@ const Head = styled.div`
 `;
 
 const Tab = styled.div`
-  cursor: ${(props) => props.disabled ? "default" : "pointer"};
+  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   min-width: 160px;
   flex: ${(props) => props.flex};
   color: ${(props) => (props.active ? '#90caf9' : null)};
-  background-color: ${(props) => props.disabled ? "#262525" : null};
+  background-color: ${(props) => (props.disabled ? '#262525' : null)};
   border-bottom: ${(props) => (props.active ? 'solid 3px #90caf9' : null)};
   justify-content: center;
   align-items: center;
@@ -64,7 +64,9 @@ const Views = styled.div`
   animation: ${(props) => (props.force ? fadeIn : fadeIn2)} 1s ease-in;
 `;
 
-const TabView = ({ children, tabs, BBDisabled, FBDisabled }) => {
+const TabView = ({
+  children, tabs, BBDisabled, FBDisabled,
+}) => {
   // State
   const [currentView, setCurrentView] = useState(0);
 

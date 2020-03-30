@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
-import { Dataset } from './Dataset';
+import { WizardContext } from './Context';
+import { DCATDataset } from './DCATDataset';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -42,6 +42,7 @@ const Selection = styled.div`
 `;
 
 const Datasets = styled.div`
+  padding: 5px;
   overflow: auto;
   flex: 1;
 `;
@@ -50,40 +51,62 @@ const SelectButton = styled.button`
 
 `;
 
-const DatasetsSelection = ({ state: { datasets, selections }, setState }) => {
-  console.log(datasets)
+const DatasetsSelection = () => {
+  // wizard state
+  const { state, dispatch } = useContext(WizardContext);
+
   const [showCount, setShowCount] = useState(10);
-  const reducedDatasets = datasets ? datasets.slice(0, showCount) : [];
+  const reducedDatasets = state.datasetsState
+    ? state.datasetsState.datasets.slice(0, showCount)
+    : [];
 
   const onClick = () => {
-    setShowCount(showCount + Math.min(10, datasets.length - showCount));
-  }
+    setShowCount(showCount + Math.min(10, state.datasetsState.datasets.length - showCount));
+  };
 
-  const onSelection = (index) => {
-    const newSelections = [...selections.slice(0, index), !selections[index], ...selections.slice(index+1)]
-    setState({
-      datasets: datasets,
-      selections: newSelections
-    })
+  const onSelection = (title, newValues) => {
+    const newSelections = new Map(state.datasetsState.selections);
+    newSelections.set(title, newValues);
+
+    dispatch({
+      type: 'newSelection',
+      payload: {
+        selections: newSelections,
+      },
+    });
   };
 
   const onSelectAll = () => {
-    const newSelections = new Array(datasets.length).fill(true)
-    setState({
-      datasets: datasets,
-      selections: newSelections
+    const newSelections = new Map();
+
+    state.datasetsState.selections.forEach((selection, title) => {
+      newSelections.set(title, new Array(selection.length).fill(true));
     });
-  }
+
+    dispatch({
+      type: 'selectAllDatasets',
+      payload: {
+        selections: newSelections,
+      },
+    });
+  };
 
   const onDeselectAll = () => {
-    const newSelections = new Array(datasets.length).fill(false)
-    setState({
-      datasets: datasets,
-      selections: newSelections
-    });
-  }
+    const newSelections = new Map();
 
-  return(
+    state.datasetsState.selections.forEach((selection, title) => {
+      newSelections.set(title, new Array(selection.length).fill(false));
+    });
+
+    dispatch({
+      type: 'selectAllDatasets',
+      payload: {
+        selections: newSelections,
+      },
+    });
+  };
+
+  return (
     <Wrapper>
       <Selection>
         <span>Datasets to import:</span>
@@ -94,18 +117,26 @@ const DatasetsSelection = ({ state: { datasets, selections }, setState }) => {
       </Selection>
       <Datasets>
         {
-          reducedDatasets && reducedDatasets.map(({ title, distributions }, index) => (
-            <Dataset key={title} selected={selections[index]} onSelection={onSelection} index={index} title={title} distributions={distributions} />
+          reducedDatasets && reducedDatasets.map(({ title, distributions }) => (
+            <DCATDataset
+              key={title}
+              selections={state.datasetsState ? state.datasetsState.selections.get(title) : false}
+              onSelection={onSelection}
+              title={title}
+              distributions={distributions}
+            />
           ))
         }
       </Datasets>
-      <LoadMoreButton onClick={onClick}> Load more ({datasets.length - showCount}) </LoadMoreButton>
+      <LoadMoreButton onClick={onClick}>
+        {' '}
+        Load more (
+        {state.datasetsState ? state.datasetsState.datasets.length - showCount : 0}
+        )
+        {' '}
+      </LoadMoreButton>
     </Wrapper>
   );
-};
-
-DatasetsSelection.propTypes = {
-  datasets: PropTypes.arrayOf(PropTypes.string),
 };
 
 export {

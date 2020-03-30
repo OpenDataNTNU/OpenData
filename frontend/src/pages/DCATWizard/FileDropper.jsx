@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 // import { useDispatch, useSelector } from 'react-redux';
+
 import { FileUpload } from 'styled-icons/fa-solid/FileUpload';
 import { File } from 'styled-icons/fa-solid/File';
+import { WizardContext } from './Context';
 
 const fadeOut = keyframes`
   from {
@@ -105,7 +107,11 @@ const FinishedUpload = styled.div`
   transition: visibility 1s linear;
 `;
 
-const FileDropper = ({ file, setFile, hidden }) => {
+const FileDropper = ({ hidden }) => {
+  // Wizard state
+  const { state, dispatch } = useContext(WizardContext);
+
+  // State
   const [isHoveringDropArea, setIsHoveringDropArea] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [animationOver, setAnimationOver] = useState(false);
@@ -130,13 +136,13 @@ const FileDropper = ({ file, setFile, hidden }) => {
     // Turn of outline glow when file is dropped
     setIsHoveringDropArea(false);
 
-    setFile(e.dataTransfer.items[0].getAsFile());
+    dispatch({ type: 'addFile', payload: e.dataTransfer.items[0].getAsFile() });
   };
 
   const onChange = (e) => {
     e.preventDefault();
 
-    setFile(e.target.files[0]);
+    dispatch({ type: 'addFile', payload: e.target.files[0] });
   };
 
   const onAnimationOver = () => {
@@ -171,33 +177,13 @@ const FileDropper = ({ file, setFile, hidden }) => {
         animationOver={animationOver}
       >
         <File size="4em" />
-        <p>{file ? file.name : ''}</p>
+        <p>{state.file ? state.file.name : ''}</p>
       </FinishedUpload>
     </>
   );
 };
 
-FileDropper.defaultProps = {
-  file: {
-    name: 'undefined',
-    lastModified: (new Date()).getTime(),
-    lastModifiedDate: new Date(),
-    webkitRelativePath: '',
-    size: 0,
-    type: '',
-  },
-};
-
 FileDropper.propTypes = {
-  file: PropTypes.shape({
-    name: PropTypes.string,
-    lastModified: PropTypes.number,
-    lastModifiedDate: PropTypes.objectOf(Date),
-    webkitRelativePath: PropTypes.string,
-    size: PropTypes.number,
-    typee: PropTypes.string,
-  }),
-  setFile: PropTypes.func.isRequired,
   hidden: PropTypes.bool.isRequired,
 };
 
