@@ -8,6 +8,7 @@ import { TabView } from './TabView';
 import { FileDropper } from './FileDropper';
 import { DatasetsSelection } from './DatasetsSelection';
 import { CatalogsSelection } from './CatalogsSelection';
+import { Connect } from './Connect';
 import parseJsonld from '../../lib/dcat-ld';
 // import { alertActions } from '../../state/actions/alert';
 
@@ -110,10 +111,11 @@ const Wizard = () => {
       <Wrapper>
         <Content>
           <Uploader>
-            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs']} FBDisabled={state.file === null} BBDisabled={state.file == null}>
+            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection']} FBDisabled={state.file === null} BBDisabled={state.file == null}>
               <FileDropper hidden={state.file != null} />
               <DatasetsSelection />
               <CatalogsSelection />
+              <Connect />
             </TabView>
           </Uploader>
         </Content>
