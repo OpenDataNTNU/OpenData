@@ -24,8 +24,8 @@ const Wrapper = styled.div`
 const Content = styled.div`
   width: 90%;
   height: 95%;
-  min-width: 40px;
-  max-width: 800px;
+  min-width: 550px;
+  max-width: 900px;
   min-height: 300px;
   background-color: #ffffff;
   box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
@@ -33,7 +33,6 @@ const Content = styled.div`
 `;
 
 const Uploader = styled.div`
-  padding: 20px;
   box-sizing: content-box;
   display: flex;
   flex-direction: column;

@@ -14,19 +14,18 @@ const Wrapper = styled.div`
   box-shadow: 0 0.05rem 0.2rem #d1d1d1;
 `;
 
-const SelectionWrapper = styled.div`
+const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F7F9FA;
-  border-right: solid 0.1rem #dfe1e2;
-`;
-
-const Content = styled.div`
   padding: 0.2rem 0.3rem 0.4rem 0.3rem;
   flex: 1;
   background-color: white;
 `;
+
+const Info = styled.div`
+  flex: 1;
+`
 
 const Description = styled.p`
   color: #3e3e3e;
@@ -57,53 +56,72 @@ const Format = styled.span`
   display: inline-block;
 `;
 
-const Dataset = ({
-  index, selected, onSelect, description, format: formats, url
+const Select = styled.select`
+  max-width: 136px;
+`;
+
+const ConnectSet = ({
+  index, description, format: formats, url, selectOptions, onSelect
 }) => {
+
   const onChange = () => {
     onSelect(index);
-  };
+  }
 
   return (
     <Wrapper>
-      <SelectionWrapper>
-        <input type="checkbox" checked={selected} onChange={onChange} />
-      </SelectionWrapper>
       <Content>
-        <Description>
-          <Link href={url} target="_blank">
+        <Info>
+          <Description>
+            <Link href={url} target="_blank">
+              {
+                description
+              }
+            </Link>
+          </Description>
+          <Formats>
             {
-              description
+              formats && formats.length > 0
+                ? (
+                  formats.map((format) => (
+                    <Format key={format['@id']}>{ format['@id'] }</Format>
+                  ))
+                )
+                : null
             }
-          </Link>
-        </Description>
-        <Formats>
-          {
-            formats && formats.length > 0
-              ? (
-                formats.map((format) => (
-                  <Format key={format['@id']}>{ format['@id'] }</Format>
-                ))
-              )
-              : null
-          }
-        </Formats>
+          </Formats>
+        </Info>
+        <div>
+          <Select onChange={onChange}>
+            <option disabled selected value> -- select an option -- </option>
+            {
+              selectOptions && selectOptions.map((selectOption, index) => (
+                <option key={selectOptions.title} value={index}>{selectOption.title}</option>
+              ))
+            }
+          </Select>
+        </div>
       </Content>
     </Wrapper>
   );
 };
 
-Dataset.propTypes = {
-  index: PropTypes.number.isRequired,
-  selected: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired,
+ConnectSet.defaultProps = {
+  selectOptions: [],
+  onSelectChange: null,
+};
+
+ConnectSet.propTypes = {
   description: PropTypes.string.isRequired,
   format: PropTypes.arrayOf(PropTypes.shape({
     '@id': PropTypes.string.isRequired,
   })).isRequired,
   url: PropTypes.string.isRequired,
+  showSelect: PropTypes.bool.isRequired,
+  selectOptions: PropTypes.arrayOf(PropTypes.string.isRequired),
+  onSelectChange: PropTypes.func,
 };
 
 export {
-  Dataset,
+  ConnectSet,
 };

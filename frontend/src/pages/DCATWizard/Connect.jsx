@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { WizardContext } from './Context';
-import { Dataset } from './Dataset';
+import {ConnectSet } from './ConnectSet';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -44,7 +44,9 @@ const Connect = () => {
 
   // State
   const { state, dispatch } = useContext(WizardContext);
-  const selectedCatalogs = state.catalogsState.catalogs.reduce((_, index) => (
+
+  // filter out the selected catalogs
+  const selectedCatalogs = state.catalogsState.catalogs.filter((_, index) => (
     state.catalogsState.selections[index]
   ));
 
@@ -58,31 +60,36 @@ const Connect = () => {
   )).flat();
   console.log(formatedDatasets)
 
-  //
+  // filter out the selected datasets
   const selectedDatasets = formatedDatasets.filter((_, index) => (
     flattenedSelections[index]
   ));
-  console.log(selectedDatasets)
 
+  // Reduce the amount of datasets that are shown at once
   const [showCount, setShowCount] = useState(10);
   const reducedDatasets = selectedDatasets.slice(0, showCount);
-  console.log(reducedDatasets)
 
   const onClick = () => {
     setShowCount(showCount + Math.min(10, state.datasetsState.datasets.length - showCount));
   };
+
+  const onSelect = (index) => {
+    
+  }
 
   return (
     <Wrapper>
       <Datasets>
         {
           reducedDatasets && reducedDatasets.map(({ format, description, url }, index) => (
-            <Dataset
+            <ConnectSet
                 key={url + description}
                 index={index}
                 format={format}
                 description={description}
                 url={url}
+                selectOptions={selectedCatalogs}
+                onSelect={onSelect}
               />
           ))
         }

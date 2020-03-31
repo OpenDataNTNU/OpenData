@@ -63,6 +63,7 @@ const Views = styled.div`
   justify-content: center;
   align-items: center;
   animation: ${(props) => (props.force ? fadeIn : fadeIn2)} 1s ease-in;
+  padding: 10px;
 `;
 
 const TabView = ({

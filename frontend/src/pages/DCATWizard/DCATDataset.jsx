@@ -75,6 +75,7 @@ const DCATDataset = ({
                 format={format}
                 description={description}
                 url={url}
+                showSelect={false}
               />
             ))
           }
