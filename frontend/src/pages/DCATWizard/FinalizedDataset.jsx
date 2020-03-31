@@ -27,43 +27,6 @@ const Content = styled.div`
 
 const Info = styled.div`
   flex: 1;
-`
-
-const Description = styled.p`
-  color: #3e3e3e;
-  font-size: 0.9rem;
-  background-color: #f2f2f2;
-  border-radius: 0.2rem;
-  padding: 0.2rem;
-  display: inline-block;
-`;
-
-const Link = styled.a`
-  color: darkorchid;
-`;
-
-const Formats = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Format = styled.span`
-  margin: 0px 5px 5px 0px;
-  color: #3e3e3e;
-  font-size: 0.9rem;
-  background-color: #f2f2f2;
-  border-radius: 0.2rem;
-  padding: 0.2rem;
-  display: inline-block;
-`;
-
-const Connecter = styled.div`
-  margin-left: 8px;
-`;
-
-const Select = styled.select`
-  max-width: 136px;
 `;
 
 const Title = styled.p`
@@ -75,28 +38,41 @@ const Title = styled.p`
   display: inline-block;
 `;
 
+const MetadataType = styled.p`
+
+`
+
+const Important = styled.span`
+  color: #3e3e3e;
+  font-size: 0.9rem;
+  background-color: #f2f2f2;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  display: inline-block;
+`
+
 const Urls = styled.div`
   
 `;
 
-const ConnectSet = ({
-  id, title, distributions, selectOptions, onSelect, value
+const FinalizedDataset = ({
+  title, distributions, metadataType
 }) => {
-
-  const onChange = (e) => {
-    onSelect(id, e.target.value);
-  }
 
   return (
     <Wrapper>
       <Content>
         <Info>
           <Title>{ title }</Title>
+          <MetadataType>
+            <Important>Metadata Type:</Important>
+            { ` ${metadataType}` }
+          </MetadataType>
           {
             distributions && distributions.length > 0
             ? (
               <p>
-                Urls:
+                <Important>Url's:</Important>
               </p>
             )
             : null
@@ -105,7 +81,7 @@ const ConnectSet = ({
             {
               distributions && distributions.map(({ format, description, url }) => (
                 <Url
-                  key={url + description}
+                  key={url + description + "finalized"}
                   format={format}
                   description={description}
                   url={url}
@@ -114,35 +90,19 @@ const ConnectSet = ({
             }
           </Urls>
         </Info>
-        <Connecter>
-          <Select onChange={onChange} value={value}>
-            <option disabled value={undefined}> -- select an option -- </option>
-            {
-              selectOptions && selectOptions.map((catalog) => (
-                <option key={catalog} value={catalog}>{catalog}</option>
-              ))
-            }
-          </Select>
-        </Connecter>
       </Content>
     </Wrapper>
   );
 };
 
-ConnectSet.defaultProps = {
-  selectOptions: [],
+FinalizedDataset.defaultProps = {
+
 };
 
-ConnectSet.propTypes = {
-  description: PropTypes.string.isRequired,
-  format: PropTypes.arrayOf(PropTypes.shape({
-    '@id': PropTypes.string.isRequired,
-  })).isRequired,
-  url: PropTypes.string.isRequired,
-  selectOptions: PropTypes.arrayOf(PropTypes.string.isRequired),
-  onSelectChange: PropTypes.func.isRequired,
+FinalizedDataset.propTypes = {
+
 };
 
 export {
-  ConnectSet,
+  FinalizedDataset,
 };

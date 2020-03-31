@@ -9,6 +9,7 @@ import { FileDropper } from './FileDropper';
 import { DatasetsSelection } from './DatasetsSelection';
 import { CatalogsSelection } from './CatalogsSelection';
 import { Connect } from './Connect';
+import { Submission } from './Submission';
 import parseJsonld from '../../lib/dcat-ld';
 // import { alertActions } from '../../state/actions/alert';
 
@@ -90,7 +91,7 @@ const Wizard = () => {
     });
 
     catalogsArray.forEach((catalog) => {
-      catalogsSelections.set(catalog.title, false);
+      catalogsSelections.set(catalog.title, true);
     });
 
     dispatch({
@@ -146,11 +147,12 @@ const Wizard = () => {
       <Wrapper>
         <Content>
           <Uploader>
-            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection']} FBDisabled={state.file === null} BBDisabled={state.file == null}>
+            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection', 'Submission']} FBDisabled={state.file === null} BBDisabled={state.file == null}>
               <FileDropper hidden={state.file != null} />
               <DatasetsSelection />
               <CatalogsSelection />
               <Connect />
+              <Submission />
             </TabView>
           </Uploader>
         </Content>

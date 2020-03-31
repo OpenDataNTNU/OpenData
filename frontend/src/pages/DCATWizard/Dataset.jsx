@@ -88,11 +88,11 @@ Dataset.propTypes = {
   onSelection: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  distributions: PropTypes.shape({
+  distributions: PropTypes.arrayOf(PropTypes.shape({
     format: PropTypes.arrayOf(PropTypes.string).isRequired,
     description: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
-  }).isRequired,
+  })).isRequired,
 };
 
 export {

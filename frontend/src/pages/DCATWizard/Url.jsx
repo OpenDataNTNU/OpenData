@@ -66,7 +66,9 @@ const Url = ({
             formats && formats.length > 0
               ? (
                 formats.map((format) => (
-                  <Format key={format['@id']}>{ format['@id'] }</Format>
+                  <Format key={format['@id'] + description + url}>
+                    { format['@id'] }
+                  </Format>
                 ))
               )
               : null

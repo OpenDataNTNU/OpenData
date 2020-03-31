@@ -48,7 +48,6 @@ const Connect = () => {
   const selectedCatalogs = state.catalogsState.catalogs.filter((catalog) => (
     state.catalogsState.selections.get(catalog.title)
   ));
-  console.log(selectedCatalogs)
 
   // filter out the selected datasets
   const selectedDatasets = state.datasetsState.datasets.filter((dataset) => (
