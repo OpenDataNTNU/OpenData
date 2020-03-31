@@ -34,18 +34,66 @@ describe('Rendering a single collapsed metadata result', () => {
   });
 
   const metadata = {
-    uuid: 'b2dc92f2-3850-4363-a66b-5e50c3465758',
+    uuid: '0b065f1e-7761-48ca-ae0a-c995f4290785',
     url: 'https://google.com',
     description: 'Pling Plong',
     formatName: 'JSON',
     releaseState: 1,
-    metadataTypeName: 'Cycle history',
+    metadataTypeUuid: 'cda9f285-52f0-4793-9cea-d389e6dca6a7',
     municipalityName: 'Trondheim',
-    experiencePostGuid: null,
+    experiencePosts: [],
   };
+  const metadataTypeResponse = `{
+    "uuid": "cda9f285-52f0-4793-9cea-d389e6dca6a7",
+    "name": "Cycle history",
+    "tags": [
+      {
+        "tagName": "Public activity",
+        "metadataTypeUuid": "cda9f285-52f0-4793-9cea-d389e6dca6a7"
+      }
+    ],
+    "description": {
+      "uuid": "08d7d4a9-bb48-4c82-8591-7d8f26cf91ae",
+      "content": "Sykkelhistorikk i byen",
+      "published": "2020-03-30T12:56:15.290819",
+      "edited": "2020-03-30T12:56:15.290819",
+      "metadataType": null,
+      "author": {
+        "mail": "elias@asker.kommune.no",
+        "userType": 1,
+        "municipalityName": "Asker"
+      },
+      "voteCount": 1,
+      "hasVoted": null
+    },
+    "metadataList": [
+      {
+        "uuid": "0b065f1e-7761-48ca-ae0a-c995f4290785",
+        "url": "https://google.com",
+        "description": "Pling Plong",
+        "formatName": "JSON",
+        "releaseState": 1,
+        "metadataTypeUuid": "cda9f285-52f0-4793-9cea-d389e6dca6a7",
+        "municipalityName": "Trondheim",
+        "experiencePosts": []
+      },
+      {
+        "uuid": "49a5be72-0be7-4905-8558-3b91f8b1831b",
+        "url": "https://google.com",
+        "description": "We have a lot of bikes",
+        "formatName": "JSON",
+        "releaseState": 3,
+        "metadataTypeUuid": "cda9f285-52f0-4793-9cea-d389e6dca6a7",
+        "municipalityName": "Oslo",
+        "experiencePosts": []
+      }
+    ],
+    "categoryUuid": "4ecd4217-2cac-4647-ba26-ded8599fd414"
+  }`;
 
 
   it('Shows the description of a single dataset', async () => {
+    fetch.mockResponseOnce(metadataTypeResponse);
     const {
       findByText, queryByText, getByText,
     } = render(
@@ -77,6 +125,8 @@ describe('Rendering a single collapsed metadata result', () => {
     );
     await findByText(new RegExp('Trondheim'));
     expect(queryByText(new RegExp('See full entry'))).toBeNull();
-    expect(fetch.mock.calls.length).toEqual(0);
+
+    // Fetches the metadata type name once
+    expect(fetch.mock.calls.length).toEqual(1);
   });
 });

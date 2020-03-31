@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
 import { useSelector, useDispatch } from 'react-redux';
@@ -128,7 +129,7 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
       <LocationWrapper>
         <LocationLink to={`/municipalities/${municipalityName}`}>{municipalityName}</LocationLink>
         <ArrowRightStyled />
-        <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
+        <LocationLink to={`/dataType/${metadataTypeUuid}`}>{metadataTypeName}</LocationLink>
       </LocationWrapper>
       <MetadataCard>
         <MetadataHeader>
@@ -137,9 +138,6 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
             Published
             {` ${date}`}
           </DateLine>
-          <div>
-            {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-          </div>
         </MetadataHeader>
         <MetadataContent>
           <p>{description}</p>

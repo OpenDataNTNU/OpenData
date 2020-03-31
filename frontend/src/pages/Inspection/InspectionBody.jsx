@@ -30,16 +30,19 @@ export const InspectionBody = ({ id }) => {
 
   useEffect(() => {
     const internal = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`/api/metadata/${id}`);
+        const res = await fetch(`/api/Metadata/${id}`);
         const { status, ok } = res;
+        if (status === 200) {
+          const receivedData = await res.json();
+          setData(receivedData);
+        }
         if (!ok) {
           const err = new Error();
           err.status = status;
           throw err;
         }
-        const municipality = await res.json();
-        setData(municipality);
       } catch (err) {
         const { status } = err;
         if (status === 404) {
@@ -48,6 +51,7 @@ export const InspectionBody = ({ id }) => {
           dispatch(alertActions.error('Failed to fetch this data. Please try again later.'));
         }
       }
+      setLoading(false);
     };
     internal();
   }, [id]);

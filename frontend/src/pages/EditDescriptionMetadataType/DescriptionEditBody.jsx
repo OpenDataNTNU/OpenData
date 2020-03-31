@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { alertActions } from '../../state/actions/alert';
+import { SingleDescription } from './SingleDescription';
 
 const Wrapper = styled.div`
   border-radius: 0.3rem;
@@ -29,29 +30,12 @@ const DescriptionsContainer = styled.div`
   min-height: 5rem;
   display: flex;
   flex-direction: column;
-  border: solid 0.1rem #d8d8d8;
-  padding: 0.5rem;
-  border-radius: 0.3rem;
   margin: 0.5rem;
   & > h3 {
-    margin: 0;
+    margin: 0 0 0.5rem 0;
     padding: 0.3rem 0;
-    border-bottom: solid 0.2rem lightgrey;
   }
 `;
-const Suggestion = styled.div`
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  display: flex;
-  flex-direction: row;
-  border-left: solid 0.4rem #eeeeee;
-  border-radius: 0.2rem;
-  margin-bottom: 0.3rem;
-  & > p {
-    flex: 1;
-  }
-`;
-
 const DescriptionField = styled.textarea`
   padding: 0.5rem;
   font-size: 1.0rem;
@@ -96,27 +80,39 @@ const SubmitButton = styled.button`
 const DescriptionEditBody = ({ uuid }) => {
   const [descriptions, setDescriptions] = useState([]);
   const [metadataType, setMetadataType] = useState(null);
+  const [descriptionsChanged, setDescriptionsChanged] = useState(0);
   const userSelector = useSelector((state) => state.user);
   const [loadingType, setLoadingType] = useState(true);
   const [loadingDescriptions, setLoadingDescriptions] = useState(true);
   const { token } = userSelector.user;
   const dispatch = useDispatch();
 
+  const forceReloadDescriptions = () => {
+    setDescriptionsChanged(descriptionsChanged + 1);
+  };
+
   useEffect(() => {
     const loadMetadataType = async () => {
       setLoadingType(true);
       // TODO: Add fetching for description suggestions
       try {
-        // FIXME: Add correct API url
-        const res = await fetch(`/api/metadatatype/${uuid}`, {
+        const res = await fetch(`/api/MetadataType/${uuid}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `bearer ${token}`,
           },
         });
-        const receivedMetadataType = await res.json();
-        setMetadataType(receivedMetadataType);
+        const { ok, status } = res;
+        if (status === 200) {
+          const receivedMetadataType = await res.json();
+          setMetadataType(receivedMetadataType);
+        }
+        if (!ok) {
+          const err = new Error();
+          err.status = status;
+          throw err;
+        }
       } catch (err) {
         const { status } = err;
         if (status === 402) {
@@ -131,18 +127,24 @@ const DescriptionEditBody = ({ uuid }) => {
     };
     const loadDescriptions = async () => {
       setLoadingDescriptions(true);
-      // TODO: Add fetching for description suggestions
       try {
-        // FIXME: Add correct API url
-        const res = await fetch(`/api/metadatatype/${uuid}/description`, {
+        const res = await fetch(`/api/MetadataType/${uuid}/description`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `bearer ${token}`,
           },
         });
-        const receivedDescriptions = await res.json();
-        setDescriptions(receivedDescriptions);
+        const { ok, status } = res;
+        if (res.status === 200) {
+          const receivedDescriptions = await res.json();
+          setDescriptions(receivedDescriptions);
+        }
+        if (!ok) {
+          const err = new Error();
+          err.status = status;
+          throw err;
+        }
       } catch (err) {
         const { status } = err;
         if (status === 402) {
@@ -157,7 +159,7 @@ const DescriptionEditBody = ({ uuid }) => {
     };
     loadDescriptions();
     loadMetadataType();
-  }, []);
+  }, [descriptionsChanged]);
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -165,8 +167,7 @@ const DescriptionEditBody = ({ uuid }) => {
     const descriptionText = target[0].value;
     if (descriptionText) {
       try {
-        // FIXME: Add correct API url
-        const res = await fetch(` /api/metadatatype/${uuid}/description`, {
+        const res = await fetch(` /api/MetadataType/${uuid}/description`, {
           method: 'PUT',
           body: JSON.stringify({
             content: descriptionText,
@@ -177,6 +178,10 @@ const DescriptionEditBody = ({ uuid }) => {
           },
         });
         const { ok, status } = res;
+        if (status === 200) {
+          dispatch(alertActions.success('Submitted new description suggestion.'));
+          forceReloadDescriptions();
+        }
         if (!ok) {
           const err = new Error();
           err.status = status;
@@ -194,33 +199,6 @@ const DescriptionEditBody = ({ uuid }) => {
       }
     } else {
       dispatch(alertActions.info('You cannot submit an empty description for a category!'));
-    }
-  };
-
-  const handleVote = async (duuid) => {
-    try {
-      const res = await fetch(`PUT /api/metadatatype/${uuid}/description/${duuid}/vote`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `bearer ${token}`,
-        },
-      });
-      const { ok, status } = res;
-      if (!ok) {
-        const err = new Error();
-        err.status = status;
-        throw err;
-      }
-    } catch (err) {
-      const { status } = err;
-      if (status === 402) {
-        dispatch(alertActions.error('Something went wrong while voting for that description - please try to log out and back in'));
-      } else if (status === 500) {
-        dispatch(alertActions.error('Something went wrong while processing vote for that description - please try again later'));
-      } else {
-        dispatch(alertActions.error('Something went wrong while processing vote for that description.'));
-      }
     }
   };
 
@@ -248,24 +226,23 @@ const DescriptionEditBody = ({ uuid }) => {
     <Wrapper>
       <TypeHeader>
         <h3>{metadataType.name}</h3>
-        <p>{metadataType.description}</p>
+        <p>{metadataType.description.content}</p>
       </TypeHeader>
       <DescriptionsContainer>
         <h3>Suggested descriptions:</h3>
         { descriptions.length === 0
           ? <p><i>Nobody has submitted any other descriptions.</i></p>
-          : descriptions.map(({ text, votes, duuid }) => (
-            <Suggestion>
-              <p>{text}</p>
-              <div>
-                <p>{votes}</p>
-                <button type="button" onClick={() => handleVote(duuid)}>Upvote</button>
-              </div>
-            </Suggestion>
+          : descriptions.map((desc) => (
+            <SingleDescription
+              key={desc.uuid}
+              typeUuid={uuid}
+              description={desc}
+              forceReloader={forceReloadDescriptions}
+            />
           ))}
       </DescriptionsContainer>
       <Form onSubmit={handleSubmit}>
-        <DescriptionField type="text" placeholder="New description" name="inp-description" />
+        <DescriptionField type="text" required placeholder="New description" name="inp-description" />
         <SubmitButton type="submit">Submit new description</SubmitButton>
       </Form>
     </Wrapper>

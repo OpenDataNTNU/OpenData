@@ -125,7 +125,7 @@ const commentResponse = `
   ]
 `;
 
-describe('Page displays bottom-level datasets from municipalities', () => {
+describe('Page displays a single dataset entry', () => {
   // redux store
   let store;
   let history;

@@ -10,7 +10,7 @@ const NoResultContainer = styled.div`
   align-items: center;
   justify-content: center;
   justify-items: center;
-  box-sizing: content-box;
+  box-sizing: border-box;
   
   & > p {
     display: inline-block;
@@ -18,6 +18,8 @@ const NoResultContainer = styled.div`
     font-size: 5rem;
     font-weight: bold;
     text-align: center;
+    line-break: anywhere;
+    max-width: 100%;
   }
 `;
 

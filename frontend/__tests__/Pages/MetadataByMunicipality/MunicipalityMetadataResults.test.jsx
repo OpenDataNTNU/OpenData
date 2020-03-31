@@ -122,21 +122,6 @@ const trondheimResponse = `[
     "description": "Something something",
     "releaseState": 2,
     "metadataTypeName": "Car history",
-    "municipalityName": "Trondheim",
-    "dataSource": [
-      {
-        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afbc",
-        "url": "something.org",
-        "description": "string",
-        "dataFormat": {
-          "name": "JSON",
-          "description": "recent something description or something",
-          "documentationUrl": "https://google.com"
-        },
-        "startDate": "2019-03-16T10:07:38.067Z",
-        "endDate": "2021-03-16T10:07:38.067Z"
-      }
-    ]
   }
 ]`;
 

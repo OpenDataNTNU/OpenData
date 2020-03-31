@@ -51,7 +51,6 @@ const NoTags = styled.p`
 
 const MetadataByTypeResults = ({ metadataTypeUuid }) => {
   const [metadataSet, setMetadataSet] = useState([]);
-  const [fetchedMetadataSet, setFetchedMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
   const [metadataTypeName, setMetadataTypeName] = useState('');
   const [description, setDescription] = useState('');
@@ -60,8 +59,8 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
 
   const handleFilterSelection = ({ target: { value } }) => {
     setMetadataSet(
-      fetchedMetadataSet.filter(
-        (c) => c.description.toLowerCase().includes(value.toLowerCase()),
+      metadataType.metadataList.filter(
+        (c) => c.description.content.toLowerCase().includes(value.toLowerCase()),
       ),
     );
   };
@@ -101,10 +100,14 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
   if (loading) {
     return (
       <CategoriesContainer>
-        <ResultsHeader>
-          <h3>{name}</h3>
-        </ResultsHeader>
         <NoResult text="Loading..." />
+      </CategoriesContainer>
+    );
+  }
+  if (!metadataType) {
+    return (
+      <CategoriesContainer>
+        <NoResult text={`No category found for ${uuid}`} />
       </CategoriesContainer>
     );
   }
