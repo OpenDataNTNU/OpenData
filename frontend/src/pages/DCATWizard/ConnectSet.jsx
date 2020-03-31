@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Url } from './Url';
+
 const Wrapper = styled.div`
   margin: 0.4rem 0px;
   border-radius: 0.5rem;
@@ -56,51 +58,72 @@ const Format = styled.span`
   display: inline-block;
 `;
 
+const Connecter = styled.div`
+  margin-left: 8px;
+`;
+
 const Select = styled.select`
   max-width: 136px;
 `;
 
+const Title = styled.p`
+  color: #3e3e3e;
+  font-size: 0.9rem;
+  background-color: #f2f2f2;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  display: inline-block;
+`;
+
+const Urls = styled.div`
+  
+`;
+
 const ConnectSet = ({
-  index, description, format: formats, url, selectOptions, onSelect
+  id, title, distributions, selectOptions, onSelect, value
 }) => {
 
-  const onChange = () => {
-    onSelect(index);
+  const onChange = (e) => {
+    onSelect(id, e.target.value);
   }
-
+console.log(value)
   return (
     <Wrapper>
       <Content>
         <Info>
-          <Description>
-            <Link href={url} target="_blank">
-              {
-                description
-              }
-            </Link>
-          </Description>
-          <Formats>
+          <Title>{ title }</Title>
+          {
+            distributions && distributions.length > 0
+            ? (
+              <p>
+                Urls:
+              </p>
+            )
+            : null
+          }
+          <Urls>
             {
-              formats && formats.length > 0
-                ? (
-                  formats.map((format) => (
-                    <Format key={format['@id']}>{ format['@id'] }</Format>
-                  ))
-                )
-                : null
+              distributions && distributions.map(({ format, description, url }) => (
+                <Url
+                  key={url + description}
+                  format={format}
+                  description={description}
+                  url={url}
+                />
+              ))
             }
-          </Formats>
+          </Urls>
         </Info>
-        <div>
-          <Select onChange={onChange}>
-            <option disabled selected value> -- select an option -- </option>
+        <Connecter>
+          <Select onChange={onChange} value={value}>
+            <option disabled selected> -- select an option -- </option>
             {
-              selectOptions && selectOptions.map((selectOption, index) => (
-                <option key={selectOptions.title} value={index}>{selectOption.title}</option>
+              selectOptions && selectOptions.map((catalog) => (
+                <option key={catalog} value={catalog}>{catalog}</option>
               ))
             }
           </Select>
-        </div>
+        </Connecter>
       </Content>
     </Wrapper>
   );

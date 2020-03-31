@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import { WizardContext } from './Context';
-import { DCATDataset } from './DCATDataset';
+import { Dataset } from './Dataset';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -64,9 +64,9 @@ const DatasetsSelection = () => {
     setShowCount(showCount + Math.min(10, state.datasetsState.datasets.length - showCount));
   };
 
-  const onSelection = (title, newValues) => {
+  const onSelection = (id) => {
     const newSelections = new Map(state.datasetsState.selections);
-    newSelections.set(title, newValues);
+    newSelections.set(id, !newSelections.get(id));
 
     dispatch({
       type: 'newSelection',
@@ -77,10 +77,10 @@ const DatasetsSelection = () => {
   };
 
   const onSelectAll = () => {
-    const newSelections = new Map();
+    const newSelections = new Map(state.datasetsState.selections);
 
-    state.datasetsState.selections.forEach((selection, title) => {
-      newSelections.set(title, new Array(selection.length).fill(true));
+    newSelections.forEach((_, key) => {
+      newSelections.set(key, true);
     });
 
     dispatch({
@@ -92,14 +92,14 @@ const DatasetsSelection = () => {
   };
 
   const onDeselectAll = () => {
-    const newSelections = new Map();
+    const newSelections = new Map(state.datasetsState.selections);
 
-    state.datasetsState.selections.forEach((selection, title) => {
-      newSelections.set(title, new Array(selection.length).fill(false));
+    newSelections.forEach((_, key) => {
+      newSelections.set(key, false);
     });
 
     dispatch({
-      type: 'selectAllDatasets',
+      type: 'deselectAllDatasets',
       payload: {
         selections: newSelections,
       },
@@ -117,11 +117,12 @@ const DatasetsSelection = () => {
       </Selection>
       <Datasets>
         {
-          reducedDatasets && reducedDatasets.map(({ title, distributions }) => (
-            <DCATDataset
+          reducedDatasets && reducedDatasets.map(({ id, title, distributions }) => (
+            <Dataset
               key={title}
-              selections={state.datasetsState ? state.datasetsState.selections.get(title) : false}
+              selected={state.datasetsState ? state.datasetsState.selections.get(id) : false}
               onSelection={onSelection}
+              id={id}
               title={title}
               distributions={distributions}
             />

@@ -66,6 +66,7 @@ const Wizard = () => {
     if (!state.fileContent) return;
     const result = parseJsonld(state.fileContent);
     const datasetsSelections = new Map();
+    const catalogsSelections = new Map();
     const datasetsArray = [];
     const catalogsArray = [];
 
@@ -85,7 +86,11 @@ const Wizard = () => {
 
     // Set datasets selections
     datasetsArray.forEach((dataset) => {
-      datasetsSelections.set(dataset.title, new Array(dataset.distributions.length).fill(true));
+      datasetsSelections.set(dataset.id, true);
+    });
+
+    catalogsArray.forEach((catalog) => {
+      catalogsSelections.set(catalog.title, false);
     });
 
     dispatch({
@@ -100,10 +105,41 @@ const Wizard = () => {
       type: 'addCatalogs',
       payload: {
         catalogs: catalogsArray,
-        selections: new Array(catalogsArray.length).fill(false),
+        selections: catalogsSelections,
       },
     });
   }, [state.fileContent]);
+
+  useEffect(() => {
+    const newDatasetCatalogConnections = new Map();
+
+    const selectedCatalogs = state.catalogsState.catalogs.filter((catalog) => (
+      state.catalogsState.selections.get(catalog.title)
+    ));
+
+    // filter out the selected datasets
+    const selectedDatasets = state.datasetsState.datasets.filter((dataset) => (
+      state.datasetsState.selections.get(dataset.id)
+    ));
+
+    for(let dataset of selectedDatasets) {
+      let foundCatalog = null
+      for (let catalog of selectedCatalogs) {
+        if(catalog.datasets.includes(dataset.id)) {
+          foundCatalog = catalog.title
+          break;
+        }
+      }
+      if(foundCatalog) {
+        newDatasetCatalogConnections.set(dataset.id, foundCatalog)
+      }
+    };
+
+    dispatch({
+      type: 'addDatasetCatalogConnection',
+      payload: newDatasetCatalogConnections
+    });
+  },[state.catalogsState.selections, state.datasetsState.selections]);
 
   return (
     <Template>

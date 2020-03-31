@@ -38,10 +38,10 @@ const Title = styled.p`
 `;
 
 const Catalog = ({
-  selected, onSelect, index, title,
+  selected, onSelect, title,
 }) => {
   const onChange = () => {
-    onSelect(index);
+    onSelect(title);
   };
 
   return (
@@ -63,7 +63,6 @@ const Catalog = ({
 Catalog.propTypes = {
   selected: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };
 

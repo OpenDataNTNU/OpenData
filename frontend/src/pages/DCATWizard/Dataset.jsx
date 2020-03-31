@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Url } from './Url';
+
 const Wrapper = styled.div`
-  margin: 0.4rem 0px;
+  margin: 0.8rem 0px;
   border-radius: 0.5rem;
   overflow: hidden;
   padding: 0;
@@ -28,7 +30,7 @@ const Content = styled.div`
   background-color: white;
 `;
 
-const Description = styled.p`
+const Title = styled.p`
   color: #3e3e3e;
   font-size: 0.9rem;
   background-color: #f2f2f2;
@@ -37,31 +39,15 @@ const Description = styled.p`
   display: inline-block;
 `;
 
-const Link = styled.a`
-  color: darkorchid;
-`;
-
-const Formats = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Format = styled.span`
-  margin: 0px 5px 5px 0px;
-  color: #3e3e3e;
-  font-size: 0.9rem;
-  background-color: #f2f2f2;
-  border-radius: 0.2rem;
-  padding: 0.2rem;
-  display: inline-block;
+const Urls = styled.div`
+  
 `;
 
 const Dataset = ({
-  index, selected, onSelect, description, format: formats, url
+  selected, onSelection, id, title, distributions,
 }) => {
   const onChange = () => {
-    onSelect(index);
+    onSelection(id);
   };
 
   return (
@@ -70,38 +56,43 @@ const Dataset = ({
         <input type="checkbox" checked={selected} onChange={onChange} />
       </SelectionWrapper>
       <Content>
-        <Description>
-          <Link href={url} target="_blank">
-            {
-              description
-            }
-          </Link>
-        </Description>
-        <Formats>
+        <Title>{ title }</Title>
+        {
+          distributions && distributions.length > 0
+           ? (
+            <p>
+              Urls:
+            </p>
+           )
+           : null
+        }
+        <Urls>
           {
-            formats && formats.length > 0
-              ? (
-                formats.map((format) => (
-                  <Format key={format['@id']}>{ format['@id'] }</Format>
-                ))
-              )
-              : null
+            distributions && distributions.map(({ format, description, url }) => (
+              <Url
+                key={url + description}
+                format={format}
+                description={description}
+                url={url}
+              />
+            ))
           }
-        </Formats>
+        </Urls>
       </Content>
     </Wrapper>
   );
 };
 
 Dataset.propTypes = {
-  index: PropTypes.number.isRequired,
   selected: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired,
-  format: PropTypes.arrayOf(PropTypes.shape({
-    '@id': PropTypes.string.isRequired,
-  })).isRequired,
-  url: PropTypes.string.isRequired,
+  onSelection: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  distributions: PropTypes.shape({
+    format: PropTypes.arrayOf(PropTypes.string).isRequired,
+    description: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export {

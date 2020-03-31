@@ -45,24 +45,14 @@ const Connect = () => {
   // State
   const { state, dispatch } = useContext(WizardContext);
 
-  // filter out the selected catalogs
-  const selectedCatalogs = state.catalogsState.catalogs.filter((_, index) => (
-    state.catalogsState.selections[index]
+  const selectedCatalogs = state.catalogsState.catalogs.filter((catalog) => (
+    state.catalogsState.selections.get(catalog.title)
   ));
-
-  // Flattened selections 
-  const flattenedSelections = Array.from(state.datasetsState.selections.values()).flat()
-  console.log(flattenedSelections)
-
-  // Mapped from DCAT dataset to our dataset and flattened
-  const formatedDatasets = state.datasetsState.datasets.map((dataset) => (
-    dataset.distributions
-  )).flat();
-  console.log(formatedDatasets)
+  console.log(selectedCatalogs)
 
   // filter out the selected datasets
-  const selectedDatasets = formatedDatasets.filter((_, index) => (
-    flattenedSelections[index]
+  const selectedDatasets = state.datasetsState.datasets.filter((dataset) => (
+    state.datasetsState.selections.get(dataset.id)
   ));
 
   // Reduce the amount of datasets that are shown at once
@@ -73,22 +63,32 @@ const Connect = () => {
     setShowCount(showCount + Math.min(10, state.datasetsState.datasets.length - showCount));
   };
 
-  const onSelect = (index) => {
-    
+  const onSelect = (id, catalog) => {
+    const newDatasetCatalogConnections = new Map(state.datasetCatalogConnection);
+
+    newDatasetCatalogConnections.set(id, catalog)
+
+    dispatch({
+      type: 'addDatasetCatalogConnection',
+      payload: newDatasetCatalogConnections
+    });
   }
 
   return (
     <Wrapper>
+      <p>
+        Datasets left to assign metadataType: { selectedDatasets.length -  state.datasetCatalogConnection.size}
+      </p>
       <Datasets>
         {
-          reducedDatasets && reducedDatasets.map(({ format, description, url }, index) => (
+          reducedDatasets && reducedDatasets.map(({ id, title, distributions }) => (
             <ConnectSet
-                key={url + description}
-                index={index}
-                format={format}
-                description={description}
-                url={url}
-                selectOptions={selectedCatalogs}
+                key={id}
+                id={id}
+                title={title}
+                distributions={distributions}
+                value={state.datasetCatalogConnection.get(id)}
+                selectOptions={selectedCatalogs.map((catalog) => catalog.title)}
                 onSelect={onSelect}
               />
           ))

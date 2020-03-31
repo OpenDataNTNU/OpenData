@@ -13,6 +13,7 @@ const init = {
     catalogs: [],
     selections: new Map(),
   },
+  datasetCatalogConnection: new Map()
 };
 
 const reducer = (state, action) => {
@@ -68,6 +69,7 @@ const reducer = (state, action) => {
         catalogsState: {
           ...state.catalogsState,
           catalogs: action.payload.catalogs,
+          selections: action.payload.selections,
         },
       };
     case 'selectCatalog':
@@ -93,6 +95,11 @@ const reducer = (state, action) => {
           ...state.catalogsState,
           selections: action.payload.selections,
         },
+      };
+    case 'addDatasetCatalogConnection':
+      return {
+        ...state,
+        datasetCatalogConnection: action.payload,
       };
     default:
       return init;

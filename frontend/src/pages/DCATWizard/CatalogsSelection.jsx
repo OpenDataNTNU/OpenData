@@ -66,9 +66,9 @@ const CatalogsSelection = () => {
     setShowCount(showCount + Math.min(10, state.catalogsState.catalogs.length - showCount));
   };
 
-  const onSelection = (index) => {
-    const newSelections = Array.from(state.catalogsState.selections);
-    newSelections[index] = !newSelections[index];
+  const onSelection = (title) => {
+    const newSelections = new Map(state.catalogsState.selections);
+    newSelections.set(title, !newSelections.get(title));
 
     dispatch({
       type: 'selectCatalog',
@@ -79,19 +79,31 @@ const CatalogsSelection = () => {
   };
 
   const onSelectAll = () => {
+    const newSelections = new Map(state.catalogsState.selections);
+
+    newSelections.forEach((_, key) => {
+      newSelections.set(key, true);
+    });
+
     dispatch({
       type: 'selectAllCatalogs',
       payload: {
-        selections: new Array(state.catalogsState.catalogs.length).fill(true),
+        selections: newSelections,
       },
     });
   };
 
   const onDeselectAll = () => {
+    const newSelections = new Map(state.catalogsState.selections);
+
+    newSelections.forEach((_, key) => {
+      newSelections.set(key, false);
+    });
+
     dispatch({
       type: 'deselectAllCatalogs',
       payload: {
-        selections: new Array(state.catalogsState.catalogs.length).fill(false),
+        selections: newSelections,
       },
     });
   };
@@ -108,10 +120,10 @@ const CatalogsSelection = () => {
       <Catalogs>
         {
             reducedCatalogs
-            && reducedCatalogs.map((catalog, index) => (
+            && reducedCatalogs.map((catalog) => (
               <Catalog
-                index={index}
-                selected={state.catalogsState.selections[index]}
+                key={catalog.title}
+                selected={state.catalogsState.selections.get(catalog.title)}
                 onSelect={onSelection}
                 title={catalog.title}
               />
