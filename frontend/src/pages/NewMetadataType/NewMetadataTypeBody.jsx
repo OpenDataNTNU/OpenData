@@ -83,8 +83,11 @@ export const NewMetadataTypeBody = () => {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (categoryUuid === '') {
+      dispatch(alertActions.error('Please select a category'));
+      return;
+    }
     setLoading(true);
-
     try {
       const { token } = userSelector.user;
       const res = await fetch('/api/MetadataType', {

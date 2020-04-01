@@ -30,11 +30,14 @@ export const RootLevelCategorySelector = ({ onChange }) => {
   }, []);
 
   return (
-    <ul>
-      {categories.map((category) => (
-        <CategorySelector key={category.uuid} category={category} onChange={onChange} />
-      ))}
-    </ul>
+    <>
+      <h3>Category:</h3>
+      <ul>
+        {categories.map((category) => (
+          <CategorySelector key={category.uuid} category={category} onChange={onChange} />
+        ))}
+      </ul>
+    </>
   );
 };
 

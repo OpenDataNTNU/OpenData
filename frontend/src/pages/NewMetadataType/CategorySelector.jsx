@@ -41,16 +41,19 @@ export const CategorySelector = ({ onChange, category }) => {
         dispatch(alertActions.error('Failed to fetch subcategories'));
       }
     };
-    if (hasChildren) {
+    // only fetch if necessary
+    if (hasChildren && expand && !children.length) {
       internal();
     }
-  }, []);
+  }, [expand]);
 
   if (expand) {
     return (
       <li>
-        {name}
-        <input type="radio" name="category" value={uuid} onChange={onChange} />
+        <label>
+          {name}
+          <input type="radio" name="category" value={uuid} onChange={onChange} />
+        </label>
         <Less onClick={() => setExpand(false)} />
         <ul>
           {children.length > 0
@@ -65,8 +68,10 @@ export const CategorySelector = ({ onChange, category }) => {
 
   return (
     <li>
-      {name}
-      <input type="radio" name="category" value={uuid} onChange={onChange} />
+      <label>
+        {name}
+        <input type="radio" name="category" value={uuid} onChange={onChange} />
+      </label>
       {hasChildren
         ? <More onClick={() => setExpand(true)} />
         : null}
