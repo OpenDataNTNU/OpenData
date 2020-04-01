@@ -1,5 +1,7 @@
 ﻿using OpenData.Domain.Models;
+using OpenData.Resources;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -50,9 +52,24 @@ namespace OpenData.backend
             // Arrange
 
             var client = _factory.CreateDefaultClient();
+            NewUserResource newUserResource = new NewUserResource();
+            newUserResource.Mail = "PutTag@test.kommune.no";
+            newUserResource.Password = "PutTag@passw0rd";
+            newUserResource.UserType = UserType.Municipality;
+            await client.PutAsync("api/user", new StringContent(JsonSerializer.Serialize(newUserResource), Encoding.UTF8, "application/json"));
+
+            AuthUserResource loginResource = new AuthUserResource();
+            loginResource.Mail = newUserResource.Mail;
+            loginResource.Password = newUserResource.Password;
+            var loginResponse = await client.PostAsync("/api/user/auth", new StringContent(JsonSerializer.Serialize(loginResource), Encoding.UTF8, "application/json"));
+            Assert.NotNull(loginResponse.Content);
+            var user = ExtractResponse.Extract<PrivateSafeUserResource>(loginResponse);
+            Assert.Equal(loginResource.Mail, user.Mail);
+            string token = user.Token;
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             Tag resource = new Tag();
-            resource.Name = "TestTag";
-            
+            resource.Name = "Test";
+
             // Act
 
             var response = await client.PutAsync(url, new StringContent(JsonSerializer.Serialize(resource), Encoding.UTF8, "application/json"));
