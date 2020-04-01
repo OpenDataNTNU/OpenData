@@ -30,58 +30,69 @@ function parseJsonLd(ld) {
     mimeTypes: [],
     datasets: {},
     catalogs: {},
-  };
+    concepts: {}
+  }
 
   const distributions = {};
 
-  const wantedLang = 'no';
+  const wantedLang = "no";
 
-  // Find distributions
-  for (const element of ld['@graph']) {
-    if (element['@type'] == 'dcat:Distribution') {
-      const desc = typeof element['dct:description'] === 'undefined'
-        ? '[Ingen beskrivelse]'
-        : findValue(element['dct:description'], 'no');
-      // let desc = findValue(element["dct:description"], "no")
-      console.log(desc);
-      distributions[element['@id']] = {
-        format: element['dct:format'],
+
+  //Find distributions
+  for(let element of ld["@graph"]) {
+    if(element["@type"] == `dcat:Distribution`) {
+      let desc = typeof element["dct:description"] === "undefined" 
+            ? "[Ingen beskrivelse]"
+            : findValue(element["dct:description"], "no");
+      //let desc = findValue(element["dct:description"], "no")
+      //console.log(desc)
+      distributions[element["@id"]] = {
+        format: element["dct:format"],
         description: desc,
-        url: (typeof element['dcat:downloadURL'] === 'undefined' ? element['dcat:accessURL'] : element['dcat:downloadURL'])['@id'],
+        url: (typeof element["dcat:downloadURL"] === "undefined" ? element["dcat:accessURL"]: element["dcat:downloadURL"]) ["@id"]
       };
-    }
+    } 
   }
 
-  for (const element of ld['@graph']) {
-    // console.log(element);
-    if (element['@type'] == 'dct:MediaTypeOrExtent') {
-      if (!dcatExports.mimeTypes.includes(element['@id'])) {
-        dcatExports.mimeTypes.push(element['@id']);
+  for(let element of ld["@graph"]) {
+    //console.log(element);
+    if(element["@type"] == `dct:MediaTypeOrExtent`) {
+      if(!dcatExports.mimeTypes.includes(element["@id"])) {
+        dcatExports.mimeTypes.push(element["@id"])
       }
-    } else if (element['@type'] == 'dcat:Dataset') {
-      const title = findValue(element['dct:title'], 'no');
+    } else if(element["@type"] == `dcat:Dataset`) {
+      //console.log(JSON.stringify(element, null, 4))
+      let title = findValue(element["dct:title"], "no")
 
-      const distributionList = [];
+      let distributionList = []
 
-      element['dcat:distribution'].forEach((val) => {
-        distributionList.push(distributions[val['@id']]);
-      });
+      element["dcat:distribution"].forEach((val) => {
+        distributionList.push(distributions[val["@id"]])
+      })
 
-      dcatExports.datasets[element['@id']] = {
-        title,
-        distributions: distributionList,
+      dcatExports.datasets[element["@id"]] = {
+        title: title,
+        distributions: distributionList
       };
-    } else if (element['@type'] == 'dcat:Catalog') {
-      const title = findValue(element['dct:title'], 'no');
+    } else if(element["@type"] == `dcat:Catalog`) {
+      //console.log(JSON.stringify(element, null, 4))
+      let title = findValue(element["dct:title"], "no")
 
-      dcatExports.catalogs[element['@id']] = {
+      dcatExports.catalogs[element["@id"]] = {
         title,
-        datasets: element['dcat:dataset'].map((val) => val['@id']),
-      };
-    }
+        datasets: element["dcat:dataset"].map((val) => {return val["@id"]})
+      }
+    } else if(element["@type"] == `skos:Concept`) {
+      //console.log(element)
+      dcatExports.concepts[element["@id"]] = {
+        id: element["@id"],
+        label: element["skos:prefLabel"]
+      }
+    } 
+
   }
 
-  return dcatExports;
+  return dcatExports
 }
 
 export default parseJsonLd;
