@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags } from '../../sharedComponents/hooks/GetTags';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { RootLevelCategorySelector } from './RootLevelCategorySelector';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -70,12 +71,15 @@ export const NewMetadataTypeBody = () => {
   const allTags = useGetTags();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [categoryUuid, setCategoryUuid] = useState('');
   const [tags, setTags] = useState([]);
   const [submissionStatus, setSubmissionStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
+
+  const onCategoryChange = (e) => setCategoryUuid(e.currentTarget.value);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -88,6 +92,7 @@ export const NewMetadataTypeBody = () => {
         body: JSON.stringify({
           name,
           description,
+          categoryUuid,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -147,6 +152,7 @@ export const NewMetadataTypeBody = () => {
         <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
         <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
         <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
+        <RootLevelCategorySelector onChange={onCategoryChange} />
         <NewTag>
           Are none of these tags appropriate?
           {' '}
