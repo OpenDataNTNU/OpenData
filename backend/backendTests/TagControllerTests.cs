@@ -57,6 +57,7 @@ namespace OpenData.backend
             newUserResource.Password = "PutTag@passw0rd";
             newUserResource.UserType = UserType.Municipality;
             await client.PutAsync("api/user", new StringContent(JsonSerializer.Serialize(newUserResource), Encoding.UTF8, "application/json"));
+
             AuthUserResource loginResource = new AuthUserResource();
             loginResource.Mail = newUserResource.Mail;
             loginResource.Password = newUserResource.Password;
