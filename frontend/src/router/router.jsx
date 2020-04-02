@@ -13,6 +13,7 @@ import { MetadataByType } from '../pages/MetadataByType';
 import { Inspection } from '../pages/Inspection';
 import { Article } from '../pages/Article';
 import { SendMetadata } from '../pages/SendMetadata';
+import { ImportCkan } from '../pages/ImportCkan';
 import { NewMetadataType } from '../pages/NewMetadataType';
 import { Error404 } from '../pages/Errors';
 import { Login } from '../pages/Login';
@@ -47,6 +48,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route path="/category" component={Category} />
         <PrivateRoute path="/newCategory" municipality component={NewCategory} />
         <PrivateRoute path="/sendData" municipality component={SendMetadata} />
+        <PrivateRoute path="/importCkan" municipality component={ImportCkan} />
         <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/:id" component={Article} />

@@ -217,10 +217,14 @@ export const MetadataForm = () => {
           </Link>
         </NewMetadataType>
         <NewMetadataType>
-          Want to import a DCAT-NO file?
+          Already have a data source?
           {' '}
           <Link to="/wizard">
-            <b>Use the DCAT-NO Wizard.</b>
+            <b>Import from a DCAT-NO file</b>
+          </Link>
+          {' or '}
+          <Link to="/importCkan">
+            <b>Import from CKAN</b>
           </Link>
         </NewMetadataType>
         <ReleaseStateRadios releaseState={releaseState} handleRadioChange={handleRadioChange} />

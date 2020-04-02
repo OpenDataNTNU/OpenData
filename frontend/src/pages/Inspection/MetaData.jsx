@@ -133,10 +133,18 @@ export const MetaData = ({ data, removeDataSource }) => {
             <ReleaseStateLabel releaseState={releaseState} />
             <p>{description}</p>
           </div>
-          <h3>This data set is available in the following places:</h3>
-          {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
+          <h3>This data set has the following entries:</h3>
+          {dataSource.map(({
+            uuid: sourceUuid, url, dataFormat, startDate, endDate,
+          }) => (
             <SourceWrapper key={sourceUuid}>
-              <MetadataURL url={url} formatName={dataFormat.name} inspection />
+              <MetadataURL
+                url={url}
+                formatName={dataFormat.name}
+                startDate={startDate}
+                endDate={endDate}
+                inspection
+              />
               {municipalityName === userMunicipality
                 ? <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
                 : null}

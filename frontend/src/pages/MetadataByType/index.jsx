@@ -14,6 +14,8 @@ const Background = styled.div`
   background-color: #eeeeee;
   padding: 0.5rem;
   box-sizing: border-box;
+
+  min-height: 70vh;
 `;
 const MetadataTypesViewContainer = styled.div`
   display: flex;
