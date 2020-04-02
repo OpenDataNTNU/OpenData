@@ -18,7 +18,7 @@ namespace OpenData.Resources
         public string Description { get; set; }
 
         [Required]
-        public string DataFormatName { get; set; }
+        public string DataFormatMimeType { get; set; }
 
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

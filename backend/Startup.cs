@@ -95,6 +95,9 @@ namespace OpenData
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
 
+            services.AddScoped<IDataFormatRepository, DataFormatRepository>();
+            services.AddScoped<IDataFormatService, DataFormatService>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ISecurityService, SecurityService>();

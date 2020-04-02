@@ -25,6 +25,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<MetadataCategory> MetadataCategory { get; set; }
         public DbSet<MetadataCommentMapping> MetadataCommentMappings { get; set; }
         public DbSet<ExperiencePostCommentMapping> ExperiencePostCommentMappings { get; set; }
+        public DbSet<DataFormat> DataFormats { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
