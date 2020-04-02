@@ -107,7 +107,7 @@ const Comment = ({
       </Wrapper>
       {
       showNewComment
-        ? <NewComment putUrl={`/api/Comment/reply/${uuid}`} onComplete={onComplete} buttonText="Reply" ref={ref} />
+        ? <NewComment putUrl={`/api/Comment/reply/${uuid}`} onComplete={onComplete} buttonText="Reply" placeholderText="Leave a reply" ref={ref} />
         : null
       }
       {

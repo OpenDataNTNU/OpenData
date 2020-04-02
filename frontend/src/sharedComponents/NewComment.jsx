@@ -46,7 +46,7 @@ const CommentButton = styled.button`
 
 `;
 
-const NewComment = React.forwardRef(({ putUrl, onComplete, buttonText }, ref) => {
+const NewComment = React.forwardRef(({ putUrl, onComplete, buttonText, placeholderText }, ref) => {
   // Redux state
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
@@ -101,7 +101,7 @@ const NewComment = React.forwardRef(({ putUrl, onComplete, buttonText }, ref) =>
         token
           ? (
             <>
-              <CommentTextArea placeholder="Leave a reply" value={content} onChange={onChange} />
+              <CommentTextArea placeholder={placeholderText} value={content} onChange={onChange} />
               <CommentFooter>
                 <CommentButton onClick={OnClick}>{ buttonText }</CommentButton>
               </CommentFooter>
@@ -122,6 +122,7 @@ NewComment.propTypes = {
   putUrl: PropTypes.string.isRequired,
   onComplete: PropTypes.func.isRequired,
   buttonText: PropTypes.string.isRequired,
+  placeholderText: PropTypes.string.isRequired,
 };
 
 export {
