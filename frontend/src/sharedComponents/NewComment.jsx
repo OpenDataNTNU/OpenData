@@ -46,7 +46,9 @@ const CommentButton = styled.button`
 
 `;
 
-const NewComment = React.forwardRef(({ putUrl, onComplete, buttonText, placeholderText }, ref) => {
+const NewComment = React.forwardRef(({
+  putUrl, onComplete, buttonText, placeholderText,
+}, ref) => {
   // Redux state
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
