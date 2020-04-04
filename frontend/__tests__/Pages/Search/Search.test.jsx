@@ -18,43 +18,49 @@ const metadataResult = `[
     "uuid": "06418ead-7ba7-40cf-9850-24946158ead9",
     "url": "https://google.com",
     "description": "BODØ pupolation numbreros",
-    "formatName": "JSON",
     "releaseState": 4,
-    "metadataTypeName": "Populasjon",
+    "metadataTypeUuid": "6a774633-bc0c-40c9-88f4-00a06bf9bf80",
     "municipalityName": "Bodø",
-    "experiencePostGuid": null
+    "dataSource": [],
+    "experiencePosts": []
   },
   {
     "uuid": "0aa3ced1-7995-4daf-9820-d59322c8807f",
     "url": "https://google.com",
     "description": "Birds aren't real",
-    "formatName": "JSON",
     "releaseState": 1,
-    "metadataTypeName": "Populasjon",
+    "metadataTypeUuid": "6a774633-bc0c-40c9-88f4-00a06bf9bf80",
     "municipalityName": "Test",
-    "experiencePostGuid": null
+    "dataSource": [],
+    "experiencePosts": []
   },
   {
     "uuid": "1c79d439-fa70-4168-8b70-1e3b7a250708",
     "url": "https://google.com",
     "description": "Cycle theft for Trondheim. Contains city bike theft",
-    "formatName": "JSON",
     "releaseState": 2,
-    "metadataTypeName": "Cycle theft",
+    "metadataTypeUuid": "f09c3306-603a-4fc0-a8e2-5ee915a2cb3c",
     "municipalityName": "Trondheim",
-    "experiencePostGuid": null
+    "dataSource": [],
+    "experiencePosts": []
   },
   {
     "uuid": "93130354-334d-43f1-8f38-c499509d1589",
     "url": "https://google.co.uk",
     "description": "We have a lot of bikes",
-    "formatName": "JSON",
     "releaseState": 3,
-    "metadataTypeName": "Cycle history",
+    "metadataTypeUuid": "42ad9aae-222c-41e7-bd8c-ebf2a4dee712",
     "municipalityName": "Oslo",
-    "experiencePostGuid": null
+    "dataSource": [],
+    "experiencePosts": []
   }
 ]`;
+
+const uuidToName = {
+  '6a774633-bc0c-40c9-88f4-00a06bf9bf80': 'Populasjon',
+  'f09c3306-603a-4fc0-a8e2-5ee915a2cb3c': 'Cycle theft',
+  '42ad9aae-222c-41e7-bd8c-ebf2a4dee712': 'Cycle history',
+};
 
 const municipalityResult = `[
   {
@@ -102,6 +108,25 @@ const input = (target, value) => {
   );
 };
 
+const api = async ({ url }) => {
+  if (url === '/api/Metadata') {
+    return metadataResult;
+  }
+  if (url === '/api/Municipality') {
+    return municipalityResult;
+  }
+  if (/\/api\/Metadata\/[0-9a-e-]{36, 36}\/like/.test(url)) {
+    return likeResultNone;
+  }
+  if (url.startsWith('/api/MetadataType/')) {
+    const uuid = url.substring(18);
+    return JSON.stringify({
+      name: uuidToName[uuid],
+    });
+  }
+  return '';
+};
+
 describe('Search component works as expected', () => {
   let store;
   let history;
@@ -125,18 +150,7 @@ describe('Search component works as expected', () => {
   });
 
   it('Can search by name and description', async () => {
-    fetch.mockResponse(async ({ url }) => {
-      if (url === '/api/Metadata') {
-        return metadataResult;
-      }
-      if (url === '/api/Municipality') {
-        return municipalityResult;
-      }
-      if (/\/api\/Metadata\/[0-9a-e]{32, 32}\/like/.test(url)) {
-        return likeResultNone;
-      }
-      return '';
-    });
+    fetch.mockResponse(api);
 
     const {
       getByText, findByText, getByPlaceholderText, queryAllByText,
@@ -162,18 +176,7 @@ describe('Search component works as expected', () => {
   });
 
   it('Can search by municipality', async () => {
-    fetch.mockResponse(async ({ url }) => {
-      if (url === '/api/Metadata') {
-        return metadataResult;
-      }
-      if (url === '/api/Municipality') {
-        return municipalityResult;
-      }
-      if (/\/api\/Metadata\/[0-9a-e]{32, 32}\/like/.test(url)) {
-        return likeResultNone;
-      }
-      return '';
-    });
+    fetch.mockResponse(api);
     const {
       getByText, findByText, getByPlaceholderText, queryAllByText,
     } = render(
