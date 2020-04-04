@@ -41,7 +41,24 @@ export const SearchBody = () => {
           throw err;
         }
         const receivedMetadatas = await res.json();
-        const filteredMetadatas = receivedMetadatas
+        const metadataTypeNames = await Promise.all(
+          receivedMetadatas.map(async ({ metadataTypeUuid }) => {
+            const nameRes = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+            const { ok: nameOk, status: nameStatus } = nameRes;
+            if (!nameOk) {
+              const err = new Error();
+              err.status = nameStatus;
+              err.type = 'name';
+              throw err;
+            }
+            const { name } = await nameRes.json();
+            return name;
+          }),
+        );
+        const metadatasWithNames = receivedMetadatas.map((data, index) => (
+          { metadataTypeName: metadataTypeNames[index], ...data }
+        ));
+        const filteredMetadatas = metadatasWithNames
           // name should contain a match
           .filter(({ metadataTypeName }) => (
             metadataTypeName.toLowerCase().includes(queryName.toLowerCase())
@@ -57,7 +74,12 @@ export const SearchBody = () => {
         setMetadatas(filteredMetadatas);
         setLoading(false);
       } catch (err) {
-        dispatch(alertActions.error('Something went wrong'));
+        const { type } = err;
+        if (type === 'name') {
+          dispatch(alertActions.error('Failed to get type names'));
+        } else {
+          dispatch(alertActions.error('Something went wrong'));
+        }
       }
     };
     internal();

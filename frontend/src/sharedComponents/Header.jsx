@@ -78,7 +78,7 @@ const Header = () => {
         history.push('/municipalities');
         break;
       }
-      case 'Search by category': {
+      case 'Search by type': {
         history.push('/dataType');
         break;
       }
@@ -123,7 +123,7 @@ const Header = () => {
         width > 650
           ? (
             <Nav>
-              <HeaderLink to="/dataType" text="Search by category" />
+              <HeaderLink to="/dataType" text="Search by type" />
               <HeaderLink to="/municipalities" text="Search by municipality" />
               <HeaderLink to="/search" text="Search" />
               <HeaderLink to="/category" text="Browse categories" />
@@ -149,6 +149,7 @@ const Header = () => {
               onItemClick={onDropdownClick}
               list={[
                 { id: 'Home', title: 'Home' },
+                { id: 'Search by type', title: 'Search by type' },
                 { id: 'Search by municipality', title: 'Search by municipality' },
                 { id: 'Search', title: 'Search' },
                 { id: 'Browse categories', title: 'Browse categories' },

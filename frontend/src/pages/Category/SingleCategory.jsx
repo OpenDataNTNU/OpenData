@@ -9,6 +9,13 @@ import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+`;
+
+const Ul = styled.ul`
+  min-width: 30em;
 `;
 
 export const SingleCategory = ({ uuid }) => {
@@ -57,26 +64,28 @@ export const SingleCategory = ({ uuid }) => {
         ? (
           <>
             <h2>Subcategories</h2>
-            <ul>
+            <Ul>
               {children.map((child) => <CategoryListElement key={child.uuid} category={child} />)}
-            </ul>
+            </Ul>
           </>
         )
-        : null}
+        : <h2>No subcategories</h2>}
       {types.length > 0
         ? (
           <>
             <h2>Types</h2>
-            {types.map(({ name: typeName, uuid: typeUuid }) => (
-              <h3 key={typeUuid}>
-                <Link to={`/dataType/${typeUuid}`}>
-                  {typeName}
-                </Link>
-              </h3>
-            ))}
+            <Ul>
+              {types.map(({ name: typeName, uuid: typeUuid }) => (
+                <li key={typeUuid}>
+                  <Link to={`/dataType/${typeUuid}`}>
+                    {typeName}
+                  </Link>
+                </li>
+              ))}
+            </Ul>
           </>
         )
-        : null}
+        : <h2>No types</h2>}
     </Wrapper>
   );
 };

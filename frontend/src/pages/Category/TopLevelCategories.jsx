@@ -7,7 +7,15 @@ import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 `;
+
+const Ul = styled.ul`
+  min-width: 30em;
+`;
+
 
 export const TopLevelCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -35,12 +43,12 @@ export const TopLevelCategories = () => {
 
   return (
     <Wrapper>
-      <h2>Categories</h2>
-      <ul>
+      <h2>All Categories</h2>
+      <Ul>
         {categories.map((category) => (
           <CategoryListElement key={category.uuid} category={category} />
         ))}
-      </ul>
+      </Ul>
     </Wrapper>
   );
 };
