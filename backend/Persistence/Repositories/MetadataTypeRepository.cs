@@ -22,13 +22,13 @@ namespace OpenData.Persistence.Repositories
             return await _context.MetadataTypes.Include(p => p.Tags).ToListAsync();
         }
 
-        public async Task<MetadataType> GetByNameAsync(string name) {
+        public async Task<MetadataType> GetByUuidAsync(Guid uuid) {
             return await _context.MetadataTypes
                 .Include(p => p.Tags)
                 .Include(p => p.MetadataList)
                 .ThenInclude(p => p.DataSource)
                 .ThenInclude(p => p.DataFormat)
-                .FirstAsync(x => x.Name == name);
+                .FirstAsync(x => x.Uuid == uuid);
         }
 
         public async Task AddAsync(MetadataType metadata) {

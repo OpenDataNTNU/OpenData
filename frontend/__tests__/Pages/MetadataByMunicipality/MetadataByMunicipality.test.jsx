@@ -79,8 +79,5 @@ describe('Displays all bottom-level datasets with a given name', () => {
 
     // Page has stopped displaying the loading label
     expect(queryByText('Loading')).toBeNull();
-
-    // should have fetched exactly once
-    expect(fetch.mock.calls.length).toEqual(1);
   });
 });

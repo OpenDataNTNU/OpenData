@@ -78,8 +78,12 @@ const Header = () => {
         history.push('/municipalities');
         break;
       }
-      case 'Search by category': {
+      case 'Search by type': {
         history.push('/dataType');
+        break;
+      }
+      case 'Browse categories': {
+        history.push('/category');
         break;
       }
       case 'Submit data': {
@@ -119,9 +123,10 @@ const Header = () => {
         width > 650
           ? (
             <Nav>
-              <HeaderLink to="/dataType" text="Search by category" />
+              <HeaderLink to="/dataType" text="Search by type" />
               <HeaderLink to="/municipalities" text="Search by municipality" />
               <HeaderLink to="/search" text="Search" />
+              <HeaderLink to="/category" text="Browse categories" />
               {
                 role === 1
                   ? <HeaderLink to="/sendData" text="Submit data" />
@@ -144,8 +149,10 @@ const Header = () => {
               onItemClick={onDropdownClick}
               list={[
                 { id: 'Home', title: 'Home' },
+                { id: 'Search by type', title: 'Search by type' },
                 { id: 'Search by municipality', title: 'Search by municipality' },
                 { id: 'Search', title: 'Search' },
+                { id: 'Browse categories', title: 'Browse categories' },
                 ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' },
                   { id: 'My data', title: 'My data' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },

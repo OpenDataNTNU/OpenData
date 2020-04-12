@@ -47,6 +47,89 @@ const tagsResponse = `
   ]
 `;
 
+const rootCategoryResponse = `
+[
+  {
+    "uuid": "22dfcf90-878d-4f7c-ab18-f24e3e613d77",
+    "name": "Organization and cooperation",
+    "created": "2020-04-01T08:44:05.877773",
+    "lastEdited": "2020-04-01T08:44:05.877773",
+    "hasChildren": false,
+    "hasTypes": false,
+    "parentUuid": null,
+    "children": [],
+    "types": []
+  },
+  {
+    "uuid": "41d82930-a9e8-4edc-916b-82eb4871be61",
+    "name": "Skynet property",
+    "created": "2020-04-01T08:44:05.87593",
+    "lastEdited": "2020-04-01T08:44:05.87593",
+    "hasChildren": true,
+    "hasTypes": false,
+    "parentUuid": null,
+    "children": [
+      {
+        "uuid": "16bdbbc7-939e-4993-be92-ca9bda7feec2",
+        "name": "Terminators",
+        "hasChildren": false,
+        "children": [],
+        "types": []
+      }
+    ],
+    "types": []
+  },
+  {
+    "uuid": "7b1b9d45-ecfb-40e0-81ca-526f2a12f9a8",
+    "name": "Travel",
+    "created": "2020-04-01T08:44:05.874953",
+    "lastEdited": "2020-04-01T08:44:05.874953",
+    "hasChildren": true,
+    "hasTypes": false,
+    "parentUuid": null,
+    "children": [
+      {
+        "uuid": "493e263a-bc30-41c7-b73a-5e3ff5f2ea78",
+        "name": "Bikes",
+        "hasChildren": false,
+        "children": [],
+        "types": []
+      },
+      {
+        "uuid": "cf27ff44-536a-4b5b-9d35-17c7bef80047",
+        "name": "Cars",
+        "hasChildren": false,
+        "children": [],
+        "types": []
+      }
+    ],
+    "types": []
+  }
+]
+`;
+
+const skynetResponse = `
+{
+  "uuid": "41d82930-a9e8-4edc-916b-82eb4871be61",
+  "name": "Skynet property",
+  "created": "2020-04-01T08:44:05.87593",
+  "lastEdited": "2020-04-01T08:44:05.87593",
+  "hasChildren": true,
+  "hasTypes": false,
+  "parentUuid": null,
+  "children": [
+    {
+      "uuid": "16bdbbc7-939e-4993-be92-ca9bda7feec2",
+      "name": "Terminators",
+      "hasChildren": false,
+      "children": [],
+      "types": []
+    }
+  ],
+  "types": []
+}
+`;
+
 describe('Provides a form to create metadata types', () => {
   // redux store
   let store;
@@ -85,13 +168,17 @@ describe('Provides a form to create metadata types', () => {
       switch (url) {
         case '/api/Tag':
           return tagsResponse;
+        case '/api/MetadataCategory':
+          return rootCategoryResponse;
+        case '/api/MetadataCategory/41d82930-a9e8-4edc-916b-82eb4871be61':
+          return skynetResponse;
         default:
           return '';
       }
     });
     history.push('/newMetadataType');
     const {
-      getByPlaceholderText, findByText, getByText, queryAllByText,
+      findByLabelText, getByPlaceholderText, findByText, getByText, queryAllByText,
     } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -114,17 +201,30 @@ describe('Provides a form to create metadata types', () => {
     const descriptionInput = getByPlaceholderText(new RegExp('Description'));
     await wait(() => inputValue(nameInput, 'This is a test name'));
     await wait(() => inputValue(descriptionInput, 'This is a TeSt desCRIPTION. L0rem ipsum.'));
-    // before submission, only the tags should be fetched
-    expect(fetch.mock.calls.length).toEqual(1);
+    // before submission, only the tags and categories should be fetched
+    expect(fetch.mock.calls.length).toEqual(2);
+    const skynetRadio = await findByLabelText(new RegExp('Skynet property'));
+    // Terminators should not be displayed unless skynet is expanded
+    expect(queryAllByText(new RegExp('Terminators')).length).toEqual(0);
+    // parent element is the label, 2 up is the <li>-tag, where the expand icon is
+    const expand = skynetRadio.parentElement.parentElement.querySelector('svg');
+    await wait(() => click(expand));
+    // Terminators should now have been fetched, and be displayed in the list
+    expect(fetch.mock.calls.length).toEqual(3);
+    const terminatorsRadio = await findByLabelText(new RegExp('Terminators'));
+    await wait(() => click(terminatorsRadio));
     const submitButton = getByText(new RegExp('submit'));
     await wait(() => click(submitButton));
-    // should put once for the metadatatype and once for the tag
-    expect(fetch.mock.calls.length).toEqual(3);
-    const metadataBody = fetch.mock.calls[1][1].body;
-    expect(metadataBody).toEqual(JSON.stringify({
+    // should put once for the metadatatype and once for the tag- 3+2=5
+    expect(fetch.mock.calls.length).toEqual(5);
+
+    // the body should correspond to what was input in the form
+    const metadataBody = fetch.mock.calls[3][1].body;
+    expect(JSON.parse(metadataBody)).toEqual({
       name: 'This is a test name',
       description: 'This is a TeSt desCRIPTION. L0rem ipsum.',
-    }));
+      categoryUuid: '16bdbbc7-939e-4993-be92-ca9bda7feec2',
+    });
     expect(history.location.pathname).toEqual('/sendData');
   });
 });

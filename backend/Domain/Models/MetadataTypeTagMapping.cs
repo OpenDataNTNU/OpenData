@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 
 namespace OpenData.Domain.Models
 {
@@ -8,7 +9,7 @@ namespace OpenData.Domain.Models
 
 		public Tag Tag { get; set; }
 
-		public string MetadataTypeName { get; set; }
+		public Guid MetadataTypeUuid { get; set; }
 		
 		public MetadataType Type { get; set; }
 	}
