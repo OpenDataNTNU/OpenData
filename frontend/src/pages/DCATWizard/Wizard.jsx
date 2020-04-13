@@ -154,7 +154,7 @@ const Wizard = () => {
           <Uploader>
             <TabView
               tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection', 'Submission']}
-              disabledTabs={[state.file === null,
+              disabledTabs={[state.catalogsState === null || state.datasetsState,
                 state.file === null,
                 false,
                 false,
