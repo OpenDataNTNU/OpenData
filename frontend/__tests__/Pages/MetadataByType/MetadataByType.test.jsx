@@ -99,7 +99,7 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Needs work').length).toBe(1);
     expect(queryAllByText('Not releasable').length).toBe(0);
 
-    // should have fetched exactly thrice (1 + 2)
-    expect(fetch.mock.calls.length).toEqual(3);
+    // should have fetched exactly once
+    expect(fetch.mock.calls.length).toEqual(1);
   });
 });

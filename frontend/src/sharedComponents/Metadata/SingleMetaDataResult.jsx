@@ -79,7 +79,7 @@ SingleMetaDataResult.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    metadataTypeUuid: PropTypes.string.isRequired,
     dataSource: PropTypes.arrayOf(
       PropTypes.shape({
         uuid: PropTypes.string.isRequired,

@@ -41,6 +41,7 @@ const LeftPane = styled.div`
   }
 `;
 
+
 const Tag = styled.p`
   background-color: #eeeeee;
   color: #595959;
@@ -140,7 +141,7 @@ export const MetadataByType = () => {
           setFetchedCategories(receivedCategories);
           setCategories(receivedCategories);
         }
-        const matchingType = receivedCategories.find((c) => c.name === name);
+        const matchingType = receivedCategories.find((c) => c.uuid === typeuuid);
         if (matchingType) {
           setSelectedCategory(matchingType);
         }
@@ -190,7 +191,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory} />
+              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory.uuid} />
               : (
                 <NoResult text="Select a category to examine." />
               )}

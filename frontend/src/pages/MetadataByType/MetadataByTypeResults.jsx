@@ -50,11 +50,9 @@ const NoTags = styled.p`
 `;
 
 const MetadataByTypeResults = ({ metadataTypeUuid }) => {
+  const [metadataType, setMetadataType] = useState(null);
   const [metadataSet, setMetadataSet] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [metadataTypeName, setMetadataTypeName] = useState('');
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
 
   const handleFilterSelection = ({ target: { value } }) => {
@@ -71,23 +69,19 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       try {
         const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
         if (res.status === 200) {
-          const j = await res.json();
-          const {
-            name,
-            tags: receivedTags,
-            description: receivedDescription,
-            metadataList,
-          } = j;
-          setMetadataTypeName(name);
-          setTags(receivedTags);
-          setDescription(receivedDescription);
-          setFetchedMetadataSet(metadataList);
-          setMetadataSet(metadataList);
+          const receivedMetadataType = await res.json();
+          if (!receivedMetadataType.description) {
+            receivedMetadataType.description = {
+              content: 'No description',
+            };
+          }
+          setMetadataType(receivedMetadataType);
+          setMetadataSet(receivedMetadataType.metadataList);
         }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error(`Could not find the category ${uuid}`));
+          dispatch(alertActions.error(`Could not find the category ${metadataTypeUuid}`));
         } else {
           dispatch(alertActions.error('Failed to fetch metadata. Please try again later.'));
         }
@@ -107,17 +101,18 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
   if (!metadataType) {
     return (
       <CategoriesContainer>
-        <NoResult text={`No category found for ${uuid}`} />
+        <NoResult text={`No category found for ${metadataTypeUuid}`} />
       </CategoriesContainer>
     );
   }
+  const { tags, description, name } = metadataType;
   return (
     <CategoriesContainer>
       <ResultsHeader>
         <div>
           <h3>{metadataType.name}</h3>
-          <DescriptionEditButton uuid={metadataTypeUuid} currentDescription={description} />
-          <p>{description}</p>
+          <DescriptionEditButton uuid={metadataTypeUuid} currentDescription={description.content} />
+          <p>{description.content}</p>
           { tags.length === 0 ? (
             <NoTags>No tags for this category.</NoTags>
           ) : tags.map(({ tagName }) => <Tag key={tagName}>{tagName}</Tag>)}
@@ -126,11 +121,11 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       </ResultsHeader>
       <ResultsContainer>
         { metadataSet.length === 0 ? (
-          <NoResult text={`No results were found for ${uuid}.`} />
+          <NoResult text={`No results were found for ${metadataTypeUuid}.`} />
         ) : metadataSet.map((m) => (
           <SingleMetaDataResult
             key={m.uuid}
-            metadata={{ ...m, metadataTypeName }}
+            metadata={{ ...m, metadataTypeName: name }}
             showMunicipality
           />
         ))}

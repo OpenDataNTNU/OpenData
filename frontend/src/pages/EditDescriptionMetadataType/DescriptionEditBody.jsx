@@ -94,7 +94,6 @@ const DescriptionEditBody = ({ uuid }) => {
   useEffect(() => {
     const loadMetadataType = async () => {
       setLoadingType(true);
-      // TODO: Add fetching for description suggestions
       try {
         const res = await fetch(`/api/MetadataType/${uuid}`, {
           method: 'GET',
@@ -106,6 +105,12 @@ const DescriptionEditBody = ({ uuid }) => {
         const { ok, status } = res;
         if (status === 200) {
           const receivedMetadataType = await res.json();
+          if (!receivedMetadataType.description) {
+            receivedMetadataType.description = {
+              uuid,
+              content: 'No description',
+            };
+          }
           setMetadataType(receivedMetadataType);
         }
         if (!ok) {

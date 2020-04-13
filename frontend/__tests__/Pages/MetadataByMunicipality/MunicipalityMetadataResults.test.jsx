@@ -122,6 +122,21 @@ const trondheimResponse = `[
     "description": "Something something",
     "releaseState": 2,
     "metadataTypeName": "Car history",
+    "municipalityName": "Trondheim",
+    "dataSource": [
+      {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afbc",
+        "url": "something.org",
+        "description": "string",
+        "dataFormat": {
+          "name": "JSON",
+          "description": "recent something description or something",
+          "documentationUrl": "https://google.com"
+        },
+        "startDate": "2019-03-16T10:07:38.067Z",
+        "endDate": "2021-03-16T10:07:38.067Z"
+      }
+    ]
   }
 ]`;
 
@@ -168,5 +183,9 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Needs work').length).toBe(1);
     expect(queryAllByText('Not releasable').length).toBe(1);
     expect(queryAllByText('Unknown release state!').length).toBe(1);
+
+    // results are by default collapsed, so there is one initial fetch,
+    // succeeded by 6 for metadata type names.
+    expect(fetch.mock.calls.length).toEqual(7);
   });
 });

@@ -16,16 +16,8 @@ const Wrapper = styled.div`
 `;
 
 export const InspectionBody = ({ id }) => {
-  const [data, setData] = useState({
-    uuid: id,
-    releaseState: 0,
-    metadataTypeName: '',
-    municipalityName: '',
-    description: '',
-    experiencePostGuid: '',
-    dataSource: [],
-  });
-  const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,27 +48,6 @@ export const InspectionBody = ({ id }) => {
     internal();
   }, [id]);
 
-  useEffect(() => {
-    const { metadataTypeName: name } = data;
-    if (name) {
-      const internal = async () => {
-        try {
-          const res = await fetch(`/api/MetadataType/${name}`);
-          const { ok } = res;
-          if (!ok) {
-            throw new Error();
-          }
-          const { tags: receivedTags } = await res.json();
-          const tagNames = receivedTags.map(({ tagName }) => tagName);
-          setTags(tagNames);
-        } catch (err) {
-          dispatch(alertActions.error('Failed to fetch information about the category'));
-        }
-      };
-      internal();
-    }
-  }, [data]);
-
   const removeDataSource = (uuidToDelete) => {
     const { dataSource } = data;
     const newDatasources = dataSource.filter(({ uuid }) => uuid !== uuidToDelete);
@@ -86,9 +57,17 @@ export const InspectionBody = ({ id }) => {
     });
   };
 
+  if (loading || !data) {
+    return (
+      <Wrapper>
+        <p>Loading entry ...</p>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
-      <MetaData data={data} tags={tags} removeDataSource={removeDataSource} />
+      <MetaData data={data} removeDataSource={removeDataSource} />
       <Comments id={id} />
     </Wrapper>
   );

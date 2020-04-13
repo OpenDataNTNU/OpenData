@@ -125,7 +125,6 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
   } = metadata;
   const [metadataTypeName, setMetadataTypeName] = useState('');
   const dispatch = useDispatch();
-
   useEffect(() => {
     const getMetadataTypeName = async () => {
       try {
@@ -145,9 +144,8 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
         }
       }
     };
-    getMetadataTypeName();
-  }, []);
-
+    if (showCategory) getMetadataTypeName();
+  }, [showCategory]);
   return (
     <ContentCollapsedWrapper>
       <div>
@@ -175,7 +173,6 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
     municipalityName, metadataTypeUuid,
   } = metadata;
   const [metadataTypeName, setMetadataTypeName] = useState('');
-
   // TODO: Update this to use API whenever that exists.
   const [commentsCount, setCommentsCount] = useState(0);
   const dispatch = useDispatch();
@@ -186,24 +183,6 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
   const { token } = user || { token: null };
 
   useEffect(() => {
-    const getMetadataTypeName = async () => {
-      try {
-        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
-        if (res.status === 200) {
-          const { name } = await res.json();
-          setMetadataTypeName(name);
-        }
-      } catch (err) {
-        const { status } = err;
-        if (status === 404) {
-          dispatch(alertActions.error('Could not fetch likes for dataset.'));
-        } else if (status === 401) {
-          dispatch(alertActions.info('Not authorized to see likes for dataset.'));
-        } else {
-          dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
-        }
-      }
-    };
     const getLikes = async () => {
       try {
         const res = await fetch(`/api/Metadata/${uuid}/like`, {
@@ -242,7 +221,25 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
         }
       }
     };
-    getMetadataTypeName();
+    const getMetadataTypeName = async () => {
+      try {
+        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+        if (res.status === 200) {
+          const { name } = await res.json();
+          setMetadataTypeName(name);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not fetch metadata type name'));
+        } else if (status === 401) {
+          dispatch(alertActions.info('Not authorized to see metadata type name.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch metadata type name. Please try again later.'));
+        }
+      }
+    };
+    if (showCategory) getMetadataTypeName();
     getLikes();
     getComments();
   }, []);
