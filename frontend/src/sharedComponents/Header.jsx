@@ -11,7 +11,7 @@ const HeaderHTML = styled.header`
   background-color: black;
   display: flex;
   align-items: center;
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 1170px) {
     padding: 0 1em;
     justify-content: space-between;
   }
@@ -106,6 +106,10 @@ const Header = () => {
         history.push('/search');
         break;
       }
+      case 'Wizard': {
+        history.push('/wizard');
+        break;
+      }
       default: {
         break;
       }
@@ -120,7 +124,7 @@ const Header = () => {
       {
         // Show normal nav on width over 600
         // Else show responsive dropdown
-        width > 650
+        width > 1170
           ? (
             <Nav>
               <HeaderLink to="/dataType" text="Search by type" />
@@ -135,6 +139,11 @@ const Header = () => {
               {
                 role === 1
                   ? <HeaderLink to="/myData" text="My data" />
+                  : null
+              }
+              {
+                role === 1
+                  ? <HeaderLink to="/wizard" text="Wizard" />
                   : null
               }
               <HeaderLink
@@ -154,7 +163,8 @@ const Header = () => {
                 { id: 'Search', title: 'Search' },
                 { id: 'Browse categories', title: 'Browse categories' },
                 ...role === 1 ? [{ id: 'Submit data', title: 'Submit data' },
-                  { id: 'My data', title: 'My data' }] : [],
+                  { id: 'My data', title: 'My data' },
+                  { id: 'Wizard', title: 'Wizard' }] : [],
                 { id: user && user.mail ? 'Logout' : 'Sign in', title: user && user.mail ? 'Logout' : 'Sign in' },
               ]}
             />
