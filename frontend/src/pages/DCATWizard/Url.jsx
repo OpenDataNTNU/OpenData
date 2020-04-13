@@ -50,32 +50,32 @@ const Format = styled.span`
 `;
 
 const Url = ({
-  description, format: formats, url
+  description, format: formats, url,
 }) => (
-    <Wrapper>
-      <Content>
-        <Description>
-          <Link href={url} target="_blank">
-            {
+  <Wrapper>
+    <Content>
+      <Description>
+        <Link href={url} target="_blank">
+          {
               description
             }
-          </Link>
-        </Description>
-        <Formats>
-          {
+        </Link>
+      </Description>
+      <Formats>
+        {
             formats && formats.length > 0
               ? (
                 formats.map((format) => (
-                  <Format key={format['@id'] + description + url}>
+                  <Format key={format['@id'] + description + url + (Math.random() * 10000)}>
                     { format['@id'] }
                   </Format>
                 ))
               )
               : null
           }
-        </Formats>
-      </Content>
-    </Wrapper>
+      </Formats>
+    </Content>
+  </Wrapper>
 );
 
 Url.propTypes = {

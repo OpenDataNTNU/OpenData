@@ -8,7 +8,7 @@ import { TabView } from './TabView';
 import { FileDropper } from './FileDropper';
 import { DatasetsSelection } from './DatasetsSelection';
 import { CatalogsSelection } from './CatalogsSelection';
-import { Connect } from './Connect';
+import { Connect } from './Connect';
 import { Submission } from './Submission';
 import parseJsonld from '../../lib/dcat-ld';
 // import { alertActions } from '../../state/actions/alert';
@@ -95,6 +95,11 @@ const Wizard = () => {
     });
 
     dispatch({
+      type: 'addMimetypes',
+      payload: result.mimeTypes,
+    });
+
+    dispatch({
       type: 'addDatasets',
       payload: {
         datasets: datasetsArray,
@@ -123,31 +128,41 @@ const Wizard = () => {
       state.datasetsState.selections.get(dataset.id)
     ));
 
-    for(let dataset of selectedDatasets) {
-      let foundCatalog = null
-      for (let catalog of selectedCatalogs) {
-        if(catalog.datasets.includes(dataset.id)) {
-          foundCatalog = catalog.title
+    for (const dataset of selectedDatasets) {
+      let foundCatalog = null;
+      for (const catalog of selectedCatalogs) {
+        if (catalog.datasets.includes(dataset.id)) {
+          foundCatalog = catalog.title;
           break;
         }
       }
-      if(foundCatalog) {
-        newDatasetCatalogConnections.set(dataset.id, foundCatalog)
+      if (foundCatalog) {
+        newDatasetCatalogConnections.set(dataset.id, [foundCatalog, foundCatalog]);
       }
-    };
+    }
 
     dispatch({
       type: 'addDatasetCatalogConnection',
-      payload: newDatasetCatalogConnections
+      payload: newDatasetCatalogConnections,
     });
-  },[state.catalogsState.selections, state.datasetsState.selections]);
+  }, [state.catalogsState.selections, state.datasetsState.selections]);
 
   return (
     <Template>
       <Wrapper>
         <Content>
           <Uploader>
-            <TabView tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection', 'Submission']} FBDisabled={state.file === null} BBDisabled={state.file == null}>
+            <TabView
+              tabs={['Upload File', 'DCAT Datasets', 'DCAT Catalogs', 'Dataset-Catalog Connection', 'Submission']}
+              disabledTabs={[state.file === null,
+                state.file === null,
+                false,
+                false,
+                state.datasetCatalogConnection.size !== [...state.datasetsState.selections].map(
+                  ([_, v]) => v, // eslint-disable-line no-unused-vars
+                ).filter((v) => v).length,
+              ]}
+            >
               <FileDropper hidden={state.file != null} />
               <DatasetsSelection />
               <CatalogsSelection />

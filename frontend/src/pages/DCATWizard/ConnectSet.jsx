@@ -27,35 +27,6 @@ const Content = styled.div`
 
 const Info = styled.div`
   flex: 1;
-`
-
-const Description = styled.p`
-  color: #3e3e3e;
-  font-size: 0.9rem;
-  background-color: #f2f2f2;
-  border-radius: 0.2rem;
-  padding: 0.2rem;
-  display: inline-block;
-`;
-
-const Link = styled.a`
-  color: darkorchid;
-`;
-
-const Formats = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Format = styled.span`
-  margin: 0px 5px 5px 0px;
-  color: #3e3e3e;
-  font-size: 0.9rem;
-  background-color: #f2f2f2;
-  border-radius: 0.2rem;
-  padding: 0.2rem;
-  display: inline-block;
 `;
 
 const Connecter = styled.div`
@@ -80,12 +51,13 @@ const Urls = styled.div`
 `;
 
 const ConnectSet = ({
-  id, title, distributions, selectOptions, onSelect, value
+  id, title, distributions, selectOptions, onSelect, value,
 }) => {
-
   const onChange = (e) => {
-    onSelect(id, e.target.value);
-  }
+    const index = e.nativeEvent.target.selectedIndex;
+    const { text } = e.nativeEvent.target[index];
+    onSelect(id, [text, e.target.value]);
+  };
 
   return (
     <Wrapper>
@@ -94,12 +66,12 @@ const ConnectSet = ({
           <Title>{ title }</Title>
           {
             distributions && distributions.length > 0
-            ? (
-              <p>
-                Urls:
-              </p>
-            )
-            : null
+              ? (
+                <p>
+                  Urls:
+                </p>
+              )
+              : null
           }
           <Urls>
             {
@@ -115,11 +87,11 @@ const ConnectSet = ({
           </Urls>
         </Info>
         <Connecter>
-          <Select onChange={onChange} value={value}>
-            <option disabled value={undefined}> -- select an option -- </option>
+          <Select onChange={onChange} value={value ? value[1] : ''}>
+            <option disabled value=""> -- select an option -- </option>
             {
               selectOptions && selectOptions.map((catalog) => (
-                <option key={catalog} value={catalog}>{catalog}</option>
+                <option key={catalog} value={catalog[1]}>{catalog[0]}</option>
               ))
             }
           </Select>
@@ -131,16 +103,24 @@ const ConnectSet = ({
 
 ConnectSet.defaultProps = {
   selectOptions: [],
+  value: '',
 };
 
 ConnectSet.propTypes = {
-  description: PropTypes.string.isRequired,
-  format: PropTypes.arrayOf(PropTypes.shape({
-    '@id': PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  distributions: PropTypes.arrayOf(PropTypes.shape({
+    description: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    format: PropTypes.arrayOf(PropTypes.shape({
+      '@id': PropTypes.string.isRequired,
+    })).isRequired,
+    length: PropTypes.number.isRequired,
+    map: PropTypes.func.isRequired,
   })).isRequired,
-  url: PropTypes.string.isRequired,
-  selectOptions: PropTypes.arrayOf(PropTypes.string.isRequired),
-  onSelectChange: PropTypes.func.isRequired,
+  selectOptions: PropTypes.arrayOf(PropTypes.string),
+  onSelect: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
 export {

@@ -1,10 +1,12 @@
 import React, { createContext, useReducer } from 'react';
+import PropTypes from 'prop-types';
 
 const WizardContext = createContext();
 
 const init = {
   file: null,
   fileContent: null,
+  mimetypes: [],
   datasetsState: {
     datasets: [],
     selections: new Map(),
@@ -12,8 +14,9 @@ const init = {
   catalogsState: {
     catalogs: [],
     selections: new Map(),
+    typeMap: new Map(),
   },
-  datasetCatalogConnection: new Map()
+  datasetCatalogConnection: new Map(),
 };
 
 const reducer = (state, action) => {
@@ -29,6 +32,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         fileContent: action.payload,
+      };
+    case 'addMimetypes':
+      return {
+        ...state,
+        mimetypes: action.payload,
       };
     case 'addDatasets':
       return {
@@ -96,6 +104,14 @@ const reducer = (state, action) => {
           selections: action.payload.selections,
         },
       };
+    case 'selectCatalogType':
+      return {
+        ...state,
+        catalogsState: {
+          ...state.catalogsState,
+          typeMap: action.payload.typeMap,
+        },
+      };
     case 'addDatasetCatalogConnection':
       return {
         ...state,
@@ -114,6 +130,10 @@ function Provider({ children }) {
     <WizardContext.Provider value={value}>{ children }</WizardContext.Provider>
   );
 }
+
+Provider.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+};
 
 const { Consumer } = WizardContext;
 

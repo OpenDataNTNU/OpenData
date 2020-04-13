@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { WizardContext } from './Context';
-import {ConnectSet } from './ConnectSet';
+import { ConnectSet } from './ConnectSet';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -41,9 +41,10 @@ const Datasets = styled.div`
 `;
 
 const Connect = () => {
-
   // State
   const { state, dispatch } = useContext(WizardContext);
+
+  const [metadataTypes, setMetadataTypes] = useState([]);
 
   const selectedCatalogs = state.catalogsState.catalogs.filter((catalog) => (
     state.catalogsState.selections.get(catalog.title)
@@ -58,6 +59,40 @@ const Connect = () => {
   const [showCount, setShowCount] = useState(10);
   const reducedDatasets = selectedDatasets.slice(0, showCount);
 
+  const getMetadataTypes = async () => {
+    const url = '/api/MetadataType';
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
+
+      // Check that the response was ok with status code 200
+      if (response.ok && response.status === 200) {
+        // Get json data
+        const MetadataTypes = await response.json();
+        return setMetadataTypes(MetadataTypes);
+      }
+      return setMetadataTypes([]);
+    } catch (_) {
+      return setMetadataTypes([]);
+    }
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      await getMetadataTypes();
+    };
+    init();
+  }, []);
+
   const onClick = () => {
     setShowCount(showCount + Math.min(10, state.datasetsState.datasets.length - showCount));
   };
@@ -65,31 +100,38 @@ const Connect = () => {
   const onSelect = (id, catalog) => {
     const newDatasetCatalogConnections = new Map(state.datasetCatalogConnection);
 
-    newDatasetCatalogConnections.set(id, catalog)
+    newDatasetCatalogConnections.set(id, catalog);
 
     dispatch({
       type: 'addDatasetCatalogConnection',
-      payload: newDatasetCatalogConnections
+      payload: newDatasetCatalogConnections,
     });
-  }
+  };
 
   return (
     <Wrapper>
       <p>
-        Datasets left to assign metadataType: { selectedDatasets.length -  state.datasetCatalogConnection.size}
+        Datasets left to assign metadataType:
+        {' '}
+        { selectedDatasets.length - state.datasetCatalogConnection.size}
       </p>
       <Datasets>
         {
           reducedDatasets && reducedDatasets.map(({ id, title, distributions }) => (
             <ConnectSet
-                key={id}
-                id={id}
-                title={title}
-                distributions={distributions}
-                value={state.datasetCatalogConnection.get(id)}
-                selectOptions={selectedCatalogs.map((catalog) => catalog.title)}
-                onSelect={onSelect}
-              />
+              key={id}
+              id={id}
+              title={title}
+              distributions={distributions}
+              value={state.datasetCatalogConnection.get(id)}
+              selectOptions={
+                (
+                  metadataTypes.map((metadataType) => (
+                    [metadataType.name, metadataType.uuid]
+                  ))).concat(selectedCatalogs.map((catalog) => [catalog.title, catalog.title]))
+              }
+              onSelect={onSelect}
+            />
           ))
         }
       </Datasets>
@@ -102,7 +144,7 @@ const Connect = () => {
       </LoadMoreButton>
     </Wrapper>
   );
-}
+};
 
 export {
   Connect,

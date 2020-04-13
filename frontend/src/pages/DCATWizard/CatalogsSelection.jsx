@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { WizardContext } from './Context';
@@ -61,6 +61,7 @@ const CatalogsSelection = () => {
   const reducedCatalogs = state.catalogsState
     ? state.catalogsState.catalogs.slice(0, showCount)
     : [];
+  const [categories, setCategories] = useState([]);
 
   const onClick = () => {
     setShowCount(showCount + Math.min(10, state.catalogsState.catalogs.length - showCount));
@@ -108,6 +109,73 @@ const CatalogsSelection = () => {
     });
   };
 
+  const getCategories = async () => {
+    const url = '/api/MetadataCategory';
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+      });
+
+      // Check that the response was ok with status code 200
+      if (response.ok && response.status === 200) {
+        // Get json data
+        const Categories = await response.json();
+
+        return setCategories(Categories);
+      }
+      return setCategories([]);
+    } catch (_) {
+      return setCategories([]);
+    }
+  };
+
+  useEffect(() => {
+    if (!categories) return;
+
+    const newTypeMap = new Map(state.catalogsState.typeMap);
+
+    state.catalogsState.catalogs.forEach((catalog) => {
+      newTypeMap.set(
+        catalog.title,
+        categories && categories.length > 0 ? categories[0].uuid : null,
+      );
+    });
+
+    dispatch({
+      type: 'selectCatalogType',
+      payload: {
+        typeMap: newTypeMap,
+      },
+    });
+  }, [categories]);
+
+  useEffect(() => {
+    const init = async () => {
+      await getCategories();
+    };
+    init();
+  }, []);
+
+  const onCategorySelect = (title, uuid) => {
+    const newTypeMap = new Map(state.catalogsState.typeMap);
+    newTypeMap.set(title, uuid);
+
+    dispatch({
+      type: 'selectCatalogType',
+      payload: {
+        typeMap: newTypeMap,
+      },
+    });
+  };
+
   return (
     <Wrapper>
       <Selection>
@@ -126,6 +194,8 @@ const CatalogsSelection = () => {
                 selected={state.catalogsState.selections.get(catalog.title)}
                 onSelect={onSelection}
                 title={catalog.title}
+                categories={categories}
+                onCategorySelect={onCategorySelect}
               />
             ))
         }

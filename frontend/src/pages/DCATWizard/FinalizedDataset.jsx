@@ -40,7 +40,7 @@ const Title = styled.p`
 
 const MetadataType = styled.p`
 
-`
+`;
 
 const Important = styled.span`
   color: #3e3e3e;
@@ -49,58 +49,57 @@ const Important = styled.span`
   border-radius: 0.2rem;
   padding: 0.2rem;
   display: inline-block;
-`
+`;
 
 const Urls = styled.div`
   
 `;
 
 const FinalizedDataset = ({
-  title, distributions, metadataType
-}) => {
-
-  return (
-    <Wrapper>
-      <Content>
-        <Info>
-          <Title>{ title }</Title>
-          <MetadataType>
-            <Important>Metadata Type:</Important>
-            { ` ${metadataType}` }
-          </MetadataType>
-          {
+  title, distributions, metadataType,
+}) => (
+  <Wrapper>
+    <Content>
+      <Info>
+        <Title>{ title }</Title>
+        <MetadataType>
+          <Important>Metadata Type:</Important>
+          { ` ${metadataType}` }
+        </MetadataType>
+        {
             distributions && distributions.length > 0
-            ? (
-              <p>
-                <Important>Url's:</Important>
-              </p>
-            )
-            : null
+              ? (
+                <p>
+                  <Important>Url&apos;s:</Important>
+                </p>
+              )
+              : null
           }
-          <Urls>
-            {
+        <Urls>
+          {
               distributions && distributions.map(({ format, description, url }) => (
                 <Url
-                  key={url + description + "finalized"}
+                  key={url + description + (Math.random() * (10000))}
                   format={format}
                   description={description}
                   url={url}
                 />
               ))
             }
-          </Urls>
-        </Info>
-      </Content>
-    </Wrapper>
-  );
-};
-
-FinalizedDataset.defaultProps = {
-
-};
+        </Urls>
+      </Info>
+    </Content>
+  </Wrapper>
+);
 
 FinalizedDataset.propTypes = {
-
+  title: PropTypes.string.isRequired,
+  distributions: PropTypes.arrayOf(PropTypes.shape({
+    format: PropTypes.arrayOf(PropTypes.string).isRequired,
+    description: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  })).isRequired,
+  metadataType: PropTypes.string.isRequired,
 };
 
 export {

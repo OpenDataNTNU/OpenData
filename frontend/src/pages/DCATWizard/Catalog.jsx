@@ -26,6 +26,9 @@ const Content = styled.div`
   padding: 0.2rem 0.3rem 0.4rem 0.3rem;
   flex: 1;
   background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Title = styled.p`
@@ -37,11 +40,19 @@ const Title = styled.p`
   display: inline-block;
 `;
 
+const Select = styled.select`
+  max-width: 136px;
+`;
+
 const Catalog = ({
-  selected, onSelect, title,
+  selected, onSelect, title, categories, onCategorySelect,
 }) => {
   const onChange = () => {
     onSelect(title);
+  };
+
+  const onCategorySelectChange = (e) => {
+    onCategorySelect(title, e.target.value);
   };
 
   return (
@@ -55,15 +66,68 @@ const Catalog = ({
             title
           }
         </Title>
+        <Select onChange={onCategorySelectChange}>
+          {
+              categories && categories.map((category) => (
+                <>
+                  <option key={category.uuid} value={category.uuid}>{category.name}</option>
+                  {
+                      category.types.map((type) => (
+                        <option key={type.uuid} value={type.uuid}>{type.name}</option>
+                      ))
+                    }
+                </>
+              ))
+            }
+        </Select>
       </Content>
     </Wrapper>
   );
 };
 
+Catalog.defaultProps = {
+  categories: [],
+};
+
+const Type = {
+  uuid: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+    tagName: PropTypes.string.isRequired,
+    metadataTypeUuid: PropTypes.string.isRequired,
+  }))),
+  description: PropTypes.string.isRequired,
+  metadataList: PropTypes.arrayOf(),
+  categoryUuid: PropTypes.string.isRequired,
+};
+
+Type.types = PropTypes.arrayOf(Type);
+
+const Child = {
+  uuid: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  hasChildren: PropTypes.bool.isRequired,
+  types: PropTypes.arrayOf(Type),
+};
+
+Child.children = PropTypes.arrayOf(Child);
+
 Catalog.propTypes = {
   selected: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    created: PropTypes.string.isRequired,
+    lastEdited: PropTypes.string.isRequired,
+    hasChildren: PropTypes.bool.isRequired,
+    hasTypes: PropTypes.bool.isRequired,
+    parentUuid: PropTypes.string,
+    children: PropTypes.arrayOf(Child),
+    types: PropTypes.arrayOf(PropTypes.shape(Type)).isRequired,
+  })),
+  onCategorySelect: PropTypes.func.isRequired,
 };
 
 export {

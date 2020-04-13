@@ -59,12 +59,12 @@ const Dataset = ({
         <Title>{ title }</Title>
         {
           distributions && distributions.length > 0
-           ? (
-            <p>
-              Urls:
-            </p>
-           )
-           : null
+            ? (
+              <p>
+                Urls:
+              </p>
+            )
+            : null
         }
         <Urls>
           {

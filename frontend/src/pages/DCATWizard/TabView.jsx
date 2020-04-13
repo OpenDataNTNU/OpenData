@@ -67,19 +67,19 @@ const Views = styled.div`
 `;
 
 const TabView = ({
-  children, tabs, BBDisabled, FBDisabled,
+  children, tabs, disabledTabs,
 }) => {
   // State
   const [currentView, setCurrentView] = useState(0);
 
   const forward = () => {
-    if (currentView < tabs.length - 1 && !FBDisabled) {
+    if (currentView < tabs.length - 1 && !disabledTabs[currentView + 1]) {
       setCurrentView(currentView + 1);
     }
   };
 
   const backward = () => {
-    if (currentView !== 0 && !BBDisabled) {
+    if (currentView !== 0 && !disabledTabs[currentView - 1]) {
       setCurrentView(currentView - 1);
     }
   };
@@ -87,7 +87,7 @@ const TabView = ({
   return (
     <Container>
       <Head>
-        <Tab flex="10" onClick={backward} disabled={BBDisabled}>
+        <Tab flex="10" onClick={backward} disabled={currentView === 0 ? true : disabledTabs[currentView - 1]}>
           {
             currentView === 0
               ? ''
@@ -99,7 +99,7 @@ const TabView = ({
             tabs[currentView]
           }
         </Tab>
-        <Tab flex="10" onClick={forward} disabled={FBDisabled}>
+        <Tab flex="10" onClick={forward} disabled={currentView === tabs.length ? true : disabledTabs[currentView + 1]}>
           {
             currentView === tabs.length
               ? ''
@@ -122,8 +122,7 @@ TabView.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  BBDisabled: PropTypes.bool.isRequired,
-  FBDisabled: PropTypes.bool.isRequired,
+  disabledTabs: PropTypes.arrayOf(PropTypes.bool.isRequired).isRequired,
 };
 
 export {
