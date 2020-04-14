@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   background-color: ${(props) => (props.selected ? 'rgba(1,73,128,0.05)' : 'white')};
   border-radius: 4px;
   padding: 0px 5px 5px 5px;
-  margin-bottom: 0.8em;
+  margin-bottom: 10px;
 `;
 
 const Header = styled.div`
@@ -107,7 +107,7 @@ const Comment = ({
       </Wrapper>
       {
       showNewComment
-        ? <NewComment putUrl={`/api/Comment/reply/${uuid}`} onComplete={onComplete} ref={ref} />
+        ? <NewComment putUrl={`/api/Comment/reply/${uuid}`} onComplete={onComplete} buttonText="Reply" placeholderText="Leave a reply" ref={ref} />
         : null
       }
       {
