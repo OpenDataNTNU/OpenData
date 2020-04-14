@@ -230,8 +230,6 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
         const { status } = err;
         if (status === 404) {
           dispatch(alertActions.error('Could not find metadata type name'));
-        } else if (status === 401) {
-          dispatch(alertActions.info('Not authorized to see metadata type name.'));
         } else {
           dispatch(alertActions.error('Failed to fetch metadata type name. Please try again later.'));
         }
