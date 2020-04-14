@@ -5,6 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { useGetFormats } from '../../sharedComponents/hooks/GetFormats';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -100,7 +101,7 @@ export const MetadataForm = () => {
   const [loading, setLoading] = useState(false);
 
   const [metadataTypes, setMetadataTypes] = useState([]);
-  const dataFormats = ['JSON', 'CSV'];
+  const dataFormats = useGetFormats();
 
   const [submissionStatus, setSubmissionStatus] = useState('');
 
@@ -391,7 +392,7 @@ export const MetadataForm = () => {
         </ul>
         <Select name="dataFormatName" value={dataFormatName} onChange={handleFormatChange}>
           <option value="" disabled>Data format</option>
-          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
+          {dataFormats.map(({ name }) => <option key={name} value={name}>{name}</option>)}
         </Select>
         <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
         <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />

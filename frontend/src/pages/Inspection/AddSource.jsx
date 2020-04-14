@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { alertActions } from '../../state/actions/alert';
+import { useGetFormats } from '../../sharedComponents/hooks/GetFormats';
 
 const Wrapper = styled.div`
   margin: 1.5em 0 0;
@@ -16,7 +17,7 @@ const Form = styled.form`
 `;
 
 export const AddSource = ({ addSource, uuid }) => {
-  const dataFormats = ['JSON', 'CSV'];
+  const dataFormats = useGetFormats();
 
   const [expand, setExpand] = useState(false);
   const [format, setFormat] = useState('');
@@ -78,7 +79,7 @@ export const AddSource = ({ addSource, uuid }) => {
         <Form onSubmit={submit}>
           <select name="dataFormatName" value={format} onChange={(e) => setFormat(e.target.value)} required>
             <option value="" disabled>Data format</option>
-            {dataFormats.map((name) => <option key={name} value={name}>{name}</option>)}
+            {dataFormats.map(({ name }) => <option key={name} value={name}>{name}</option>)}
           </select>
           <input type="text" placeholder="Url to dataset" value={url} onChange={(e) => setUrl(e.target.value)} required />
           <input type="text" placeholder="Description of source" value={description} onChange={(e) => setDescription(e.target.value)} />
