@@ -31,6 +31,12 @@ describe('Template component', () => {
 
     fetch.mockResponse(JSON.stringify({ email: 'test@baerum.kommune.no', type: 'kommune' }));
 
+    // to render the login button on top regularly, set the width above the threshold
+    await wait(() => {
+      global.innerWidth = 1200;
+      global.dispatchEvent(new Event('resize'));
+    });
+
     await wait(() => {
       fireEvent(
         getByText('Sign in'),

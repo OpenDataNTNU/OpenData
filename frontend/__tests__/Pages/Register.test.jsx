@@ -44,6 +44,11 @@ describe('Template component', () => {
     );
 
     await wait(() => {
+      global.innerWidth = 1200;
+      global.dispatchEvent(new Event('resize'));
+    });
+
+    await wait(() => {
       fireEvent(
         getByText('Sign in'),
         new MouseEvent('click', {
