@@ -99,10 +99,6 @@ namespace OpenData.Controllers
 				throw new HttpException(HttpStatusCode.NotFound);
 			}
 
-			if(post.Tags == null) {
-				Console.WriteLine("Fuck");
-			}
-
 			post.Tags.Add(new ExperiencePostTagMapping { Tag = tag, Post = post});
 
 			var res = _mapper.Map<ExperiencePost, ExperiencePostResource>(post);

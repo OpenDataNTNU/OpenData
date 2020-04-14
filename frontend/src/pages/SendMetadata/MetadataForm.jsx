@@ -300,6 +300,13 @@ export const MetadataForm = () => {
             <b>Create a new one</b>
           </Link>
         </NewMetadataType>
+        <NewMetadataType>
+          Want to import a DCAT-NO file?
+          {' '}
+          <Link to="/wizard">
+            <b>Use the DCAT-NO Wizard.</b>
+          </Link>
+        </NewMetadataType>
         <HorizontalWrapper>
           <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
             <Radio

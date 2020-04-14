@@ -27,6 +27,7 @@ namespace OpenData.Persistence.Contexts
         public DbSet<MetadataCategory> MetadataCategory { get; set; }
         public DbSet<MetadataCommentMapping> MetadataCommentMappings { get; set; }
         public DbSet<ExperiencePostCommentMapping> ExperiencePostCommentMappings { get; set; }
+        public DbSet<DataFormat> DataFormats { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -63,17 +64,46 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<Backend>().Property(p => p.Url).IsRequired();
 
             builder.Entity<Backend>().HasData(
-                new Backend { Name = "Django", Description = "Just django", Url = "https://www.django-rest-framework.org/"}
+                new Backend { Name = "Django", Description = "Just django", Url = "https://www.django-rest-framework.org/"},
+                new Backend { Name = "CKAN", Description = "CKAN is an open source data portal software", Url = "https://ckan.org/"}
             );
 
             builder.Entity<DataFormat>().ToTable("DataFormats");
-            builder.Entity<DataFormat>().HasKey(p => p.Name);
+            builder.Entity<DataFormat>().HasKey(p => p.MimeType);
+            builder.Entity<DataFormat>().Property(p => p.Name).IsRequired();
             builder.Entity<DataFormat>().Property(p => p.Description).IsRequired();
-            builder.Entity<DataFormat>().Property(p => p.DocumentationUrl).IsRequired();
+            builder.Entity<DataFormat>().Property(p => p.DocumentationUrl);
 
             builder.Entity<DataFormat>().HasData(
-                new DataFormat { Name = "JSON", Description = "Just json", DocumentationUrl = "https://www.json.org/json-en.html"},
-                new DataFormat { Name = "CSV", Description = "Comma seperated values", DocumentationUrl = "https://tools.ietf.org/html/rfc4180"}
+                new DataFormat { Name = "json", MimeType = "application/json", Description = "Just json", DocumentationUrl = "https://www.json.org/json-en.html"},
+                new DataFormat { Name = "csv", MimeType = "text/csv", Description = "Comma seperated values", DocumentationUrl = "https://tools.ietf.org/html/rfc4180"},
+                new DataFormat { Name = "xml", MimeType = "application/xml", Description = "Extensible markup language", DocumentationUrl = "https://www.w3.org/XML/"},
+                new DataFormat { Name = "yaml", MimeType = "application/x.yaml", Description = "Yet Another Markup Language: a human-readable approach to serializable data", DocumentationUrl = "https://yaml.org/"},
+                new DataFormat { Name = "js", MimeType = "application/javascript", Description = "Javascript", DocumentationUrl = "https://developer.mozilla.org/en-US/docs/Web/JavaScript"},
+                new DataFormat { Name = "rdf", MimeType = "application/rdf+xml", Description = "Resource Description Framework: A syntax for expressing metadata in xml", DocumentationUrl = "https://www.w3.org/TR/rdf-syntax-grammar/"},
+                new DataFormat { Name = "xlsx", MimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Description = ".xlsx Excel spreadsheet", DocumentationUrl = "https://www.office.com/"},
+                new DataFormat { Name = "xml", MimeType = "text/xml", Description = "Extensible markup language", DocumentationUrl = "https://www.w3.org/XML/"},
+                new DataFormat { Name = "jsonld", MimeType = "application/ld+json", Description = "JSON for linking data", DocumentationUrl = "https://json-ld.org/"},
+                new DataFormat { Name = "wms", MimeType = "application/x.wms", Description = "Web Map Service", DocumentationUrl = ""},
+                new DataFormat { Name = "ualf", MimeType = "application/x.ualf", Description = "File format for describing lightening events", DocumentationUrl = "https://github.com/Gipphe/ualf"},
+                new DataFormat { Name = "zip", MimeType = "application/zip", Description = "Zip file format", DocumentationUrl = "https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT"},
+                new DataFormat { Name = "pdf", MimeType = "application/pdf", Description = "Portable document format", DocumentationUrl = "https://acrobat.adobe.com/us/en/acrobat/about-adobe-pdf.html"},
+                new DataFormat { Name = "xls", MimeType = "application/vnd.sealed-xls", Description = "Compressed Microsoft Excel spreadsheet", DocumentationUrl = "https://www.office.com/"},
+                new DataFormat { Name = "sosi", MimeType = "application/x-­ogc-sosi", Description = "Norwegian file format for map data: Samordnet Opplegg for Stedfestet Informasjon", DocumentationUrl = "https://www.kartverket.no/data/sosi-brukerveiledning/"},
+                new DataFormat { Name = "sql", MimeType = "application/sql", Description = "SQL dump", DocumentationUrl = ""},
+                new DataFormat { Name = "html", MimeType = "text/html", Description = "Hypertext Markup Language", DocumentationUrl = "https://www.w3.org/TR/html51/"},
+                new DataFormat { Name = "geojson", MimeType = "application/vnd.geo+json", Description = "GeoJSON", DocumentationUrl = "https://geojson.org/"},
+                new DataFormat { Name = "gml", MimeType = "application/gml+xml", Description = "Geography Markup Language", DocumentationUrl = "https://www.iana.org/assignments/media-types/application/gml+xml"},
+                new DataFormat { Name = "tiff", MimeType = "image/tiff", Description = "Tagged Image File Format", DocumentationUrl = "http://www.libtiff.org/document.html"},
+                new DataFormat { Name = "wfs", MimeType = "application/x.wfs", Description = "Web Feature Service", DocumentationUrl = "https://www.ogc.org/standards/wfs"},
+                new DataFormat { Name = "N-Triples", MimeType = "application/n-triples", Description = "A line-based syntax for an RDF graph", DocumentationUrl = "https://www.w3.org/TR/n-triples/"},
+                new DataFormat { Name = "kml", MimeType = "application/vnd.google-earth.kml+xml", Description = "Keyhole Markup Language: A file format used to display geographic data in an Earth browser such as Google Earth", DocumentationUrl = "https://developers.google.com/kml/documentation/kml_tut"},
+                new DataFormat { Name = "Terse RDF Triple Language", MimeType = "text/turtle", Description = "A syntax and file format for expressing data in the Resource Description Framework (RDF) data model", DocumentationUrl = "https://www.w3.org/TR/turtle/"},
+                new DataFormat { Name = "ods", MimeType = "application/vnd.oasis.opendocument.spreadsheet", Description = "OpenDocument spreadsheet, mainly used in OpenOffice, but also supported by the Microsoft Office suite.", DocumentationUrl = "https://www.iso.org/standard/43485.html"},
+                new DataFormat { Name = "txt", MimeType = "text/plain", Description = "Plain text", DocumentationUrl = ""},
+                new DataFormat { Name = "gtfs", MimeType = "application/x.gtfs", Description = "General Transit Feed Specification", DocumentationUrl = "http://gtfs.org"},
+                new DataFormat { Name = "netex", MimeType = "application/x.netex", Description = "Network Timetable Exchange", DocumentationUrl = "http://netex-cen.eu/"},
+                new DataFormat { Name = "gpx", MimeType = "application/gpx+xml", Description = "GPS exchange format", DocumentationUrl = "https://www.topografix.com/gpx.asp"}
             );
 
             builder.Entity<MetadataCategory>().ToTable("MetadataCategory");
