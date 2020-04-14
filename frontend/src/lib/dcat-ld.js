@@ -37,7 +37,7 @@ function parseJsonLd(ld) {
   for (const element of ld['@graph']) {
     if (element['@type'] === 'dcat:Distribution') {
       const desc = typeof element['dct:description'] === 'undefined'
-        ? '[Ingen beskrivelse]'
+        ? '[No description]'
         : findValue(element['dct:description'], 'no');
       // let desc = findValue(element["dct:description"], "no")
       // console.log(desc)
@@ -90,9 +90,3 @@ function parseJsonLd(ld) {
 }
 
 export default parseJsonLd;
-
-// console.log("Extracted data:");
-// console.log(JSON.stringify(dcatExports, null, 4));
-
-// console.log("Extracted distributions:")
-// console.log(JSON.stringify(distributions, null, 4))
