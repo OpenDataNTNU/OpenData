@@ -25,6 +25,7 @@ namespace OpenData.Controllers
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
+		private readonly IMapper _mapper;
 
 		public DataFormatController(
             IDataFormatService formatService,
@@ -36,6 +37,7 @@ namespace OpenData.Controllers
 		{
 			_formatService = formatService;
 			_unitOfWork = unitOfWork;
+			_mapper = mapper;
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -58,7 +60,7 @@ namespace OpenData.Controllers
 		/// <param name="format">The format to add</param>
         /// <returns>The format, if it was created</returns>
 		[HttpPut]
-		public async Task<IActionResult> PostAsync([FromBody] DataFormat format)
+		public async Task<IActionResult> PostAsync([FromBody] NewDataFormatResource format)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
@@ -69,7 +71,8 @@ namespace OpenData.Controllers
 			if (user.UserType < UserType.Municipality)
 				return BadRequest("Invalid user permissions, must have municipality privileges or higher.");
 
-			var result = await _formatService.SaveAsync(format);
+			var res = _mapper.Map<NewDataFormatResource, DataFormat>(format);
+			var result = await _formatService.SaveAsync(res);
 
 			if(!result.Success)
 				return BadRequest(result.Message);

@@ -70,7 +70,7 @@ namespace OpenData.Persistence.Contexts
             builder.Entity<DataFormat>().HasKey(p => p.MimeType);
             builder.Entity<DataFormat>().Property(p => p.Name).IsRequired();
             builder.Entity<DataFormat>().Property(p => p.Description).IsRequired();
-            builder.Entity<DataFormat>().Property(p => p.DocumentationUrl).IsRequired();
+            builder.Entity<DataFormat>().Property(p => p.DocumentationUrl);
 
             builder.Entity<DataFormat>().HasData(
                 new DataFormat { Name = "json", MimeType = "application/json", Description = "Just json", DocumentationUrl = "https://www.json.org/json-en.html"},

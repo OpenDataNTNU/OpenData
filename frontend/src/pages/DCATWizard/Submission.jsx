@@ -58,7 +58,6 @@ const Submission = () => {
           name: mimetype.split('/')[1],
           description: '[No Description]',
           mimeType: mimetype,
-          documentationUrl: 'http://google.com/fuck+this',
         }),
       })));
 
