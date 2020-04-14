@@ -9,7 +9,7 @@ import { alertActions } from '../../state/actions/alert';
 const Wrapper = styled.form`
   font-size: 0.9em;
   background-color: white;
-  padding: 0.8em;
+  padding: 0.2em;
   border-radius: 0.8em;
   margin-bottom: 0.8em;
   display: flex;
@@ -50,12 +50,23 @@ const LoggedOutWrapper = styled.div`
   margin-bottom: 0.8em;
 `;
 
+const ReplyButton = styled.div`
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  color: #616161;
+  display: inline;
+  cursor: pointer;
+`;
+
 export const NewComment = ({ uuid, addComment, isReply }) => {
   const [commentText, setCommentText] = useState('');
-
+  const [expanded, setExpanded] = useState(!isReply);
   const userSelector = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  const handleExpansion = () => {
+    setExpanded(!expanded);
+  };
   const submit = async (e) => {
     e.preventDefault();
     try {
@@ -94,7 +105,14 @@ export const NewComment = ({ uuid, addComment, isReply }) => {
   };
 
   const { loggedIn } = userSelector;
-
+  if (!expanded) {
+    // eslint-disable-next-line react/button-has-type
+    return (
+      <div>
+        <ReplyButton onClick={handleExpansion}>Reply</ReplyButton>
+      </div>
+    );
+  }
   return loggedIn ? (
     <Wrapper onSubmit={submit}>
       <CommentField placeholder={isReply ? 'Leave a reply' : 'Leave a comment'} value={commentText} onChange={(e) => setCommentText(e.target.value)} required />

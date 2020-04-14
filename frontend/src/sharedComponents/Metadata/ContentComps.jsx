@@ -121,8 +121,31 @@ const StarEmptyStyled = styled(StarEmpty)`
 
 const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
   const {
-    uuid, description, releaseState, municipalityName, metadataTypeName,
+    uuid, description, releaseState, municipalityName, metadataTypeUuid,
   } = metadata;
+  const [metadataTypeName, setMetadataTypeName] = useState('');
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getMetadataTypeName = async () => {
+      try {
+        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+        if (res.status === 200) {
+          const { name } = await res.json();
+          setMetadataTypeName(name);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not find metadata type name'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch metadata type name. Please try again later.'));
+        }
+      }
+    };
+    if (showCategory) {
+      getMetadataTypeName();
+    }
+  }, [showCategory]);
   return (
     <ContentCollapsedWrapper>
       <div>
@@ -133,7 +156,7 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
           </SmallLink>
         ) : null }
         { showCategory ? (
-          <SmallLink to={`/dataType/${metadataTypeName}`}>
+          <SmallLink to={`/dataType/${metadataTypeUuid}`}>
             <p>{metadataTypeName}</p>
           </SmallLink>
         ) : null }
@@ -147,9 +170,9 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
 const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
   const {
     uuid, formatName, url, description, releaseState,
-    municipalityName, metadataTypeName,
+    municipalityName, metadataTypeUuid,
   } = metadata;
-
+  const [metadataTypeName, setMetadataTypeName] = useState('');
   // TODO: Update this to use API whenever that exists.
   const [commentsCount, setCommentsCount] = useState(0);
   const dispatch = useDispatch();
@@ -175,8 +198,6 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
         const { status } = err;
         if (status === 404) {
           dispatch(alertActions.error('Could not fetch likes for dataset.'));
-        } else if (status === 401) {
-          dispatch(alertActions.info('Not authorized to see likes for dataset.'));
         } else {
           dispatch(alertActions.error('Failed to fetch likes. Please try again later.'));
         }
@@ -198,6 +219,25 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
         }
       }
     };
+    const getMetadataTypeName = async () => {
+      try {
+        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+        if (res.status === 200) {
+          const { name } = await res.json();
+          setMetadataTypeName(name);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not find metadata type name'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch metadata type name. Please try again later.'));
+        }
+      }
+    };
+    if (showCategory) {
+      getMetadataTypeName();
+    }
     getLikes();
     getComments();
   }, []);
@@ -232,7 +272,7 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
             </SmallLink>
           ) : null }
           { showCategory ? (
-            <SmallLink to={`/dataType/${metadataTypeName}`}>
+            <SmallLink to={`/dataType/${metadataTypeUuid}`}>
               <p>{metadataTypeName}</p>
             </SmallLink>
           ) : null }
@@ -263,7 +303,7 @@ ContentExpanded.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    metadataTypeUuid: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
   showCategory: PropTypes.bool,
@@ -281,7 +321,7 @@ ContentCollapsed.propTypes = {
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    metadataTypeUuid: PropTypes.string.isRequired,
     experiencePostGuid: PropTypes.string,
   }).isRequired,
   showCategory: PropTypes.bool,

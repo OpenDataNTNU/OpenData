@@ -10,82 +10,51 @@ import { createMemoryHistory } from 'history';
 import { InspectionBody } from '../../../src/pages/Inspection/InspectionBody';
 
 global.fetch = fetch;
-
-const carHistoryResponse = `{
-  "name":"Car history",
+const cycleTheftResponse = `
+  {
+    "uuid": "079ba832-a53c-4e3a-9d3e-ed4667e42a95",
+    "name": "Cycle theft",
   "tags":[{
-    "tagName":"Public activity",
-    "metadataTypeName":"Car history"
-  },
-  {
-    "tagName":"Traffic",
-    "metadataTypeName":"Car history"
-  }],
-  "description":"Wroom wroom",
-  "metadataList":[{
-    "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "description":"This is a decRIPtrion",
-    "releaseState":1,
-    "metadataTypeName":"Car history",
-    "municipalityName":"Trondheim",
-    "dataSource": [
-      {
-        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
-        "url": "https://trondheim.kommune.no",
-        "description": "string",
-        "dataFormat": {
-          "name": "JSON",
-          "description": "recent info on trondheims stuff",
-          "documentationUrl": "https://google.com"
-        },
-        "startDate": "2019-03-16T10:07:38.067Z",
-        "endDate": "2021-03-16T10:07:38.067Z"
-      }
-    ]
-  },
-  {
-    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afb7",
-    "description":"",
-    "releaseState":1,
-    "metadataTypeName":"Car history",
-    "municipalityName":"Bergen",
-    "dataSource": [
-      {
-        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa2",
-        "url": "https://bergen.kommune.no",
-        "description": "string",
-        "dataFormat": {
-          "name": "JSON",
-          "description": "recent info on bergensk stuff",
-          "documentationUrl": "https://google.com"
-        },
-        "startDate": "2019-03-16T10:07:38.067Z",
-        "endDate": "2021-03-16T10:07:38.067Z"
-      }
-    ]
-  }]
+      "tagName":"Public activity",
+      "metadataTypeName":"Cycle Theft"
+    }],
+  "description": null,
+  "metadataList": [
+    {
+      "uuid": "c9d76eaa-bd32-4ef2-89ec-dd20b5ff78d2",
+      "url": "https://google.com",
+      "description": "We have a lot of bikes. Some get stolen. Not the city bikes though.",
+      "formatName": "JSON",
+      "releaseState": 1,
+      "metadataTypeUuid": "079ba832-a53c-4e3a-9d3e-ed4667e42a95",
+      "municipalityName": "Trondheim",
+      "experiencePosts": []
+    },
+  ],
+  "categoryUuid": "4ecd4217-2cac-4647-ba26-ded8599fd414"
 }`;
 
-const carHistoryTrondheimResponse = `{
-  "uuid":"3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "description":"This is a decRIPtrion",
-  "releaseState":2,
-  "metadataTypeName":"Car history",
-  "municipalityName":"Trondheim",
+const cycleTheftTrondheimResponse = `{
+  "uuid": "c9d76eaa-bd32-4ef2-89ec-dd20b5ff78d2",
+  "description": "We have a lot of bikes. Some get stolen. Not the city bikes though.",
+  "releaseState": 1,
+  "metadataTypeUuid": "079ba832-a53c-4e3a-9d3e-ed4667e42a95",
+  "municipalityName": "Trondheim",
   "dataSource": [
     {
-      "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa1",
-      "url": "https://trondheim.kommune.no",
+      "uuid": "c9d76eaa-bd32-4ef2-89ec-dd20b5ff78d2",
+      "url": "string",
       "description": "string",
       "dataFormat": {
         "name": "JSON",
-        "description": "recent info on stuff",
+        "description": "Something about bikes",
         "documentationUrl": "https://google.com"
       },
-      "startDate": "2019-03-16T10:07:38.067Z",
-      "endDate": "2021-03-16T10:07:38.067Z"
+      "startDate": "2020-04-13T17:40:35.571Z",
+      "endDate": "2020-05-13T17:40:35.571Z"
     }
-  ]
+  ],
+  "experiencePosts": []
 }`;
 
 const commentResponse = `
@@ -125,7 +94,7 @@ const commentResponse = `
   ]
 `;
 
-describe('Page displays bottom-level datasets from municipalities', () => {
+describe('Page displays a single dataset entry', () => {
   // redux store
   let store;
   let history;
@@ -151,10 +120,10 @@ describe('Page displays bottom-level datasets from municipalities', () => {
   it('Shows the title and description of a single dataset', async () => {
     fetch.mockResponse(async ({ url }) => {
       switch (url) {
-        case '/api/MetadataType/Car%20history':
-          return carHistoryResponse;
-        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return carHistoryTrondheimResponse;
+        case '/api/MetadataType/079ba832-a53c-4e3a-9d3e-ed4667e42a95':
+          return cycleTheftResponse;
+        case '/api/Metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return cycleTheftTrondheimResponse;
         case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return commentResponse;
         default:
@@ -171,9 +140,10 @@ describe('Page displays bottom-level datasets from municipalities', () => {
       </Provider>,
     );
 
-    await findByText(new RegExp('Trondheim'));
-    getByText('This is a decRIPtrion');
-    expect(queryByText(new RegExp('Bergen'))).toBeNull();
+    // Wait for metadata to load
+    await findByText('Trondheim');
+    getByText('We have a lot of bikes. Some get stolen. Not the city bikes though.');
+    expect(queryByText(new RegExp('Unknown release state!'))).toBeNull();
 
     // Should have fetched exactly thrice:
     // - Once for fetching municipalities
@@ -186,10 +156,10 @@ describe('Page displays bottom-level datasets from municipalities', () => {
   it('Displays comments of a dataset correctly', async () => {
     fetch.mockResponse(async ({ url }) => {
       switch (url) {
-        case '/api/MetadataType/Car%20history':
-          return carHistoryResponse;
-        case '/api/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return carHistoryTrondheimResponse;
+        case '/api/MetadataType/079ba832-a53c-4e3a-9d3e-ed4667e42a95':
+          return cycleTheftResponse;
+        case '/api/Metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+          return cycleTheftTrondheimResponse;
         case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
           return commentResponse;
         default:

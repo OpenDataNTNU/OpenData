@@ -8,12 +8,19 @@ import { NewComment } from './NewComment';
 import { alertActions } from '../../state/actions/alert';
 
 const Wrapper = styled.div`
-  padding-left: 0.5em;
-  border-left: 0.1em solid #e4e4e4;
-  max-width: 30em;
-  min-width: 15em;
+  max-width: 30rem;
+  min-width: 15rem;
+  padding: 0.5rem;
 `;
-
+const CommentsCard = styled.div`
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.0625em 0.125em rgba(0,0,0,0.15);
+  background-color: white;
+  & > h2 {
+    margin: 0.3rem 0;
+  }
+`;
 export const Comments = ({ id }) => {
   const [comments, setComments] = useState([]);
 
@@ -52,22 +59,24 @@ export const Comments = ({ id }) => {
 
   return (
     <Wrapper>
-      <h2>Comments</h2>
-      {comments.length ? comments.map((comment) => {
-        const { uuid } = comment;
-        return (
-          <Comment
-            key={uuid}
-            updateSelf={updateComment}
-            comment={comment}
-          />
-        );
-      }) : (
-        <p>
-          No one has commented on this dataset yet
-        </p>
-      )}
-      <NewComment addComment={addComment} uuid={id} />
+      <CommentsCard>
+        <h2>Comments</h2>
+        {comments.length ? comments.map((comment) => {
+          const { uuid } = comment;
+          return (
+            <Comment
+              key={uuid}
+              updateSelf={updateComment}
+              comment={comment}
+            />
+          );
+        }) : (
+          <p>
+            No one has commented on this dataset yet
+          </p>
+        )}
+        <NewComment addComment={addComment} uuid={id} />
+      </CommentsCard>
     </Wrapper>
   );
 };

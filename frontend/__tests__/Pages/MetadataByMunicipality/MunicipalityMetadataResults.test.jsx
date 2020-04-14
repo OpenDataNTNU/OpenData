@@ -183,5 +183,9 @@ describe('Displays all bottom-level datasets with a given name', () => {
     expect(queryAllByText('Needs work').length).toBe(1);
     expect(queryAllByText('Not releasable').length).toBe(1);
     expect(queryAllByText('Unknown release state!').length).toBe(1);
+
+    // results are by default collapsed, so there is one initial fetch,
+    // succeeded by 6 for metadata type names.
+    expect(fetch.mock.calls.length).toEqual(7);
   });
 });

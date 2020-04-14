@@ -25,6 +25,7 @@ import { Search } from '../pages/Search';
 import { NewTag } from '../pages/NewTag';
 import { Tags } from '../pages/Tags';
 import { Category } from '../pages/Category';
+import { EditDescriptionMetadataType } from '../pages/EditDescriptionMetadataType';
 import { DCATWizard } from '../pages/DCATWizard';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
@@ -32,7 +33,8 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
-        <Route path="/dataType/:name" component={MetadataByType} />
+        <PrivateRoute path="/dataType/description/:id" municipality component={EditDescriptionMetadataType} />
+        <Route path="/dataType/:typeuuid" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
         <Route path="/municipalities/:name" component={MetadataByMunicipality} />
         <Route path="/municipalities" component={MetadataByMunicipality} />

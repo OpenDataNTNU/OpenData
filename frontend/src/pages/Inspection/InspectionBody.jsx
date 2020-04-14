@@ -16,30 +16,25 @@ const Wrapper = styled.div`
 `;
 
 export const InspectionBody = ({ id }) => {
-  const [data, setData] = useState({
-    uuid: id,
-    releaseState: 0,
-    metadataTypeName: '',
-    municipalityName: '',
-    description: '',
-    experiencePostGuid: '',
-    dataSource: [],
-  });
-  const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const internal = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`/api/metadata/${id}`);
+        const res = await fetch(`/api/Metadata/${id}`);
         const { status, ok } = res;
+        if (status === 200) {
+          const receivedData = await res.json();
+          setData(receivedData);
+        }
         if (!ok) {
           const err = new Error();
           err.status = status;
           throw err;
         }
-        const municipality = await res.json();
-        setData(municipality);
       } catch (err) {
         const { status } = err;
         if (status === 404) {
@@ -48,30 +43,10 @@ export const InspectionBody = ({ id }) => {
           dispatch(alertActions.error('Failed to fetch this data. Please try again later.'));
         }
       }
+      setLoading(false);
     };
     internal();
   }, [id]);
-
-  useEffect(() => {
-    const { metadataTypeName: name } = data;
-    if (name) {
-      const internal = async () => {
-        try {
-          const res = await fetch(`/api/MetadataType/${name}`);
-          const { ok } = res;
-          if (!ok) {
-            throw new Error();
-          }
-          const { tags: receivedTags } = await res.json();
-          const tagNames = receivedTags.map(({ tagName }) => tagName);
-          setTags(tagNames);
-        } catch (err) {
-          dispatch(alertActions.error('Failed to fetch information about the category'));
-        }
-      };
-      internal();
-    }
-  }, [data]);
 
   const removeDataSource = (uuidToDelete) => {
     const { dataSource } = data;
@@ -82,9 +57,17 @@ export const InspectionBody = ({ id }) => {
     });
   };
 
+  if (loading || !data) {
+    return (
+      <Wrapper>
+        <p>Loading entry ...</p>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
-      <MetaData data={data} tags={tags} removeDataSource={removeDataSource} />
+      <MetaData data={data} removeDataSource={removeDataSource} />
       <Comments id={id} />
     </Wrapper>
   );

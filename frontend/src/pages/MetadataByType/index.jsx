@@ -6,6 +6,7 @@ import { Template } from '../../sharedComponents/Template';
 import { MetadataByTypeResults } from './MetadataByTypeResults';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { alertActions } from '../../state/actions/alert';
+import { history } from '../../router/history';
 
 const Background = styled.div`
   width: 100%;
@@ -39,6 +40,8 @@ const LeftPane = styled.div`
     color: dimgray;
   }
 `;
+
+
 const Tag = styled.p`
   background-color: #eeeeee;
   color: #595959;
@@ -105,8 +108,7 @@ const ResultView = styled.div`
 `;
 
 export const MetadataByType = () => {
-  const { name } = useParams();
-
+  const { typeuuid } = useParams();
   const [categories, setCategories] = useState([]);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -114,13 +116,17 @@ export const MetadataByType = () => {
   const dispatch = useDispatch();
 
   const handleCategorySelection = ({ target: { value } }) => {
-    setSelectedCategory(value);
+    const matchingCategory = fetchedCategories.find((c) => c.uuid === value);
+    setSelectedCategory(matchingCategory);
+    history.push(`/dataType/${matchingCategory.uuid}`);
   };
 
   const handleCategoryFilterSelection = ({ target: { value } }) => {
+    const keyword = value.toLowerCase();
     setCategories(
       fetchedCategories.filter(
-        (c) => c.name.toLowerCase().includes(value.toLowerCase()),
+        (c) => c.name.toLowerCase().includes(keyword)
+        || c.description.content.toLowerCase().includes(keyword),
       ),
     );
   };
@@ -135,7 +141,10 @@ export const MetadataByType = () => {
           setFetchedCategories(receivedCategories);
           setCategories(receivedCategories);
         }
-        if (name) setSelectedCategory(name);
+        const matchingType = receivedCategories.find((c) => c.uuid === typeuuid);
+        if (matchingType) {
+          setSelectedCategory(matchingType);
+        }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
@@ -182,7 +191,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory} />
+              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory.uuid} />
               : (
                 <NoResult text="Select a category to examine." />
               )}
