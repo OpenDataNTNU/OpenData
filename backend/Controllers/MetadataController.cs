@@ -28,12 +28,14 @@ namespace OpenData.Controllers
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILikeService _likeService;
+		private readonly IDataFormatService _dataFormat;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
 
 		public MetadataController(
             IMetadataService metadataService,
             IExperiencePostService experiencePostService,
+            IDataFormatService dataFormatService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
@@ -47,6 +49,7 @@ namespace OpenData.Controllers
 			_unitOfWork = unitOfWork;
 			_experiencePostService = experiencePostService;
 			_likeService = likeService; 
+			_dataFormat = dataFormatService;
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -230,11 +233,16 @@ namespace OpenData.Controllers
             if(dataSource.StartDate == null && dataSource.EndDate != null)
             {
 				return BadRequest("Cannot have startDate as null, but a set endDate");
-            } else if(dataSource.StartDate != null && dataSource.EndDate != null)
+            } 
+            else if(dataSource.StartDate != null && dataSource.EndDate != null)
             {
 				if (dataSource.StartDate > dataSource.EndDate)
 					return BadRequest("Cannot have a endDate be before startDate");
             }
+
+            //Fetch the data format object so we can return a more complete dataSource
+            var format = await _dataFormat.GetByMimeTypeAsync(newDataSource.DataFormatMimeType);
+            dataSource.DataFormat = format;
 
 			await _metadataService.PutDataSourceAsync(dataSource);
 			var dataSourceResource = _mapper.Map<DataSource, DataSourceResource>(dataSource);

@@ -28,6 +28,8 @@ namespace OpenData.Mapping
 
             CreateMap<Municipality, MunicipalityResource>();
 
+            CreateMap<NewDataFormatResource, DataFormat>();
+
             CreateMap<SaveExperiencePostResource, ExperiencePost>();
 
             CreateMap<SaveExperiencePostResponse, SafeSaveExperiencePostResponse>();

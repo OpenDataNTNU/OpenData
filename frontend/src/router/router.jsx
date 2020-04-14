@@ -25,6 +25,7 @@ import { Search } from '../pages/Search';
 import { NewTag } from '../pages/NewTag';
 import { Tags } from '../pages/Tags';
 import { Category } from '../pages/Category';
+import { DCATWizard } from '../pages/DCATWizard';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
@@ -50,6 +51,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <PrivateRoute path="/myData" municipality component={MyData} />
         <PrivateRoute path="/tags/new" municipality component={NewTag} />
         <PrivateRoute path="/tags" municipality component={Tags} />
+        <PrivateRoute path="/wizard" municipality component={DCATWizard} />
         <Route component={Error404} />
       </Switch>
     </Router>

@@ -21,7 +21,7 @@ namespace OpenData.Domain.Models
 
         [Required]
         [ForeignKey("DataFormat")]
-        public string DataFormatName { get; set; }
+        public string DataFormatMimeType { get; set; }
         public DataFormat DataFormat { get; set; }
 
 #nullable enable
