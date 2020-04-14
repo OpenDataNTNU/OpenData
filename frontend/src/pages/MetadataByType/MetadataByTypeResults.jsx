@@ -111,7 +111,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       <ResultsHeader>
         <div>
           <h3>{metadataType.name}</h3>
-          <DescriptionEditButton uuid={metadataTypeUuid} currentDescription={description.content} />
+          <DescriptionEditButton uuid={metadataTypeUuid} />
           <p>{description.content}</p>
           { tags.length === 0 ? (
             <NoTags>No tags for this category.</NoTags>

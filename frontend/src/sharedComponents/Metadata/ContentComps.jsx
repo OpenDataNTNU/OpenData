@@ -136,7 +136,7 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error('Could not fetch metadata type name'));
+          dispatch(alertActions.error('Could not find metadata type name'));
         } else if (status === 401) {
           dispatch(alertActions.info('Not authorized to see metadata type name.'));
         } else {
@@ -144,7 +144,9 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
         }
       }
     };
-    if (showCategory) getMetadataTypeName();
+    if (showCategory) {
+      getMetadataTypeName();
+    }
   }, [showCategory]);
   return (
     <ContentCollapsedWrapper>
@@ -231,7 +233,7 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error('Could not fetch metadata type name'));
+          dispatch(alertActions.error('Could not find metadata type name'));
         } else if (status === 401) {
           dispatch(alertActions.info('Not authorized to see metadata type name.'));
         } else {
@@ -239,7 +241,9 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
         }
       }
     };
-    if (showCategory) getMetadataTypeName();
+    if (showCategory) {
+      getMetadataTypeName();
+    }
     getLikes();
     getComments();
   }, []);
