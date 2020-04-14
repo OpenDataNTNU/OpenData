@@ -48,7 +48,7 @@ export const AddSource = ({ addSource, uuid }) => {
           metadataUuid: uuid,
           url,
           description,
-          dataFormatName: format,
+          dataFormatMimeType: format,
           startDate: (startDate !== '' ? startDate : undefined),
           endDate: (endDate !== '' ? endDate : undefined),
         }),
@@ -59,8 +59,6 @@ export const AddSource = ({ addSource, uuid }) => {
         err.status = status;
         throw err;
       }
-      // TODO: use the response body rather than making up a time-based uuid
-      // (requires backend to supply it)
       const receivedSource = await res.json();
       addSource(receivedSource);
       setFormat('');
@@ -77,9 +75,11 @@ export const AddSource = ({ addSource, uuid }) => {
     return (
       <Wrapper>
         <Form onSubmit={submit}>
-          <select name="dataFormatName" value={format} onChange={(e) => setFormat(e.target.value)} required>
+          <select value={format} onChange={(e) => setFormat(e.target.value)} required>
             <option value="" disabled>Data format</option>
-            {dataFormats.map(({ name }) => <option key={name} value={name}>{name}</option>)}
+            {dataFormats.map(({ mimeType }) => (
+              <option key={mimeType} value={mimeType}>{mimeType}</option>
+            ))}
           </select>
           <input type="text" placeholder="Url to dataset" value={url} onChange={(e) => setUrl(e.target.value)} required />
           <input type="text" placeholder="Description of source" value={description} onChange={(e) => setDescription(e.target.value)} />
