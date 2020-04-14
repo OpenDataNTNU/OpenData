@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { EditAlt } from 'styled-icons/boxicons-solid/EditAlt';
+import { useSelector } from 'react-redux';
 
 const EditButton = styled(Link)`
   float: right;
@@ -22,11 +23,19 @@ const EditIcon = styled(EditAlt)`
   height: 1.9rem;
 `;
 
-const DescriptionEditButton = ({ uuid }) => (
-  <EditButton to={`/dataType/description/${uuid}`}>
-    <EditIcon />
-  </EditButton>
-);
+const DescriptionEditButton = ({ uuid }) => {
+  const userSelector = useSelector((state) => state.user);
+  const user = userSelector ? userSelector.user : null;
+  const role = user ? user.userType : null;
+  if (role === 1) {
+    return (
+      <EditButton to={`/dataType/description/${uuid}`}>
+        <EditIcon />
+      </EditButton>
+    );
+  }
+  return null;
+};
 
 DescriptionEditButton.propTypes = {
   uuid: PropTypes.string.isRequired,

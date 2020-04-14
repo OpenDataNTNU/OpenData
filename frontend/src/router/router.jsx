@@ -32,7 +32,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
-        <PrivateRoute path="/dataType/description/:id" component={EditDescriptionMetadataType} />
+        <PrivateRoute path="/dataType/description/:id" municipality component={EditDescriptionMetadataType} />
         <Route path="/dataType/:typeuuid" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
         <Route path="/municipalities/:name" component={MetadataByMunicipality} />

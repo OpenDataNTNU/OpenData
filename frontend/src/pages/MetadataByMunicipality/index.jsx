@@ -6,7 +6,7 @@ import { MunicipalityMetadataResults } from './MunicipalityMetadataResults';
 import { Template } from '../../sharedComponents/Template';
 import { NoResult } from './NoResult';
 import { alertActions } from '../../state/actions/alert';
-import {history} from "../../router/history";
+import { history } from '../../router/history';
 
 const Background = styled.div`
   width: 100%;
