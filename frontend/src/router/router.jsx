@@ -27,12 +27,14 @@ import { Tags } from '../pages/Tags';
 import { Category } from '../pages/Category';
 import { EditDescriptionMetadataType } from '../pages/EditDescriptionMetadataType';
 import { DCATWizard } from '../pages/DCATWizard';
+import { About } from '../pages/About';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
+        <Route path="/about" component={About} />
         <PrivateRoute path="/dataType/description/:id" municipality component={EditDescriptionMetadataType} />
         <Route path="/dataType/:typeuuid" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
