@@ -37,6 +37,7 @@ namespace OpenData.Persistence.Repositories
 
         public async Task AddAsync(MetadataCategory category) {
             await _context.MetadataCategory.AddAsync(category);
+            await _context.SaveChangesAsync();
         }
     }
 }
