@@ -67,7 +67,7 @@ namespace OpenData.backend
             var metadataType = ResponseSerializer.Extract<MetadataTypeResource>(metadataTypeResponse);
 
             //var responseForTag = await client.PutAsync(url + "/" + resource.Name + "/tag", ResponseSerializer.Serialize(resource));
-            var responseForGetByName = await client.GetAsync("/api/metadatatype/" + metadataType.Uuid);
+            var responseForGetByName = await client.GetAsync(url + "/" + metadataType.Uuid);
 
             // Assert
 
