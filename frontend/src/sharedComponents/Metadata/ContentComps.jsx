@@ -169,7 +169,7 @@ const ContentCollapsed = ({ metadata, showCategory, showMunicipality }) => {
 };
 const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
   const {
-    uuid, formatName, url, description, releaseState,
+    uuid, dataSource, description, releaseState,
     municipalityName, metadataTypeUuid,
   } = metadata;
   const [metadataTypeName, setMetadataTypeName] = useState('');
@@ -280,7 +280,9 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
           <p>{description}</p>
           <MetaDataLink to={`/dataset/${uuid}`}>See full entry</MetaDataLink>
         </MetaDataDescription>
-        <MetadataURL url={url} formatName={formatName} />
+        {dataSource.map(({ uuid: sourceUuid, url: sourceUrl, dataFormat }) => (
+          <MetadataURL key={sourceUuid} url={sourceUrl} formatName={dataFormat.name} />
+        ))}
       </MetaDataContent>
       <MetaDataRating>
         <Favourite onClick={handleLike}>
@@ -298,8 +300,20 @@ const ContentExpanded = ({ metadata, showCategory, showMunicipality }) => {
 ContentExpanded.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
-    formatName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+      }),
+    ).isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,
@@ -316,8 +330,20 @@ ContentExpanded.defaultProps = {
 ContentCollapsed.propTypes = {
   metadata: PropTypes.shape({
     uuid: PropTypes.string,
-    formatName: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
+    dataSource: PropTypes.arrayOf(
+      PropTypes.shape({
+        uuid: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+        dataFormat: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+          documentationUrl: PropTypes.string.isRequired,
+        }),
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+      }),
+    ).isRequired,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
     municipalityName: PropTypes.string.isRequired,

@@ -5,6 +5,7 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { useGetFormats } from '../../sharedComponents/hooks/GetFormats';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -81,7 +82,7 @@ const HorizontalWrapper = styled.div`
 
 export const MetadataForm = () => {
   const [state, setState] = useState({
-    metadataTypeName: '',
+    metadataTypeUuid: '',
     releaseState: 1,
     description: '',
     dataSource: [],
@@ -100,7 +101,7 @@ export const MetadataForm = () => {
   const [loading, setLoading] = useState(false);
 
   const [metadataTypes, setMetadataTypes] = useState([]);
-  const dataFormats = ['JSON', 'CSV'];
+  const dataFormats = useGetFormats();
 
   const [submissionStatus, setSubmissionStatus] = useState('');
 
@@ -137,11 +138,11 @@ export const MetadataForm = () => {
     const {
       url,
       formatDescription,
-      dataFormatName,
+      dataFormatMimeType,
       startDate,
       endDate,
     } = dataFormat;
-    if (dataFormatName === '') {
+    if (dataFormatMimeType === '') {
       dispatch(alertActions.error('Please choose a data format'));
       return;
     }
@@ -153,7 +154,7 @@ export const MetadataForm = () => {
       dispatch(alertActions.error('Start date can\'t be after end date'));
       return;
     }
-    if (url && dataFormatName && formatDescription) {
+    if (url && dataFormatMimeType && formatDescription) {
       setState({
         ...state,
         dataSource: [...dataSource, dataFormat],
@@ -162,7 +163,7 @@ export const MetadataForm = () => {
         url: '',
         formatName: '',
         formatDescription: '',
-        dataFormatName: '',
+        dataFormatMimeType: '',
         startDate: '',
         endDate: '',
       });
@@ -205,7 +206,7 @@ export const MetadataForm = () => {
     const { token } = userSelector.user;
 
     const {
-      metadataTypeName,
+      metadataTypeUuid,
       releaseState,
       description,
       dataSource,
@@ -216,7 +217,7 @@ export const MetadataForm = () => {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
         body: JSON.stringify({
-          metadataTypeName,
+          metadataTypeUuid,
           releaseState,
           description,
           municipalityName,
@@ -236,7 +237,7 @@ export const MetadataForm = () => {
       const { uuid } = await res.json();
       const sourceReses = await Promise.all(dataSource.map((source) => {
         const {
-          url, dataFormatName, formatDescription, startDate, endDate,
+          url, dataFormatMimeType, formatDescription, startDate, endDate,
         } = source;
         return fetch('/api/Metadata/url', {
           method: 'PUT',
@@ -244,7 +245,7 @@ export const MetadataForm = () => {
             metadataUuid: uuid,
             url,
             description: formatDescription,
-            dataFormatName,
+            dataFormatMimeType,
             startDate: startDate || undefined,
             endDate: endDate || undefined,
           }),
@@ -289,9 +290,9 @@ export const MetadataForm = () => {
   return (
     <Wrapper>
       <StyledForm onSubmit={handleSubmit}>
-        <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange} required>
+        <Select name="metadataTypeUuid" value={metadataTypeName} onChange={handleChange} required>
           <option value="" disabled>Metadata type</option>
-          {metadataTypes.map(({ name }) => <option key={name} value={name}>{name}</option>)}
+          {metadataTypes.map(({ name, uuid }) => <option key={uuid} value={uuid}>{name}</option>)}
         </Select>
         <NewMetadataType>
           Are none of these types appropriate?
@@ -389,9 +390,11 @@ export const MetadataForm = () => {
             );
           })}
         </ul>
-        <Select name="dataFormatName" value={dataFormatName} onChange={handleFormatChange}>
+        <Select name="dataFormatMimeType" value={dataFormatName} onChange={handleFormatChange}>
           <option value="" disabled>Data format</option>
-          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
+          {dataFormats.map(({ mimeType }) => (
+            <option key={mimeType} value={mimeType}>{mimeType}</option>
+          ))}
         </Select>
         <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
         <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />
