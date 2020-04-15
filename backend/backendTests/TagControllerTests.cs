@@ -63,7 +63,7 @@ namespace OpenData.backend
             loginResource.Password = newUserResource.Password;
             var loginResponse = await client.PostAsync("/api/user/auth", new StringContent(JsonSerializer.Serialize(loginResource), Encoding.UTF8, "application/json"));
             Assert.NotNull(loginResponse.Content);
-            var user = ExtractResponse.Extract<PrivateSafeUserResource>(loginResponse);
+            var user = ResponseSerializer.Extract<PrivateSafeUserResource>(loginResponse);
             Assert.Equal(loginResource.Mail, user.Mail);
             string token = user.Token;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

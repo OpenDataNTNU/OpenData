@@ -1,10 +1,15 @@
 ﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace OpenData.backend
 {
-    public class ExtractResponse
+    public class ResponseSerializer
     {
+        public static StringContent Serialize<T>(T value)
+        {
+            return new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
+        }
 
         /// <summary>
         /// Extracts HttpResponseMessage to resource T.

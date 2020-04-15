@@ -42,7 +42,7 @@ namespace OpenData.backend
             var loginResponse = await client.PostAsync("/api/user/auth", new StringContent(JsonSerializer.Serialize(loginResource), Encoding.UTF8, "application/json"));
 
             Assert.NotNull(loginResponse.Content);
-            var user = ExtractResponse.Extract<PrivateSafeUserResource>(loginResponse);
+            var user = ResponseSerializer.Extract<PrivateSafeUserResource>(loginResponse);
             Assert.Equal(loginResource.Mail, user.Mail);
             string token = user.Token;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -91,6 +91,17 @@ namespace OpenData.backend
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 response.Content.Headers.ContentType.ToString());
+        }
+
+        [Fact]
+        public async Task Get_FetchDescriptionsForMetadataType_CorrectContentType()
+        {
+            var client = _factory.CreateDefaultClient();
+
+
+            //SaveMetadataTypeResource metadataTypeResource = new SaveMetadataTypeResource { CategoryUuid = "", Name = "Fugler" };
+            //await client.PutAsync("api/metadataType" , ResponseSerializer.Serialize(metadataTypeResource));
+
         }
     }
 }
