@@ -7,6 +7,7 @@ import { alertActions } from '../../state/actions/alert';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
 import { useGetFormats } from '../../sharedComponents/hooks/GetFormats';
 import { ReleaseStateRadios } from './ReleaseStateRadios';
+import { DataSourceForm } from './DataSourceForm';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -36,12 +37,6 @@ const NewMetadataType = styled.p`
   margin: 0px 0px 10px 0px;
 `;
 
-const Input = styled.input`
-  flex: 0 0 2em;
-  margin-bottom: 5px;
-  font-size: 16px;
-`;
-
 const Select = styled.select`
   flex: 0 0 2em;
   margin-bottom: 5px;
@@ -62,15 +57,6 @@ export const MetadataForm = () => {
     description: '',
     dataSource: [],
     municipalityName: '',
-  });
-
-  const [dataFormat, setDataFormat] = useState({
-    url: '',
-    formatName: '',
-    formatDescription: '',
-    dataFormatMimeType: '',
-    startDate: '',
-    endDate: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -100,49 +86,12 @@ export const MetadataForm = () => {
     setState(nextState);
   };
 
-  const handleFormatChange = (event) => {
-    const { name, value } = event.target;
-    const nextFormat = { ...dataFormat };
-    nextFormat[name] = value;
-    setDataFormat(nextFormat);
-  };
-
-  const addDataSource = () => {
-    // appends dataFormat at the end of dataSource
+  const addDataSource = (dataFormat) => {
     const { dataSource } = state;
-    const {
-      url,
-      formatDescription,
-      dataFormatMimeType,
-      startDate,
-      endDate,
-    } = dataFormat;
-    if (dataFormatMimeType === '') {
-      dispatch(alertActions.error('Please choose a data format'));
-      return;
-    }
-    if (url === '') {
-      dispatch(alertActions.error('Please supply a URL'));
-      return;
-    }
-    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      dispatch(alertActions.error('Start date can\'t be after end date'));
-      return;
-    }
-    if (url && dataFormatMimeType && formatDescription) {
-      setState({
-        ...state,
-        dataSource: [...dataSource, dataFormat],
-      });
-      setDataFormat({
-        url: '',
-        formatName: '',
-        formatDescription: '',
-        dataFormatMimeType: '',
-        startDate: '',
-        endDate: '',
-      });
-    }
+    setState({
+      ...state,
+      dataSource: [...dataSource, dataFormat],
+    });
   };
 
   const removeDataSource = (index) => {
@@ -253,14 +202,6 @@ export const MetadataForm = () => {
     metadataTypeUuid, releaseState, description, municipalityName,
   } = state;
 
-  const {
-    url,
-    dataFormatMimeType,
-    formatDescription,
-    startDate,
-    endDate,
-  } = dataFormat;
-
   return (
     <Wrapper>
       <StyledForm onSubmit={handleSubmit}>
@@ -295,7 +236,7 @@ export const MetadataForm = () => {
           {state.dataSource.map((source, i) => {
             const {
               url: sourceUrl,
-              dataFormatName: sourceType,
+              dataFormatMimeType: sourceMimeType,
               formatDescription: sourceDesc,
               startDate: sourceStart,
               endDate: sourceEnd,
@@ -305,7 +246,7 @@ export const MetadataForm = () => {
                 {sourceUrl}
                 <ul>
                   <li>{sourceDesc}</li>
-                  <li>{sourceType}</li>
+                  <li>{sourceMimeType}</li>
                   <li>{`${sourceStart} - ${sourceEnd}`}</li>
                   <li>
                     <button type="button" onClick={() => removeDataSource(i)}>Delete</button>
@@ -315,23 +256,7 @@ export const MetadataForm = () => {
             );
           })}
         </ul>
-        <Select name="dataFormatMimeType" value={dataFormatMimeType} onChange={handleFormatChange}>
-          <option value="" disabled>Data format</option>
-          {dataFormats.map(({ mimeType }) => (
-            <option key={mimeType} value={mimeType}>{mimeType}</option>
-          ))}
-        </Select>
-        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
-        <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />
-        <label htmlFor="dateFrom">
-          Start date:
-          <Input id="dateFrom" type="date" placeholder="From" name="startDate" value={startDate} onChange={handleFormatChange} />
-        </label>
-        <label htmlFor="dateTo">
-          End date:
-          <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
-        </label>
-        <button type="button" onClick={addDataSource}>Add source</button>
+        <DataSourceForm dataFormats={dataFormats} addDataSource={addDataSource} />
         <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => null} />
       </StyledForm>
     </Wrapper>
