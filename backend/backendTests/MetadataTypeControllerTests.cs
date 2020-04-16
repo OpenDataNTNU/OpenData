@@ -62,7 +62,6 @@ namespace OpenData.backend
             var metadataTypeResponse = await client.PutAsync(url, ResponseSerializer.Serialize(newMetadataTypeResource));
             var metadataType = ResponseSerializer.Extract<MetadataTypeResource>(metadataTypeResponse);
 
-            //var responseForTag = await client.PutAsync(url + "/" + resource.Name + "/tag", ResponseSerializer.Serialize(resource));
             var responseForGetByName = await client.GetAsync(url + "/" + metadataType.Uuid);
 
             // Assert
@@ -71,11 +70,6 @@ namespace OpenData.backend
             Assert.Equal("application/json; charset=utf-8",
                 metadataTypeResponse.Content.Headers.ContentType.ToString());
 
-            /*
-            responseForTag.EnsureSuccessStatusCode(); // Status Code 200-299
-            Assert.Equal("application/json; charset=utf-8",
-                responseForTag.Content.Headers.ContentType.ToString());
-            */
             responseForGetByName.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 responseForGetByName.Content.Headers.ContentType.ToString());

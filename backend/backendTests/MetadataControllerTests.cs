@@ -57,12 +57,6 @@ namespace OpenData.backend
 
             var metaDataGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid);
 
-            //Like likeResource = new Like();
-            //likeResource.MetadataUuid = metadata.Uuid;
-            //likeResource.LikeUserEmail = newUserResource.Mail;
-            //likeResource.Metadata = metadata;
-            //likeResource.LikeUser = new User() {  };
-            //var metaDataLikePutResponse = await client.PutAsync("/api/metadata/" + metadata.Uuid + "/like", new StringContent(JsonSerializer.Serialize(likeResource), Encoding.UTF8, "application/json"));
             var metaDataLikeGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid + "/like");
 
             Assert.Equal(user.MunicipalityName, metadata.MunicipalityName);
@@ -99,10 +93,6 @@ namespace OpenData.backend
             Assert.Equal("application/json; charset=utf-8",
                 metaDataGetResponse.Content.Headers.ContentType.ToString());
 
-            //metaDataLikePutResponse.EnsureSuccessStatusCode(); // Status Code 200-299
-            //Assert.Equal("application/json; charset=utf-8",
-            //    metaDataLikePutResponse.Content.Headers.ContentType.ToString());
-
             metaDataLikeGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 metaDataLikeGetResponse.Content.Headers.ContentType.ToString());
@@ -114,13 +104,6 @@ namespace OpenData.backend
             dataSourceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 dataSourceResponse.Content.Headers.ContentType.ToString());
-
-            //HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Delete, "/api/metadata/url")
-            //{
-            //    Content = ResponseSerializer.Serialize(dataSourceResource)
-            //};
-            //HttpResponseMessage dataSourceDeleteResponse = await client.SendAsync(httpRequest);
-            //dataSourceDeleteResponse.EnsureSuccessStatusCode(); // Status Code 200-299
 
         }
 
