@@ -107,14 +107,17 @@ namespace OpenData.backend
                 response.Content.Headers.ContentType.ToString());
         }
 
+        /// <summary>
+        /// Test that a ensures that fetching descriptions yields a success status code.
+        /// </summary>
         [Fact]
-        public async Task FetchDescriptions()
+        public async Task FetchDescriptionsTest()
         {
 
             var client = _factory.CreateDefaultClient();
 
             NewUserResource newUserResource = new NewUserResource();
-            newUserResource.Mail = "MetadataType@test.kommune.no";
+            newUserResource.Mail = "FetchDescriptionsTest@test.kommune.no";
             newUserResource.Password = "MetadataType@passw0rd";
             newUserResource.UserType = UserType.Municipality;
             await client.PutAsync("api/user", ResponseSerializer.Serialize(newUserResource));
@@ -137,10 +140,73 @@ namespace OpenData.backend
 
             var category = ResponseSerializer.Extract<MetadataCategory>(newCategoryResponse);
 
-            SaveMetadataTypeResource newMetadataTypeResource = new SaveMetadataTypeResource { CategoryUuid = category.Uuid, Name = "Fugler" };
+            SaveMetadataTypeResource newMetadataTypeResource = new SaveMetadataTypeResource { CategoryUuid = category.Uuid, Name = "Super MetadataType" };
             var newMetadataTypeResponse = await client.PutAsync("api/metadatatype" , ResponseSerializer.Serialize(newMetadataTypeResource));
             newMetadataTypeResponse.EnsureSuccessStatusCode();
+            var metadataType = ResponseSerializer.Extract<MetadataTypeResource>(newMetadataTypeResponse);
 
+            var fetchDescriptionsResponse = await client.GetAsync("api/metadatatype/" + metadataType.Uuid + "/description");
+            fetchDescriptionsResponse.EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// Test that a ensures that adding descriptions to MetadataType works.
+        /// Also tries to vote on the newly added description, and remove the vote.
+        /// </summary>
+        [Fact]
+        public async Task AddDescriptionsAndVoteOnTest()
+        {
+
+            var client = _factory.CreateDefaultClient();
+
+            NewUserResource newUserResource = new NewUserResource();
+            newUserResource.Mail = "AddDescriptionsTest@test.kommune.no";
+            newUserResource.Password = "MetadataType@passw0rd";
+            newUserResource.UserType = UserType.Municipality;
+            await client.PutAsync("api/user", ResponseSerializer.Serialize(newUserResource));
+
+            AuthUserResource loginResource = new AuthUserResource();
+            loginResource.Mail = newUserResource.Mail;
+            loginResource.Password = newUserResource.Password;
+            var loginResponse = client.PostAsync("/api/user/auth", ResponseSerializer.Serialize(loginResource)).Result;
+
+            Assert.NotNull(loginResponse.Content);
+            var user = ResponseSerializer.Extract<PrivateSafeUserResource>(loginResponse);
+            Assert.Equal(loginResource.Mail, user.Mail);
+            string token = user.Token;
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+            var newCategory = new SaveMetadataCategoryResource { ParentUuid = null, Name = "Super Category" };
+            var newCategoryResponse = await client.PutAsync("api/metadatacategory", ResponseSerializer.Serialize(newCategory));
+            newCategoryResponse.EnsureSuccessStatusCode();
+
+            var category = ResponseSerializer.Extract<MetadataCategory>(newCategoryResponse);
+
+            SaveMetadataTypeResource newMetadataTypeResource = new SaveMetadataTypeResource { CategoryUuid = category.Uuid, Name = "Super MetadataType" };
+            var newMetadataTypeResponse = await client.PutAsync("api/metadatatype", ResponseSerializer.Serialize(newMetadataTypeResource));
+            newMetadataTypeResponse.EnsureSuccessStatusCode();
+            var metadataType = ResponseSerializer.Extract<MetadataTypeResource>(newMetadataTypeResponse);
+
+            var newDescription = new NewMetadataTypeDescriptionResource
+            {
+                Content = "This is an awesome description."
+            };
+            var addDescriptionsResponse = await client.PutAsync("api/metadatatype/" + metadataType.Uuid + "/description", ResponseSerializer.Serialize(newDescription));
+            addDescriptionsResponse.EnsureSuccessStatusCode();
+            var description = ResponseSerializer.Extract<MetadataTypeDescriptionResource>(addDescriptionsResponse);
+
+            Assert.Equal(newDescription.Content, description.Content);
+            Assert.Equal(loginResource.Mail, description.Author.Mail);
+
+            var fetchDescriptionsResponse = await client.GetAsync("api/metadatatype/" + metadataType.Uuid + "/description");
+            fetchDescriptionsResponse.EnsureSuccessStatusCode();
+
+            var voteOnDescriptionResponse = await client.PutAsync("api/metadatatype/" + metadataType.Uuid + "/description/" + description.Uuid + "/vote", null);
+            voteOnDescriptionResponse.EnsureSuccessStatusCode();
+
+            var removeVoteOnDescriptionResponse = await client.DeleteAsync("api/metadatatype/" + metadataType.Uuid + "/description/" + description.Uuid + "/vote");
+            removeVoteOnDescriptionResponse.EnsureSuccessStatusCode();
         }
     }
 }
