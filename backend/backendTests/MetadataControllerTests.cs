@@ -21,10 +21,10 @@ namespace OpenData.backend
         }
 
         /// <summary>
-        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata and datasource) + Get metadata and like by uuid
+        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata, experiencepost and datasource) + Get metadata and like by uuid
         /// </summary>
         [Fact]
-        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_EndpointsReturnSuccess_CorrectContentType()
+        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_AttachExperiencePost_EndpointsReturnSuccess_CorrectContentType()
         {
             // Arrange
 
@@ -56,9 +56,19 @@ namespace OpenData.backend
             var metadata = ResponseSerializer.Extract<Metadata>(metaDataResponse);
 
             var metaDataGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid);
+
+            //Like likeResource = new Like();
+            //likeResource.MetadataUuid = metadata.Uuid;
+            //likeResource.LikeUserEmail = newUserResource.Mail;
+            //likeResource.Metadata = metadata;
+            //likeResource.LikeUser = new User() {  };
+            //var metaDataLikePutResponse = await client.PutAsync("/api/metadata/" + metadata.Uuid + "/like", new StringContent(JsonSerializer.Serialize(likeResource), Encoding.UTF8, "application/json"));
             var metaDataLikeGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid + "/like");
 
             Assert.Equal(user.MunicipalityName, metadata.MunicipalityName);
+
+            SaveExperiencePostResource experiencePostResource = new SaveExperiencePostResource();
+            var experienceResponse = await client.PutAsync("/api/metadata/" + metadata.Uuid + "/experience", new StringContent(JsonSerializer.Serialize(experiencePostResource), Encoding.UTF8, "application/json"));
 
             NewDataFormatResource dataFormatResource = new NewDataFormatResource();
             dataFormatResource.Name = "Name of this dataformat";
@@ -88,6 +98,18 @@ namespace OpenData.backend
             metaDataGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 metaDataGetResponse.Content.Headers.ContentType.ToString());
+
+            //metaDataLikePutResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            //Assert.Equal("application/json; charset=utf-8",
+            //    metaDataLikePutResponse.Content.Headers.ContentType.ToString());
+
+            metaDataLikeGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                metaDataLikeGetResponse.Content.Headers.ContentType.ToString());
+
+            experienceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                experienceResponse.Content.Headers.ContentType.ToString());
 
             dataSourceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
