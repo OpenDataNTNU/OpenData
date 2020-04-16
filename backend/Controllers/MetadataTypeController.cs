@@ -87,7 +87,7 @@ namespace OpenData.Controllers
 		/// <param name="resource">The metadata type to create</param>
 		/// <returns>The metadata type, if it was created successfully</returns>
 		[HttpPut]
-		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataTypeResource resource)
+		public async Task<IActionResult> PutAsync([FromBody] SaveMetadataTypeResource resource)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
@@ -123,7 +123,7 @@ namespace OpenData.Controllers
 		/// <param name="newTag">The tag to attach to the metadata type</param>
 		/// <returns>The metadata type, with the tag attached</returns>
 		[HttpPut("{uuid}/tag")]
-		public async Task<IActionResult> PostAsync([FromBody] Tag newTag, Guid uuid)
+		public async Task<IActionResult> PutTagAsync([FromBody] Tag newTag, Guid uuid)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());

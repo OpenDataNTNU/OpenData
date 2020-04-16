@@ -85,7 +85,7 @@ namespace OpenData.Controllers
 		/// <param name="category">The category node to be created</param>
         /// <returns>The category node, if everything was successful</returns>
 		[HttpPut]
-		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataCategoryResource categoryResource)
+		public async Task<IActionResult> PutAsync([FromBody] SaveMetadataCategoryResource categoryResource)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
