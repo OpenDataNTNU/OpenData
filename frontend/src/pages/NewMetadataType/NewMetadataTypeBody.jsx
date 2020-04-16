@@ -155,12 +155,19 @@ export const NewMetadataTypeBody = () => {
         <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required />
         <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
         <Select data={allTags || []} value={tags} onChange={setTags} placeholder="Tags" />
-        <RootLevelCategorySelector onChange={onCategoryChange} />
         <NewTag>
           Are none of these tags appropriate?
           {' '}
           <Link to="/tags/new">
             <b>Create a new one</b>
+          </Link>
+        </NewTag>
+        <RootLevelCategorySelector onChange={onCategoryChange} />
+        <NewTag>
+          Are none of these categories appropriate?
+          {' '}
+          <Link to="/newCategory">
+            <b>Create a new one here</b>
           </Link>
         </NewTag>
         <LoadingButton text="submit" type="value" loading={loading} onClick={() => {}} />
