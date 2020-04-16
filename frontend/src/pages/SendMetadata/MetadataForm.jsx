@@ -68,7 +68,7 @@ export const MetadataForm = () => {
     url: '',
     formatName: '',
     formatDescription: '',
-    dataFormatName: '',
+    dataFormatMimeType: '',
     startDate: '',
     endDate: '',
   });
@@ -202,7 +202,6 @@ export const MetadataForm = () => {
           Authorization: `bearer ${token}`,
         },
       });
-      // assuming that any successful response is a JSON object
       const { status, ok } = res;
       if (!ok) {
         const err = new Error();
@@ -251,12 +250,12 @@ export const MetadataForm = () => {
   }
 
   const {
-    metadataTypeName, releaseState, description, municipalityName,
+    metadataTypeUuid, releaseState, description, municipalityName,
   } = state;
 
   const {
     url,
-    dataFormatName,
+    dataFormatMimeType,
     formatDescription,
     startDate,
     endDate,
@@ -265,7 +264,7 @@ export const MetadataForm = () => {
   return (
     <Wrapper>
       <StyledForm onSubmit={handleSubmit}>
-        <Select name="metadataTypeUuid" value={metadataTypeName} onChange={handleChange} required>
+        <Select name="metadataTypeUuid" value={metadataTypeUuid} onChange={handleChange} required>
           <option value="" disabled>Metadata type</option>
           {metadataTypes.map(({ name, uuid }) => <option key={uuid} value={uuid}>{name}</option>)}
         </Select>
@@ -316,7 +315,7 @@ export const MetadataForm = () => {
             );
           })}
         </ul>
-        <Select name="dataFormatMimeType" value={dataFormatName} onChange={handleFormatChange}>
+        <Select name="dataFormatMimeType" value={dataFormatMimeType} onChange={handleFormatChange}>
           <option value="" disabled>Data format</option>
           {dataFormats.map(({ mimeType }) => (
             <option key={mimeType} value={mimeType}>{mimeType}</option>
