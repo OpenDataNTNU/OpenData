@@ -21,10 +21,10 @@ namespace OpenData.backend
         }
 
         /// <summary>
-        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata and datasource) + Get metadata by uuid
+        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata and datasource) + Get metadata and like by uuid
         /// </summary>
         [Fact]
-        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_EndpointsReturnSuccess_CorrectContentType()
+        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_EndpointsReturnSuccess_CorrectContentType()
         {
             // Arrange
 
@@ -56,6 +56,7 @@ namespace OpenData.backend
             var metadata = ResponseSerializer.Extract<Metadata>(metaDataResponse);
 
             var metaDataGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid);
+            var metaDataLikeGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid + "/like");
 
             Assert.Equal(user.MunicipalityName, metadata.MunicipalityName);
 
