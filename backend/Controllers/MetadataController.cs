@@ -89,10 +89,10 @@ namespace OpenData.Controllers
 		/// Creates an experience post, and attaches it to a metadata object.
 		/// </summary> 
 		/// <param name="uuid">UUID of the metadata to attach the experience to</param>
-		/// <param name="experienceResource">The experience post to create</param>
+		/// <param name="experienceResource">The experience post to create and add</param>
         /// <returns>The experience post, if everything was successful</returns>
 		[HttpPut("{uuid}/experience")]
-		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
+		public async Task<IActionResult> PutExperiencePost([FromBody] SaveExperiencePostResource experienceResource, string uuid)
 		{
 			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
             User user = await userService.GetUserByMailAsync(targetUsername);
@@ -105,7 +105,13 @@ namespace OpenData.Controllers
 			}
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
-			
+
+
+			if (user.UserType < UserType.Municipality || user.MunicipalityName != metadata.MunicipalityName)
+            {
+				return Unauthorized("The user does not have municipality privilegies for the Metadata given");
+            }
+
 			var experience = _mapper.Map<SaveExperiencePostResource, ExperiencePost>(experienceResource);
 
 			experience.Modified = DateTime.UtcNow;
