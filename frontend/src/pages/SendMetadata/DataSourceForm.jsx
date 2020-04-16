@@ -37,7 +37,8 @@ export const DataSourceForm = ({ dataFormats, addDataSource }) => {
     setCurrentSource(nextFormat);
   };
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault();
     const {
       url,
       formatDescription,
@@ -80,7 +81,7 @@ export const DataSourceForm = ({ dataFormats, addDataSource }) => {
   } = currentSource;
 
   return (
-    <>
+    <form onSubmit={submit}>
       <Select name="dataFormatMimeType" value={dataFormatMimeType} onChange={handleFormatChange}>
         <option value="" disabled>Data format</option>
         {dataFormats.map(({ mimeType }) => (
@@ -97,8 +98,8 @@ export const DataSourceForm = ({ dataFormats, addDataSource }) => {
         End date:
         <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
       </label>
-      <button type="button" onClick={submit}>Add source</button>
-    </>
+      <Input type="submit" value="Add source" />
+    </form>
   );
 };
 
