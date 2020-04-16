@@ -56,7 +56,7 @@ namespace OpenData.Persistence.Repositories
                     new Claim(ClaimTypes.Email, user.Mail),
                     new Claim(ClaimTypes.Name, user.Mail)
                 }),
-                Expires = DateTime.UtcNow.AddDays(3),
+                //Expires = DateTime.UtcNow.AddDays(3),// This line ensures that tokens expire, this is not handled on the front end, nor backend atm.
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
