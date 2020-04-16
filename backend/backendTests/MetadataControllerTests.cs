@@ -21,10 +21,10 @@ namespace OpenData.backend
         }
 
         /// <summary>
-        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata and datasource)
+        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata and datasource) + Get metadata by uuid
         /// </summary>
         [Fact]
-        public async Task Put_NewUnreleasedMetaData_NewDataSource_EndpointsReturnSuccess_CorrectContentType()
+        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_EndpointsReturnSuccess_CorrectContentType()
         {
             // Arrange
 
@@ -54,6 +54,9 @@ namespace OpenData.backend
 
             var metaDataResponse = await client.PutAsync("/api/metadata", new StringContent(JsonSerializer.Serialize(metaDataResource), Encoding.UTF8, "application/json"));
             var metadata = ResponseSerializer.Extract<Metadata>(metaDataResponse);
+
+            var metaDataGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid);
+
             Assert.Equal(user.MunicipalityName, metadata.MunicipalityName);
 
             NewDataFormatResource dataFormatResource = new NewDataFormatResource();
@@ -81,9 +84,20 @@ namespace OpenData.backend
             Assert.Equal("application/json; charset=utf-8",
                 metaDataResponse.Content.Headers.ContentType.ToString());
 
+            metaDataGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                metaDataGetResponse.Content.Headers.ContentType.ToString());
+
             dataSourceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
                 dataSourceResponse.Content.Headers.ContentType.ToString());
+
+            //HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Delete, "/api/metadata/url")
+            //{
+            //    Content = ResponseSerializer.Serialize(dataSourceResource)
+            //};
+            //HttpResponseMessage dataSourceDeleteResponse = await client.SendAsync(httpRequest);
+            //dataSourceDeleteResponse.EnsureSuccessStatusCode(); // Status Code 200-299
 
         }
 
