@@ -20,12 +20,10 @@ namespace OpenData.backend
             _factory = factory;
         }
 
-        /// <summary>
-        /// Asserts correct status code and correct content type for all HttpPut calls on the metadata controller
+        /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata, experiencepost and datasource) + Get metadata and like by uuid
         /// </summary>
-        [Theory]
-        [InlineData("/api/metadata")]
-        public async Task Put_NewReleasedMetaData_Get_EndpointsReturnSuccess_CorrectContentType(string url)
+        [Fact]
+        public async Task Put_NewReleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_AttachExperiencePost_EndpointsReturnSuccess_CorrectContentType()
         {
             // Arrange
 
@@ -45,20 +43,67 @@ namespace OpenData.backend
             Assert.Equal(loginResource.Mail, user.Mail);
             string token = user.Token;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            SaveMetadataResource resource = new SaveMetadataResource();
-            resource.Description = "Test Description";
-            resource.MunicipalityName = "Test";
-            resource.ReleaseState = EReleaseState.Released;
+            
+            SaveMetadataResource metaDataResource = new SaveMetadataResource();
+            metaDataResource.Description = "Test Description";
+            metaDataResource.MunicipalityName = "Test";
+            metaDataResource.ReleaseState = EReleaseState.Released;
 
             // Act
 
-            var response = await client.PutAsync(url, new StringContent(JsonSerializer.Serialize(resource), Encoding.UTF8, "application/json"));
+            var metaDataResponse = await client.PutAsync("/api/metadata", new StringContent(JsonSerializer.Serialize(metaDataResource), Encoding.UTF8, "application/json"));
+            var metadata = ResponseSerializer.Extract<Metadata>(metaDataResponse);
+
+            var metaDataGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid);
+
+            var metaDataLikeGetResponse = await client.GetAsync("/api/metadata/" + metadata.Uuid + "/like");
+
+            Assert.Equal(user.MunicipalityName, metadata.MunicipalityName);
+
+            SaveExperiencePostResource experiencePostResource = new SaveExperiencePostResource();
+            var experienceResponse = await client.PutAsync("/api/metadata/" + metadata.Uuid + "/experience", new StringContent(JsonSerializer.Serialize(experiencePostResource), Encoding.UTF8, "application/json"));
+
+            NewDataFormatResource dataFormatResource = new NewDataFormatResource();
+            dataFormatResource.Name = "Name of this dataformat";
+            dataFormatResource.Description = "Describing this dataformat";
+            dataFormatResource.DocumentationUrl = "this URL";
+            dataFormatResource.MimeType = "this MimeType";
+            var dataFormatResponse = await client.PutAsync("/api/dataformat", new StringContent(JsonSerializer.Serialize(dataFormatResource), Encoding.UTF8, "application/json"));
+            var dataformat = ResponseSerializer.Extract<DataFormat>(dataFormatResponse);
+
+            NewDataSourceResource dataSourceResource = new NewDataSourceResource();
+            dataSourceResource.MetadataUuid = metadata.Uuid;
+            dataSourceResource.Url = "This cool url";
+            dataSourceResource.Description = "Some test source";
+            dataSourceResource.StartDate = System.DateTime.MinValue;
+            dataSourceResource.EndDate = System.DateTime.MaxValue;
+            dataSourceResource.DataFormatMimeType = dataformat.MimeType;
+            Assert.NotEqual(dataSourceResource.StartDate, dataSourceResource.EndDate);
+
+            var dataSourceResponse = await client.PutAsync("/api/metadata/url", new StringContent(JsonSerializer.Serialize(dataSourceResource), Encoding.UTF8, "application/json"));
 
             // Assert
 
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            metaDataResponse.EnsureSuccessStatusCode(); // Status Code 200-299
             Assert.Equal("application/json; charset=utf-8",
-                response.Content.Headers.ContentType.ToString());
+                metaDataResponse.Content.Headers.ContentType.ToString());
+
+            metaDataGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                metaDataGetResponse.Content.Headers.ContentType.ToString());
+
+            metaDataLikeGetResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                metaDataLikeGetResponse.Content.Headers.ContentType.ToString());
+
+            experienceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                experienceResponse.Content.Headers.ContentType.ToString());
+
+            dataSourceResponse.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal("application/json; charset=utf-8",
+                dataSourceResponse.Content.Headers.ContentType.ToString());
+
         }
 
         /// <summary>

@@ -190,7 +190,7 @@ namespace OpenData.Controllers
 		/// <param name="resource">The metadata object to be created</param>
         /// <returns>The metadata, if everything was successful</returns>
 		[HttpPut]
-		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
+		public async Task<IActionResult> PutAsync([FromBody] SaveMetadataResource resource)
 		{
 			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
