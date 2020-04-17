@@ -5,6 +5,9 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { alertActions } from '../../state/actions/alert';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { useGetFormats } from '../../sharedComponents/hooks/GetFormats';
+import { ReleaseStateRadios } from './ReleaseStateRadios';
+import { DataSourceForm } from './DataSourceForm';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -34,16 +37,6 @@ const NewMetadataType = styled.p`
   margin: 0px 0px 10px 0px;
 `;
 
-const Input = styled.input`
-  flex: 0 0 2em;
-  margin-bottom: 5px;
-  font-size: 16px;
-`;
-
-const Radio = styled.input.attrs({ type: 'radio' })`
-  margin: 0px 5px 0px 0px;
-`;
-
 const Select = styled.select`
   flex: 0 0 2em;
   margin-bottom: 5px;
@@ -57,50 +50,19 @@ const TextArea = styled.textarea`
   font-size: 16px;
 `;
 
-const RadioLabel = styled.label`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.2em;
-  padding: 0.2em;
-  margin-bottom: 5px;
-  ${({ background }) => (background ? `background-color: ${background};` : '')}
-  ${({ border }) => (border ? `border: 1px solid ${border};` : '')}
-
-  &:not(:last-child) {
-    margin-right: 8px;
-  }
-`;
-
-const HorizontalWrapper = styled.div`
-  flex: 0;
-  display: flex;
-  flex-direction: row;
-`;
-
 export const MetadataForm = () => {
   const [state, setState] = useState({
-    metadataTypeName: '',
+    metadataTypeUuid: '',
     releaseState: 1,
     description: '',
     dataSource: [],
     municipalityName: '',
   });
 
-  const [dataFormat, setDataFormat] = useState({
-    url: '',
-    formatName: '',
-    formatDescription: '',
-    dataFormatName: '',
-    startDate: '',
-    endDate: '',
-  });
-
   const [loading, setLoading] = useState(false);
 
   const [metadataTypes, setMetadataTypes] = useState([]);
-  const dataFormats = ['JSON', 'CSV'];
+  const dataFormats = useGetFormats();
 
   const [submissionStatus, setSubmissionStatus] = useState('');
 
@@ -124,49 +86,12 @@ export const MetadataForm = () => {
     setState(nextState);
   };
 
-  const handleFormatChange = (event) => {
-    const { name, value } = event.target;
-    const nextFormat = { ...dataFormat };
-    nextFormat[name] = value;
-    setDataFormat(nextFormat);
-  };
-
-  const addDataSource = () => {
-    // appends dataFormat at the end of dataSource
+  const addDataSource = (dataFormat) => {
     const { dataSource } = state;
-    const {
-      url,
-      formatDescription,
-      dataFormatName,
-      startDate,
-      endDate,
-    } = dataFormat;
-    if (dataFormatName === '') {
-      dispatch(alertActions.error('Please choose a data format'));
-      return;
-    }
-    if (url === '') {
-      dispatch(alertActions.error('Please supply a URL'));
-      return;
-    }
-    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      dispatch(alertActions.error('Start date can\'t be after end date'));
-      return;
-    }
-    if (url && dataFormatName && formatDescription) {
-      setState({
-        ...state,
-        dataSource: [...dataSource, dataFormat],
-      });
-      setDataFormat({
-        url: '',
-        formatName: '',
-        formatDescription: '',
-        dataFormatName: '',
-        startDate: '',
-        endDate: '',
-      });
-    }
+    setState({
+      ...state,
+      dataSource: [...dataSource, dataFormat],
+    });
   };
 
   const removeDataSource = (index) => {
@@ -205,7 +130,7 @@ export const MetadataForm = () => {
     const { token } = userSelector.user;
 
     const {
-      metadataTypeName,
+      metadataTypeUuid,
       releaseState,
       description,
       dataSource,
@@ -216,7 +141,7 @@ export const MetadataForm = () => {
       const res = await fetch('/api/Metadata', {
         method: 'PUT',
         body: JSON.stringify({
-          metadataTypeName,
+          metadataTypeUuid,
           releaseState,
           description,
           municipalityName,
@@ -226,7 +151,6 @@ export const MetadataForm = () => {
           Authorization: `bearer ${token}`,
         },
       });
-      // assuming that any successful response is a JSON object
       const { status, ok } = res;
       if (!ok) {
         const err = new Error();
@@ -236,7 +160,7 @@ export const MetadataForm = () => {
       const { uuid } = await res.json();
       const sourceReses = await Promise.all(dataSource.map((source) => {
         const {
-          url, dataFormatName, formatDescription, startDate, endDate,
+          url, dataFormatMimeType, formatDescription, startDate, endDate,
         } = source;
         return fetch('/api/Metadata/url', {
           method: 'PUT',
@@ -244,7 +168,7 @@ export const MetadataForm = () => {
             metadataUuid: uuid,
             url,
             description: formatDescription,
-            dataFormatName,
+            dataFormatMimeType,
             startDate: startDate || undefined,
             endDate: endDate || undefined,
           }),
@@ -275,23 +199,15 @@ export const MetadataForm = () => {
   }
 
   const {
-    metadataTypeName, releaseState, description, municipalityName,
+    metadataTypeUuid, releaseState, description, municipalityName,
   } = state;
-
-  const {
-    url,
-    dataFormatName,
-    formatDescription,
-    startDate,
-    endDate,
-  } = dataFormat;
 
   return (
     <Wrapper>
       <StyledForm onSubmit={handleSubmit}>
-        <Select name="metadataTypeName" value={metadataTypeName} onChange={handleChange} required>
+        <Select name="metadataTypeUuid" value={metadataTypeUuid} onChange={handleChange} required>
           <option value="" disabled>Metadata type</option>
-          {metadataTypes.map(({ name }) => <option key={name} value={name}>{name}</option>)}
+          {metadataTypes.map(({ name, uuid }) => <option key={uuid} value={uuid}>{name}</option>)}
         </Select>
         <NewMetadataType>
           Are none of these types appropriate?
@@ -307,56 +223,7 @@ export const MetadataForm = () => {
             <b>Use the DCAT-NO Wizard.</b>
           </Link>
         </NewMetadataType>
-        <HorizontalWrapper>
-          <RadioLabel htmlFor="bluelight" background="#9999dd" border="#6666aa">
-            <Radio
-              type="radio"
-              name="releaseState"
-              value={1}
-              id="bluelight"
-              checked={releaseState === 1}
-              onChange={handleRadioChange}
-              required
-            />
-            {' Released'}
-          </RadioLabel>
-          <RadioLabel htmlFor="greenlight" background="#ccffcc" border="#00ff00">
-            <Radio
-              type="radio"
-              name="releaseState"
-              value={2}
-              id="greenlight"
-              checked={releaseState === 2}
-              onChange={handleRadioChange}
-              required
-            />
-            {' Ready for release'}
-          </RadioLabel>
-          <RadioLabel htmlFor="yellowlight" background="#ffffcc" border="#d8d800">
-            <Radio
-              type="radio"
-              name="releaseState"
-              value={3}
-              id="yellowlight"
-              checked={releaseState === 3}
-              onChange={handleRadioChange}
-              required
-            />
-            {' Needs work'}
-          </RadioLabel>
-          <RadioLabel htmlFor="redlight" background="#ffcccc" border="#ff5555">
-            <Radio
-              type="radio"
-              name="releaseState"
-              value={4}
-              id="redlight"
-              checked={releaseState === 4}
-              onChange={handleRadioChange}
-              required
-            />
-            {' Unreleasable'}
-          </RadioLabel>
-        </HorizontalWrapper>
+        <ReleaseStateRadios releaseState={releaseState} handleRadioChange={handleRadioChange} />
         <TextArea placeholder="Description" name="description" value={description} onChange={handleChange} required />
         <Select name="municipalityName" value={municipalityName} onChange={handleChange} required>
           <option value="" disabled>Municipality</option>
@@ -369,7 +236,7 @@ export const MetadataForm = () => {
           {state.dataSource.map((source, i) => {
             const {
               url: sourceUrl,
-              dataFormatName: sourceType,
+              dataFormatMimeType: sourceMimeType,
               formatDescription: sourceDesc,
               startDate: sourceStart,
               endDate: sourceEnd,
@@ -379,7 +246,7 @@ export const MetadataForm = () => {
                 {sourceUrl}
                 <ul>
                   <li>{sourceDesc}</li>
-                  <li>{sourceType}</li>
+                  <li>{sourceMimeType}</li>
                   <li>{`${sourceStart} - ${sourceEnd}`}</li>
                   <li>
                     <button type="button" onClick={() => removeDataSource(i)}>Delete</button>
@@ -389,21 +256,7 @@ export const MetadataForm = () => {
             );
           })}
         </ul>
-        <Select name="dataFormatName" value={dataFormatName} onChange={handleFormatChange}>
-          <option value="" disabled>Data format</option>
-          {dataFormats.map((format) => <option key={format} value={format}>{format}</option>)}
-        </Select>
-        <Input type="text" placeholder="Url to dataset" name="url" value={url} onChange={handleFormatChange} />
-        <Input type="text" placeholder="Description of source" name="formatDescription" value={formatDescription} onChange={handleFormatChange} />
-        <label htmlFor="dateFrom">
-          Start date:
-          <Input id="dateFrom" type="date" placeholder="From" name="startDate" value={startDate} onChange={handleFormatChange} />
-        </label>
-        <label htmlFor="dateTo">
-          End date:
-          <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
-        </label>
-        <button type="button" onClick={addDataSource}>Add source</button>
+        <DataSourceForm dataFormats={dataFormats} addDataSource={addDataSource} />
         <LoadingButton text="Submit" type="submit" loading={loading} onClick={() => null} />
       </StyledForm>
     </Wrapper>

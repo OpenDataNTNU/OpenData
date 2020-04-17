@@ -1346,7 +1346,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://frost.met.no/reference"
         }
       ]
@@ -1360,7 +1360,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://api.met.no/weatherapi/locationforecast/1.9/documentation"
         }
       ]
@@ -1625,7 +1625,7 @@ const result = {
               "@id": "application/vnd.sealed-xls"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.vegvesen.no/fag/Trafikk/Trafikkdata/Trafikkregistreringer"
         }
       ]
@@ -2905,7 +2905,7 @@ const result = {
               "@id": "application/gml+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/metadata/uuid/28c896d0-8a0d-4209-bf31-4931033b1082"
         }
       ]
@@ -2933,7 +2933,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/Metadata/dybdedata/2751aacf-5472-4850-a208-3532a51c529a"
         }
       ]
@@ -2947,7 +2947,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/search"
         }
       ]
@@ -2961,7 +2961,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/search"
         }
       ]
@@ -2975,7 +2975,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/metadata/kartverket/dtm-5-sjo/b3234c9c-2184-427b-9fb6-70a8bab9394b"
         }
       ]
@@ -2989,7 +2989,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/search"
         }
       ]
@@ -3003,7 +3003,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/search"
         }
       ]
@@ -3017,7 +3017,7 @@ const result = {
               "@id": "image/tiff"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/metadata/uuid/a8b1ad90-e0fc-4ea0-bab8-dd80a8494052"
         }
       ]
@@ -3031,7 +3031,7 @@ const result = {
               "@id": "image/tiff"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/tema/illustrasjonskart/6"
         }
       ]
@@ -3045,7 +3045,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://kartkatalog.geonorge.no/metadata/uuid/e7d85ee1-2579-4fbc-96b2-3871cf1c32bb"
         }
       ]
@@ -3068,7 +3068,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://register.geonorge.no/subregister/sosi-kodelister/kartverket/kommunenummer-alle.json"
         },
         {
@@ -3077,7 +3077,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://register.geonorge.no/api/subregister/sosi-kodelister/kartverket/kommunenummer-alle.xml"
         }
       ]
@@ -3091,7 +3091,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://register.geonorge.no/subregister/sosi-kodelister/kartverket/fylkesnummer-alle"
         },
         {
@@ -3100,7 +3100,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://register.geonorge.no/subregister/sosi-kodelister/kartverket/fylkesnummer-alle.json"
         },
         {
@@ -3109,7 +3109,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://register.geonorge.no/subregister/sosi-kodelister/kartverket/fylkesnummer-alle.xml"
         }
       ]
@@ -4876,7 +4876,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://data.brreg.no/oppgaveregisteret/api/skjema/alle.json"
         },
         {
@@ -4885,7 +4885,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data.brreg.no/oppgaveregisteret/api/skjema/alle.xml"
         }
       ]
@@ -4998,7 +4998,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://utdanning.no/data/atom/yrke"
         }
       ]
@@ -5026,7 +5026,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://utdanning.no/data/atom/utdanningsbeskrivelse"
         }
       ]
@@ -5046,7 +5046,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data-nxr-fellestjeneste.udir.no/swagger/ui/index"
         }
       ]
@@ -5063,7 +5063,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data-nsr.udir.no//swagger/ui/index"
         }
       ]
@@ -5080,7 +5080,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data-nbr.udir.no//swagger/ui/index"
         }
       ]
@@ -5097,7 +5097,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data-nor.udir.no//swagger/ui/index"
         }
       ]
@@ -5209,7 +5209,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.nkom.no/npt/numsys/E.164.xml"
         }
       ]
@@ -5251,7 +5251,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.nkom.no/npt/autosys/registreringer.json"
         }
       ]
@@ -5288,7 +5288,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.budsjett.oslo.kommune.no/apne_datasett/budsjett_2013_2016/"
         },
         {
@@ -5297,7 +5297,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.budsjett.oslo.kommune.no/apne_datasett/budsjett_2013_2016/"
         }
       ]
@@ -5320,7 +5320,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.budsjett.oslo.kommune.no/category.php?categoryID=68718"
         }
       ]
@@ -5334,7 +5334,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5343,7 +5343,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5380,7 +5380,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5389,7 +5389,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5449,7 +5449,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.budsjett.oslo.kommune.no/category.php?categoryID=72561"
         },
         {
@@ -5458,7 +5458,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.budsjett.oslo.kommune.no/category.php?categoryID=72561"
         }
       ]
@@ -5486,7 +5486,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5500,7 +5500,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5509,7 +5509,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5523,7 +5523,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5532,7 +5532,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5546,7 +5546,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5555,7 +5555,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5569,7 +5569,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5578,7 +5578,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5592,7 +5592,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         },
         {
@@ -5601,7 +5601,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.oslo.kommune.no/politikk-og-administrasjon/politikk/budsjett-regnskap-og-rapportering/apne-datasett/"
         }
       ]
@@ -5649,7 +5649,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.fiskeridir.no/Statistikk/AApne-data/AApne-datasett-Fangstdata-koblet-med-fartoeydata"
         }
       ]
@@ -6166,7 +6166,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://hotell.difi.no/download/ldir/produksjonstilskudd/2015jan?download"
         }
       ]
@@ -6192,7 +6192,7 @@ const result = {
               "@id": "application/x.yaml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://hotell.difi.no/download/ldir/leveransedata-korn/2014-2015?download"
         }
       ]
@@ -7277,7 +7277,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7286,7 +7286,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7295,7 +7295,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         }
       ]
@@ -7378,7 +7378,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7387,7 +7387,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         }
       ]
@@ -7401,7 +7401,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7410,7 +7410,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         }
       ]
@@ -7424,7 +7424,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7433,7 +7433,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         }
       ]
@@ -7447,7 +7447,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         },
         {
@@ -7456,7 +7456,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.aure.kommune.no/organisasjon/apne-data/"
         }
       ]
@@ -8007,7 +8007,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.askim.kommune.no/getfile.php/4080915.2013.jatsmnnknil7in/Vakttelefoner.csv"
         }
       ]
@@ -8123,7 +8123,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://api.nve.no/doc/elsertifikater/"
         }
       ]
@@ -8336,7 +8336,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data.nav.no/dataset/statistikk-utbetalinger-av-ytelser-kommune-ar/resource/9b2068e2-af3c-422f-b671-5423506007a2"
         }
       ]
@@ -8567,7 +8567,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data.ssb.no/api/klass/v1/versions/916.json"
         },
         {
@@ -8602,7 +8602,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data.ssb.no/api/klass/v1/versions/919.json"
         },
         {
@@ -8804,7 +8804,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://data.ssb.no/api/klass/v1/versions/33.json"
         }
       ]
@@ -8839,7 +8839,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://data.ssb.no/api/klass/v1/classifications.json?size=200"
         }
       ]
@@ -9184,7 +9184,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/renhold.xml"
         }
       ]
@@ -9198,7 +9198,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/bedriftshelsetjeneste.xml"
         }
       ]
@@ -9212,7 +9212,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_fylke.csv"
         }
       ]
@@ -9226,7 +9226,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_kjonn.csv"
         }
       ]
@@ -9240,7 +9240,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_maaned.csv"
         }
       ]
@@ -9254,7 +9254,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_naring.csv"
         }
       ]
@@ -9268,7 +9268,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_ulykkestype.csv"
         }
       ]
@@ -9282,7 +9282,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Arbeidskadedodsfall_ar.csv"
         }
       ]
@@ -9296,7 +9296,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Tilsyn_fylke.csv"
         }
       ]
@@ -9310,7 +9310,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Tilsyn_ar.csv"
         }
       ]
@@ -9324,7 +9324,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Tilsyn_vedtak.csv"
         }
       ]
@@ -9338,7 +9338,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Tilsyn_virksomhetsstorrelse.csv"
         }
       ]
@@ -9352,7 +9352,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.arbeidstilsynet.no/opendata/statistikk/Statistikk_Tilsyn_naring.csv"
         }
       ]
@@ -9392,7 +9392,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://www.molde.kommune.no/skoleruter-2016-2018.5123918-265301.html"
         }
       ]
@@ -9486,7 +9486,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://oskommune.no/Handlers/fh.ashx?MId1=584&FilId=269"
         },
         {
@@ -9495,7 +9495,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://oskommune.no/Handlers/fh.ashx?MId1=584&FilId=270"
         }
       ]
@@ -9686,7 +9686,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://legemiddelverket.no/andre-temaer/fest/ansvar-ved-bruk-av-fest"
         }
       ]
@@ -9891,7 +9891,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://fmsfstatsclient.fylkesmannen.no/Home/ShowApi"
         }
       ]
@@ -9966,7 +9966,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://hvalross.hib.no/eksamensoppgaver/xml.php"
         }
       ]
@@ -10040,7 +10040,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.statsbudsjettet.no/Revidert-budsjett-2016/Dokumenter/#70550"
         }
       ]
@@ -10071,7 +10071,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.statsbudsjettet.no/Revidert-budsjett-2017/Dokumenter/#75956"
         },
         {
@@ -10080,7 +10080,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.statsbudsjettet.no/Revidert-budsjett-2017/Dokumenter/"
         }
       ]
@@ -10094,7 +10094,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.statsbudsjettet.no/Statsbudsjettet-2018/Dokumenter/Utlisting-av-tabeller-i-dokumentene/"
         }
       ]
@@ -10122,7 +10122,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.fusa.kommune.no/Handlers/fh.ashx?MId1=382&FilId=1593"
         },
         {
@@ -10131,7 +10131,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.fusa.kommune.no/Handlers/fh.ashx?MId1=382&FilId=1594"
         }
       ]
@@ -10145,7 +10145,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.fusa.kommune.no/Handlers/fh.ashx?MId1=382&FilId=1595"
         },
         {
@@ -10154,7 +10154,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.fusa.kommune.no/Handlers/fh.ashx?MId1=382&FilId=1596"
         }
       ]
@@ -10607,7 +10607,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/varsel-om-feil-vof"
         }
       ]
@@ -10677,7 +10677,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/stoy-vei"
         }
       ]
@@ -10873,7 +10873,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/kulturmiljo-stavanger"
         }
       ]
@@ -10887,7 +10887,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/skolekretser-stavanger"
         }
       ]
@@ -10901,7 +10901,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/boligsoneparkering-i-stavanger"
         }
       ]
@@ -10999,7 +10999,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/driftsbudsjett-2017-2020-forslag-stavanger-kommune"
         }
       ]
@@ -11268,7 +11268,7 @@ const result = {
               "@id": "application/zip"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/52-hverdagsturer"
         }
       ]
@@ -11296,7 +11296,7 @@ const result = {
               "@id": "text/html"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/forslagskasse-stavanger-kommune"
         }
       ]
@@ -11397,7 +11397,7 @@ const result = {
               "@id": "application/gpx+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-1-eiganesturen"
         }
       ]
@@ -11417,7 +11417,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-2-lundsnesturen"
         }
       ]
@@ -11437,7 +11437,7 @@ const result = {
               "@id": "application/gpx+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-3-storhaugturen"
         }
       ]
@@ -11457,7 +11457,7 @@ const result = {
               "@id": "application/gpx+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-4-sundeturen"
         }
       ]
@@ -11477,7 +11477,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-5-marieroturen"
         }
       ]
@@ -11497,7 +11497,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-6-jattaturen"
         }
       ]
@@ -11517,7 +11517,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-7-vardenesturen"
         }
       ]
@@ -11537,7 +11537,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-8-byhaugturen"
         }
       ]
@@ -11557,7 +11557,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-9-skeieturen"
         }
       ]
@@ -11577,7 +11577,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-10-vardenturen"
         }
       ]
@@ -11597,7 +11597,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-11-vardenturen"
         }
       ]
@@ -11617,7 +11617,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-12-vannverkturen"
         }
       ]
@@ -11637,7 +11637,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-13-heddaturen"
         }
       ]
@@ -11657,7 +11657,7 @@ const result = {
               "@id": "application/pdf"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-14-tastavedenturen"
         }
       ]
@@ -11827,7 +11827,7 @@ const result = {
               "@id": "application/gpx+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-24-kristianslystturen"
         }
       ]
@@ -11844,7 +11844,7 @@ const result = {
               "@id": "application/gpx+xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/52-hverdagsturer-tur-25-lindoyturen"
         }
       ]
@@ -12320,7 +12320,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/gravplasser"
         }
       ]
@@ -12337,7 +12337,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/gravferdsseremonier"
         }
       ]
@@ -12351,7 +12351,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/skoler-og-skolekretser-stavanger"
         }
       ]
@@ -12368,7 +12368,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/befolkningstetthet-i-stavangers-bydeler"
         }
       ]
@@ -12388,7 +12388,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/stortingvalg-stavanger"
         }
       ]
@@ -12405,7 +12405,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/stavanger-bystyre-fra-1987-til-i-dag"
         }
       ]
@@ -12422,7 +12422,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/kommunevalg-stavanger"
         }
       ]
@@ -12439,7 +12439,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/mest-brukte-jente-og-guttenavn-i-stavanger"
         }
       ]
@@ -12456,7 +12456,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/artskontoplan-2017-stavanger"
         }
       ]
@@ -12473,7 +12473,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/ansvarskontoplan-2017-stavanger"
         }
       ]
@@ -12490,7 +12490,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/prosjektkontoplan-2017-stavanger"
         }
       ]
@@ -12504,7 +12504,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/fri-dimensjon-kontoplan-2017-stavanger"
         }
       ]
@@ -12521,7 +12521,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/regnskap-og-budsjett-investering-2017-stavanger"
         }
       ]
@@ -12538,7 +12538,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/regnskap-og-budsjett-drift-2017-stavanger"
         }
       ]
@@ -12555,7 +12555,7 @@ const result = {
               "@id": "text/plain"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/nedgravde-containere-teknisk-status"
         }
       ]
@@ -12569,7 +12569,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/leverandorregnskap-stavanger-kommune"
         }
       ]
@@ -12583,7 +12583,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/leverandorregnskap-stavanger-kommune"
         }
       ]
@@ -12597,7 +12597,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/prosjektkontoplan-2018-stavanger"
         }
       ]
@@ -12611,7 +12611,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/artskontoplan-2018-stavanger"
         }
       ]
@@ -12625,7 +12625,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/ansvarskontoplan-2018-stavanger"
         }
       ]
@@ -12639,7 +12639,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/regnskap-og-budsjett-drift-2018-stavanger"
         }
       ]
@@ -12653,7 +12653,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/regnskap-og-budsjett-investering-2018-stavanger"
         }
       ]
@@ -12667,7 +12667,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/hverdagsturer-stavanger"
         }
       ]
@@ -12681,7 +12681,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/venteliste-barnehage-stavanger"
         }
       ]
@@ -12699,7 +12699,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/parkeringsdata-2018-stavanger"
         }
       ]
@@ -12713,7 +12713,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/parkeringsdata-2017-stavanger"
         }
       ]
@@ -12727,7 +12727,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/oversikt-utskrift-stavanger-kommune"
         }
       ]
@@ -12744,7 +12744,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/helligdagskalender"
         }
       ]
@@ -12761,7 +12761,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/vedlikeholdskvelder-it-stavanger-kommune"
         }
       ]
@@ -12775,7 +12775,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/oversikt-utskrift-stavanger-kommune-manedlige-totaler"
         }
       ]
@@ -12789,7 +12789,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/oversikt-utskrift-stavanger-kommune-2019"
         }
       ]
@@ -12803,7 +12803,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/oversikt-utskrift-stavanger-kommune-manedlige-totaler-2019"
         }
       ]
@@ -12817,7 +12817,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/aktiv-kommune-arrangementer-1103"
         }
       ]
@@ -12831,7 +12831,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/aktiv-kommune-reserveringer-1103"
         }
       ]
@@ -12845,7 +12845,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/aktiv-kommune-ressursoversikt-1103"
         }
       ]
@@ -12859,7 +12859,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/prognose-for-luftkvalitet-stavanger"
         }
       ]
@@ -12876,7 +12876,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/bysykler-stavanger"
         }
       ]
@@ -12893,7 +12893,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/bysykler-stavanger-stasjoner"
         }
       ]
@@ -12907,7 +12907,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/valglokaler-kommunevalg-2019-stavanger"
         }
       ]
@@ -12921,7 +12921,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/statistikk-over-mest-leste-datasett"
         }
       ]
@@ -12935,7 +12935,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/badetemperaturer-stavanger-historikk"
         }
       ]
@@ -12949,7 +12949,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/badetemperaturer-stavanger"
         }
       ]
@@ -12966,7 +12966,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-hoy-utdanning"
         }
       ]
@@ -12980,7 +12980,7 @@ const result = {
               "@id": "application/vnd.geo+json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-kart-over-levekarssoner"
         }
       ]
@@ -12997,7 +12997,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-alderstandardiserte-dodsrater-kvinner"
         }
       ]
@@ -13014,7 +13014,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-alderstandardiserte-dodsrater-menn"
         }
       ]
@@ -13031,7 +13031,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-aleneboende-i-av-befolkningen"
         }
       ]
@@ -13048,7 +13048,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-liste-over-levekarssoner-i-stavanger"
         }
       ]
@@ -13065,7 +13065,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-barn-i-lavinntektshusholdninger-eu50"
         }
       ]
@@ -13082,7 +13082,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-barn-i-lavinntektshusholdninger-eu60"
         }
       ]
@@ -13099,7 +13099,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-lav-utdanning"
         }
       ]
@@ -13116,7 +13116,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-leide-boliger"
         }
       ]
@@ -13133,7 +13133,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-utflyttinger"
         }
       ]
@@ -13150,7 +13150,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levek-r-stavanger-barneutflyttinger"
         }
       ]
@@ -13167,7 +13167,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-innvandrerbakgrunn"
         }
       ]
@@ -13184,7 +13184,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-median-inntekt"
         }
       ]
@@ -13201,7 +13201,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-overgangsstonad"
         }
       ]
@@ -13218,7 +13218,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-registrert-arbeidsledighet"
         }
       ]
@@ -13235,7 +13235,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-registrert-ungdomsledighet"
         }
       ]
@@ -13252,7 +13252,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-unge-uforepensjonister"
         }
       ]
@@ -13269,7 +13269,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-barn-med-barnevernstiltak"
         }
       ]
@@ -13286,7 +13286,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-ikke-oppnadd-kompetanse"
         }
       ]
@@ -13303,7 +13303,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-mottakere-av-aap"
         }
       ]
@@ -13320,7 +13320,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-barn-med-enslige-foreldre"
         }
       ]
@@ -13337,7 +13337,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-personer-i-lavinntektshusholdninger-eu-60"
         }
       ]
@@ -13354,7 +13354,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-personer-i-lavinntektshusholdninger-eu-50"
         }
       ]
@@ -13371,7 +13371,7 @@ const result = {
               "@id": "application/json"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://opencom.no/dataset/levekar-stavanger-gjeld-over-3-ganger-samlet-inntekt"
         }
       ]
@@ -13413,7 +13413,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/skoleruten-for-gjesdal-kommune"
         }
       ]
@@ -13427,7 +13427,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/barnehager-i-gjesdal-kommune"
         }
       ]
@@ -13441,7 +13441,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/skoler-i-gjesdal-kommune"
         }
       ]
@@ -13455,7 +13455,7 @@ const result = {
               "@id": "text/csv"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://open.stavanger.kommune.no/dataset/utleigelokaler-i-gjesdal-kommune"
         }
       ]
@@ -13539,7 +13539,7 @@ const result = {
               "@id": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://www.imdi.no/contentassets/613cb1f6a31448ba923f3b5e6fadcb6b/svar-pa-kommuneundersokelsen-2017.xlsx"
         }
       ]
@@ -13822,7 +13822,7 @@ const result = {
               "@id": "text/turtle"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://github.com/fylkesarkivet/PublicPhotoWiki/wiki/Raw-data"
         }
       ]
@@ -13836,7 +13836,7 @@ const result = {
               "@id": "text/turtle"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://github.com/fylkesarkivet/PublicEncyclopediaWiki/wiki/Raw-data"
         }
       ]
@@ -13850,7 +13850,7 @@ const result = {
               "@id": "text/turtle"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://github.com/fylkesarkivet/PublicPlaceNameWiki/wiki/Raw-data"
         }
       ]
@@ -13876,7 +13876,7 @@ const result = {
               "@id": "application/xml"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "https://hotell.difi.no/?dataset=forskningsradet/bevilgninger"
         }
       ]
@@ -13890,7 +13890,7 @@ const result = {
               "@id": "application/vnd.sealed-xls"
             }
           ],
-          "description": "[Ingen beskrivelse]",
+          "description": "[No description]",
           "url": "http://status.vox.no/webview/velocity?headers=virtual&virtualsubset=A1_value+-+UnderA1_value&v=2&stubs=Sted&stubs=Tidspunkt&stubs=Prvetype&Prvetypesubset=1+-+4&measure=common&Stedsubset=23%2C1+-+50&measuretype=4&study=http%3A%2F%2F10.36.88.50%3A80%2Fobj%2FfStudy%2Fnorskinnvandrere-prover-resultatfylkekommune&language=no&cube=http%3A%2F%2Fstatus.dmzvox.local%3A80%2Fobj%2FfCube%2Fnorskinnvandrere-prover-resultatfylkekommune_C1&Tidspunktsubset=20142+-+20194&mode=cube&top=yes&executespreadsheet=true"
         }
       ]

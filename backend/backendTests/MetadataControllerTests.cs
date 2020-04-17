@@ -20,11 +20,10 @@ namespace OpenData.backend
             _factory = factory;
         }
 
-        /// <summary>
         /// Asserts correct status code and correct content type for HttpPut calls on the metadata controller (for new metadata, experiencepost and datasource) + Get metadata and like by uuid
         /// </summary>
         [Fact]
-        public async Task Put_NewUnreleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_AttachExperiencePost_EndpointsReturnSuccess_CorrectContentType()
+        public async Task Put_NewReleasedMetaData_NewDataSource_GetMetaData_GetMetaDataLike_AttachExperiencePost_EndpointsReturnSuccess_CorrectContentType()
         {
             // Arrange
 
@@ -44,7 +43,7 @@ namespace OpenData.backend
             Assert.Equal(loginResource.Mail, user.Mail);
             string token = user.Token;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+            
             SaveMetadataResource metaDataResource = new SaveMetadataResource();
             metaDataResource.Description = "Test Description";
             metaDataResource.MunicipalityName = "Test";

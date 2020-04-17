@@ -27,12 +27,15 @@ import { Tags } from '../pages/Tags';
 import { Category } from '../pages/Category';
 import { EditDescriptionMetadataType } from '../pages/EditDescriptionMetadataType';
 import { DCATWizard } from '../pages/DCATWizard';
+import { About } from '../pages/About';
+import { NewCategory } from '../pages/NewCategory';
 
 const RouterComponent = () => { // eslint-disable-line arrow-body-style
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={Splash} />
+        <Route path="/about" component={About} />
         <PrivateRoute path="/dataType/description/:id" municipality component={EditDescriptionMetadataType} />
         <Route path="/dataType/:typeuuid" component={MetadataByType} />
         <Route path="/dataType/" component={MetadataByType} />
@@ -42,6 +45,7 @@ const RouterComponent = () => { // eslint-disable-line arrow-body-style
         <Route path="/search" component={Search} />
         <Route path="/category/:uuid" component={Category} />
         <Route path="/category" component={Category} />
+        <PrivateRoute path="/newCategory" municipality component={NewCategory} />
         <PrivateRoute path="/sendData" municipality component={SendMetadata} />
         <PrivateRoute path="/articles/new/:id" municipality component={NewExperienceArticle} />
         <PrivateRoute path="/articles/new" municipality component={NewExperienceArticle} />

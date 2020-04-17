@@ -94,6 +94,36 @@ const commentResponse = `
   ]
 `;
 
+const formatResponse = `[
+  {
+    "name": "json",
+    "mimeType": "application/json",
+    "description": "Just json",
+    "documentationUrl": "https://www.json.org/json-en.html"
+  },
+  {
+    "name": "csv",
+    "mimeType": "text/csv",
+    "description": "Comma seperated values",
+    "documentationUrl": "https://tools.ietf.org/html/rfc4180"
+  }
+]`;
+
+const api = async ({ url }) => {
+  switch (url) {
+    case '/api/MetadataType/079ba832-a53c-4e3a-9d3e-ed4667e42a95':
+      return cycleTheftResponse;
+    case '/api/Metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+      return cycleTheftTrondheimResponse;
+    case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
+      return commentResponse;
+    case '/api/DataFormat':
+      return formatResponse;
+    default:
+      return '';
+  }
+};
+
 describe('Page displays a single dataset entry', () => {
   // redux store
   let store;
@@ -118,18 +148,7 @@ describe('Page displays a single dataset entry', () => {
 
 
   it('Shows the title and description of a single dataset', async () => {
-    fetch.mockResponse(async ({ url }) => {
-      switch (url) {
-        case '/api/MetadataType/079ba832-a53c-4e3a-9d3e-ed4667e42a95':
-          return cycleTheftResponse;
-        case '/api/Metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return cycleTheftTrondheimResponse;
-        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return commentResponse;
-        default:
-          return '';
-      }
-    });
+    fetch.mockResponse(api);
     const {
       findByText, queryByText, getByText,
     } = render(
@@ -150,22 +169,12 @@ describe('Page displays a single dataset entry', () => {
     // - Once of like counter
     // - Once for submitting.
     // - Once for comments
-    expect(fetch.mock.calls.length).toEqual(4);
+    // - Once for data formats (since the user is logged in as municipality)
+    expect(fetch.mock.calls.length).toEqual(5);
   });
 
   it('Displays comments of a dataset correctly', async () => {
-    fetch.mockResponse(async ({ url }) => {
-      switch (url) {
-        case '/api/MetadataType/079ba832-a53c-4e3a-9d3e-ed4667e42a95':
-          return cycleTheftResponse;
-        case '/api/Metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return cycleTheftTrondheimResponse;
-        case '/api/Comment/metadata/3fa85f64-5717-4562-b3fc-2c963f66afa6':
-          return commentResponse;
-        default:
-          return '';
-      }
-    });
+    fetch.mockResponse(api);
     const {
       getByText, findByText,
     } = render(

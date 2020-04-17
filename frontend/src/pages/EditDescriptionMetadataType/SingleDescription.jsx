@@ -171,7 +171,7 @@ const SingleDescription = ({ typeUuid, description, forceReloader }) => {
         </DescriptionContent>
       </DescriptionMain>
       <DescriptionVotes>
-        <p>{voteCount}</p>
+        <p>{`${voteCount} upvotes`}</p>
         <VoteButton type="button" onClick={handleVote}>
           { hasVoted ? <RemoveVoteIcon /> : <UpvoteIcon /> }
         </VoteButton>

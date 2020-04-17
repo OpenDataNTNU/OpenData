@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { CategorySelector } from './CategorySelector';
 import { alertActions } from '../../state/actions/alert';
 
-export const RootLevelCategorySelector = ({ onChange }) => {
+export const RootLevelCategorySelector = ({ onChange, nullable, title }) => {
   const [categories, setCategories] = useState([]);
 
   const dispatch = useDispatch();
@@ -31,8 +31,18 @@ export const RootLevelCategorySelector = ({ onChange }) => {
 
   return (
     <>
-      <h3>Category:</h3>
+      <h3>{title}</h3>
       <ul>
+        { nullable
+          ? (
+            <li>
+              <label>
+                [No category]
+                <input type="radio" name="category" value="" onChange={onChange} />
+              </label>
+            </li>
+          )
+          : null}
         {categories.map((category) => (
           <CategorySelector key={category.uuid} category={category} onChange={onChange} />
         ))}
@@ -43,4 +53,11 @@ export const RootLevelCategorySelector = ({ onChange }) => {
 
 RootLevelCategorySelector.propTypes = {
   onChange: PropTypes.func.isRequired,
+  nullable: PropTypes.bool,
+  title: PropTypes.string,
+};
+
+RootLevelCategorySelector.defaultProps = {
+  nullable: false,
+  title: 'Category:',
 };

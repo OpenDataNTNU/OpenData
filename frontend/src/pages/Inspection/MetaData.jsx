@@ -21,7 +21,7 @@ const MetadataCard = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   min-height: 20rem;
   min-width: 15rem;
 `;

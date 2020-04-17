@@ -70,11 +70,14 @@ const SubmitButton = styled.button`
   box-sizing: border-box;
   margin: 0;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #e8e6ff;
   }
-  
+`;
+
+const Italic = styled.p`
+  font-style: italic;
 `;
 
 const DescriptionEditBody = ({ uuid }) => {
@@ -232,6 +235,10 @@ const DescriptionEditBody = ({ uuid }) => {
       <TypeHeader>
         <h3>{metadataType.name}</h3>
         <p>{metadataType.description.content}</p>
+        <Italic>
+          This description was chosen by the majority vote.
+          If two descriptions are tied, the oldest suggested description takes precedence.
+        </Italic>
       </TypeHeader>
       <DescriptionsContainer>
         <h3>Suggested descriptions:</h3>
