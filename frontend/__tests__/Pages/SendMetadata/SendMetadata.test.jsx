@@ -21,6 +21,17 @@ const click = (x) => {
   );
 };
 
+const api = async ({ url }) => {
+  switch (url) {
+    case '/api/MetadataType':
+      return '[]';
+    case '/api/Municipalities':
+      return JSON.stringify([{ name: 'Trondheim' }, { name: 'Oslo' }]);
+    default:
+      return '{}';
+  }
+};
+
 describe('Metadata form component works as expected', () => {
   let store;
   let history;
@@ -40,32 +51,8 @@ describe('Metadata form component works as expected', () => {
     history = createMemoryHistory();
   });
 
-
-  it('displays an error message when fetch request is rejected', async () => {
-    // let the first two fetches go to get municipalities and to get metadata types
-    fetch.mockResponseOnce(JSON.stringify([{ name: 'Trondheim' }, { name: 'Oslo' }]));
-    fetch.mockResponseOnce(JSON.stringify([]));
-    const { getByText } = render(
-      <Provider store={store}>
-        <Router history={history}>
-          <MetadataForm />
-        </Router>
-      </Provider>,
-    );
-    // initially should have no error message
-    fetch.mockAbort();
-    await wait(() => click(getByText('Submit')));
-    // should give you an error - check this from redux store
-    // should have fetched exactly three times
-    // once for fetching on load and once for submitting.
-    expect(fetch.mock.calls.length).toEqual(2);
-  });
-
   it('Succeeds when the fetch request goes well', async () => {
-    fetch.mockResponseOnce(JSON.stringify([{ name: 'Trondheim' }, { name: 'Oslo' }]));
-    fetch.mockResponseOnce(JSON.stringify([]));
-    // update this when API-call format is clarified
-    fetch.mockResponse(JSON.stringify({ status: 'ok' }));
+    fetch.mockResponse(api);
     const { getByText } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -73,9 +60,9 @@ describe('Metadata form component works as expected', () => {
         </Router>
       </Provider>,
     );
-
+    const submitButton = getByText('Submit');
     // click the submit button
-    await wait(() => click(getByText('Submit')));
+    await wait(() => click(submitButton));
     // TODO: expect the history to change
     // also expect there to be no error
     // should have fetched exactly twice, once for fetching metadata types and once for submitting.

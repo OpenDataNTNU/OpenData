@@ -24,7 +24,7 @@ describe('Template component', () => {
     history = createMemoryHistory();
   });
 
-  it('should render the dropdown component on width < 600px', async () => {
+  it('should render the dropdown component on width < 1170px', async () => {
     const { queryByText } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -34,7 +34,11 @@ describe('Template component', () => {
     );
 
     // The dropdown component should not be rendered when the width
-    // is bigger than 600px
+    // is bigger than 1170px
+    await wait(() => {
+      global.innerWidth = 1200;
+      global.dispatchEvent(new Event('resize'));
+    });
     let dropdownElement = queryByText(/Navigation/i);
     expect(dropdownElement).not.toBeInTheDocument();
 

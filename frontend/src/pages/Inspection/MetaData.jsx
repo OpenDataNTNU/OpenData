@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ArrowRightS } from 'styled-icons/remix-fill/ArrowRightS';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { alertActions } from '../../state/actions/alert';
 import { ReleaseStateLabel } from '../../sharedComponents/Metadata/ReleaseStateLabel';
 import { MetadataToolbar } from './MetadataToolbar';
@@ -22,30 +21,17 @@ const MetadataCard = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  min-height: 20rem;
-  min-width: 35rem;
   overflow: visible;
+  min-height: 20rem;
+  min-width: 15rem;
 `;
 const MetadataContent = styled.div`
   padding: 1rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Description = styled.p`
-  font-size: 0.9rem;
-  color: #353535;
-`;
-
-const Tag = styled.div`
-  background-color: #eeeeee;
-  color: #595959;
-  font-size: 0.9rem;
-  padding: 0.1rem 0.7rem;
-  display: inline-block;
-  border-radius: 1rem;
-  margin: 0.3rem;
-`;
 const ArrowRightStyled = styled(ArrowRightS)`
   height: 0.9rem;
   margin: 0 0.3rem;
@@ -65,7 +51,6 @@ const LocationLink = styled(Link)`
     text-decoration: underline;
   }
 `;
-
 const SourceWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -73,20 +58,19 @@ const SourceWrapper = styled.div`
     flex: 1;
   }
 `;
-
-export const MetaData = ({ data, tags, removeDataSource }) => {
+export const MetaData = ({ data, removeDataSource }) => {
   const {
-    uuid, municipalityName, metadataTypeName, dataSource,
+    uuid, municipalityName, metadataTypeUuid, dataSource,
     experiencePosts, releaseState, description,
   } = data;
-
+  const [metadataTypeName, setMetadataTypeName] = useState('');
   const [newDatasources, setNewDatasources] = useState([]);
-  const dispatch = useDispatch();
   const userSelector = useSelector(({ user }) => user);
   const {
     municipalityName: userMunicipality,
     token,
   } = userSelector.user || { municipalityName: null, token: null };
+  const dispatch = useDispatch();
 
   const addSource = (source) => setNewDatasources([...newDatasources, source]);
   const removeSource = async (uuidToDelete) => {
@@ -114,26 +98,53 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
     }
   };
 
+  useEffect(() => {
+    const getMetadataTypeName = async () => {
+      try {
+        const res = await fetch(`/api/MetadataType/${metadataTypeUuid}`);
+        if (res.status === 200) {
+          const { name } = await res.json();
+          setMetadataTypeName(name);
+        }
+      } catch (err) {
+        const { status } = err;
+        if (status === 404) {
+          dispatch(alertActions.error('Could not fetch metadata type name'));
+        } else if (status === 401) {
+          dispatch(alertActions.info('Not authorized to see metadata type name.'));
+        } else {
+          dispatch(alertActions.error('Failed to fetch metadata type name. Please try again later.'));
+        }
+      }
+    };
+    getMetadataTypeName();
+  }, [metadataTypeUuid]);
+
   return (
     <Wrapper>
       <LocationWrapper>
         <LocationLink to={`/municipalities/${municipalityName}`}>{municipalityName}</LocationLink>
         <ArrowRightStyled />
-        <LocationLink to={`/dataType/${metadataTypeName}`}>{metadataTypeName}</LocationLink>
+        <LocationLink to={`/dataType/${metadataTypeUuid}`}>{metadataTypeName}</LocationLink>
       </LocationWrapper>
       <MetadataCard>
         <MetadataContent>
-          <ReleaseStateLabel releaseState={releaseState} />
-          <Description>
-            {description}
-          </Description>
           <div>
-            {tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+            <ReleaseStateLabel releaseState={releaseState} />
+            <p>{description}</p>
           </div>
-          <h3>This data set is available in the following places:</h3>
-          {dataSource.map(({ uuid: sourceUuid, url, dataFormat }) => (
+          <h3>This data set has the following entries:</h3>
+          {dataSource.map(({
+            uuid: sourceUuid, url, dataFormat, startDate, endDate,
+          }) => (
             <SourceWrapper key={sourceUuid}>
-              <MetadataURL url={url} formatName={dataFormat.name} inspection />
+              <MetadataURL
+                url={url}
+                formatName={dataFormat.name}
+                startDate={startDate}
+                endDate={endDate}
+                inspection
+              />
               {municipalityName === userMunicipality
                 ? <button type="button" onClick={() => removeSource(sourceUuid)}>Delete</button>
                 : null}
@@ -165,16 +176,11 @@ export const MetaData = ({ data, tags, removeDataSource }) => {
 
 MetaData.propTypes = {
   data: PropTypes.shape({
-    municipalityName: PropTypes.string.isRequired,
-    metadataTypeName: PropTypes.string.isRequired,
+    uuid: PropTypes.string,
     description: PropTypes.string.isRequired,
     releaseState: PropTypes.number.isRequired,
-    url: PropTypes.string.isRequired,
-    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
-      experiencePostUuid: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-    })),
-    uuid: PropTypes.string,
+    metadataTypeUuid: PropTypes.string.isRequired,
+    municipalityName: PropTypes.string.isRequired,
     dataSource: PropTypes.arrayOf(
       PropTypes.shape({
         uuid: PropTypes.string.isRequired,
@@ -189,7 +195,10 @@ MetaData.propTypes = {
         endDate: PropTypes.string,
       }),
     ).isRequired,
+    experiencePosts: PropTypes.arrayOf(PropTypes.shape({
+      experiencePostUuid: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    })),
   }).isRequired,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   removeDataSource: PropTypes.func.isRequired,
 };

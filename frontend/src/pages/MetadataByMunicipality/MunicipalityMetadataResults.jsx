@@ -96,7 +96,11 @@ const MunicipalityMetadataResults = ({ municipalityName }) => {
         { metaDataSet.length === 0 ? (
           <NoResult text={`No results were found for ${municipalityName}.`} />
         ) : metaDataSet.map((m) => (
-          <SingleMetaDataResult key={m.uuid} metadata={m} showCategory />
+          <SingleMetaDataResult
+            key={m.uuid}
+            metadata={m}
+            showCategory
+          />
         ))}
       </ResultsContainer>
     </MunicipalityCategoriesContainer>

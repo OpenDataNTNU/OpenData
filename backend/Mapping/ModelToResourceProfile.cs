@@ -12,8 +12,14 @@ namespace OpenData.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<MetadataType, MetadataTypeResource>();
+            CreateMap<NewMetadataTypeDescriptionResource, MetadataTypeDescription>();
+            CreateMap<MetadataTypeDescription, MetadataTypeDescriptionResource>();
 
             CreateMap<Metadata, MetadataResource>();
+            CreateMap<SaveMetadataCategoryResource, MetadataCategory>();
+            CreateMap<MetadataCategory, MetadataCategoryResource>();
+            CreateMap<MetadataCategory, MetadataCategoryChildResource>();
+            
             CreateMap<SaveMetadataResource, Metadata>();
             CreateMap<SaveMetadataTypeResource, MetadataType>();
 
@@ -24,6 +30,8 @@ namespace OpenData.Mapping
             CreateMap<ExperiencePostTagMapping, ExperiencePostTagMappingResource>();
 
             CreateMap<Municipality, MunicipalityResource>();
+
+            CreateMap<NewDataFormatResource, DataFormat>();
 
             CreateMap<SaveExperiencePostResource, ExperiencePost>();
 

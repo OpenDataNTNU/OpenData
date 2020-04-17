@@ -9,9 +9,8 @@ import { alertActions } from '../../state/actions/alert';
 const Wrapper = styled.div`
   font-size: 1em;
   background-color: white;
-  padding: 0.8em;
-  border-radius: 0.8em;
-  margin-bottom: 0.8em;
+  padding: 0.4rem;
+  margin-bottom: 0.8rem;
 `;
 
 const CommentHeader = styled.div`
@@ -21,24 +20,25 @@ const CommentHeader = styled.div`
 
 const HeaderInfo = styled.p`
   font-weight: 500;
-  padding: 0 0.5em 0 0;
+  padding: 0 0.3rem 0 0;
+  font-size: 0.8rem;
   color: ${(props) => props.color};
 `;
 
 const CommentBody = styled.p`
-  font-size: 0.9em;
+  font-size: 0.9rem;
 `;
 
 const LoadMore = styled.p`
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1rem;
 `;
 
 const ChildComments = styled.div`
-  padding-left: 1em;
+  padding-left: 0.5rem;
   display: flex;
   flex-direction: column;
-  border-left: 2px solid black;
+  border-left: 0.3rem solid lightgray;
 `;
 
 export const Comment = ({ comment, updateSelf }) => {

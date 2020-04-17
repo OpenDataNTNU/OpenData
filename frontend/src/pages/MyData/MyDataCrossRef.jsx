@@ -32,9 +32,9 @@ const MyDataCrossRef = () => {
         }
         const types = await res.json();
         // fetch all types with
-        const allTypes = await Promise.all(types.map(async ({ name }) => {
+        const allTypes = await Promise.all(types.map(async ({ uuid }) => {
           try {
-            const dataRes = await fetch(`api/MetadataType/${name}`);
+            const dataRes = await fetch(`api/MetadataType/${uuid}`);
             const { ok: dataOk, status: dataStatus } = dataRes;
             if (!dataOk) {
               const err = new Error();

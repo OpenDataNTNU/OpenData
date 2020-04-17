@@ -28,12 +28,14 @@ namespace OpenData.Controllers
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILikeService _likeService;
+		private readonly IDataFormatService _dataFormat;
 		private readonly IHttpContextAccessor httpContextRetriever;
 		private readonly IUserService userService;
 
 		public MetadataController(
             IMetadataService metadataService,
             IExperiencePostService experiencePostService,
+            IDataFormatService dataFormatService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
 			IHttpContextAccessor httpContextRetriever,
@@ -47,6 +49,7 @@ namespace OpenData.Controllers
 			_unitOfWork = unitOfWork;
 			_experiencePostService = experiencePostService;
 			_likeService = likeService; 
+			_dataFormat = dataFormatService;
 			this.httpContextRetriever = httpContextRetriever;
 			this.userService = userService;
 		}
@@ -86,10 +89,10 @@ namespace OpenData.Controllers
 		/// Creates an experience post, and attaches it to a metadata object.
 		/// </summary> 
 		/// <param name="uuid">UUID of the metadata to attach the experience to</param>
-		/// <param name="experienceResource">The experience post to create</param>
+		/// <param name="experienceResource">The experience post to create and add</param>
         /// <returns>The experience post, if everything was successful</returns>
 		[HttpPut("{uuid}/experience")]
-		public async Task<IActionResult> SetExperience([FromBody] SaveExperiencePostResource experienceResource, string uuid)
+		public async Task<IActionResult> PutExperiencePost([FromBody] SaveExperiencePostResource experienceResource, string uuid)
 		{
 			var targetUsername = httpContextRetriever.HttpContext.User.Identity.Name;
             User user = await userService.GetUserByMailAsync(targetUsername);
@@ -102,7 +105,13 @@ namespace OpenData.Controllers
 			}
 			if (!ModelState.IsValid)
 				return BadRequest(ModelState.GetErrorMessages());
-			
+
+
+			if (user.UserType < UserType.Municipality || user.MunicipalityName != metadata.MunicipalityName)
+            {
+				return Unauthorized("The user does not have municipality privilegies for the Metadata given");
+            }
+
 			var experience = _mapper.Map<SaveExperiencePostResource, ExperiencePost>(experienceResource);
 
 			experience.Modified = DateTime.UtcNow;
@@ -181,7 +190,7 @@ namespace OpenData.Controllers
 		/// <param name="resource">The metadata object to be created</param>
         /// <returns>The metadata, if everything was successful</returns>
 		[HttpPut]
-		public async Task<IActionResult> PostAsync([FromBody] SaveMetadataResource resource)
+		public async Task<IActionResult> PutAsync([FromBody] SaveMetadataResource resource)
 		{
 			if (!ModelState.IsValid || !Enum.IsDefined(typeof(EReleaseState), resource.ReleaseState))
 				return BadRequest(ModelState.GetErrorMessages());
@@ -230,11 +239,16 @@ namespace OpenData.Controllers
             if(dataSource.StartDate == null && dataSource.EndDate != null)
             {
 				return BadRequest("Cannot have startDate as null, but a set endDate");
-            } else if(dataSource.StartDate != null && dataSource.EndDate != null)
+            } 
+            else if(dataSource.StartDate != null && dataSource.EndDate != null)
             {
 				if (dataSource.StartDate > dataSource.EndDate)
 					return BadRequest("Cannot have a endDate be before startDate");
             }
+
+            //Fetch the data format object so we can return a more complete dataSource
+            var format = await _dataFormat.GetByMimeTypeAsync(newDataSource.DataFormatMimeType);
+            dataSource.DataFormat = format;
 
 			await _metadataService.PutDataSourceAsync(dataSource);
 			var dataSourceResource = _mapper.Map<DataSource, DataSourceResource>(dataSource);

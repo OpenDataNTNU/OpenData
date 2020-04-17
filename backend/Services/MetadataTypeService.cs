@@ -23,8 +23,8 @@ namespace OpenData.Services
         	return await _metadataTypeRepository.ListAsync();
         }
 
-        public async Task<MetadataType> GetByNameAsync(string name) {
-            return await _metadataTypeRepository.GetByNameAsync(name);
+        public async Task<MetadataType> GetByUuidAsync(Guid uuid){
+            return await _metadataTypeRepository.GetByUuidAsync(uuid);
         }
 
         public async Task<SaveMetadataTypeResponse> SaveAsync(MetadataType metadata) {
@@ -44,6 +44,26 @@ namespace OpenData.Services
         public async Task<IEnumerable<MetadataType>> FilterSearchAsync(MetadataTypeSearchParametersResource searchParams)
         {
             return await _metadataTypeRepository.FilterSearchAsync(searchParams);
+        }
+
+        public async Task AddNewDescriptionAsync(MetadataTypeDescription metadataTypeDescription)
+        {
+            await _metadataTypeRepository.AddNewDescriptionAsync(metadataTypeDescription);
+        }
+
+        public async Task<IEnumerable<MetadataTypeDescription>> ListDescriptionsAsync(Guid metadataTypeUuid, string userMail)
+        {
+            return await _metadataTypeRepository.ListDescriptionsAsync(metadataTypeUuid, userMail);
+        }
+
+        public async Task VoteOnDescriptionAsync(MetadataTypeDescriptionVote vote, Guid metadataUuid)
+        {
+            await _metadataTypeRepository.VoteOnDescriptionAsync(vote, metadataUuid);
+        }
+
+        public async Task RemoveVoteOnDescriptionAsync(string userMail, Guid descUuid, Guid metadataUuid)
+        {
+            await _metadataTypeRepository.RemoveVoteOnDescriptionAsync(userMail, descUuid, metadataUuid);
         }
     }
 }

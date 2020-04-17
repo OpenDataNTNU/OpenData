@@ -25,6 +25,17 @@ const metadata = {
   url: 'https://google.com',
   description: 'Noe morsom data fra trondheim her ja',
   formatName: 'JSON',
+  dataSource: [{
+    uuid: '1443b7e7-4438-4b01-85f7-b9cf19c72e4f',
+    url: 'https://google.com',
+    descriptions: 'Unknown',
+    dataFormat: {
+      name: 'JSON',
+      mimeType: 'application/json',
+      description: 'JSON is a type of JSON that JSONs in JSON',
+      documentationUrl: 'https://JSON.org',
+    },
+  }],
   releaseState: 1,
   metadataTypeName: 'Populasjon',
   municipalityName: 'Trondheim',
@@ -86,6 +97,7 @@ describe('Page displays bottom-level datasets from municipalities', () => {
     // Should have fetched exactly twice
     // - once for likes
     // - once for comments
-    expect(fetch.mock.calls.length).toEqual(2);
+    // - once for metadata type name
+    expect(fetch.mock.calls.length).toEqual(3);
   });
 });

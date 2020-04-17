@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { alertActions } from '../../state/actions/alert';
 import { useGetTags } from '../../sharedComponents/hooks/GetTags';
 import { LoadingButton } from '../../sharedComponents/LoadingButton';
+import { RootLevelCategorySelector } from './RootLevelCategorySelector';
 
 const Wrapper = styled.div`
   flex: 1;
@@ -70,6 +71,7 @@ export const NewMetadataTypeBody = () => {
   const allTags = useGetTags();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [categoryUuid, setCategoryUuid] = useState('');
   const [tags, setTags] = useState([]);
   const [submissionStatus, setSubmissionStatus] = useState('');
   const [loading, setLoading] = useState(false);
@@ -77,10 +79,15 @@ export const NewMetadataTypeBody = () => {
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state.user);
 
+  const onCategoryChange = (e) => setCategoryUuid(e.currentTarget.value);
+
   const submit = async (e) => {
     e.preventDefault();
+    if (categoryUuid === '') {
+      dispatch(alertActions.error('Please select a category'));
+      return;
+    }
     setLoading(true);
-
     try {
       const { token } = userSelector.user;
       const res = await fetch('/api/MetadataType', {
@@ -88,6 +95,7 @@ export const NewMetadataTypeBody = () => {
         body: JSON.stringify({
           name,
           description,
+          categoryUuid,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -152,6 +160,14 @@ export const NewMetadataTypeBody = () => {
           {' '}
           <Link to="/tags/new">
             <b>Create a new one</b>
+          </Link>
+        </NewTag>
+        <RootLevelCategorySelector onChange={onCategoryChange} />
+        <NewTag>
+          Are none of these categories appropriate?
+          {' '}
+          <Link to="/newCategory">
+            <b>Create a new one here</b>
           </Link>
         </NewTag>
         <LoadingButton text="submit" type="value" loading={loading} onClick={() => {}} />

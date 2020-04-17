@@ -6,6 +6,7 @@ import { Template } from '../../sharedComponents/Template';
 import { MetadataByTypeResults } from './MetadataByTypeResults';
 import { NoResult } from '../MetadataByMunicipality/NoResult';
 import { alertActions } from '../../state/actions/alert';
+import { history } from '../../router/history';
 
 const Background = styled.div`
   width: 100%;
@@ -13,6 +14,8 @@ const Background = styled.div`
   background-color: #eeeeee;
   padding: 0.5rem;
   box-sizing: border-box;
+
+  min-height: 70vh;
 `;
 const MetadataTypesViewContainer = styled.div`
   display: flex;
@@ -39,6 +42,8 @@ const LeftPane = styled.div`
     color: dimgray;
   }
 `;
+
+
 const Tag = styled.p`
   background-color: #eeeeee;
   color: #595959;
@@ -105,8 +110,7 @@ const ResultView = styled.div`
 `;
 
 export const MetadataByType = () => {
-  const { name } = useParams();
-
+  const { typeuuid } = useParams();
   const [categories, setCategories] = useState([]);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -114,13 +118,17 @@ export const MetadataByType = () => {
   const dispatch = useDispatch();
 
   const handleCategorySelection = ({ target: { value } }) => {
-    setSelectedCategory(value);
+    const matchingCategory = fetchedCategories.find((c) => c.uuid === value);
+    setSelectedCategory(matchingCategory);
+    history.push(`/dataType/${matchingCategory.uuid}`);
   };
 
   const handleCategoryFilterSelection = ({ target: { value } }) => {
+    const keyword = value.toLowerCase();
     setCategories(
       fetchedCategories.filter(
-        (c) => c.name.toLowerCase().includes(value.toLowerCase()),
+        (c) => c.name.toLowerCase().includes(keyword)
+        || c.description.content.toLowerCase().includes(keyword),
       ),
     );
   };
@@ -135,7 +143,10 @@ export const MetadataByType = () => {
           setFetchedCategories(receivedCategories);
           setCategories(receivedCategories);
         }
-        if (name) setSelectedCategory(name);
+        const matchingType = receivedCategories.find((c) => c.uuid === typeuuid);
+        if (matchingType) {
+          setSelectedCategory(matchingType);
+        }
       } catch (err) {
         const { status } = err;
         if (status === 404) {
@@ -166,13 +177,15 @@ export const MetadataByType = () => {
             <MetadataTypeFilter type="text" placeholder="Search categories" onChange={handleCategoryFilterSelection} />
             <Picker onChange={handleCategorySelection}>
               { categories.length === 0 ? <p>No categories found!</p>
-                : categories.map((c) => (
-                  <RadioDiv key={c.name}>
-                    <input type="radio" key={c.name} id={`radio-${c.name}`} name="radio-category" value={c.name} />
-                    <label htmlFor={`radio-${c.name}`}>
-                      {c.name}
-                      <p>{c.description}</p>
-                      {c.tags.map(({ tagName }) => <Tag>{tagName}</Tag>)}
+                : categories.map(({
+                  uuid, name: typeName, description, tags,
+                }) => (
+                  <RadioDiv key={uuid}>
+                    <input type="radio" id={`radio-${uuid}`} name="radio-category" value={uuid} />
+                    <label htmlFor={`radio-${uuid}`}>
+                      {typeName}
+                      <p>{description}</p>
+                      {tags.map(({ tagName }) => <Tag key={tagName}>{tagName}</Tag>)}
                     </label>
                   </RadioDiv>
                 )) }
@@ -180,7 +193,7 @@ export const MetadataByType = () => {
           </LeftPane>
           <ResultView>
             { selectedCategory !== null
-              ? <MetadataByTypeResults metadataTypeName={selectedCategory} />
+              ? <MetadataByTypeResults metadataTypeUuid={selectedCategory.uuid} />
               : (
                 <NoResult text="Select a category to examine." />
               )}

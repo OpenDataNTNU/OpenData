@@ -5,6 +5,7 @@ namespace OpenData.Domain.Models
 	public class DataFormat
 	{
 		public string Name { get; set; }
+		public string MimeType { get; set; }
 		public string Description { get; set; }
 		public string DocumentationUrl { get; set; }
 	}

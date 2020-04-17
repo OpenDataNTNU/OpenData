@@ -26,7 +26,7 @@ const Footer = () => (
     <Container>
       <p>
         OpenData is an open source data catalogue developed at the
-        Norwegian University of Technology and Science in Trondheim, Norway.
+        Norwegian University of Science and Technology in Trondheim, Norway.
       </p>
       <p>
         <Link href="https://github.com/OpenDataNTNU/OpenData">
