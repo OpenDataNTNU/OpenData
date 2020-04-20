@@ -14,13 +14,10 @@ const Background = styled.div`
   background-color: #eeeeee;
   padding: 0.5rem;
   box-sizing: border-box;
-
-  min-height: 70vh;
 `;
 const MetadataTypesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100%;
   max-width: 60rem;
   margin: auto;
   background-color: white;
@@ -30,6 +27,7 @@ const MetadataTypesViewContainer = styled.div`
 `;
 
 const LeftPane = styled.div`
+  height: 70vh;
   width: 14rem;
   box-sizing: border-box;
   display: flex;
