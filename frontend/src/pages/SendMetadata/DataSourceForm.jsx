@@ -81,7 +81,7 @@ export const DataSourceForm = ({ dataFormats, addDataSource }) => {
   } = currentSource;
 
   return (
-    <form onSubmit={submit}>
+    <div>
       <Select name="dataFormatMimeType" value={dataFormatMimeType} onChange={handleFormatChange}>
         <option value="" disabled>Data format</option>
         {dataFormats.map(({ mimeType }) => (
@@ -98,8 +98,8 @@ export const DataSourceForm = ({ dataFormats, addDataSource }) => {
         End date:
         <Input id="dateTo" type="date" placeholder="To" name="endDate" value={endDate} onChange={handleFormatChange} />
       </label>
-      <Input type="submit" value="Add source" />
-    </form>
+      <button type="button" onClick={submit}>Add source</button>
+    </div>
   );
 };
 
