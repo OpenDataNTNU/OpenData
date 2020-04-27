@@ -94,7 +94,6 @@ export const NewMetadataTypeBody = () => {
         method: 'PUT',
         body: JSON.stringify({
           name,
-          description,
           categoryUuid,
         }),
         headers: {
@@ -109,8 +108,30 @@ export const NewMetadataTypeBody = () => {
         err.request = 'initial';
         throw err;
       }
+
+      const resJson = await res.json();
+      const { uuid } = resJson;
+
+      const descRes = await fetch(`/api/MetadataType/${uuid}/description`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          content: description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `bearer ${token}`,
+        },
+      });
+
+      if (!descRes.ok) {
+        const err = new Error();
+        err.status = descRes.status;
+        err.request = 'description';
+        throw err;
+      }
+
       const tagReses = await Promise.all(tags.map((tag) => (
-        fetch(`/api/MetadataType/${name}/tag`, {
+        fetch(`/api/MetadataType/${uuid}/tag`, {
           method: 'PUT',
           body: JSON.stringify({
             name: tag,
