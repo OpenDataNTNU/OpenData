@@ -150,9 +150,9 @@ export const MetadataByType = () => {
       } catch (err) {
         const { status } = err;
         if (status === 404) {
-          dispatch(alertActions.error('Could not receive categories.'));
+          dispatch(alertActions.error('Could not receive types.'));
         } else {
-          dispatch(alertActions.error('Failed to fetch categories. Please try again later.'));
+          dispatch(alertActions.error('Failed to fetch types. Please try again later.'));
         }
       }
       setLoading(false);
@@ -164,7 +164,7 @@ export const MetadataByType = () => {
     return (
       <Template>
         <MetadataTypesViewContainer>
-          <NoResult text="Loading categories..." />
+          <NoResult text="Loading Types..." />
         </MetadataTypesViewContainer>
       </Template>
     );
@@ -174,14 +174,14 @@ export const MetadataByType = () => {
       <Background>
         <MetadataTypesViewContainer>
           <LeftPane>
-            <MetadataTypeFilter type="text" placeholder="Search categories" onChange={handleCategoryFilterSelection} />
+            <MetadataTypeFilter type="text" placeholder="Search types" onChange={handleCategoryFilterSelection} />
             <Picker onChange={handleCategorySelection}>
-              { categories.length === 0 ? <p>No categories found!</p>
+              { categories.length === 0 ? <p>No types found!</p>
                 : categories.map(({
                   uuid, name: typeName, description, tags,
                 }) => (
                   <RadioDiv key={uuid}>
-                    <input type="radio" id={`radio-${uuid}`} name="radio-category" value={uuid} />
+                    <input type="radio" id={`radio-${uuid}`} name="radio-type" value={uuid} />
                     <label htmlFor={`radio-${uuid}`}>
                       {typeName}
                       <p>{description}</p>
@@ -195,7 +195,7 @@ export const MetadataByType = () => {
             { selectedCategory !== null
               ? <MetadataByTypeResults metadataTypeUuid={selectedCategory.uuid} />
               : (
-                <NoResult text="Select a category to examine." />
+                <NoResult text="Select a type to examine." />
               )}
           </ResultView>
         </MetadataTypesViewContainer>
