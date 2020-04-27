@@ -58,7 +58,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
   const handleFilterSelection = ({ target: { value } }) => {
     setMetadataSet(
       metadataType.metadataList.filter(
-        (c) => c.description.content.toLowerCase().includes(value.toLowerCase()),
+        (c) => c.description.toLowerCase().includes(value.toLowerCase()),
       ),
     );
   };

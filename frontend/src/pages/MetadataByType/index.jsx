@@ -14,13 +14,10 @@ const Background = styled.div`
   background-color: #eeeeee;
   padding: 0.5rem;
   box-sizing: border-box;
-
-  min-height: 70vh;
 `;
 const MetadataTypesViewContainer = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100%;
   max-width: 60rem;
   margin: auto;
   background-color: white;
@@ -30,6 +27,7 @@ const MetadataTypesViewContainer = styled.div`
 `;
 
 const LeftPane = styled.div`
+  height: 70vh;
   width: 14rem;
   box-sizing: border-box;
   display: flex;
@@ -42,7 +40,6 @@ const LeftPane = styled.div`
     color: dimgray;
   }
 `;
-
 
 const Tag = styled.p`
   background-color: #eeeeee;
@@ -126,10 +123,13 @@ export const MetadataByType = () => {
   const handleCategoryFilterSelection = ({ target: { value } }) => {
     const keyword = value.toLowerCase();
     setCategories(
-      fetchedCategories.filter(
-        (c) => c.name.toLowerCase().includes(keyword)
-        || c.description.content.toLowerCase().includes(keyword),
-      ),
+      fetchedCategories.filter((c) => {
+        if (!c.description) {
+          return c.name.toLowerCase().includes(keyword);
+        }
+        return c.name.toLowerCase().includes(keyword)
+        || c.description.content.toLowerCase().includes(keyword);
+      }),
     );
   };
 
