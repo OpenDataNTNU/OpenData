@@ -41,7 +41,6 @@ const LeftPane = styled.div`
   }
 `;
 
-
 const Tag = styled.p`
   background-color: #eeeeee;
   color: #595959;
@@ -124,10 +123,13 @@ export const MetadataByType = () => {
   const handleCategoryFilterSelection = ({ target: { value } }) => {
     const keyword = value.toLowerCase();
     setCategories(
-      fetchedCategories.filter(
-        (c) => c.name.toLowerCase().includes(keyword)
-        || c.description.content.toLowerCase().includes(keyword),
-      ),
+      fetchedCategories.filter((c) => {
+        if (!c.description) {
+          return c.name.toLowerCase().includes(keyword);
+        }
+        return c.name.toLowerCase().includes(keyword)
+        || c.description.content.toLowerCase().includes(keyword);
+      }),
     );
   };
 
