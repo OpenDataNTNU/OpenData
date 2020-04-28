@@ -114,7 +114,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
           <DescriptionEditButton uuid={metadataTypeUuid} />
           <p>{description.content}</p>
           { tags.length === 0 ? (
-            <NoTags>No tags for this category.</NoTags>
+            <NoTags>No tags for this type.</NoTags>
           ) : tags.map(({ tagName }) => <Tag key={tagName}>{tagName}</Tag>)}
         </div>
         <MetadataFilter onChange={handleFilterSelection} type="text" placeholder="Filter results" />
