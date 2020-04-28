@@ -121,7 +121,7 @@ const MetadataByTypeResults = ({ metadataTypeUuid }) => {
       </ResultsHeader>
       <ResultsContainer>
         { metadataSet.length === 0 ? (
-          <NoResult text={`No results were found for ${metadataTypeUuid}.`} />
+          <NoResult text={`No results were found for ${metadataType.name}.`} />
         ) : metadataSet.map((m) => (
           <SingleMetaDataResult
             key={m.uuid}
