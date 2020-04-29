@@ -38,7 +38,7 @@ test('renders learn react link', () => {
   );
 
   // Learn react should be rendered
-  const linkElement = getByPlaceholderText(/Search categories/i);
+  const linkElement = getByPlaceholderText('Search types');
   expect(linkElement).toBeInTheDocument();
 
   // No alert is rendered
