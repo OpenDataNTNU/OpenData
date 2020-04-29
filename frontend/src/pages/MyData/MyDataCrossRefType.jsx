@@ -41,7 +41,7 @@ const MyDataCrossRefType = ({ datatype }) => {
         {name}
       </h3>
       <p>
-        {description}
+        {description.content}
       </p>
       <div>
         {tags.map(({ tagName }) => <Tag key={tagName}>{tagName}</Tag>)}
