@@ -37,7 +37,7 @@ Run `docker-compose up` from inside the folder of your selected docker-compose s
 
 The web server serves at `localhost:3000`, and the backend serves at `localhost:9000`, for ease in testing with postman and similar tools. Note that the exact configuration regarding where the frontend is, what is serving at it, and what forwards what, depends on what docker-compose setup you are using. Consult the `docker-compose.yml` file of your choosing for more information on what is happening in your container.
 
-Note that no matter what you are doing, the backend server is proxied such that you never have to mention the backend server by `localhost:9000`. Using the `:9000` port to access the backend will not work in production. Anything going to `/api` should be automatically proxied to the backend server.
+Note that no matter what you are doing, the backend server is proxied such that you never have to mention the backend server by `localhost:9000`. Using the `:9000` port to access the backend will not work in production. Anything going to `/api` will be automatically proxied to the backend server.
 
 A simple SQL administration tool called Adminer is reachable at `localhost:3739` when using the `development` or `volumemount-friendly` docker-compose files. For username/password, see `/container/*/docker-compose.yml`
 
