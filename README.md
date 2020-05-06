@@ -40,8 +40,8 @@ There are three different docker-compose configurations. Pick the one that works
  * `./container/production` - A production-ready docker image. Everything is built when the containers are set up, no code is hot-reloaded
  * `./container/volumemount-friendly` - The backend is prebuilt, and only the source folder of the frontend is volume mounted
    - This is a better choice for Macos and Windows users if speed is an issue
-   - You also need to rebuild the containers if you change dependencies in the frontend
-   - To rebuild, use `docker-compose up --build`
+   - You need to rebuild the containers if you change dependencies in the frontend
+   - To build, use `docker-compose up --build`
 
 Run `docker-compose up` from inside the folder of your selected docker-compose setup, and the rest should happen automatically. Note that a `docker-compose.yml` file should be in the folder you are running this command. If it isn't, you are doing something wrong.
 
