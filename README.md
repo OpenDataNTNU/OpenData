@@ -49,6 +49,8 @@ The web server serves at `localhost:3000`, and the backend serves at `localhost:
 
 Note that no matter what you are doing, the backend server is proxied such that you never have to mention the backend server by `localhost:9000`. Using the `:9000` port to access the backend will not work in production. Anything going to `/api` will be automatically proxied to the backend server.
 
+An API documentation tool called Swagger is available at `/swagger/index.html`. This is a full API documentation for the backend. You can also use it to send API requests.
+
 A simple SQL administration tool called Adminer is reachable at `localhost:3739` when using the `development` or `volumemount-friendly` docker-compose files. For username/password, see `/container/*/docker-compose.yml`
 
 `ctrl-C` to stop the containers.
