@@ -1,5 +1,15 @@
 # OpenData
 
+## Motivation
+
+Municipalities in Norway collect and store a lot of data, some of which is published and is openly available to anyone. Such data can be useful to decision makers employed in the public sector, as well as entrepreneurs and businesses who wish to gather data for analytics and to consider business opportunities. However, many datasets are of little utility when they don't cover most of the country.
+
+Additionally, one of the biggest hurdles for municipalities wanting to release data is a lack of experience and resources. By facilitating easy information sharing between municipalities using experience articles, we can make it easier for municipalities to learn from early adopters, lowering the barrier for release of data.
+
+By solving these two problems, our Open Data web application aims to act as an accelerator for the release of open data in Norway. Open datasets become more attractive to the public, and the cost of publishing internal data can be lowered. Everyone wins!
+
+Our solution is a web application made with React and ASP .Net core, together with a MySQL database for storing metadata.
+
 ## Getting it up
 
 ### Docker
