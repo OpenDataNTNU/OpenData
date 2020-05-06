@@ -40,14 +40,16 @@ There are three different docker-compose configurations. Pick the one that works
  * `./container/production` - A production-ready docker image. Everything is built when the containers are set up, no code is hot-reloaded
  * `./container/volumemount-friendly` - The backend is prebuilt, and only the source folder of the frontend is volume mounted
    - This is a better choice for Macos and Windows users if speed is an issue
-   - You also need to rebuild the containers if you change dependencies in the frontend
-   - To rebuild, use `docker-compose up --build`
+   - You need to rebuild the containers if you change dependencies in the frontend
+   - To build, use `docker-compose up --build`
 
 Run `docker-compose up` from inside the folder of your selected docker-compose setup, and the rest should happen automatically. Note that a `docker-compose.yml` file should be in the folder you are running this command. If it isn't, you are doing something wrong.
 
 The web server serves at `localhost:3000`, and the backend serves at `localhost:9000`, for ease in testing with postman and similar tools. Note that the exact configuration regarding where the frontend is, what is serving at it, and what forwards what, depends on what docker-compose setup you are using. Consult the `docker-compose.yml` file of your choosing for more information on what is happening in your container.
 
 Note that no matter what you are doing, the backend server is proxied such that you never have to mention the backend server by `localhost:9000`. Using the `:9000` port to access the backend will not work in production. Anything going to `/api` will be automatically proxied to the backend server.
+
+An API documentation tool called Swagger is available at `/swagger/index.html`. This is a full API documentation for the backend. You can also use it to send API requests.
 
 A simple SQL administration tool called Adminer is reachable at `localhost:3739` when using the `development` or `volumemount-friendly` docker-compose files. For username/password, see `/container/*/docker-compose.yml`
 
