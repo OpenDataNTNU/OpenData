@@ -16,7 +16,6 @@ const Wrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  max-height: 50%;
   display: flex;
   flex-direction: column;
   align-content: space-around;
